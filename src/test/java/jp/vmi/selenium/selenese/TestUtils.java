@@ -18,9 +18,9 @@ public final class TestUtils {
             Socket sock = new Socket("127.0.0.1", 18080);
             sock.close();
         } catch (UnknownHostException e) {
-            Assume.assumeTrue(false);
+            Assume.assumeNoException(e);
         } catch (IOException e) {
-            Assume.assumeTrue(false);
+            Assume.assumeNoException(e);
         }
     }
 
