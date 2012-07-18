@@ -23,7 +23,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     private final String profileName;
     private final File profileDir;
 
-    FirefoxDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    public FirefoxDriverFactory(DriverOptions options) throws InvalidConfigurationException {
         super(options);
         profileName = options.get(PROFILE);
         String dir = options.get(PROFILE_DIR);
