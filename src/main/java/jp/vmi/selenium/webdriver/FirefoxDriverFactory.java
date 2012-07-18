@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.io.File;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -48,8 +49,25 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         } else {
             profile = new FirefoxProfile(profileDir);
         }
-        FirefoxBinary binary = new FirefoxBinary();
-        WebDriver driver = new FirefoxDriver(binary, profile, capabilities);
+        String path = System.getProperty("webdriver.firefox.bin");
+        WebDriver driver = null;
+        try {
+            FirefoxBinary binary = null;
+            if (path == null) {
+                binary = new FirefoxBinary();
+            } else {
+                binary = new FirefoxBinary(new File(path));
+            }
+
+            driver = new FirefoxDriver(binary, profile, capabilities);
+
+        } catch (NullPointerException e) {
+            // firefox not found in webdriver.firefox.bin systemproperty.
+            throw new BrowserNotFoundException(e.getMessage());
+        } catch (WebDriverException e) {
+            // firefox not found.
+            throw new BrowserNotFoundException(e.getMessage());
+        }
         log.info("FirefoxDriver initialized.");
         return driver;
     }
