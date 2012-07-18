@@ -49,10 +49,18 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         } else {
             profile = new FirefoxProfile(profileDir);
         }
-        FirefoxBinary binary = new FirefoxBinary();
+        String path = System.getProperty("webdriver.firefox.bin");
         WebDriver driver = null;
         try {
+            FirefoxBinary binary = null;
+            if (path == null) {
+                binary = new FirefoxBinary();
+            } else {
+                binary = new FirefoxBinary(new File(path));
+            }
+
             driver = new FirefoxDriver(binary, profile, capabilities);
+
         } catch (NullPointerException e) {
             // firefox not found in webdriver.firefox.bin systemproperty.
             throw new BrowserNotFoundException(e.getMessage());
