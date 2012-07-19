@@ -39,7 +39,9 @@ public class CaptureEntirePageScreenshot extends Command {
         if (context.getProc().getWrappedDriver() instanceof TakesScreenshot) {
             TakesScreenshot screenshottaker = (TakesScreenshot) context.getProc().getWrappedDriver();
             File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
-            tmp.renameTo(new File(filename));
+            if (!tmp.renameTo(new File(filename))) {
+                log.warn("fail to rename file to:" + filename);
+            }
             return SUCCESS;
         } else {
             log.warn("captureEntirePageScreenshot is unsupported by this webdriver.");

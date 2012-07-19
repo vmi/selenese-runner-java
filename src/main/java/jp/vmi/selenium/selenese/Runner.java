@@ -132,7 +132,10 @@ public class Runner {
             TakesScreenshot screenshottaker = (TakesScreenshot) driver;
             File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
             String datetime = fsf.format(Calendar.getInstance().getTime());
-            tmp.renameTo(new File(screenshotDir, "capture_" + datetime + "_" + index + ".png"));
+            File target = new File(screenshotDir, "capture_" + datetime + "_" + index + ".png");
+            if (!tmp.renameTo(target.getAbsoluteFile())) {
+                log.warn("fail to rename file to :" + target.getAbsolutePath());
+            }
             log.info(tmp.getAbsolutePath());
         }
     }
