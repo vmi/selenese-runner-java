@@ -163,6 +163,36 @@ public class Runner {
      * @param args options and filenames
      */
     public static void main(String[] args) {
+        try {
+            CommandLine cli = getCommandLine(args);
+
+            DriverOptions driverOptions = new DriverOptions(cli);
+
+            WebDriverFactory wdf;
+            String driverName = cli.getOptionValue("driver");
+            try {
+                wdf = getWebDriverFactory(driverOptions, driverName);
+            } catch (InvalidConfigurationException e) {
+                throw new InvalidOptionException("Error: " + e.getMessage(), e);
+            } catch (NoSuchWebDriverException e) {
+                throw new InvalidOptionException("Error: Driver does not exist: " + driverName, e);
+            }
+
+            Runner runner = new Runner(wdf);
+            runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
+            runner.setScreenshotAll(cli.hasOption("screenshot-all"));
+
+            for (String arg : cli.getArgs()) {
+                runner.run(arg);
+            }
+            exit(0);
+        } catch (InvalidOptionException e) {
+            help(e.getMessage());
+            exit(1);
+        }
+    }
+
+    protected static CommandLine getCommandLine(String[] args) throws InvalidOptionException {
         CommandLine cli = null;
         try {
             cli = new PosixParser().parse(getOptions(), args);
@@ -170,38 +200,17 @@ public class Runner {
                 log.debug(opt.getLongOpt() + ":" + opt.getValue());
             }
         } catch (ParseException e) {
-            help("Error: " + e.getMessage());
+            throw new InvalidOptionException("Error: " + e.getMessage(), e);
         }
         if (cli.getArgs().length == 0)
-            help();
-        DriverOptions driverOptions = new DriverOptions(cli);
-
-        WebDriverFactory wdf;
-        String driverName = cli.getOptionValue("driver");
-        try {
-            wdf = getWebDriverFactory(driverOptions, driverName);
-        } catch (InvalidConfigurationException e) {
-            help("Error: " + e.getMessage());
-            return; // not reached.
-        } catch (NoSuchWebDriverException e) {
-            help("Error: Driver does not exist: " + driverName);
-            return; // not reached.
-        }
-
-        Runner runner = new Runner(wdf);
-        runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
-        runner.setScreenshotAll(cli.hasOption("screenshot-all"));
+            throw new InvalidOptionException();
 
         for (String arg : cli.getArgs()) {
             if (!new File(arg).exists()) {
-                help("Error: file not exists \"" + arg + "\"");
+                throw new InvalidOptionException("Error: file not exists \"" + arg + "\"");
             }
         }
-
-        for (String arg : cli.getArgs()) {
-            runner.run(arg);
-        }
-        exit(0);
+        return cli;
     }
 
     protected static WebDriverFactory getWebDriverFactory(DriverOptions driverOptions, String driverName)
@@ -235,7 +244,6 @@ public class Runner {
         }
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar selenese-runner.jar <selenese_file> ...", "", getOptions(), FOOTER);
-        exit(1);
     }
 
     private static final String FOOTER = "\n"
