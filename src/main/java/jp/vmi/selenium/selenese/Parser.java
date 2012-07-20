@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -15,6 +16,9 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
@@ -58,7 +62,7 @@ public class Parser {
         };
     }
 
-    public Parser(String input) {
+    public Parser(String input) throws InvalidSeleneseException {
         try {
             if (input.matches("[A-Za-z]:[/\\\\].*"))
                 input = "file:///" + input;
@@ -67,11 +71,23 @@ public class Parser {
             parser.setFeature("http://xml.org/sax/features/namespaces", false);
             parser.parse(input);
             docucment = parser.getDocument();
-            baseURI = XPathAPI.selectSingleNode(docucment, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
+            try {
+                baseURI = XPathAPI.selectSingleNode(docucment, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
+            } catch (NullPointerException e) {
+                throw new InvalidSeleneseException("no selenium.base link", e);
+            }
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
         } catch (RuntimeException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (TransformerException e) {
+            throw new InvalidSeleneseException(e);
+        } catch (SAXNotRecognizedException e) {
+            throw new RuntimeException(e);
+        } catch (SAXNotSupportedException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new InvalidSeleneseException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

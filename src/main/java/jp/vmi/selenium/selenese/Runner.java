@@ -152,6 +152,8 @@ public class Runner {
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw e;
+        } catch (InvalidSeleneseException e) {
+            log.error(e.getMessage());
         } finally {
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
