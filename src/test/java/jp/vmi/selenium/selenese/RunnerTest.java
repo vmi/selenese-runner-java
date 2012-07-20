@@ -10,7 +10,7 @@ import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class RunnerTest {
 
@@ -25,7 +25,7 @@ public class RunnerTest {
     @Test
     public void emptyFile() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        Runner runner = new Runner(new FirefoxDriver());
+        Runner runner = new Runner(new HtmlUnitDriver());
         runner.run(tmp.getAbsolutePath());
     }
 }
