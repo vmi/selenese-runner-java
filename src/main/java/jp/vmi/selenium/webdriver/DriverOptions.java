@@ -22,19 +22,21 @@ public class DriverOptions {
     }
 
     public DriverOptions(CommandLine cli) {
-        for (DriverOption key : DriverOption.values())
-            map.put(key, cli.getOptionValue(key.name()));
+        for (DriverOption opt : DriverOption.values()) {
+            String key = opt.name().toLowerCase().replace('_', '-');
+            map.put(opt, cli.getOptionValue(key));
+        }
     }
 
-    public String get(DriverOption key) {
-        return map.get(key);
+    public String get(DriverOption opt) {
+        return map.get(opt);
     }
 
-    public boolean has(DriverOption key) {
-        return map.containsKey(key);
+    public boolean has(DriverOption opt) {
+        return map.containsKey(opt);
     }
 
-    public void set(DriverOption key, String value) {
-        map.put(key, value);
+    public void set(DriverOption opt, String value) {
+        map.put(opt, value);
     }
 }

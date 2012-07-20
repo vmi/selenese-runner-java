@@ -234,7 +234,7 @@ public class Runner {
             System.err.println();
         }
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java -jar selenese-runner.jar <SELENESE_FILE> ...", "", getOptions(), FOOTER);
+        formatter.printHelp("java -jar selenese-runner.jar <selenese_file> ...", "", getOptions(), FOOTER);
         exit(1);
     }
 
@@ -252,36 +252,36 @@ public class Runner {
             options = new Options();
             options.addOption(OptionBuilder.withLongOpt("driver")
                 .withDescription("firefox (default) | chrome | ie | safari | htmlunit | FQCN of web driver factory.").hasArg()
-                .withArgName("DRIVER")
+                .withArgName("driver")
                 .create());
             options.addOption(OptionBuilder.withLongOpt("profile")
                 .withDescription("profile name (Firefox only)")
-                .withArgName("PROFILE")
+                .withArgName("profile")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("profile-dir")
                 .withDescription("profile directory (Firefox only)")
-                .withArgName("PROFILE_DIR")
+                .withArgName("profile-dir")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("proxy")
                 .withDescription("proxy host and port (HOST:PORT)")
-                .withArgName("PROXY")
+                .withArgName("proxy")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("proxy-user")
                 .withDescription("proxy username (HtmlUnit only *)")
-                .withArgName("PROXY_USER")
+                .withArgName("proxy-user")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("proxy-password")
                 .withDescription("proxy password (HtmlUnit only *)")
-                .withArgName("PROXY_PASSWORD")
+                .withArgName("proxy-password")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("no-proxy")
                 .withDescription("no proxy")
-                .withArgName("NO_PROXY")
+                .withArgName("no-proxy")
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("screenshot-dir")
