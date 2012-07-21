@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 public class HtmlUnitDriverFactory extends WebDriverFactory {
@@ -23,7 +22,7 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
     private final String proxyUser;
     private final String proxyPassword;
 
-    HtmlUnitDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    HtmlUnitDriverFactory(DriverOptions options) throws IllegalArgumentException {
         super(options);
         String proxy = options.get(DriverOption.PROXY);
         if (proxy != null) {

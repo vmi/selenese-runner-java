@@ -6,13 +6,11 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
-
 public class SafariDriverFactory extends WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(SafariDriverFactory.class);
 
-    SafariDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    SafariDriverFactory(DriverOptions options) throws IllegalArgumentException {
         super(options);
     }
 

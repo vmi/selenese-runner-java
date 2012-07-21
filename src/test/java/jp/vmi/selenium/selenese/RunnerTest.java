@@ -1,21 +1,21 @@
 package jp.vmi.selenium.selenese;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
-
-import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
+
+import static org.junit.Assert.*;
+
 public class RunnerTest {
 
     @Test
-    public void invalidProxyOption() throws InvalidOptionException, IOException {
+    public void invalidProxyOption() throws IllegalArgumentException, IOException {
         File tmp = File.createTempFile("aaa", "test.html");
         CommandLine cli = Runner.getCommandLine(new String[] { "--proxy", "proxy.example.com", tmp.getAbsolutePath() });
         DriverOptions opt = new DriverOptions(cli);

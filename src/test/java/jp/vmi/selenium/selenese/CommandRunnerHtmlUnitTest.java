@@ -8,7 +8,7 @@ import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     @Override
-    protected WebDriverFactory getWebDriverFactory() throws InvalidConfigurationException {
+    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
         return WebDriverFactory.getFactory(HtmlUnitDriverFactory.class, new DriverOptions());
     }
 
@@ -21,13 +21,13 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
 
     @Override
     @Test(expected = UnsupportedOperationException.class)
-    public void testFlowControl() throws InvalidConfigurationException {
+    public void testFlowControl() throws IllegalArgumentException {
         super.testFlowControl();
     }
 
     @Override
     @Test(expected = UnsupportedOperationException.class)
-    public void testForEach() throws InvalidConfigurationException {
+    public void testForEach() throws IllegalArgumentException {
         super.testForEach();
     }
 

@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Supplier;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
-
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
 abstract public class WebDriverFactory implements Supplier<WebDriver> {
@@ -33,7 +31,7 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
     private WebDriver driver = null;
 
     public static synchronized WebDriverFactory getFactory(Class<? extends WebDriverFactory> clazz, DriverOptions options)
-        throws InvalidConfigurationException {
+        throws IllegalArgumentException {
         WebDriverFactory factory = factories.get(clazz.getName());
         if (factory == null) {
             try {
@@ -42,8 +40,8 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {
-                if (e instanceof InvalidConfigurationException)
-                    throw (InvalidConfigurationException) e;
+                if (e instanceof IllegalArgumentException)
+                    throw (IllegalArgumentException) e;
                 else
                     throw new RuntimeException(e);
             }
@@ -52,7 +50,7 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
     }
 
     public static WebDriverFactory getFactory(String factoryClassName, DriverOptions options)
-        throws ClassNotFoundException, InvalidConfigurationException {
+        throws ClassNotFoundException, IllegalArgumentException {
         if (StringUtils.isBlank(factoryClassName))
             throw new ClassNotFoundException("Missing factory class name");
         if (!factoryClassName.contains("."))
@@ -60,7 +58,7 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
         return getFactory(Class.forName(factoryClassName).asSubclass(WebDriverFactory.class), options);
     }
 
-    WebDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    WebDriverFactory(DriverOptions options) throws IllegalArgumentException {
         if (options.has(PROXY)) {
             Proxy proxy = new Proxy();
             proxy.setProxyType(ProxyType.MANUAL);

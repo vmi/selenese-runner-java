@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriverCommandProcessor;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
 import jp.vmi.selenium.webdriver.BrowserNotFoundException;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
@@ -14,7 +13,7 @@ import jp.vmi.selenium.webdriver.WebDriverFactory;
 public class CommandFactoryTest {
 
     @Before
-    public void assumeInstalledFirefox() throws InvalidConfigurationException {
+    public void assumeInstalledFirefox() throws IllegalArgumentException {
         try {
             FirefoxDriverFactory f = new FirefoxDriverFactory(new DriverOptions());
             f.initDriver();
@@ -24,7 +23,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void captureEntirePageScreenshot() throws InvalidConfigurationException {
+    public void captureEntirePageScreenshot() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", WebDriverFactory.getFactory(
             FirefoxDriverFactory.class, new DriverOptions()).get());
         CommandFactory factory = new CommandFactory(proc);
@@ -32,7 +31,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void deleteAllVisibleCookies() throws InvalidConfigurationException {
+    public void deleteAllVisibleCookies() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", WebDriverFactory.getFactory(
             FirefoxDriverFactory.class, new DriverOptions()).get());
         CommandFactory factory = new CommandFactory(proc);
@@ -40,7 +39,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void runScript() throws InvalidConfigurationException {
+    public void runScript() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", WebDriverFactory.getFactory(
             FirefoxDriverFactory.class, new DriverOptions()).get());
         CommandFactory factory = new CommandFactory(proc);
@@ -48,7 +47,7 @@ public class CommandFactoryTest {
     }
 
     @Test
-    public void type() throws InvalidConfigurationException {
+    public void type() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", WebDriverFactory.getFactory(
             FirefoxDriverFactory.class, new DriverOptions()).get());
         CommandFactory factory = new CommandFactory(proc);

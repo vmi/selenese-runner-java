@@ -32,7 +32,7 @@ public abstract class CommandRunnerTest {
         }
     };
 
-    protected abstract WebDriverFactory getWebDriverFactory() throws InvalidConfigurationException;
+    protected abstract WebDriverFactory getWebDriverFactory() throws IllegalArgumentException;
 
     protected static String getScriptName(String name) {
         Class<CommandRunnerTest> c = CommandRunnerTest.class;
@@ -45,7 +45,7 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
-    public void testSimple() throws InvalidConfigurationException {
+    public void testSimple() throws IllegalArgumentException {
         String script = getScriptName("Simple");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -56,7 +56,7 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
-    public void testFlowControl() throws InvalidConfigurationException {
+    public void testFlowControl() throws IllegalArgumentException {
         String script = getScriptName("FlowControl");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -67,7 +67,7 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
-    public void testForEach() throws InvalidConfigurationException {
+    public void testForEach() throws IllegalArgumentException {
         String script = getScriptName("ForEach");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -78,7 +78,7 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
-    public void noCommandSelenese() throws InvalidConfigurationException {
+    public void noCommandSelenese() throws IllegalArgumentException {
         String script = getScriptName("NoCommand");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -89,14 +89,14 @@ public abstract class CommandRunnerTest {
     }
 
     @Test(expected = SeleniumException.class)
-    public void invalidCommandInHtml() throws InvalidConfigurationException {
+    public void invalidCommandInHtml() throws IllegalArgumentException {
         String script = getScriptName("InvalidCommand");
         Runner runner = new Runner(getWebDriverFactory());
         runner.run(script);
     }
 
     @Test(expected = SeleniumException.class)
-    public void invalidCommand() throws InvalidConfigurationException {
+    public void invalidCommand() throws IllegalArgumentException {
         WebDriver driver = getWebDriverFactory().get();
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
         CommandFactory commandFactory = new CommandFactory(proc);
@@ -107,7 +107,7 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
-    public void capture() throws InvalidConfigurationException {
+    public void capture() throws IllegalArgumentException {
         final String filename = "test.png";
         File pngFile = new File(tmpDir.getRoot(), filename);
         if (pngFile.exists()) {

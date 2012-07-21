@@ -9,8 +9,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
-
 /*
  * see: http://code.google.com/p/chromedriver/
  */
@@ -18,7 +16,7 @@ public class ChromeDriverFactory extends WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(ChromeDriverFactory.class);
 
-    ChromeDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    ChromeDriverFactory(DriverOptions options) throws IllegalArgumentException {
         super(options);
     }
 

@@ -14,7 +14,7 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
     }
 
     @Override
-    protected WebDriverFactory getWebDriverFactory() throws InvalidConfigurationException {
+    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
         DriverOptions options = new DriverOptions();
         options.set(DriverOption.PROXY, "localhost:18080");
         return WebDriverFactory.getFactory(IEDriverFactory.class, options);

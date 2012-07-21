@@ -10,7 +10,7 @@ import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
     @Override
-    protected WebDriverFactory getWebDriverFactory() throws InvalidConfigurationException {
+    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
         return WebDriverFactory.getFactory(IEDriverFactory.class, new DriverOptions());
     }
 

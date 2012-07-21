@@ -172,14 +172,7 @@ public class Runner {
 
             WebDriverFactory wdf;
             String driverName = cli.getOptionValue("driver");
-            try {
-                wdf = getWebDriverFactory(driverOptions, driverName);
-            } catch (InvalidConfigurationException e) {
-                throw new InvalidOptionException("Error: " + e.getMessage(), e);
-            } catch (NoSuchWebDriverException e) {
-                throw new InvalidOptionException("Error: Driver does not exist: " + driverName, e);
-            }
-
+            wdf = getWebDriverFactory(driverOptions, driverName);
             Runner runner = new Runner(wdf);
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
@@ -188,13 +181,13 @@ public class Runner {
                 runner.run(arg);
             }
             exit(0);
-        } catch (InvalidOptionException e) {
-            help(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            help("Error: " + e.getMessage());
             exit(1);
         }
     }
 
-    protected static CommandLine getCommandLine(String[] args) throws InvalidOptionException {
+    protected static CommandLine getCommandLine(String[] args) throws IllegalArgumentException {
         CommandLine cli = null;
         try {
             cli = new PosixParser().parse(getOptions(), args);
@@ -202,21 +195,20 @@ public class Runner {
                 log.debug(opt.getLongOpt() + ":" + opt.getValue());
             }
         } catch (ParseException e) {
-            throw new InvalidOptionException("Error: " + e.getMessage(), e);
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         if (cli.getArgs().length == 0)
-            throw new InvalidOptionException();
-
+            throw new IllegalArgumentException("Missing selenese script");
         for (String arg : cli.getArgs()) {
             if (!new File(arg).exists()) {
-                throw new InvalidOptionException("Error: file not exists \"" + arg + "\"");
+                throw new IllegalArgumentException("File does not exist: \"" + arg + "\"");
             }
         }
         return cli;
     }
 
     protected static WebDriverFactory getWebDriverFactory(DriverOptions driverOptions, String driverName)
-        throws InvalidConfigurationException, NoSuchWebDriverException {
+        throws IllegalArgumentException {
         WebDriverFactory wdf;
         if (driverName == null || "firefox".equalsIgnoreCase(driverName)) {
             wdf = WebDriverFactory.getFactory(FirefoxDriverFactory.class, driverOptions);
@@ -232,7 +224,7 @@ public class Runner {
             try {
                 wdf = WebDriverFactory.getFactory(driverName, driverOptions);
             } catch (ClassNotFoundException e) {
-                throw new NoSuchWebDriverException("No such WebDriverException:" + driverName);
+                throw new IllegalArgumentException("Driver does not exist: " + driverName);
             }
         }
         return wdf;

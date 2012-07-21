@@ -12,8 +12,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.InvalidConfigurationException;
-
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
 public class FirefoxDriverFactory extends WebDriverFactory {
@@ -23,15 +21,15 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     private final String profileName;
     private final File profileDir;
 
-    public FirefoxDriverFactory(DriverOptions options) throws InvalidConfigurationException {
+    public FirefoxDriverFactory(DriverOptions options) throws IllegalArgumentException {
         super(options);
         profileName = options.get(PROFILE);
         String dir = options.get(PROFILE_DIR);
         profileDir = dir != null ? new File(dir) : null;
         if (profileName != null && profileDir != null)
-            throw new InvalidConfigurationException("Can't designate '--profile' and '--profile-dir' at once");
+            throw new IllegalArgumentException("Can't designate '--profile' and '--profile-dir' at once");
         if (profileDir != null && !profileDir.isDirectory())
-            throw new InvalidConfigurationException("Missing profile directory: " + profileDir);
+            throw new IllegalArgumentException("Missing profile directory: " + profileDir);
     }
 
     @Override
