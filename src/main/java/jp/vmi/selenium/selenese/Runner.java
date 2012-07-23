@@ -202,10 +202,25 @@ public class Runner {
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
 
+            Result runResult = new SuccessResult();
             for (String arg : cli.getArgs()) {
-                runner.run(arg);
+                Result result = runner.run(arg);
+                if (!runResult.isFailed() && result.isFailed() && !result.isInterrupted()) {
+                    runResult = new WarningResult();
+                }
+
+                if (result.isInterrupted()) {
+                    runResult = new FailureResult();
+                }
             }
-            exit(0);
+
+            if (runResult.isInterrupted()) {
+                exit(3);
+            } else if (runResult.isFailed()) {
+                exit(2);
+            } else {
+                exit(0);
+            }
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
             exit(1);
