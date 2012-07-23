@@ -56,6 +56,17 @@ public abstract class CommandRunnerTest {
     }
 
     @Test
+    public void testFailSubmit() throws IllegalArgumentException {
+        String script = getScriptName("Error");
+        Runner runner = new Runner(getWebDriverFactory());
+        runner.setScreenshotDir(tmpDir.getRoot());
+        runner.setScreenshotAll(true);
+        runner.run(script);
+
+        assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+    }
+
+    @Test
     public void testFlowControl() throws IllegalArgumentException {
         String script = getScriptName("FlowControl");
         Runner runner = new Runner(getWebDriverFactory());
