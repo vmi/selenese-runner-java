@@ -2,13 +2,11 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
 
+import jp.vmi.selenium.selenese.Context;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
-
-import jp.vmi.selenium.selenese.Context;
 
 public class Assertion extends Command {
 
@@ -90,7 +88,7 @@ public class Assertion extends Command {
         switch (type) {
         case ASSERT:
         case WAIT_FOR:
-            throw new SeleniumException(message);
+            return new FailureResult(message);
         default: // VERIFY
             return new WarningResult(message);
         }
