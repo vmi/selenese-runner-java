@@ -25,7 +25,7 @@ public abstract class CommandRunnerTest {
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
-    private final FilenameFilter pngFilter = new FilenameFilter() {
+    protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
             return name.endsWith(".png");
@@ -79,33 +79,28 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void testFlowControl() throws IllegalArgumentException {
-        String script = getScriptName("FlowControl");
-        Runner runner = new Runner(getWebDriverFactory());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
-        runner.run(script);
+        execute(getScriptName("FlowControl"));
 
         assertEquals(28, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Test
     public void testForEach() throws IllegalArgumentException {
-        String script = getScriptName("ForEach");
-        Runner runner = new Runner(getWebDriverFactory());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
-        runner.run(script);
+        execute(getScriptName("ForEach"));
 
         assertEquals(18, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
-    @Test
-    public void noCommandSelenese() throws IllegalArgumentException {
-        String script = getScriptName("NoCommand");
+    protected void execute(String scriptName) {
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
-        runner.run(script);
+        runner.run(scriptName);
+    }
+
+    @Test
+    public void noCommandSelenese() throws IllegalArgumentException {
+        execute(getScriptName("NoCommand"));
 
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }

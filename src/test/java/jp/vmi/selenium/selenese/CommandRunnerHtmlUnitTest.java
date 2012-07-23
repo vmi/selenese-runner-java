@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 
@@ -38,15 +40,17 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     }
 
     @Override
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testFlowControl() throws IllegalArgumentException {
-        super.testFlowControl();
+        execute(getScriptName("FlowControl"));
+        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Override
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testForEach() throws IllegalArgumentException {
-        super.testForEach();
+        execute(getScriptName("ForEach"));
+        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
 }
