@@ -117,12 +117,22 @@ public class Runner {
         messages.add(String.format("URL: [%s] / Title: [%s]", driver.getCurrentUrl(), driver.getTitle()));
         cookieToMessage(messages);
         if (ListUtils.isEqualList(messages, prevMessages)) {
-            log.info("- {}", result);
+            if (result.isFailed()) {
+                log.error("- {}", result);
+            } else {
+                log.info("- {}", result);
+            }
         } else {
             Iterator<String> iter = messages.iterator();
-            log.info("- {} {}", result, iter.next());
-            while (iter.hasNext())
-                log.info(iter.next());
+            if (result.isFailed()) {
+                log.error("- {} {}", result, iter.next());
+                while (iter.hasNext())
+                    log.error(iter.next());
+            } else {
+                log.info("- {} {}", result, iter.next());
+                while (iter.hasNext())
+                    log.info(iter.next());
+            }
             prevMessages = messages;
         }
     }

@@ -28,6 +28,8 @@ public class Command {
 
         public abstract boolean isInterrupted();
 
+        public abstract boolean isFailed();
+
         @Override
         public String toString() {
             return "[" + message + "]";
@@ -43,6 +45,11 @@ public class Command {
         public boolean isInterrupted() {
             return false;
         }
+
+        @Override
+        public boolean isFailed() {
+            return false;
+        }
     }
 
     public static class FailureResult extends Result {
@@ -52,6 +59,11 @@ public class Command {
 
         @Override
         public boolean isInterrupted() {
+            return true;
+        }
+
+        @Override
+        public boolean isFailed() {
             return true;
         }
     }
@@ -64,6 +76,11 @@ public class Command {
         @Override
         public boolean isInterrupted() {
             return false;
+        }
+
+        @Override
+        public boolean isFailed() {
+            return true;
         }
     }
 
