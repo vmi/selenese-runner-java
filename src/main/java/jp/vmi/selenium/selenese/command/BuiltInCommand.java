@@ -2,6 +2,8 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.selenium.selenese.Context;
 
 public class BuiltInCommand extends Command {
@@ -20,9 +22,13 @@ public class BuiltInCommand extends Command {
 
     @Override
     public Result doCommand(Context context) {
-        String result = context.doCommand(realName, context.replaceVariables(args));
-        if (andWait)
-            context.doCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
-        return StringUtils.isNotEmpty(result) ? new Result(true, result) : SUCCESS;
+        try {
+            String result = context.doCommand(realName, context.replaceVariables(args));
+            if (andWait)
+                context.doCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
+            return StringUtils.isNotEmpty(result) ? new SuccessResult(result) : SUCCESS;
+        } catch (SeleniumException e) {
+            return new FailureResult(e.getMessage());
+        }
     }
 }

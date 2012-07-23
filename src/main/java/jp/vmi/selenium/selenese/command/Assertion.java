@@ -92,7 +92,7 @@ public class Assertion extends Command {
         case WAIT_FOR:
             throw new SeleniumException(message);
         default: // VERIFY
-            return new Result(false, message);
+            return new WarningResult(message);
         }
     }
 }
