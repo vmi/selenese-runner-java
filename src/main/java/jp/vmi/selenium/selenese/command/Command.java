@@ -8,7 +8,7 @@ import jp.vmi.selenium.utils.LoggerUtils;
 // https://github.com/davehunt/selenium-ide-flowcontrol
 public class Command {
 
-    public static class Result {
+    public static abstract class Result {
 
         private final boolean isSuccess;
         private final String message;
@@ -26,14 +26,49 @@ public class Command {
             return message;
         }
 
+        public abstract boolean isInterrupted();
+
         @Override
         public String toString() {
             return "[" + message + "]";
         }
     }
 
-    public static final Result SUCCESS = new Result(true, "OK");
-    public static final Result FAILURE = new Result(false, "NG");
+    public static class SuccessResult extends Result {
+        public SuccessResult(String message) {
+            super(true, message);
+        }
+
+        @Override
+        public boolean isInterrupted() {
+            return false;
+        }
+    }
+
+    public static class FailureResult extends Result {
+        public FailureResult(String message) {
+            super(false, message);
+        }
+
+        @Override
+        public boolean isInterrupted() {
+            return true;
+        }
+    }
+
+    public static class WarningResult extends Result {
+        public WarningResult(String message) {
+            super(false, message);
+        }
+
+        @Override
+        public boolean isInterrupted() {
+            return false;
+        }
+    }
+
+    public static final Result SUCCESS = new SuccessResult("OK");
+    public static final Result FAILURE = new FailureResult("NG");
 
     private final int index;
     protected final String name;

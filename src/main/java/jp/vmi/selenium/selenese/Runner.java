@@ -104,6 +104,10 @@ public class Runner {
 
             takeScreenshot(current.getIndex());
 
+            if (result.isInterrupted()) {
+                break;
+            }
+
             current = current.next(context);
         }
     }
