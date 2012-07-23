@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import static java.lang.System.exit;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,6 +10,20 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.Command.FailureResult;
+import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.command.Command.SuccessResult;
+import jp.vmi.selenium.selenese.command.Command.WarningResult;
+import jp.vmi.selenium.utils.LoggerUtils;
+import jp.vmi.selenium.webdriver.ChromeDriverFactory;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
+import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
+import jp.vmi.selenium.webdriver.IEDriverFactory;
+import jp.vmi.selenium.webdriver.SafariDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -25,19 +41,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.Command.Result;
-import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.ChromeDriverFactory;
-import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
-import jp.vmi.selenium.webdriver.IEDriverFactory;
-import jp.vmi.selenium.webdriver.SafariDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
-
-import static java.lang.System.*;
 
 public class Runner {
 
@@ -95,7 +98,8 @@ public class Runner {
         }
     }
 
-    public void run(Context context, Command current) {
+    public Result run(Context context, Command current) {
+        Result runResult = new SuccessResult();
         while (current != null) {
             log.info(current.toString());
             Result result = current.doCommand(context);
@@ -104,12 +108,18 @@ public class Runner {
 
             takeScreenshot(current.getIndex());
 
+            if (!runResult.isFailed() && result.isFailed() && !result.isInterrupted()) {
+                runResult = new WarningResult();
+            }
+
             if (result.isInterrupted()) {
-                break;
+                runResult = new FailureResult();
+                return result;
             }
 
             current = current.next(context);
         }
+        return runResult;
     }
 
     private void log(Result result) {
@@ -154,7 +164,7 @@ public class Runner {
         }
     }
 
-    public void run(String file) {
+    public Result run(String file) {
         long stime = System.nanoTime();
         String name = file.replaceFirst(".*[/\\\\]", "");
         try {
@@ -162,12 +172,13 @@ public class Runner {
             Parser parser = new Parser(file);
             WebDriverCommandProcessor proc = new WebDriverCommandProcessor(parser.getBaseURI(), driver);
             Context context = new Context(proc);
-            run(context, parser.parse(proc, context));
+            return run(context, parser.parse(proc, context));
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw e;
         } catch (InvalidSeleneseException e) {
             log.error(e.getMessage());
+            return new FailureResult(e.getMessage());
         } finally {
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
