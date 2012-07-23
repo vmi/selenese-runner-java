@@ -41,6 +41,10 @@ public class Command {
             super(true, message);
         }
 
+        public SuccessResult() {
+            super(true, "");
+        }
+
         @Override
         public boolean isInterrupted() {
             return false;
@@ -57,6 +61,10 @@ public class Command {
             super(false, message);
         }
 
+        public FailureResult() {
+            super(false, "");
+        }
+
         @Override
         public boolean isInterrupted() {
             return true;
@@ -71,6 +79,10 @@ public class Command {
     public static class WarningResult extends Result {
         public WarningResult(String message) {
             super(false, message);
+        }
+
+        public WarningResult() {
+            super(false, "");
         }
 
         @Override
