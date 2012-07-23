@@ -32,8 +32,7 @@ public class CaptureEntirePageScreenshot extends Command {
     @Override
     public Result doCommand(Context context) {
         if (filename.isEmpty()) {
-            log.warn("captureEntirePageScreenshot is ignored: empty filename.");
-            return FAILURE;
+            return new WarningResult("captureEntirePageScreenshot is ignored: empty filename.");
         }
 
         if (context.getProc().getWrappedDriver() instanceof TakesScreenshot) {
@@ -44,8 +43,7 @@ public class CaptureEntirePageScreenshot extends Command {
             }
             return SUCCESS;
         } else {
-            log.warn("captureEntirePageScreenshot is unsupported by this webdriver.");
-            return FAILURE;
+            return new WarningResult("webdriver is not support taking screenshot.");
         }
     }
 }

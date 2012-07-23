@@ -151,16 +151,17 @@ public class Runner {
         FastDateFormat fsf = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
         if (screenshotAll) {
             if (!(driver instanceof TakesScreenshot)) {
-                throw new UnsupportedOperationException("webdriver is not support taking screenshot.");
+                log.warn("webdriver is not support taking screenshot.");
+                return;
             }
             TakesScreenshot screenshottaker = (TakesScreenshot) driver;
             File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
             String datetime = fsf.format(Calendar.getInstance().getTime());
             File target = new File(screenshotDir, "capture_" + datetime + "_" + index + ".png");
             if (!tmp.renameTo(target.getAbsoluteFile())) {
-                log.warn("fail to rename file to :" + target.getAbsolutePath());
+                log.error("fail to rename file to :" + target.getAbsolutePath());
             }
-            log.info(tmp.getAbsolutePath());
+            log.info(" - capture screenshot:{}", target.getAbsolutePath());
         }
     }
 
