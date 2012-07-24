@@ -65,6 +65,10 @@ public class Command {
             super(false, "");
         }
 
+        public FailureResult(Exception e) {
+            super(false, e.getMessage());
+        }
+
         @Override
         public boolean isInterrupted() {
             return true;

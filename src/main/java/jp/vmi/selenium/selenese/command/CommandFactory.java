@@ -31,6 +31,7 @@ public class CommandFactory {
         // unsupported commands on WebDriverCommandProcessor
         addConstructor(Echo.class);
         addConstructor(CaptureEntirePageScreenshot.class);
+        addConstructor(Pause.class);
 
         // commands of selenium-ide-flowcontrol
         // https://github.com/davehunt/selenium-ide-flowcontrol
