@@ -88,9 +88,9 @@ public class Assertion extends Command {
         switch (type) {
         case ASSERT:
         case WAIT_FOR:
-            return new FailureResult(message);
+            return new Failure(message);
         default: // VERIFY
-            return new WarningResult(message);
+            return new Warning(message);
         }
     }
 }

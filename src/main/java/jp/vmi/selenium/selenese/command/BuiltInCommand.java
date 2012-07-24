@@ -26,9 +26,9 @@ public class BuiltInCommand extends Command {
             String result = context.doCommand(realName, context.replaceVariables(args));
             if (andWait)
                 context.doCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
-            return StringUtils.isNotEmpty(result) ? new SuccessResult(result) : SUCCESS;
+            return StringUtils.isNotEmpty(result) ? new Success(result) : SUCCESS;
         } catch (SeleniumException e) {
-            return new FailureResult(e.getMessage());
+            return new Failure(e.getMessage());
         }
     }
 }

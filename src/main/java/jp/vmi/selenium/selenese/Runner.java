@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import static java.lang.System.exit;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,20 +8,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.Command.FailureResult;
-import jp.vmi.selenium.selenese.command.Command.Result;
-import jp.vmi.selenium.selenese.command.Command.SuccessResult;
-import jp.vmi.selenium.selenese.command.Command.WarningResult;
-import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.ChromeDriverFactory;
-import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
-import jp.vmi.selenium.webdriver.IEDriverFactory;
-import jp.vmi.selenium.webdriver.SafariDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -41,6 +25,21 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.Command.Failure;
+import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.utils.LoggerUtils;
+import jp.vmi.selenium.webdriver.ChromeDriverFactory;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
+import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
+import jp.vmi.selenium.webdriver.IEDriverFactory;
+import jp.vmi.selenium.webdriver.SafariDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverFactory;
+
+import static java.lang.System.*;
+import static jp.vmi.selenium.selenese.command.Command.*;
 
 public class Runner {
 
@@ -99,27 +98,18 @@ public class Runner {
     }
 
     public Result run(Context context, Command current) {
-        Result runResult = new SuccessResult();
+        Result totalResult = SUCCESS;
         while (current != null) {
             log.info(current.toString());
             Result result = current.doCommand(context);
-
             log(result);
-
             takeScreenshot(current.getIndex());
-
-            if (!runResult.isFailed() && result.isFailed() && !result.isInterrupted()) {
-                runResult = new WarningResult();
-            }
-
-            if (result.isInterrupted()) {
-                runResult = new FailureResult();
-                return result;
-            }
-
+            totalResult = totalResult.update(result);
+            if (totalResult.isInterrupted())
+                break;
             current = current.next(context);
         }
-        return runResult;
+        return totalResult;
     }
 
     private void log(Result result) {
@@ -179,7 +169,7 @@ public class Runner {
             throw e;
         } catch (InvalidSeleneseException e) {
             log.error(e.getMessage());
-            return new FailureResult(e.getMessage());
+            return new Failure(e.getMessage());
         } finally {
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
@@ -203,25 +193,13 @@ public class Runner {
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
 
-            Result runResult = new SuccessResult();
+            Result totalResult = SUCCESS;
             for (String arg : cli.getArgs()) {
                 Result result = runner.run(arg);
-                if (!runResult.isFailed() && result.isFailed() && !result.isInterrupted()) {
-                    runResult = new WarningResult();
-                }
-
-                if (result.isInterrupted()) {
-                    runResult = new FailureResult();
-                }
+                totalResult = totalResult.update(result);
             }
 
-            if (runResult.isInterrupted()) {
-                exit(3);
-            } else if (runResult.isFailed()) {
-                exit(2);
-            } else {
-                exit(0);
-            }
+            exit(totalResult.exitCode());
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
             exit(1);

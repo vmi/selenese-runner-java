@@ -30,19 +30,26 @@ public class Command {
 
         public abstract boolean isFailed();
 
+        public abstract int exitCode();
+
+        public Result update(Result newResult) {
+            if (newResult.isInterrupted())
+                return FAILURE;
+            else if (newResult.isFailed())
+                return WARNING;
+            else
+                return this;
+        }
+
         @Override
         public String toString() {
             return "[" + message + "]";
         }
     }
 
-    public static class SuccessResult extends Result {
-        public SuccessResult(String message) {
+    public static class Success extends Result {
+        public Success(String message) {
             super(true, message);
-        }
-
-        public SuccessResult() {
-            super(true, "");
         }
 
         @Override
@@ -54,18 +61,40 @@ public class Command {
         public boolean isFailed() {
             return false;
         }
+
+        @Override
+        public int exitCode() {
+            return 0;
+        }
     }
 
-    public static class FailureResult extends Result {
-        public FailureResult(String message) {
+    public static class Warning extends Result {
+        public Warning(String message) {
+            super(false, message);
+        }
+    
+        @Override
+        public boolean isInterrupted() {
+            return false;
+        }
+    
+        @Override
+        public boolean isFailed() {
+            return true;
+        }
+    
+        @Override
+        public int exitCode() {
+            return 2;
+        }
+    }
+
+    public static class Failure extends Result {
+        public Failure(String message) {
             super(false, message);
         }
 
-        public FailureResult() {
-            super(false, "");
-        }
-
-        public FailureResult(Exception e) {
+        public Failure(Exception e) {
             super(false, e.getMessage());
         }
 
@@ -78,30 +107,16 @@ public class Command {
         public boolean isFailed() {
             return true;
         }
-    }
-
-    public static class WarningResult extends Result {
-        public WarningResult(String message) {
-            super(false, message);
-        }
-
-        public WarningResult() {
-            super(false, "");
-        }
 
         @Override
-        public boolean isInterrupted() {
-            return false;
-        }
-
-        @Override
-        public boolean isFailed() {
-            return true;
+        public int exitCode() {
+            return 3;
         }
     }
 
-    public static final Result SUCCESS = new SuccessResult("OK");
-    public static final Result FAILURE = new FailureResult("NG");
+    public static final Result SUCCESS = new Success("Success");
+    public static final Result WARNING = new Warning("Warning");
+    public static final Result FAILURE = new Failure("Failure");
 
     private final int index;
     protected final String name;
