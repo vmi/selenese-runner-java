@@ -58,7 +58,6 @@ public class Proxy {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println(running);
                 }
             }
         });
@@ -93,7 +92,6 @@ public class Proxy {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println(stop);
                 }
             }
         });
