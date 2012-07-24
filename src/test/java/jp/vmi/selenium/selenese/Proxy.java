@@ -10,11 +10,11 @@ import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
 
 public class Proxy {
-    private ScriptingContainer container;
+    private final ScriptingContainer container;
 
     private int port = 18080;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(2);
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
     public Proxy() {
         super();
