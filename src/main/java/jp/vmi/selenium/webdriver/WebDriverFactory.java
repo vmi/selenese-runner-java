@@ -59,6 +59,10 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
     }
 
     WebDriverFactory(DriverOptions options) throws IllegalArgumentException {
+        settingProxy(options);
+    }
+
+    protected void settingProxy(DriverOptions options) {
         if (options.has(PROXY)) {
             Proxy proxy = new Proxy();
             proxy.setProxyType(ProxyType.MANUAL);
