@@ -1,10 +1,21 @@
 package jp.vmi.selenium.selenese;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.net.URL;
 
+import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.webdriver.WebDriverFactory;
+
+import org.apache.commons.lang.time.StopWatch;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -13,12 +24,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
-
-import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.CommandFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
-
-import static org.junit.Assert.*;
 
 public abstract class CommandRunnerTest {
 
@@ -144,4 +149,20 @@ public abstract class CommandRunnerTest {
         }
     }
 
+    @Test
+    public void pauseCommand() throws IllegalArgumentException {
+        WebDriver driver = getWebDriverFactory().get();
+        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("",
+            driver);
+        CommandFactory commandFactory = new CommandFactory(proc);
+        Command pause = commandFactory.newCommand(1, "pause", "5000");
+        Runner runner = new Runner(driver);
+        Context context = new Context(proc);
+
+        StopWatch sw = new StopWatch();
+        sw.start();
+        runner.run(context, pause);
+        sw.stop();
+        assertThat(sw.getTime(), is(greaterThan(5000L)));
+    }
 }
