@@ -86,7 +86,12 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
-                    driver.quit();
+                    try {
+                        // TODO hide exception.
+                        driver.quit();
+                    } catch (NullPointerException e) {
+                        log.warn("thrown NullPointerException");
+                    }
                     driver = null;
                 }
             });
