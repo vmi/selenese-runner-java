@@ -98,6 +98,7 @@ public class Proxy {
             }
         });
         try {
+            stop.get();
             waitStop.get();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
