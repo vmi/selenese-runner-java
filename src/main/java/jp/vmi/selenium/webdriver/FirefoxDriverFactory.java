@@ -18,8 +18,11 @@ public class FirefoxDriverFactory extends WebDriverFactory {
 
     private static Logger log = LoggerFactory.getLogger(FirefoxDriverFactory.class);
 
+    public static final String WEBDRIVER_FIREFOX_BIN = "webdriver.firefox.bin";
+
     private final String profileName;
     private final File profileDir;
+    private final FirefoxBinary binary;
 
     public FirefoxDriverFactory(DriverOptions options) throws IllegalArgumentException {
         super(options);
@@ -30,6 +33,21 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             throw new IllegalArgumentException("Can't designate '--profile' and '--profile-dir' at once");
         if (profileDir != null && !profileDir.isDirectory())
             throw new IllegalArgumentException("Missing profile directory: " + profileDir);
+        // FirefoxBinary only ignore invalid "webdriver.firefox.bin".
+        // Check it here.
+        String path = System.getProperty(WEBDRIVER_FIREFOX_BIN);
+        File file = null;
+        if (path != null) {
+            file = new File(path);
+            if (!file.isFile() || !file.canExecute())
+                throw new IllegalArgumentException("Executable file does not exist: " + path
+                    + " defined by \"" + WEBDRIVER_FIREFOX_BIN + "\"");
+        }
+        try {
+            binary = new FirefoxBinary();
+        } catch (WebDriverException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -47,25 +65,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         } else {
             profile = new FirefoxProfile(profileDir);
         }
-        String path = System.getProperty("webdriver.firefox.bin");
-        WebDriver driver = null;
-        try {
-            FirefoxBinary binary = null;
-            if (path == null) {
-                binary = new FirefoxBinary();
-            } else {
-                binary = new FirefoxBinary(new File(path));
-            }
-
-            driver = new FirefoxDriver(binary, profile, capabilities);
-
-        } catch (NullPointerException e) {
-            // firefox not found in webdriver.firefox.bin systemproperty.
-            throw new BrowserNotFoundException(e.getMessage());
-        } catch (WebDriverException e) {
-            // firefox not found.
-            throw new BrowserNotFoundException(e.getMessage());
-        }
+        WebDriver driver = new FirefoxDriver(binary, profile, capabilities);
         log.info("FirefoxDriver initialized.");
         return driver;
     }

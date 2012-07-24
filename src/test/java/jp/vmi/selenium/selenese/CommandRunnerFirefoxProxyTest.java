@@ -3,7 +3,6 @@ package jp.vmi.selenium.selenese;
 import org.junit.Assume;
 import org.junit.Before;
 
-import jp.vmi.selenium.webdriver.BrowserNotFoundException;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
@@ -17,11 +16,10 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
 
     @Override
     @Before
-    public void assumeInstalledFirefox() throws IllegalArgumentException {
+    public void assumeInstalledFirefox() {
         try {
-            FirefoxDriverFactory f = new FirefoxDriverFactory(new DriverOptions());
-            f.initDriver();
-        } catch (BrowserNotFoundException e) {
+            new FirefoxDriverFactory(new DriverOptions());
+        } catch (IllegalArgumentException e) {
             Assume.assumeNoException(e);
         }
     }

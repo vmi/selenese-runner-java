@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TemporaryFolder;
 
+import static jp.vmi.selenium.webdriver.FirefoxDriverFactory.*;
+
 public class FirefoxDriverFactoryTest {
 
     @Rule
@@ -18,7 +20,7 @@ public class FirefoxDriverFactoryTest {
     @Rule
     public ExternalResource systemproperty = new ExternalResource() {
         String original;
-        final String key = "webdriver.firefox.bin";
+        final String key = WEBDRIVER_FIREFOX_BIN;
 
         @Override
         protected void before() throws Throwable {
@@ -38,11 +40,10 @@ public class FirefoxDriverFactoryTest {
         }
     };
 
-    @Test(expected = BrowserNotFoundException.class)
-    public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException, BrowserNotFoundException {
+    @Test(expected = IllegalArgumentException.class)
+    public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
         //TODO 定数化
-        System.setProperty("webdriver.firefox.bin", folder.newFolder().getAbsolutePath());
-        FirefoxDriverFactory f = new FirefoxDriverFactory(new DriverOptions());
-        f.initDriver();
+        System.setProperty(WEBDRIVER_FIREFOX_BIN, folder.newFolder().getAbsolutePath());
+        new FirefoxDriverFactory(new DriverOptions());
     }
 }
