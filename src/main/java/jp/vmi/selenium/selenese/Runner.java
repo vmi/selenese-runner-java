@@ -160,7 +160,7 @@ public class Runner {
         String name = file.replaceFirst(".*[/\\\\]", "");
         try {
             log.info("Start: {}", name);
-            Parser parser = new Parser(file);
+            TestCaseParser parser = new TestCaseParser(file);
             WebDriverCommandProcessor proc = new WebDriverCommandProcessor(parser.getBaseURI(), driver);
             Context context = new Context(proc);
             return run(context, parser.parse(proc, context));

@@ -27,7 +27,7 @@ import jp.vmi.selenium.selenese.command.EndLoop;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 
-public class Parser {
+public class TestCaseParser {
 
     private final Document docucment;
     private final String baseURI;
@@ -62,7 +62,7 @@ public class Parser {
         };
     }
 
-    public Parser(String input) throws InvalidSeleneseException {
+    public TestCaseParser(String input) throws InvalidSeleneseException {
         try {
             if (input.matches("[A-Za-z]:[/\\\\].*"))
                 input = "file:///" + input;
