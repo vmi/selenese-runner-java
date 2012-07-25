@@ -8,6 +8,10 @@ public class InvalidSeleneseException extends Exception {
         super(e);
     }
 
+    public InvalidSeleneseException(String message) {
+        super(message);
+    }
+
     public InvalidSeleneseException(String string, NullPointerException e) {
         super(string, e);
     }

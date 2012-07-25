@@ -160,10 +160,18 @@ public class Runner {
         String name = file.replaceFirst(".*[/\\\\]", "");
         try {
             log.info("Start: {}", name);
-            TestCaseParser parser = new TestCaseParser(file);
-            WebDriverCommandProcessor proc = new WebDriverCommandProcessor(parser.getBaseURI(), driver);
-            Context context = new Context(proc);
-            return run(context, parser.parse(proc, context));
+            Parser parser = Parser.getParser(file);
+            if (parser instanceof TestSuiteParser) {
+                Result totalResult = SUCCESS;
+                for (String tcFile : ((TestSuiteParser) parser).getTestCaseFiles())
+                    totalResult = totalResult.update(run(tcFile));
+                return totalResult;
+            } else { // if parser instanceof TestCaseParser
+                TestCaseParser tcParser = (TestCaseParser) parser;
+                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(tcParser.getBaseURI(), driver);
+                Context context = new Context(proc);
+                return run(context, tcParser.parse(proc, context));
+            }
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw e;
