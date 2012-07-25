@@ -38,4 +38,12 @@ public class IEDriverFactory extends WebDriverFactory {
         log.info("IEDriver initialized.");
         return driver;
     }
+
+    @Override
+    protected void settingProxy(DriverOptions options) {
+        // no-op
+        // TODO remove this override when include hudsuckr.exe to jar.
+        log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
+    }
+
 }
