@@ -286,7 +286,7 @@ public class Runner {
                 .hasArg()
                 .create());
             options.addOption(OptionBuilder.withLongOpt("proxy")
-                .withDescription("proxy host and port (HOST:PORT)")
+                .withDescription("proxy host and port (HOST:PORT) (excepting IE)")
                 .withArgName("proxy")
                 .hasArg()
                 .create());
