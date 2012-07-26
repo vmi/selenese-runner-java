@@ -103,5 +103,9 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
         return driver;
     }
 
+    public static void initFactories() {
+        factories.clear();
+    }
+
     abstract protected WebDriver initDriver();
 }

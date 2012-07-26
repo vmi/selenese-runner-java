@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 
@@ -9,9 +10,17 @@ import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
+    Proxy proxy = new Proxy();
+
     @Before
-    public void checkProxy() {
-        TestUtils.checkProxy();
+    public void startProxy() {
+        proxy.start();
+    }
+
+    @After
+    public void stopProxy() {
+        proxy.stop();
+        WebDriverFactory.initFactories();
     }
 
     @Override
@@ -27,7 +36,7 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     @Override
     protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
         DriverOptions options = new DriverOptions();
-        options.set(DriverOption.PROXY, "localhost:18080");
+        options.set(DriverOption.PROXY, "localhost:" + proxy.getPort());
         return WebDriverFactory.getFactory(FirefoxDriverFactory.class, options);
     }
 }

@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import org.junit.After;
 import org.junit.Before;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -8,9 +9,17 @@ import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverFactory;
 
 public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
+    Proxy proxy = new Proxy();
+
     @Before
-    public void checkProxy() {
-        TestUtils.checkProxy();
+    public void startProxy() {
+        proxy.start();
+    }
+
+    @After
+    public void stopProxy() {
+        proxy.stop();
+        WebDriverFactory.initFactories();
     }
 
     @Override
