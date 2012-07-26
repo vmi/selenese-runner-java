@@ -189,29 +189,27 @@ public class Runner {
      * @param args options and filenames
      */
     public static void main(String[] args) {
+        int exitCode = 1;
         try {
             CommandLine cli = getCommandLine(args);
-
             DriverOptions driverOptions = new DriverOptions(cli);
-
-            WebDriverFactory wdf;
             String driverName = cli.getOptionValue("driver");
-            wdf = getWebDriverFactory(driverOptions, driverName);
+            WebDriverFactory wdf = getWebDriverFactory(driverOptions, driverName);
             Runner runner = new Runner(wdf);
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
-
             Result totalResult = SUCCESS;
             for (String arg : cli.getArgs()) {
                 Result result = runner.run(arg);
                 totalResult = totalResult.update(result);
             }
-
-            exit(totalResult.exitCode());
+            exitCode = totalResult.exitCode();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
-            exit(1);
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
+        exit(exitCode);
     }
 
     protected static CommandLine getCommandLine(String[] args) throws IllegalArgumentException {
