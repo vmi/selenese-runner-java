@@ -104,8 +104,17 @@ abstract public class WebDriverFactory implements Supplier<WebDriver> {
     }
 
     public static void initFactories() {
-        factories.clear();
+        synchronized (factories) {
+            for (WebDriverFactory factory : factories.values()) {
+                factory.terminateDriver();
+            }
+            factories.clear();
+        }
     }
 
     abstract protected WebDriver initDriver();
+
+    protected void terminateDriver() {
+        driver.quit();
+    }
 }
