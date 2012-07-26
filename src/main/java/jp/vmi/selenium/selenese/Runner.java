@@ -17,6 +17,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
@@ -59,6 +60,7 @@ public class Runner {
 
     private File screenshotDir = null;
     private boolean screenshotAll = false;
+    private String baseurl = "";
 
     private List<String> prevMessages = new ArrayList<String>();
 
@@ -84,6 +86,14 @@ public class Runner {
 
     public void setScreenshotAll(boolean screenshotAll) {
         this.screenshotAll = screenshotAll;
+    }
+
+    public String getBaseurl() {
+        return baseurl;
+    }
+
+    public void setBaseurl(String baseurl) {
+        this.baseurl = baseurl;
     }
 
     private void cookieToMessage(List<String> messages) {
@@ -168,7 +178,8 @@ public class Runner {
                 return totalResult;
             } else { // if parser instanceof TestCaseParser
                 TestCaseParser tcParser = (TestCaseParser) parser;
-                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(tcParser.getBaseURI(), driver);
+                String baseurl = StringUtils.isBlank(getBaseurl()) ? tcParser.getBaseURI() : getBaseurl();
+                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseurl, driver);
                 Context context = new Context(proc);
                 return run(context, tcParser.parse(proc, context));
             }
@@ -198,6 +209,8 @@ public class Runner {
             Runner runner = new Runner(wdf);
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
+            runner.setBaseurl(cli.getOptionValue("override-baseurl"));
+
             Result totalResult = SUCCESS;
             for (String arg : cli.getArgs()) {
                 Result result = runner.run(arg);
