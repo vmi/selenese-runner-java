@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.net.URL;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Rule;
@@ -36,19 +34,9 @@ public abstract class CommandRunnerTest {
 
     protected abstract WebDriverFactory getWebDriverFactory() throws IllegalArgumentException;
 
-    protected static String getScriptName(String name) {
-        Class<CommandRunnerTest> c = CommandRunnerTest.class;
-        String html = "/" + c.getCanonicalName().replace('.', '/') + name + ".html";
-        URL resource = c.getResource(html);
-        if (resource == null) {
-            throw new RuntimeException(new FileNotFoundException(html));
-        }
-        return c.getResource(html).toString();
-    }
-
     @Test
     public void testSimple() throws IllegalArgumentException {
-        String script = getScriptName("Simple");
+        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -59,7 +47,7 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
-        String script = getScriptName("Error");
+        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -70,7 +58,7 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void testAssertFail() throws IllegalArgumentException {
-        String script = getScriptName("AssertFail");
+        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -81,19 +69,19 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void testFlowControl() throws IllegalArgumentException {
-        execute(getScriptName("FlowControl"));
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
 
         assertEquals(28, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Test
     public void testForEach() throws IllegalArgumentException {
-        execute(getScriptName("ForEach"));
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
 
         assertEquals(18, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
-    protected void execute(String scriptName) {
+    protected void execute(File scriptName) {
         Runner runner = new Runner(getWebDriverFactory());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -102,14 +90,14 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void noCommandSelenese() throws IllegalArgumentException {
-        execute(getScriptName("NoCommand"));
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "NoCommand"));
 
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
-        String script = getScriptName("InvalidCommand");
+        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
         Runner runner = new Runner(getWebDriverFactory());
         runner.run(script);
     }

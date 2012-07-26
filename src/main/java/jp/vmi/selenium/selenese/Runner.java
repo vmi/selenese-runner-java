@@ -165,15 +165,15 @@ public class Runner {
         }
     }
 
-    public Result run(String file) {
+    public Result run(File file) {
         long stime = System.nanoTime();
-        String name = file.replaceFirst(".*[/\\\\]", "");
+        String name = file.getName();
         try {
             log.info("Start: {}", name);
             Parser parser = Parser.getParser(file);
             if (parser instanceof TestSuiteParser) {
                 Result totalResult = SUCCESS;
-                for (String tcFile : ((TestSuiteParser) parser).getTestCaseFiles())
+                for (File tcFile : ((TestSuiteParser) parser).getTestCaseFiles())
                     totalResult = totalResult.update(run(tcFile));
                 return totalResult;
             } else { // if parser instanceof TestCaseParser
@@ -213,7 +213,7 @@ public class Runner {
 
             Result totalResult = SUCCESS;
             for (String arg : cli.getArgs()) {
-                Result result = runner.run(arg);
+                Result result = runner.run(new File(arg));
                 totalResult = totalResult.update(result);
             }
             exitCode = totalResult.exitCode();

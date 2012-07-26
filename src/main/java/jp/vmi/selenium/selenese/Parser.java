@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -8,6 +10,7 @@ import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public class Parser {
 
@@ -46,14 +49,12 @@ public class Parser {
         };
     }
 
-    public static Parser getParser(String input) throws InvalidSeleneseException {
+    public static Parser getParser(File file) throws InvalidSeleneseException {
         try {
-            if (input.matches("[A-Za-z]:[/\\\\].*"))
-                input = "file:///" + input;
             DOMParser parser = new DOMParser();
             parser.setEntityResolver(null);
             parser.setFeature("http://xml.org/sax/features/namespaces", false);
-            parser.parse(input);
+            parser.parse(new InputSource(new FileInputStream(file)));
             Document document = parser.getDocument();
             try {
                 String baseURI = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
@@ -63,7 +64,7 @@ public class Parser {
             }
             try {
                 XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
-                return new TestSuiteParser(document);
+                return new TestSuiteParser(document, file.getCanonicalFile().getParentFile());
             } catch (NullPointerException e) {
                 throw new InvalidSeleneseException("neither 'selenium.base' link nor table with 'suiteTable' id");
             }

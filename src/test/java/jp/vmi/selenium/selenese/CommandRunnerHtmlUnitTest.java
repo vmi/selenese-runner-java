@@ -1,13 +1,13 @@
 package jp.vmi.selenium.selenese;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverFactory;
+
+import static org.junit.Assert.*;
 
 public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     @Override
@@ -42,14 +42,14 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     @Override
     @Test
     public void testFlowControl() throws IllegalArgumentException {
-        execute(getScriptName("FlowControl"));
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Override
     @Test
     public void testForEach() throws IllegalArgumentException {
-        execute(getScriptName("ForEach"));
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
