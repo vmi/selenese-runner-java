@@ -317,6 +317,12 @@ public class Runner {
             options.addOption(OptionBuilder.withLongOpt("screenshot-all")
                 .withDescription("screenshot all commands")
                 .create());
+            options.addOption(OptionBuilder.withLongOpt("override-baseurl")
+                .withDescription("override baseurl set in selenese")
+                .withArgName("override-baseurl")
+                .hasArg()
+                .create());
+
         }
         return options;
     }
