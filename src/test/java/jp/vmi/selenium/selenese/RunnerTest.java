@@ -17,7 +17,7 @@ public class RunnerTest {
     @Test
     public void invalidProxyOption() throws IllegalArgumentException, IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        CommandLine cli = Runner.getCommandLine(new String[] { "--proxy", "proxy.example.com", tmp.getAbsolutePath() });
+        CommandLine cli = new Main().parseCommandLine(new String[] { "--proxy", "proxy.example.com", tmp.getAbsolutePath() });
         DriverOptions opt = new DriverOptions(cli);
         assertEquals("proxy.example.com", opt.get(DriverOption.PROXY));
     }

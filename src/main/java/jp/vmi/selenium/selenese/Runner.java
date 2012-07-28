@@ -9,13 +9,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
@@ -31,10 +24,8 @@ import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
-import static java.lang.System.*;
 import static jp.vmi.selenium.selenese.command.Command.*;
 
 public class Runner {
@@ -51,8 +42,6 @@ public class Runner {
     private static final FastDateFormat expiryFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
 
     private final WebDriver driver;
-    private static Options options = null;
-
     private File screenshotDir = null;
     private boolean screenshotAll = false;
     private String baseurl = "";
@@ -187,130 +176,5 @@ public class Runner {
         } finally {
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
-    }
-
-    /**
-     * Selenese script runner.
-     *
-     * @param args options and filenames
-     */
-    public static void main(String[] args) {
-        int exitCode = 1;
-        try {
-            CommandLine cli = getCommandLine(args);
-            String driverName = cli.getOptionValue("driver");
-            DriverOptions driverOptions = new DriverOptions(cli);
-            WebDriverManager manager = WebDriverManager.getInstance();
-            manager.setWebDriverFactory(driverName);
-            manager.setDriverOptions(driverOptions);
-            Runner runner = new Runner(manager.get());
-            runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
-            runner.setScreenshotAll(cli.hasOption("screenshot-all"));
-            runner.setBaseurl(cli.getOptionValue("override-baseurl"));
-
-            Result totalResult = SUCCESS;
-            for (String arg : cli.getArgs()) {
-                Result result = runner.run(new File(arg));
-                totalResult = totalResult.update(result);
-            }
-            exitCode = totalResult.exitCode();
-        } catch (IllegalArgumentException e) {
-            help("Error: " + e.getMessage());
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        exit(exitCode);
-    }
-
-    protected static CommandLine getCommandLine(String[] args) throws IllegalArgumentException {
-        CommandLine cli = null;
-        try {
-            cli = new PosixParser().parse(getOptions(), args);
-            for (Option opt : cli.getOptions()) {
-                log.debug(opt.getLongOpt() + ":" + opt.getValue());
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
-        }
-        if (cli.getArgs().length == 0)
-            throw new IllegalArgumentException("Missing selenese script");
-        for (String arg : cli.getArgs()) {
-            if (!new File(arg).exists()) {
-                throw new IllegalArgumentException("File does not exist: \"" + arg + "\"");
-            }
-        }
-        return cli;
-    }
-
-    private static void help(String... msgs) {
-        if (msgs.length > 0) {
-            for (String msg : msgs)
-                System.err.println(msg);
-            System.err.println();
-        }
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java -jar selenese-runner.jar <selenese_file> ...", "", getOptions(), FOOTER);
-    }
-
-    private static final String FOOTER = "\n"
-        + "Run selenese script file from command line.\n"
-        + "*note: If you want to use proxy authentication on Firefox, "
-        + "then create new profile, "
-        + "configure all settings, "
-        + "install AutoAuth plugin, "
-        + "and specify the profile by --profile option.";
-
-    @SuppressWarnings("static-access")
-    private static synchronized Options getOptions() {
-        if (options == null) {
-            options = new Options();
-            options.addOption(OptionBuilder.withLongOpt("driver")
-                .withDescription("firefox (default) | chrome | ie | safari | htmlunit | FQCN of web driver factory.").hasArg()
-                .withArgName("driver")
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("profile")
-                .withDescription("profile name (Firefox only)")
-                .withArgName("profile")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("profile-dir")
-                .withDescription("profile directory (Firefox only)")
-                .withArgName("profile-dir")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("proxy")
-                .withDescription("proxy host and port (HOST:PORT) (excepting IE)")
-                .withArgName("proxy")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("proxy-user")
-                .withDescription("proxy username (HtmlUnit only *)")
-                .withArgName("proxy-user")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("proxy-password")
-                .withDescription("proxy password (HtmlUnit only *)")
-                .withArgName("proxy-password")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("no-proxy")
-                .withDescription("no proxy")
-                .withArgName("no-proxy")
-                .hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("screenshot-dir")
-                .withDescription("directory for screenshot images. (default: current directory)").hasArg()
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("screenshot-all")
-                .withDescription("screenshot all commands")
-                .create());
-            options.addOption(OptionBuilder.withLongOpt("override-baseurl")
-                .withDescription("override baseurl set in selenese")
-                .withArgName("override-baseurl")
-                .hasArg()
-                .create());
-
-        }
-        return options;
     }
 }
