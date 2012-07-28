@@ -3,9 +3,10 @@ package jp.vmi.selenium.webdriver;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 public class IEDriverFactory extends WebDriverFactory {
 
@@ -13,8 +14,8 @@ public class IEDriverFactory extends WebDriverFactory {
 
     // 参考: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
 
-    IEDriverFactory(DriverOptions options) throws IllegalArgumentException {
-        super(options);
+    @Override
+    public WebDriver newInstance(DriverOptions options) {
         Platform platform = Platform.getCurrent();
         log.info("Platform: {}", platform);
         switch (platform) {
@@ -25,25 +26,9 @@ public class IEDriverFactory extends WebDriverFactory {
         default:
             throw new UnsupportedOperationException("Unsupported platform: " + platform);
         }
-    }
-
-    @Override
-    protected DesiredCapabilities defaultCapabilities() {
-        return DesiredCapabilities.internetExplorer();
-    }
-
-    @Override
-    public WebDriver initDriver() {
-        WebDriver driver = new InternetExplorerDriver(capabilities);
-        log.info("IEDriver initialized.");
+        if (options.has(DriverOption.PROXY))
+            log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
+        InternetExplorerDriver driver = new InternetExplorerDriver();
         return driver;
     }
-
-    @Override
-    protected void settingProxy(DriverOptions options) {
-        // no-op
-        // TODO remove this override when include hudsuckr.exe to jar.
-        log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
-    }
-
 }

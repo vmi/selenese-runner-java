@@ -4,15 +4,17 @@ import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.junit.Assert.*;
 
 public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
+
     @Override
-    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
-        return WebDriverFactory.getFactory(HtmlUnitDriverFactory.class, new DriverOptions());
+    protected void setupWebDriverManager() {
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory("htmlunit");
+        manager.setDriverOptions(new DriverOptions());
     }
 
     @Override

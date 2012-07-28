@@ -5,14 +5,9 @@ import org.junit.Before;
 import org.openqa.selenium.Platform;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.IEDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
-    @Override
-    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
-        return WebDriverFactory.getFactory(IEDriverFactory.class, new DriverOptions());
-    }
 
     @Before
     public void checkPlatform() {
@@ -22,5 +17,12 @@ public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
     private boolean isSupportedPlatform() {
         Platform current = Platform.getCurrent();
         return Platform.WINDOWS.is(current);
+    }
+
+    @Override
+    protected void setupWebDriverManager() {
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory("ie");
+        manager.setDriverOptions(new DriverOptions());
     }
 }

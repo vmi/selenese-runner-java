@@ -9,6 +9,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
 
+@SuppressWarnings({ "rawtypes", "unused" })
 public class Proxy {
     private final ScriptingContainer container;
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -15,7 +16,7 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -32,12 +33,17 @@ public abstract class CommandRunnerTest {
         }
     };
 
-    protected abstract WebDriverFactory getWebDriverFactory() throws IllegalArgumentException;
+    protected abstract void setupWebDriverManager();
+
+    @Before
+    public void initBefore() {
+        setupWebDriverManager();
+    }
 
     @Test
     public void testSimple() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
-        Runner runner = new Runner(getWebDriverFactory());
+        Runner runner = new Runner();
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -48,7 +54,7 @@ public abstract class CommandRunnerTest {
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
-        Runner runner = new Runner(getWebDriverFactory());
+        Runner runner = new Runner();
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -59,7 +65,7 @@ public abstract class CommandRunnerTest {
     @Test
     public void testAssertFail() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
-        Runner runner = new Runner(getWebDriverFactory());
+        Runner runner = new Runner();
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -82,7 +88,7 @@ public abstract class CommandRunnerTest {
     }
 
     protected void execute(File scriptName) {
-        Runner runner = new Runner(getWebDriverFactory());
+        Runner runner = new Runner();
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(scriptName);
@@ -98,13 +104,13 @@ public abstract class CommandRunnerTest {
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
-        Runner runner = new Runner(getWebDriverFactory());
+        Runner runner = new Runner();
         runner.run(script);
     }
 
     @Test(expected = SeleniumException.class)
     public void invalidCommand() throws IllegalArgumentException {
-        WebDriver driver = getWebDriverFactory().get();
+        WebDriver driver = WebDriverManager.getInstance().get();
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
         CommandFactory commandFactory = new CommandFactory(proc);
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
@@ -121,7 +127,7 @@ public abstract class CommandRunnerTest {
             pngFile.delete();
         }
 
-        WebDriver driver = getWebDriverFactory().get();
+        WebDriver driver = WebDriverManager.getInstance().get();
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
         CommandFactory commandFactory = new CommandFactory(proc);
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
@@ -136,7 +142,7 @@ public abstract class CommandRunnerTest {
 
     @Test
     public void pauseCommand() throws IllegalArgumentException {
-        WebDriver driver = getWebDriverFactory().get();
+        WebDriver driver = WebDriverManager.getInstance().get();
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("",
             driver);
         CommandFactory commandFactory = new CommandFactory(proc);

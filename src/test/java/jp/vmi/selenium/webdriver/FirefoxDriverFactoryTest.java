@@ -44,6 +44,6 @@ public class FirefoxDriverFactoryTest {
     public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
         //TODO 定数化
         System.setProperty(WEBDRIVER_FIREFOX_BIN, folder.newFolder().getAbsolutePath());
-        new FirefoxDriverFactory(new DriverOptions());
+        new FirefoxDriverFactory().newInstance(new DriverOptions());
     }
 }

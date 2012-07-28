@@ -31,13 +31,8 @@ import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.ChromeDriverFactory;
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
-import jp.vmi.selenium.webdriver.IEDriverFactory;
-import jp.vmi.selenium.webdriver.SafariDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static java.lang.System.*;
 import static jp.vmi.selenium.selenese.command.Command.*;
@@ -64,12 +59,12 @@ public class Runner {
 
     private List<String> prevMessages = new ArrayList<String>();
 
-    public Runner(WebDriver driver) {
-        this.driver = driver;
+    public Runner() {
+        this(WebDriverManager.getInstance().get());
     }
 
-    public Runner(WebDriverFactory wdf) {
-        this(wdf.get());
+    public Runner(WebDriver driver) {
+        this.driver = driver;
     }
 
     public File getScreenshotDir() {
@@ -203,10 +198,12 @@ public class Runner {
         int exitCode = 1;
         try {
             CommandLine cli = getCommandLine(args);
-            DriverOptions driverOptions = new DriverOptions(cli);
             String driverName = cli.getOptionValue("driver");
-            WebDriverFactory wdf = getWebDriverFactory(driverOptions, driverName);
-            Runner runner = new Runner(wdf);
+            DriverOptions driverOptions = new DriverOptions(cli);
+            WebDriverManager manager = WebDriverManager.getInstance();
+            manager.setWebDriverFactory(driverName);
+            manager.setDriverOptions(driverOptions);
+            Runner runner = new Runner(manager.get());
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
             runner.setBaseurl(cli.getOptionValue("override-baseurl"));
@@ -243,29 +240,6 @@ public class Runner {
             }
         }
         return cli;
-    }
-
-    protected static WebDriverFactory getWebDriverFactory(DriverOptions driverOptions, String driverName)
-        throws IllegalArgumentException {
-        WebDriverFactory wdf;
-        if (driverName == null || "firefox".equalsIgnoreCase(driverName)) {
-            wdf = WebDriverFactory.getFactory(FirefoxDriverFactory.class, driverOptions);
-        } else if ("chrome".equalsIgnoreCase(driverName)) {
-            wdf = WebDriverFactory.getFactory(ChromeDriverFactory.class, driverOptions);
-        } else if ("ie".equalsIgnoreCase(driverName)) {
-            wdf = WebDriverFactory.getFactory(IEDriverFactory.class, driverOptions);
-        } else if ("safari".equalsIgnoreCase(driverName)) {
-            wdf = WebDriverFactory.getFactory(SafariDriverFactory.class, driverOptions);
-        } else if ("htmlunit".equalsIgnoreCase(driverName)) {
-            wdf = WebDriverFactory.getFactory(HtmlUnitDriverFactory.class, driverOptions);
-        } else {
-            try {
-                wdf = WebDriverFactory.getFactory(driverName, driverOptions);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException("Driver does not exist: " + driverName);
-            }
-        }
-        return wdf;
     }
 
     private static void help(String... msgs) {

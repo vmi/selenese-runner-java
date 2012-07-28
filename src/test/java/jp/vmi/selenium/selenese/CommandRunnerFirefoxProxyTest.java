@@ -3,11 +3,13 @@ package jp.vmi.selenium.selenese;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
+import org.openqa.selenium.firefox.FirefoxBinary;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     Proxy proxy = new Proxy();
@@ -20,23 +22,22 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     @After
     public void stopProxy() {
         proxy.stop();
-        WebDriverFactory.initFactories();
     }
 
     @Override
     @Before
     public void assumeInstalledFirefox() {
         try {
-            new FirefoxDriverFactory(new DriverOptions());
-        } catch (IllegalArgumentException e) {
+            new FirefoxBinary();
+        } catch (SeleniumException e) {
             Assume.assumeNoException(e);
         }
     }
 
     @Override
-    protected WebDriverFactory getWebDriverFactory() throws IllegalArgumentException {
-        DriverOptions options = new DriverOptions();
-        options.set(DriverOption.PROXY, "localhost:" + proxy.getPort());
-        return WebDriverFactory.getFactory(FirefoxDriverFactory.class, options);
+    protected void setupWebDriverManager() {
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory("firefox");
+        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, "localhost:" + proxy.getPort()));
     }
 }

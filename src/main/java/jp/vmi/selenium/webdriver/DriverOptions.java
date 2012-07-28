@@ -36,7 +36,20 @@ public class DriverOptions {
         return map.containsKey(opt);
     }
 
-    public void set(DriverOption opt, String value) {
+    public DriverOptions set(DriverOption opt, String value) {
         map.put(opt, value);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        if (map.isEmpty())
+            return "[]";
+        StringBuilder result = new StringBuilder('[');
+        for (DriverOption opt : DriverOption.values())
+            if (map.containsKey(opt))
+                result.append(opt.name()).append('=').append(map.get(opt)).append("|");
+        result.setCharAt(result.length() - 1, ']');
+        return result.toString();
     }
 }

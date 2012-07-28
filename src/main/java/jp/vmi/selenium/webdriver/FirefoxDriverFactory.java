@@ -9,64 +9,50 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
 public class FirefoxDriverFactory extends WebDriverFactory {
 
-    private static Logger log = LoggerFactory.getLogger(FirefoxDriverFactory.class);
-
     public static final String WEBDRIVER_FIREFOX_BIN = "webdriver.firefox.bin";
 
-    private final String profileName;
-    private final File profileDir;
-    private final FirefoxBinary binary;
-
-    public FirefoxDriverFactory(DriverOptions options) throws IllegalArgumentException {
-        super(options);
-        profileName = options.get(PROFILE);
-        String dir = options.get(PROFILE_DIR);
-        profileDir = dir != null ? new File(dir) : null;
-        if (profileName != null && profileDir != null)
-            throw new IllegalArgumentException("Can't designate '--profile' and '--profile-dir' at once");
-        if (profileDir != null && !profileDir.isDirectory())
-            throw new IllegalArgumentException("Missing profile directory: " + profileDir);
-        // FirefoxBinary only ignore invalid "webdriver.firefox.bin".
-        // Check it here.
+    @Override
+    public WebDriver newInstance(DriverOptions driverOptions) {
+        // Validate "webdriver.firefox.bin" value bacause FirefoxBinary only ignore invalid it.
         String path = System.getProperty(WEBDRIVER_FIREFOX_BIN);
-        File file = null;
         if (path != null) {
-            file = new File(path);
+            File file = new File(path);
             if (!file.isFile() || !file.canExecute())
                 throw new IllegalArgumentException("Executable file does not exist: " + path
                     + " defined by \"" + WEBDRIVER_FIREFOX_BIN + "\"");
         }
+        FirefoxBinary binary;
         try {
             binary = new FirefoxBinary();
         } catch (WebDriverException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
-    }
 
-    @Override
-    protected DesiredCapabilities defaultCapabilities() {
-        return DesiredCapabilities.firefox();
-    }
-
-    @Override
-    public WebDriver initDriver() {
+        String profileName = driverOptions.get(PROFILE);
+        String dir = driverOptions.get(PROFILE_DIR);
         FirefoxProfile profile;
         if (profileName != null) {
+            if (dir != null)
+                throw new IllegalArgumentException("Can't specify both '--profile' and '--profile-dir' at once");
             // see http://code.google.com/p/selenium/wiki/TipsAndTricks
             ProfilesIni allProfiles = new ProfilesIni();
             profile = allProfiles.getProfile(profileName);
+        } else if (dir != null) {
+            File file = new File(dir);
+            if (!file.isDirectory())
+                throw new IllegalArgumentException("Missing profile directory: " + dir);
+            profile = new FirefoxProfile(new File(dir));
         } else {
-            profile = new FirefoxProfile(profileDir);
+            profile = new FirefoxProfile();
         }
-        WebDriver driver = new FirefoxDriver(binary, profile, capabilities);
-        log.info("FirefoxDriver initialized.");
-        return driver;
+
+        DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.firefox(), driverOptions);
+
+        return new FirefoxDriver(binary, profile, capabilities);
     }
 }

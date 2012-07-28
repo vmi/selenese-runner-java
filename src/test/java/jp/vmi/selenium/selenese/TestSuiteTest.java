@@ -5,16 +5,17 @@ import java.io.File;
 import org.junit.Test;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 public class TestSuiteTest {
 
     @Test
     public void testTestSuite() {
         File script = TestUtils.getScriptFile(TestSuiteTest.class, "");
-        Runner runner = new Runner(WebDriverFactory.getFactory(FirefoxDriverFactory.class, new DriverOptions()));
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory("firefox");
+        manager.setDriverOptions(new DriverOptions());
+        Runner runner = new Runner(manager.get());
         runner.run(script);
-
     }
 }
