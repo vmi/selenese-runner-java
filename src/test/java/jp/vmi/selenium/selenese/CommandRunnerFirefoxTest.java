@@ -23,7 +23,7 @@ public class CommandRunnerFirefoxTest extends CommandRunnerTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("firefox");
+        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
     }
 }

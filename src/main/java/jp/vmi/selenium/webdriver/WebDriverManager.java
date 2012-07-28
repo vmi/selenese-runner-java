@@ -14,13 +14,23 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverManager.class);
 
+    public static final String FIREFOX = "firefox";
+
+    public static final String CHROME = "chrome";
+
+    public static final String IE = "ie";
+
+    public static final String HTMLUNIT = "htmlunit";
+
+    public static final String SAFARI = "safari";
+
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
 
     private static final WebDriverManager manager = new WebDriverManager();
 
     private boolean isSingleInstance = true;
 
-    private WebDriverFactory factory = new FirefoxDriverFactory();
+    private WebDriverFactory factory;
 
     private DriverOptions driverOptions = new DriverOptions();
 
@@ -31,8 +41,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
     }
 
     private WebDriverManager() {
+        String factoryName = System.getProperty(WEBDRIVER_FACTORY, FIREFOX);
+        setWebDriverFactory(factoryName);
         Runtime.getRuntime().addShutdownHook(new Thread() {
-
             @Override
             public void run() {
                 quitAllDrivers();
@@ -54,19 +65,19 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
     public void setWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
-            factoryName = "firefox";
+            factoryName = FIREFOX;
         else
             factoryName = factoryName.toLowerCase();
         WebDriverFactory factory;
-        if ("firefox".equals(factoryName))
+        if (FIREFOX.equals(factoryName))
             factory = new FirefoxDriverFactory();
-        else if ("chrome".equals(factoryName))
+        else if (CHROME.equals(factoryName))
             factory = new ChromeDriverFactory();
-        else if ("ie".equals(factoryName))
+        else if (IE.equals(factoryName))
             factory = new IEDriverFactory();
-        else if ("safari".equals(factoryName))
+        else if (SAFARI.equals(factoryName))
             factory = new SafariDriverFactory();
-        else if ("htmlunit".equals(factoryName))
+        else if (HTMLUNIT.equals(factoryName))
             factory = new HtmlUnitDriverFactory();
         else {
             try {

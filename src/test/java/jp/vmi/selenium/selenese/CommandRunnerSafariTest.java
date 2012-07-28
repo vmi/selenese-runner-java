@@ -11,7 +11,7 @@ public class CommandRunnerSafariTest extends CommandRunnerTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("safari");
+        manager.setWebDriverFactory(WebDriverManager.SAFARI);
         manager.setDriverOptions(new DriverOptions());
     }
 }

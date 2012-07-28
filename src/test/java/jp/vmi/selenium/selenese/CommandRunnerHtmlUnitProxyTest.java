@@ -23,7 +23,7 @@ public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("htmlunit");
+        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, "localhost:18080"));
     }
 }

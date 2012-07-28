@@ -25,7 +25,7 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("ie");
+        manager.setWebDriverFactory(WebDriverManager.IE);
         manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, "localhost:18080"));
     }
 }

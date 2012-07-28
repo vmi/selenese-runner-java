@@ -17,7 +17,7 @@ public class CommandRunnerChromeTest extends CommandRunnerTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("chrome");
+        manager.setWebDriverFactory(WebDriverManager.CHROME);
         manager.setDriverOptions(new DriverOptions());
     }
 }

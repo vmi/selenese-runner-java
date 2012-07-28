@@ -13,7 +13,7 @@ public class TestSuiteTest {
     public void testTestSuite() {
         File script = TestUtils.getScriptFile(TestSuiteTest.class, "");
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("firefox");
+        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
         Runner runner = new Runner(manager.get());
         runner.run(script);

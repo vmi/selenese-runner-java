@@ -13,7 +13,7 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("htmlunit");
+        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions());
     }
 

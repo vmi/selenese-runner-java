@@ -22,7 +22,7 @@ public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
     @Override
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory("ie");
+        manager.setWebDriverFactory(WebDriverManager.IE);
         manager.setDriverOptions(new DriverOptions());
     }
 }

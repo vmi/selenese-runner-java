@@ -26,7 +26,7 @@ public class CommandFactoryTest {
 
     @Before
     public void setupWebDriverManager() {
-        manager.setWebDriverFactory("firefox");
+        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
     }
 
