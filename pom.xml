@@ -58,6 +58,10 @@
                 <Main-Class>jp.vmi.selenium.selenese.Runner</Main-Class>
               </manifestEntries>
             </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+              <resource>logback.xml</resource>
+              <file>src/shade/resources/logback.xml</file>
+            </transformer>
           </transformers>
         </configuration>
         <executions>
