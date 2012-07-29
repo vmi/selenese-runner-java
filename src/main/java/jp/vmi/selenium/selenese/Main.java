@@ -3,6 +3,8 @@ package jp.vmi.selenium.selenese;
 import java.io.File;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
@@ -19,8 +21,6 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-
-import static jp.vmi.selenium.selenese.command.Command.*;
 
 public class Main {
 
@@ -157,11 +157,11 @@ public class Main {
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
             runner.setBaseurl(cli.getOptionValue("baseurl"));
 
-            Result totalResult = SUCCESS;
+            List<File> seleneseFiles = new LinkedList<File>();
             for (String arg : files) {
-                Result result = runner.run(new File(arg));
-                totalResult = totalResult.update(result);
+                seleneseFiles.add(new File(arg));
             }
+            Result totalResult = runner.run(seleneseFiles);
             exitCode = totalResult.exitCode();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());

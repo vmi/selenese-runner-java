@@ -177,4 +177,14 @@ public class Runner {
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
     }
+
+    public Result run(List<File> seleneseFiles) {
+        Result totalResult = SUCCESS;
+        for (File file : seleneseFiles) {
+            Result result = run(file);
+            totalResult = totalResult.update(result);
+        }
+        return totalResult;
+    }
+
 }
