@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import java.net.ServerSocket;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +35,32 @@ public class Proxy {
     }
 
     protected static int getUsablePort() {
-        return RandomUtils.nextInt(65535 - 1024) + 1024;
+        int port;
+        do {
+            port = RandomUtils.nextInt(65535 - 1024) + 1024;
+        } while (!canUse(port));
+        return port;
+    }
+
+    static boolean canUse(int port) {
+        ServerSocket socket = null;
+        try {
+            socket = new ServerSocket(port);
+            //portが開けた
+            return true;
+        } catch (java.net.BindException e) {
+            // port already used
+            return false;
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (Exception e) {
+                }
+            }
+        }
     }
 
     public void start() {

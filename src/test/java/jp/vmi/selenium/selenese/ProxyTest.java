@@ -1,8 +1,9 @@
 package jp.vmi.selenium.selenese;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 public class ProxyTest {
 
@@ -24,4 +25,14 @@ public class ProxyTest {
         }
     }
 
+    @Test
+    public void testCanUseMethod() {
+        Proxy proxy = new Proxy();
+        proxy.start();
+        try {
+            assertThat(Proxy.canUse(proxy.getPort()), is(not(true)));
+        } finally {
+            proxy.stop();
+        }
+    }
 }
