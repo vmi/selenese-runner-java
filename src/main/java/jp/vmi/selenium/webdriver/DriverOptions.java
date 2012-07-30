@@ -24,7 +24,7 @@ public class DriverOptions {
     public DriverOptions(CommandLine cli) {
         for (DriverOption opt : DriverOption.values()) {
             String key = opt.name().toLowerCase().replace('_', '-');
-            map.put(opt, cli.getOptionValue(key));
+            set(opt, cli.getOptionValue(key));
         }
     }
 
@@ -37,7 +37,10 @@ public class DriverOptions {
     }
 
     public DriverOptions set(DriverOption opt, String value) {
-        map.put(opt, value);
+        if (value != null)
+            map.put(opt, value);
+        else
+            map.remove(opt);
         return this;
     }
 
@@ -45,7 +48,7 @@ public class DriverOptions {
     public String toString() {
         if (map.isEmpty())
             return "[]";
-        StringBuilder result = new StringBuilder('[');
+        StringBuilder result = new StringBuilder("[");
         for (DriverOption opt : DriverOption.values())
             if (map.containsKey(opt))
                 result.append(opt.name()).append('=').append(map.get(opt)).append("|");
