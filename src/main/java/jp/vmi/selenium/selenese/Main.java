@@ -1,6 +1,8 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -15,8 +17,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang.StringUtils;
+import org.apache.xerces.parsers.DOMParser;
+import org.apache.xpath.XPathAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -26,12 +32,17 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    private static final String FOOTER = "\n"
-        + "Run selenese script file from command line.\n"
-        + "*note: If you want to use proxy authentication on Firefox, "
+    private static final int HELP_WIDTH = 78;
+
+    private static final String PROG_TITLE = "Selenese Runner %s";
+
+    private static final String HEADER = "Selenese script interpreter implemented by Java.";
+
+    private static final String FOOTER = "*note: If you want to use basic and/or proxy authentication on Firefox, "
         + "then create new profile, "
-        + "configure all settings, "
         + "install AutoAuth plugin, "
+        + "configure all settings, "
+        + "access test site with the profile, "
         + "and specify the profile by --profile option.";
 
     private static class SROptions extends Options {
@@ -105,20 +116,44 @@ public class Main {
             .create('h'));
     }
 
+    public static String getVersion() {
+        InputStream is = Main.class.getResourceAsStream("/META-INF/maven/jp.vmi.selenium/selenese-runner-java/pom.xml");
+        if (is != null) {
+            DOMParser parser = new DOMParser();
+            try {
+                parser.setEntityResolver(null);
+                parser.setFeature("http://xml.org/sax/features/namespaces", false);
+                parser.parse(new InputSource(is));
+                Document document = parser.getDocument();
+                return XPathAPI.selectSingleNode(document, "/project/version").getTextContent();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "(missing version information)";
+    }
+
     private void help(String... msgs) {
         if (msgs.length > 0) {
             for (String msg : msgs)
-                System.err.println(msg);
-            System.err.println();
+                System.out.println(msg);
+            System.out.println();
         }
 
         String progName = System.getenv("PROG_NAME");
         if (StringUtils.isBlank(progName))
             progName = "java -jar selenese-runner.jar";
+
         HelpFormatter fmt = new HelpFormatter();
-        fmt.setWidth(78);
         fmt.setOptionComparator(options.getOptionComparator());
-        fmt.printHelp(progName + " <option> ... <file> ...", null, options, FOOTER);
+        PrintWriter pw = new PrintWriter(System.out);
+        pw.format(PROG_TITLE + "\n\n" + HEADER + "\n\n", getVersion());
+        fmt.setSyntaxPrefix("Usage: ");
+        fmt.printHelp(pw, HELP_WIDTH, progName + " <option> ... <testcase|testsuite> ...\n",
+            null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
+        pw.println();
+        fmt.printWrapped(pw, HELP_WIDTH, FOOTER);
+        pw.flush();
         exit(1);
     }
 
