@@ -3,9 +3,7 @@ package jp.vmi.selenium.selenese;
 import org.junit.After;
 import org.junit.Before;
 
-import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
 public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
     Proxy proxy = new Proxy();
@@ -22,8 +20,7 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
 
     @Override
     protected void setupWebDriverManager() {
-        WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.CHROME);
-        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, "localhost:18080"));
+        driverOptions.set(DriverOption.PROXY, "localhost:" + proxy.getPort());
+        super.setupWebDriverManager();
     }
 }
