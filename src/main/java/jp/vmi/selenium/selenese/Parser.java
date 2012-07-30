@@ -2,9 +2,11 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.xpath.XPathAPI;
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -50,11 +52,13 @@ public class Parser {
     }
 
     public static Parser getParser(File file) throws InvalidSeleneseException {
+        InputStream is = null;
         try {
             DOMParser parser = new DOMParser();
             parser.setEntityResolver(null);
             parser.setFeature("http://xml.org/sax/features/namespaces", false);
-            parser.parse(new InputSource(new FileInputStream(file)));
+            is = new FileInputStream(file);
+            parser.parse(new InputSource(is));
             Document document = parser.getDocument();
             try {
                 String baseURI = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
@@ -72,6 +76,8 @@ public class Parser {
             throw e;
         } catch (Exception e) {
             throw new InvalidSeleneseException(e);
+        } finally {
+            IOUtils.closeQuietly(is);
         }
     }
 
