@@ -118,7 +118,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
             } catch (Exception e) {
                 log.warn(e.getMessage());
             } finally {
-                log.info("quit driver: " + driver.getClass().getSimpleName());
+                log.info("quit: " + driver.getClass().getSimpleName());
             }
         }
         driverMap.clear();
