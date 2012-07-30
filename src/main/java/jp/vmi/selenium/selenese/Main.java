@@ -1,9 +1,9 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -126,16 +126,10 @@ public class Main {
         CommandLine cli = null;
         try {
             cli = new PosixParser().parse(options, args);
-            for (Option opt : cli.getOptions()) {
+            for (Option opt : cli.getOptions())
                 log.debug(opt.getLongOpt() + ":" + opt.getValue());
-            }
         } catch (ParseException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
-        }
-        for (String arg : cli.getArgs()) {
-            if (!new File(arg).exists()) {
-                throw new IllegalArgumentException("File does not exist: \"" + arg + "\"");
-            }
         }
         return cli;
     }
@@ -144,9 +138,16 @@ public class Main {
         int exitCode = 1;
         try {
             CommandLine cli = parseCommandLine(args);
-            String[] files = cli.getArgs();
-            if (files.length == 0)
+            String[] filenames = cli.getArgs();
+            if (filenames.length == 0)
                 help();
+            List<File> files = new ArrayList<File>(filenames.length);
+            for (String filename : filenames) {
+                File file = new File(filename);
+                if (!file.isFile())
+                    throw new IllegalArgumentException("File does not exist: \"" + filename + "\"");
+                files.add(file);
+            }
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
             WebDriverManager manager = WebDriverManager.getInstance();
@@ -156,12 +157,7 @@ public class Main {
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
             runner.setBaseurl(cli.getOptionValue("baseurl"));
-
-            List<File> seleneseFiles = new LinkedList<File>();
-            for (String arg : files) {
-                seleneseFiles.add(new File(arg));
-            }
-            Result totalResult = runner.run(seleneseFiles);
+            Result totalResult = runner.run(files);
             exitCode = totalResult.exitCode();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
