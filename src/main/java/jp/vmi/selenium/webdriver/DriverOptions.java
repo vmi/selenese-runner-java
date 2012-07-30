@@ -13,6 +13,7 @@ public class DriverOptions {
         PROXY_USER,
         PROXY_PASSWORD,
         NO_PROXY,
+        CHROMEDRIVER,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = new IdentityHashMap<DriverOptions.DriverOption, String>();

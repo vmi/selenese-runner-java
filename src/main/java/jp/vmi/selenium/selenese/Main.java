@@ -111,6 +111,10 @@ public class Main {
             .hasArg().withArgName("baseurl")
             .withDescription("override baseurl set in selenese")
             .create('b'));
+        options.addOption(OptionBuilder.withLongOpt("chromedriver")
+            .hasArg().withArgName("path")
+            .withDescription("path to 'chromedriver' binary")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message")
             .create('h'));
