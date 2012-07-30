@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -16,13 +18,10 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.xerces.parsers.DOMParser;
-import org.apache.xpath.XPathAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -120,18 +119,17 @@ public class Main {
             .create('h'));
     }
 
-    public static String getVersion() {
-        InputStream is = Main.class.getResourceAsStream("/META-INF/maven/jp.vmi.selenium/selenese-runner-java/pom.xml");
+    public String getVersion() {
+        InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi.selenium/selenese-runner-java/pom.properties");
         if (is != null) {
-            DOMParser parser = new DOMParser();
             try {
-                parser.setEntityResolver(null);
-                parser.setFeature("http://xml.org/sax/features/namespaces", false);
-                parser.parse(new InputSource(is));
-                Document document = parser.getDocument();
-                return XPathAPI.selectSingleNode(document, "/project/version").getTextContent();
-            } catch (Exception e) {
+                Properties prop = new Properties();
+                prop.load(is);
+                return prop.getProperty("version");
+            } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                IOUtils.closeQuietly(is);
             }
         }
         return "(missing version information)";
