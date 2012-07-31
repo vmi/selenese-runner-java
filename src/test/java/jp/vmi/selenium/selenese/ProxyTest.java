@@ -11,8 +11,8 @@ public class ProxyTest {
     public void usablePort() {
         for (int i = 0; i < 1000; i++) {
             int port = Proxy.getUsablePort();
-            assertTrue(1024 < port);
-            assertTrue(port < 65536);
+            assertTrue(Proxy.PORTNUM_MIN < port);
+            assertTrue(port < Proxy.PORTNUM_MAX);
         }
     }
 

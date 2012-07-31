@@ -12,6 +12,10 @@ import org.jruby.embed.ScriptingContainer;
 
 @SuppressWarnings({ "rawtypes", "unused" })
 public class Proxy {
+
+    public static int PORTNUM_MAX = 65535;
+    public static int PORTNUM_MIN = 1024;
+
     private final ScriptingContainer container;
 
     private int port = 18080;
@@ -39,7 +43,7 @@ public class Proxy {
     protected static int getUsablePort() {
         int port;
         do {
-            port = RandomUtils.nextInt(65535 - 1024) + 1024;
+            port = RandomUtils.nextInt(PORTNUM_MAX - PORTNUM_MIN) + PORTNUM_MIN;
         } while (!canUse(port));
         return port;
     }
