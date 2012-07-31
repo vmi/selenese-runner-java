@@ -44,6 +44,9 @@
         <version>2.12</version>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+          <parallel>classes</parallel>
+          <forkMode>perthread</forkMode>
+          <threadCount>4</threadCount>
         </configuration>
       </plugin>
       <plugin>
