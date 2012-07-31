@@ -46,7 +46,7 @@
           <skipTests>${skipTests}</skipTests>
           <parallel>classes</parallel>
           <forkMode>perthread</forkMode>
-          <threadCount>4</threadCount>
+          <threadCount>2</threadCount>
         </configuration>
       </plugin>
       <plugin>
