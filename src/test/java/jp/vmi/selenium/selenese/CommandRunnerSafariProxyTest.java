@@ -18,7 +18,7 @@ public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
 
     @After
     public void stopProxy() {
-        proxy.stop();
+        proxy.kill();
     }
 
     @Override

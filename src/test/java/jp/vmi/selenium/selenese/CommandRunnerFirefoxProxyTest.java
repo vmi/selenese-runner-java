@@ -21,7 +21,7 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
 
     @After
     public void stopProxy() {
-        proxy.stop();
+        proxy.kill();
     }
 
     @Override

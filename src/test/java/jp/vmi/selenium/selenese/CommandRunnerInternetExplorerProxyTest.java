@@ -19,7 +19,7 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
 
     @After
     public void stopProxy() {
-        proxy.stop();
+        proxy.kill();
     }
 
     @Override

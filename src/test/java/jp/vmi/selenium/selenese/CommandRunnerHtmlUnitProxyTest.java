@@ -17,7 +17,7 @@ public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
 
     @After
     public void stopProxy() {
-        proxy.stop();
+        proxy.kill();
     }
 
     @Override
