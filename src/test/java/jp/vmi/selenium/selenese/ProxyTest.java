@@ -21,7 +21,7 @@ public class ProxyTest {
         for (int i = 0; i < 20; i++) {
             Proxy proxy = new Proxy();
             proxy.start();
-            proxy.stop();
+            proxy.kill();
         }
     }
 
@@ -32,7 +32,7 @@ public class ProxyTest {
         try {
             assertThat(Proxy.canUse(proxy.getPort()), is(not(true)));
         } finally {
-            proxy.stop();
+            proxy.kill();
         }
     }
 
