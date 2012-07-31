@@ -15,7 +15,7 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
 
     @After
     public void stopProxy() {
-        proxy.stop();
+        proxy.kill();
     }
 
     @Override
