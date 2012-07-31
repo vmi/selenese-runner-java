@@ -35,4 +35,12 @@ public class ProxyTest {
             proxy.stop();
         }
     }
+
+    @Test(timeout = 10000)
+    public void startAndKill() {
+        Proxy proxy = new Proxy();
+        proxy.start();
+        proxy.kill();
+        assertThat(Proxy.canUse(proxy.getPort()), is(true));
+    }
 }

@@ -18,6 +18,8 @@ public class Proxy {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
+    private Future start;
+
     public Proxy() {
         super();
         port = getUsablePort();
@@ -64,7 +66,7 @@ public class Proxy {
     }
 
     public void start() {
-        Future start = executor.submit(new Runnable() {
+        start = executor.submit(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -130,5 +132,9 @@ public class Proxy {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void kill() {
+        container.terminate();
     }
 }
