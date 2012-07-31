@@ -9,9 +9,13 @@ import java.util.concurrent.Future;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({ "rawtypes", "unused" })
 public class Proxy {
+
+    private static final Logger log = LoggerFactory.getLogger(Proxy.class);
 
     public static int PORTNUM_MAX = 65535;
     public static int PORTNUM_MIN = 10000;
@@ -139,6 +143,8 @@ public class Proxy {
     }
 
     public void kill() {
+        log.info("killing proxy...");
         container.terminate();
+        log.info("killed proxy.");
     }
 }
