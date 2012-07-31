@@ -14,7 +14,7 @@ import org.jruby.embed.ScriptingContainer;
 public class Proxy {
 
     public static int PORTNUM_MAX = 65535;
-    public static int PORTNUM_MIN = 1024;
+    public static int PORTNUM_MIN = 10000;
 
     private final ScriptingContainer container;
 
