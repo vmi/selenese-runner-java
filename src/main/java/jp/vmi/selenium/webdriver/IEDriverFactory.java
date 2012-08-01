@@ -15,7 +15,7 @@ public class IEDriverFactory extends WebDriverFactory {
     // 参考: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
 
     @Override
-    public WebDriver newInstance(DriverOptions options) {
+    public WebDriver newInstance(DriverOptions driverOptions) {
         Platform platform = Platform.getCurrent();
         log.info("Platform: {}", platform);
         switch (platform) {
@@ -26,9 +26,11 @@ public class IEDriverFactory extends WebDriverFactory {
         default:
             throw new UnsupportedOperationException("Unsupported platform: " + platform);
         }
-        if (options.has(DriverOption.PROXY))
+        // DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
+        // return new InternetExplorerDriver(capabilities);
+        if (driverOptions.has(DriverOption.PROXY))
             log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
-        InternetExplorerDriver driver = new InternetExplorerDriver();
-        return driver;
+        return new InternetExplorerDriver();
+
     }
 }
