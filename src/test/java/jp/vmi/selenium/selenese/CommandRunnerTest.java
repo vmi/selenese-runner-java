@@ -116,7 +116,7 @@ public abstract class CommandRunnerTest {
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         Runner runner = new Runner(driver);
         Context context = new Context(proc);
-        runner.run(context, invalidCommand);
+        runner.evaluate(context, invalidCommand);
     }
 
     @Test
@@ -133,7 +133,7 @@ public abstract class CommandRunnerTest {
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         Runner runner = new Runner(driver);
         Context context = new Context(proc);
-        runner.run(context, captureCommand);
+        runner.evaluate(context, captureCommand);
 
         if (driver instanceof TakesScreenshot) {
             assertTrue(pngFile.exists());
@@ -152,7 +152,7 @@ public abstract class CommandRunnerTest {
 
         StopWatch sw = new StopWatch();
         sw.start();
-        runner.run(context, pause);
+        runner.evaluate(context, pause);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
     }

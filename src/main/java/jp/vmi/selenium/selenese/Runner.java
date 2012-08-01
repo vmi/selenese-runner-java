@@ -43,42 +43,10 @@ public class Runner {
 
     private final WebDriver driver;
     private File screenshotDir = null;
-    private boolean screenshotAll = false;
-    private String baseurl = "";
+    private boolean isScreenshotAll = false;
+    private String baseURI = "";
 
     private List<String> prevMessages = new ArrayList<String>();
-
-    public Runner() {
-        this(WebDriverManager.getInstance().get());
-    }
-
-    public Runner(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public File getScreenshotDir() {
-        return screenshotDir;
-    }
-
-    public void setScreenshotDir(File screenshotDir) {
-        this.screenshotDir = screenshotDir;
-    }
-
-    public boolean isScreenshotAll() {
-        return screenshotAll;
-    }
-
-    public void setScreenshotAll(boolean screenshotAll) {
-        this.screenshotAll = screenshotAll;
-    }
-
-    public String getBaseurl() {
-        return baseurl;
-    }
-
-    public void setBaseurl(String baseurl) {
-        this.baseurl = baseurl;
-    }
 
     private void cookieToMessage(List<String> messages) {
         List<Cookie> cookieList = new ArrayList<Cookie>(driver.manage().getCookies());
@@ -89,21 +57,6 @@ public class Runner {
             messages.add(String.format("- Cookie: %s=[%s] (domain=%s, path=%s, expire=%s)", cookie.getName(), cookie.getValue(),
                 cookie.getDomain(), cookie.getPath(), expiryString));
         }
-    }
-
-    public Result run(Context context, Command current) {
-        Result totalResult = SUCCESS;
-        while (current != null) {
-            log.info(current.toString());
-            Result result = current.doCommand(context);
-            log(result);
-            takeScreenshot(current.getIndex());
-            totalResult = totalResult.update(result);
-            if (totalResult.isInterrupted())
-                break;
-            current = current.next(context);
-        }
-        return totalResult;
     }
 
     private void log(Result result) {
@@ -132,21 +85,67 @@ public class Runner {
     }
 
     private void takeScreenshot(int index) {
-        FastDateFormat fsf = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
-        if (screenshotAll) {
+        FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
+        if (isScreenshotAll) {
             if (!(driver instanceof TakesScreenshot)) {
                 log.warn("webdriver is not support taking screenshot.");
                 return;
             }
-            TakesScreenshot screenshottaker = (TakesScreenshot) driver;
-            File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
-            String datetime = fsf.format(Calendar.getInstance().getTime());
-            File target = new File(screenshotDir, "capture_" + datetime + "_" + index + ".png");
-            if (!tmp.renameTo(target.getAbsoluteFile())) {
+            TakesScreenshot taker = (TakesScreenshot) driver;
+            File tmp = taker.getScreenshotAs(OutputType.FILE);
+            String dateTime = format.format(Calendar.getInstance().getTime());
+            File target = new File(screenshotDir, "capture_" + dateTime + "_" + index + ".png");
+            if (!tmp.renameTo(target.getAbsoluteFile()))
                 log.error("fail to rename file to :" + target.getAbsolutePath());
-            }
             log.info(" - capture screenshot:{}", target.getAbsolutePath());
         }
+    }
+
+    public Runner() {
+        this(WebDriverManager.getInstance().get());
+    }
+
+    public Runner(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public File getScreenshotDir() {
+        return screenshotDir;
+    }
+
+    public void setScreenshotDir(File screenshotDir) {
+        this.screenshotDir = screenshotDir;
+    }
+
+    public boolean isScreenshotAll() {
+        return isScreenshotAll;
+    }
+
+    public void setScreenshotAll(boolean isScreenshotAll) {
+        this.isScreenshotAll = isScreenshotAll;
+    }
+
+    public String getBaseURI() {
+        return baseURI;
+    }
+
+    public void setBaseURI(String baseURI) {
+        this.baseURI = baseURI;
+    }
+
+    public Result evaluate(Context context, Command current) {
+        Result totalResult = SUCCESS;
+        while (current != null) {
+            log.info(current.toString());
+            Result result = current.doCommand(context);
+            log(result);
+            takeScreenshot(current.getIndex());
+            totalResult = totalResult.update(result);
+            if (totalResult.isInterrupted())
+                break;
+            current = current.next(context);
+        }
+        return totalResult;
     }
 
     public Result run(File file) {
@@ -162,10 +161,10 @@ public class Runner {
                 return totalResult;
             } else { // if parser instanceof TestCaseParser
                 TestCaseParser tcParser = (TestCaseParser) parser;
-                String baseurl = StringUtils.isBlank(getBaseurl()) ? tcParser.getBaseURI() : getBaseurl();
-                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseurl, driver);
+                String baseURI = StringUtils.isBlank(this.baseURI) ? tcParser.getBaseURI() : this.baseURI;
+                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseURI, driver);
                 Context context = new Context(proc);
-                return run(context, tcParser.parse(proc, context));
+                return evaluate(context, tcParser.parse(proc, context));
             }
         } catch (RuntimeException e) {
             log.error(e.getMessage());
@@ -178,13 +177,10 @@ public class Runner {
         }
     }
 
-    public Result run(List<File> seleneseFiles) {
+    public Result run(List<File> files) {
         Result totalResult = SUCCESS;
-        for (File file : seleneseFiles) {
-            Result result = run(file);
-            totalResult = totalResult.update(result);
-        }
+        for (File file : files)
+            totalResult = totalResult.update(run(file));
         return totalResult;
     }
-
 }
