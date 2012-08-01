@@ -38,6 +38,6 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
-        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, "localhost:" + proxy.getPort()));
+        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getProxyString()));
     }
 }

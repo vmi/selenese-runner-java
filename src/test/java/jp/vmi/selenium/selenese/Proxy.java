@@ -22,7 +22,7 @@ public class Proxy {
 
     private final ScriptingContainer container;
 
-    private int port = 18080;
+    private final int port;
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -38,6 +38,10 @@ public class Proxy {
         container.runScriptlet("require 'webrick'");
         container.runScriptlet("require 'webrick/httpproxy'");
         container.runScriptlet("server = WEBrick::HTTPProxyServer.new({:Port => port})");
+    }
+
+    public String getProxyString() {
+        return "localhost:" + port;
     }
 
     public int getPort() {

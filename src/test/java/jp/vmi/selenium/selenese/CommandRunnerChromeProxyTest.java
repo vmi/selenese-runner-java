@@ -20,7 +20,7 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
 
     @Override
     protected void setupWebDriverManager() {
-        driverOptions.set(DriverOption.PROXY, "localhost:" + proxy.getPort());
+        driverOptions.set(DriverOption.PROXY, proxy.getProxyString());
         super.setupWebDriverManager();
     }
 }

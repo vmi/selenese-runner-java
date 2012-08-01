@@ -17,7 +17,7 @@ public class ProxyTest {
     }
 
     @Test
-    public void 連続起動() {
+    public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
             Proxy proxy = new Proxy();
             proxy.start();
