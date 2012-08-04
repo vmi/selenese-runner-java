@@ -86,7 +86,6 @@ public class Runner {
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
-        if (isScreenshotAll) {
             if (!(driver instanceof TakesScreenshot)) {
                 log.warn("webdriver is not support taking screenshot.");
                 return;
@@ -98,7 +97,6 @@ public class Runner {
             if (!tmp.renameTo(target.getAbsoluteFile()))
                 log.error("fail to rename file to :" + target.getAbsolutePath());
             log.info(" - capture screenshot:{}", target.getAbsolutePath());
-        }
     }
 
     public Runner() {
@@ -139,7 +137,9 @@ public class Runner {
             log.info(current.toString());
             Result result = current.doCommand(context);
             log(result);
+            if (isScreenshotAll) {
             takeScreenshot(current.getIndex());
+            }
             totalResult = totalResult.update(result);
             if (totalResult.isInterrupted())
                 break;
