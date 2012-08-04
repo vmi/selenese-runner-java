@@ -162,6 +162,7 @@ public class Runner {
             } else { // if parser instanceof TestCaseParser
                 TestCaseParser tcParser = (TestCaseParser) parser;
                 String baseURI = StringUtils.isBlank(this.baseURI) ? tcParser.getBaseURI() : this.baseURI;
+                log.info("baseURI: {}", baseURI);
                 WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseURI, driver);
                 Context context = new Context(proc);
                 return evaluate(context, tcParser.parse(proc, context));
