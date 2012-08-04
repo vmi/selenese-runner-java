@@ -135,7 +135,7 @@ public class Runner {
         Result totalResult = SUCCESS;
         while (current != null) {
             log.info(current.toString());
-            Result result = current.doCommand(context);
+            Result result = doCommand(context, current);
             log(result);
             if (isScreenshotAll) {
                 takeScreenshot(current.getIndex());
@@ -146,6 +146,11 @@ public class Runner {
             current = current.next(context);
         }
         return totalResult;
+    }
+
+    protected Result doCommand(Context context, Command current) {
+        Result result = current.doCommand(context);
+        return result;
     }
 
     public Result run(File file) {
