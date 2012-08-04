@@ -86,17 +86,17 @@ public class Runner {
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
-            if (!(driver instanceof TakesScreenshot)) {
-                log.warn("webdriver is not support taking screenshot.");
-                return;
-            }
-            TakesScreenshot taker = (TakesScreenshot) driver;
-            File tmp = taker.getScreenshotAs(OutputType.FILE);
-            String dateTime = format.format(Calendar.getInstance().getTime());
-            File target = new File(screenshotDir, "capture_" + dateTime + "_" + index + ".png");
-            if (!tmp.renameTo(target.getAbsoluteFile()))
-                log.error("fail to rename file to :" + target.getAbsolutePath());
-            log.info(" - capture screenshot:{}", target.getAbsolutePath());
+        if (!(driver instanceof TakesScreenshot)) {
+            log.warn("webdriver is not support taking screenshot.");
+            return;
+        }
+        TakesScreenshot taker = (TakesScreenshot) driver;
+        File tmp = taker.getScreenshotAs(OutputType.FILE);
+        String dateTime = format.format(Calendar.getInstance().getTime());
+        File target = new File(screenshotDir, "capture_" + dateTime + "_" + index + ".png");
+        if (!tmp.renameTo(target.getAbsoluteFile()))
+            log.error("fail to rename file to :" + target.getAbsolutePath());
+        log.info(" - capture screenshot:{}", target.getAbsolutePath());
     }
 
     public Runner() {
@@ -138,7 +138,7 @@ public class Runner {
             Result result = current.doCommand(context);
             log(result);
             if (isScreenshotAll) {
-            takeScreenshot(current.getIndex());
+                takeScreenshot(current.getIndex());
             }
             totalResult = totalResult.update(result);
             if (totalResult.isInterrupted())
