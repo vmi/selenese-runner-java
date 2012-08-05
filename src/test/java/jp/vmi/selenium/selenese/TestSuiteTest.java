@@ -15,7 +15,8 @@ public class TestSuiteTest {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
-        Runner runner = new Runner(manager.get());
+        Runner runner = Binder.getRunner();
+        runner.setDriver(manager.get());
         runner.run(script);
     }
 }

@@ -24,7 +24,6 @@ import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static jp.vmi.selenium.selenese.command.Command.*;
 
@@ -41,7 +40,7 @@ public class Runner {
 
     private static final FastDateFormat expiryFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
 
-    private final WebDriver driver;
+    private WebDriver driver;
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
     private String baseURI = "";
@@ -100,10 +99,13 @@ public class Runner {
     }
 
     public Runner() {
-        this(WebDriverManager.getInstance().get());
     }
 
-    public Runner(WebDriver driver) {
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -148,6 +150,7 @@ public class Runner {
         return totalResult;
     }
 
+    @DoCommand
     protected Result doCommand(Context context, Command current) {
         Result result = current.doCommand(context);
         return result;

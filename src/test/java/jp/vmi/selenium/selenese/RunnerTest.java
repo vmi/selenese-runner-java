@@ -25,7 +25,8 @@ public class RunnerTest {
     @Test
     public void emptyFile() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        Runner runner = new Runner(new HtmlUnitDriver());
+        Runner runner = Binder.getRunner();
+        runner.setDriver(new HtmlUnitDriver());
         runner.run(tmp.getAbsoluteFile());
     }
 }
