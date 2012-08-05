@@ -101,6 +101,7 @@ public class Runner {
         return result;
     }
 
+    @RunFile
     public Result run(File file) {
         long stime = System.nanoTime();
         String name = file.getName();
@@ -132,6 +133,7 @@ public class Runner {
         }
     }
 
+    @RunFiles
     public Result run(List<File> files) {
         Result totalResult = SUCCESS;
         for (File file : files)
