@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.utils.LoggerUtils;
 
 public class RunFileInterceptor implements MethodInterceptor {
 
@@ -25,12 +26,14 @@ public class RunFileInterceptor implements MethodInterceptor {
             throw new RuntimeException(e);
         }
 
-        //TODO before run file
+        long stime = System.nanoTime();
+        String name = file.getName();
+        log.info("Start: {}", name);
         Result r;
         try {
             r = (Result) invocation.proceed();
         } finally {
-            //TODO after run file
+            log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), name);
         }
         return r;
     }
