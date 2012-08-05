@@ -190,7 +190,8 @@ public class Main {
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
-            Runner runner = new Runner(manager.get());
+            Runner runner = Binder.getRunner();
+            runner.setDriver(manager.get());
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
             runner.setBaseURI(cli.getOptionValue("baseuri"));

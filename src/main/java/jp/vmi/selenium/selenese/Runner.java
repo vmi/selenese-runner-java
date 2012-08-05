@@ -1,18 +1,11 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +17,6 @@ import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.utils.LoggerUtils;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static jp.vmi.selenium.selenese.command.Command.*;
 
@@ -32,57 +24,10 @@ public class Runner {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
-    private static final Comparator<Cookie> cookieComparator = new Comparator<Cookie>() {
-        @Override
-        public int compare(Cookie c1, Cookie c2) {
-            return c1.getName().compareTo(c2.getName());
-        }
-    };
-
-    private static final FastDateFormat expiryFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
-
-    private final WebDriver driver;
+    private WebDriver driver;
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
     private String baseURI = "";
-
-    private List<String> prevMessages = new ArrayList<String>();
-
-    private void cookieToMessage(List<String> messages) {
-        List<Cookie> cookieList = new ArrayList<Cookie>(driver.manage().getCookies());
-        Collections.sort(cookieList, cookieComparator);
-        for (Cookie cookie : cookieList) {
-            Date expiry = cookie.getExpiry();
-            String expiryString = expiry != null ? expiryFormat.format(expiry) : "*";
-            messages.add(String.format("- Cookie: %s=[%s] (domain=%s, path=%s, expire=%s)", cookie.getName(), cookie.getValue(),
-                cookie.getDomain(), cookie.getPath(), expiryString));
-        }
-    }
-
-    private void log(Result result) {
-        List<String> messages = new ArrayList<String>();
-        messages.add(String.format("URL: [%s] / Title: [%s]", driver.getCurrentUrl(), driver.getTitle()));
-        cookieToMessage(messages);
-        if (ListUtils.isEqualList(messages, prevMessages)) {
-            if (result.isFailed()) {
-                log.error("- {}", result);
-            } else {
-                log.info("- {}", result);
-            }
-        } else {
-            Iterator<String> iter = messages.iterator();
-            if (result.isFailed()) {
-                log.error("- {} {}", result, iter.next());
-                while (iter.hasNext())
-                    log.error(iter.next());
-            } else {
-                log.info("- {} {}", result, iter.next());
-                while (iter.hasNext())
-                    log.info(iter.next());
-            }
-            prevMessages = messages;
-        }
-    }
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
@@ -100,10 +45,13 @@ public class Runner {
     }
 
     public Runner() {
-        this(WebDriverManager.getInstance().get());
     }
 
-    public Runner(WebDriver driver) {
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -135,8 +83,7 @@ public class Runner {
         Result totalResult = SUCCESS;
         while (current != null) {
             log.info(current.toString());
-            Result result = current.doCommand(context);
-            log(result);
+            Result result = doCommand(context, current);
             if (isScreenshotAll) {
                 takeScreenshot(current.getIndex());
             }
@@ -146,6 +93,12 @@ public class Runner {
             current = current.next(context);
         }
         return totalResult;
+    }
+
+    @DoCommand
+    protected Result doCommand(Context context, Command current) {
+        Result result = current.doCommand(context);
+        return result;
     }
 
     public Result run(File file) {
@@ -165,7 +118,7 @@ public class Runner {
                 String baseURI = StringUtils.isBlank(this.baseURI) ? tcParser.getBaseURI() : this.baseURI;
                 log.info("baseURI: {}", baseURI);
                 WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseURI, driver);
-                Context context = new Context(proc);
+                Context context = new Context(proc, driver);
                 return evaluate(context, tcParser.parse(proc, context));
             }
         } catch (RuntimeException e) {

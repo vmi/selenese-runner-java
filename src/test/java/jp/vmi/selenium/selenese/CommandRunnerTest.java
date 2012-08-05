@@ -43,7 +43,8 @@ public abstract class CommandRunnerTest {
     @Test
     public void testSimple() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
-        Runner runner = new Runner();
+        Runner runner = Binder.getRunner();
+        runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -54,7 +55,8 @@ public abstract class CommandRunnerTest {
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
-        Runner runner = new Runner();
+        Runner runner = Binder.getRunner();
+        runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -65,7 +67,8 @@ public abstract class CommandRunnerTest {
     @Test
     public void testAssertFail() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
-        Runner runner = new Runner();
+        Runner runner = Binder.getRunner();
+        runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(script);
@@ -88,7 +91,8 @@ public abstract class CommandRunnerTest {
     }
 
     protected void execute(File scriptName) {
-        Runner runner = new Runner();
+        Runner runner = Binder.getRunner();
+        runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
         runner.run(scriptName);
@@ -104,7 +108,8 @@ public abstract class CommandRunnerTest {
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
-        Runner runner = new Runner();
+        Runner runner = Binder.getRunner();
+        runner.setDriver(WebDriverManager.getInstance().get());
         runner.run(script);
     }
 
@@ -114,8 +119,9 @@ public abstract class CommandRunnerTest {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
         CommandFactory commandFactory = new CommandFactory(proc);
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
-        Runner runner = new Runner(driver);
-        Context context = new Context(proc);
+        Runner runner = Binder.getRunner();
+        runner.setDriver(driver);
+        Context context = new Context(proc, driver);
         runner.evaluate(context, invalidCommand);
     }
 
@@ -131,8 +137,9 @@ public abstract class CommandRunnerTest {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
         CommandFactory commandFactory = new CommandFactory(proc);
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
-        Runner runner = new Runner(driver);
-        Context context = new Context(proc);
+        Runner runner = Binder.getRunner();
+        runner.setDriver(driver);
+        Context context = new Context(proc, driver);
         runner.evaluate(context, captureCommand);
 
         if (driver instanceof TakesScreenshot) {
@@ -147,8 +154,9 @@ public abstract class CommandRunnerTest {
             driver);
         CommandFactory commandFactory = new CommandFactory(proc);
         Command pause = commandFactory.newCommand(1, "pause", "5000");
-        Runner runner = new Runner(driver);
-        Context context = new Context(proc);
+        Runner runner = Binder.getRunner();
+        runner.setDriver(driver);
+        Context context = new Context(proc, driver);
 
         StopWatch sw = new StopWatch();
         sw.start();
