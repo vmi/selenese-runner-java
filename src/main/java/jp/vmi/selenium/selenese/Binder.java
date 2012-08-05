@@ -18,6 +18,16 @@ public class Binder {
                         Matchers.annotatedWith(DoCommand.class),
                         new CommandLogInterceptor()
                     );
+                    bindInterceptor(
+                        Matchers.any(),
+                        Matchers.annotatedWith(RunFile.class),
+                        new RunFileInterceptor()
+                    );
+                    bindInterceptor(
+                        Matchers.any(),
+                        Matchers.annotatedWith(RunFiles.class),
+                        new RunFilesInterceptor()
+                    );
                 }
             }
             );
