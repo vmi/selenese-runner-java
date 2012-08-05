@@ -121,7 +121,7 @@ public abstract class CommandRunnerTest {
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         Runner runner = Binder.getRunner();
         runner.setDriver(driver);
-        Context context = new Context(proc);
+        Context context = new Context(proc, driver);
         runner.evaluate(context, invalidCommand);
     }
 
@@ -139,7 +139,7 @@ public abstract class CommandRunnerTest {
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         Runner runner = Binder.getRunner();
         runner.setDriver(driver);
-        Context context = new Context(proc);
+        Context context = new Context(proc, driver);
         runner.evaluate(context, captureCommand);
 
         if (driver instanceof TakesScreenshot) {
@@ -156,7 +156,7 @@ public abstract class CommandRunnerTest {
         Command pause = commandFactory.newCommand(1, "pause", "5000");
         Runner runner = Binder.getRunner();
         runner.setDriver(driver);
-        Context context = new Context(proc);
+        Context context = new Context(proc, driver);
 
         StopWatch sw = new StopWatch();
         sw.start();

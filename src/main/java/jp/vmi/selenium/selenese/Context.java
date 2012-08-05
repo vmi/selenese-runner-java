@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,15 @@ public class Context {
     private static final Logger log = LoggerFactory.getLogger(Context.class);
 
     private final WebDriverCommandProcessor proc;
+    private final WebDriver driver;
 
     private final Map<String, String> variableMap = new HashMap<String, String>();
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
-    public Context(WebDriverCommandProcessor proc) {
+    public Context(WebDriverCommandProcessor proc, WebDriver driver) {
         this.proc = proc;
+        this.driver = driver;
     }
 
     public String doCommand(String name, String... args) {
@@ -97,4 +100,9 @@ public class Context {
     public WebDriverCommandProcessor getProc() {
         return proc;
     }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+
 }
