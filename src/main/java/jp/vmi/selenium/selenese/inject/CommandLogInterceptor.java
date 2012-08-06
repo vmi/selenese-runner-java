@@ -13,11 +13,11 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.Context;
-
+import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.Command.Result;
 
 public class CommandLogInterceptor implements MethodInterceptor {
@@ -46,10 +46,11 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(Result result, Context ctx) {
+    private void log(Result result, TestCase testCase) {
         List<String> messages = new ArrayList<String>();
-        messages.add(String.format("URL: [%s] / Title: [%s]", ctx.getDriver().getCurrentUrl(), ctx.getDriver().getTitle()));
-        cookieToMessage(messages, ctx.getDriver().manage().getCookies());
+        WebDriver driver = testCase.getDriver();
+        messages.add(String.format("URL: [%s] / Title: [%s]", driver.getCurrentUrl(), driver.getTitle()));
+        cookieToMessage(messages, driver.manage().getCookies());
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 log.error("- {}", result);
@@ -73,17 +74,15 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        // arguments
-        Object[] args = invocation.getArguments();
-        Context ctx;
+        TestCase testCase;
         try {
-            ctx = (Context) args[0];
+            testCase = (TestCase) invocation.getThis();
         } catch (Exception e) {
-            log.error("doCommand method arguments error", e);
+            log.error("receiver is not TestCase", e);
             throw new RuntimeException(e);
         }
-        Result r = (Result) invocation.proceed();
-        log(r, ctx);
-        return r;
+        Result result = (Result) invocation.proceed();
+        log(result, testCase);
+        return result;
     }
 }

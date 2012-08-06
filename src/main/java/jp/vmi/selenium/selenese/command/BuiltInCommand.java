@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class BuiltInCommand extends Command {
 
@@ -21,11 +21,11 @@ public class BuiltInCommand extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
+    public Result doCommand(TestCase testCase) {
         try {
-            String result = context.doCommand(realName, context.replaceVariables(args));
+            String result = testCase.doBuiltInCommand(realName, testCase.replaceVariables(args));
             if (andWait)
-                context.doCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
+                testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
             return StringUtils.isNotEmpty(result) ? new Success(result) : SUCCESS;
         } catch (SeleniumException e) {
             return new Failure(e.getMessage());

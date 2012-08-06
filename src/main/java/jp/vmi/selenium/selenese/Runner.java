@@ -9,17 +9,13 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.inject.DoCommand;
-import jp.vmi.selenium.selenese.inject.RunFile;
-import jp.vmi.selenium.selenese.inject.RunFiles;
-
-import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
+import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 
 import static jp.vmi.selenium.selenese.command.Command.*;
 
@@ -47,7 +43,9 @@ public class Runner {
         log.info(" - capture screenshot:{}", target.getAbsolutePath());
     }
 
-    public Runner() {
+    public void takeScreenshotAll(int index) {
+        if (isScreenshotAll)
+            takeScreenshot(index);
     }
 
     public WebDriver getDriver() {
@@ -82,46 +80,18 @@ public class Runner {
         this.baseURI = baseURI;
     }
 
-    public Result evaluate(Context context, Command current) {
-        Result totalResult = SUCCESS;
-        while (current != null) {
-            log.info(current.toString());
-            Result result = doCommand(context, current);
-            if (isScreenshotAll) {
-                takeScreenshot(current.getIndex());
-            }
-            totalResult = totalResult.update(result);
-            if (totalResult.isInterrupted())
-                break;
-            current = current.next(context);
-        }
-        return totalResult;
+    public String getBaseURI(String baseURI) {
+        if (StringUtils.isBlank(this.baseURI))
+            return baseURI;
+        else
+            return this.baseURI;
     }
 
-    @DoCommand
-    protected Result doCommand(Context context, Command current) {
-        Result result = current.doCommand(context);
-        return result;
-    }
-
-    @RunFile
+    @ExecuteTestCase
     public Result run(File file) {
         try {
-            Parser parser = Parser.getParser(file);
-            if (parser instanceof TestSuiteParser) {
-                Result totalResult = SUCCESS;
-                for (File tcFile : ((TestSuiteParser) parser).getTestCaseFiles())
-                    totalResult = totalResult.update(run(tcFile));
-                return totalResult;
-            } else { // if parser instanceof TestCaseParser
-                TestCaseParser tcParser = (TestCaseParser) parser;
-                log.info("Testcase: {}", tcParser.getName());
-                String baseURI = StringUtils.isBlank(this.baseURI) ? tcParser.getBaseURI() : this.baseURI;
-                log.info("baseURI: {}", baseURI);
-                WebDriverCommandProcessor proc = new WebDriverCommandProcessor(baseURI, driver);
-                Context context = new Context(proc, driver);
-                return evaluate(context, tcParser.parse(proc, context));
-            }
+            Selenese selenese = Parser.parse(file, this);
+            return selenese.execute(this);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
             throw e;
@@ -131,7 +101,7 @@ public class Runner {
         }
     }
 
-    @RunFiles
+    @ExecuteTestSuite
     public Result run(List<File> files) {
         Result totalResult = SUCCESS;
         for (File file : files)

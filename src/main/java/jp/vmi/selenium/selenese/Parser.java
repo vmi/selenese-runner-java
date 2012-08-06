@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class Parser {
+abstract public class Parser {
 
     protected static class NodeIterator implements Iterator<Node> {
         private final NodeList nodeList;
@@ -51,26 +51,26 @@ public class Parser {
         };
     }
 
-    public static Parser getParser(File file) throws InvalidSeleneseException {
+    public static Selenese parse(File file, Runner runner) throws InvalidSeleneseException {
         InputStream is = null;
+        Parser p;
         try {
-            DOMParser parser = new DOMParser();
-            parser.setEntityResolver(null);
-            parser.setFeature("http://xml.org/sax/features/namespaces", false);
+            DOMParser dp = new DOMParser();
+            dp.setEntityResolver(null);
+            dp.setFeature("http://xml.org/sax/features/namespaces", false);
             is = new FileInputStream(file);
-            parser.parse(new InputSource(is));
-            Document document = parser.getDocument();
+            dp.parse(new InputSource(is));
+            Document document = dp.getDocument();
             try {
                 String baseURI = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
-                return new TestCaseParser(document, baseURI);
+                p = new TestCaseParser(file, document, baseURI);
             } catch (NullPointerException e) {
-                // no operation
-            }
-            try {
-                XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
-                return new TestSuiteParser(document, file.getCanonicalFile().getParentFile());
-            } catch (NullPointerException e) {
-                throw new InvalidSeleneseException("neither 'selenium.base' link nor table with 'suiteTable' id");
+                try {
+                    XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
+                    p = new TestSuiteParser(file, document);
+                } catch (NullPointerException e2) {
+                    throw new InvalidSeleneseException("neither 'selenium.base' link nor table with 'suiteTable' id");
+                }
             }
         } catch (RuntimeException e) {
             throw e;
@@ -79,11 +79,16 @@ public class Parser {
         } finally {
             IOUtils.closeQuietly(is);
         }
+        return p.parse(runner);
     }
 
+    protected final File file;
     protected final Document docucment;
 
-    protected Parser(Document document) {
+    protected Parser(File file, Document document) {
+        this.file = file;
         this.docucment = document;
     }
+
+    abstract protected Selenese parse(Runner runner) throws InvalidSeleneseException;
 }

@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class EndWhile extends Command implements EndLoop {
 
@@ -16,7 +16,7 @@ public class EndWhile extends Command implements EndLoop {
     }
 
     @Override
-    public Command next(Context context) {
+    public Command next(TestCase testCase) {
         return startLoop;
     }
 }

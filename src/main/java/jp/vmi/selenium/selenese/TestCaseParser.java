@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.File;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -8,42 +9,36 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 
 import org.apache.xpath.XPathAPI;
-import org.openqa.selenium.WebDriverCommandProcessor;
+import org.openqa.selenium.WebDriver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
-import jp.vmi.selenium.selenese.command.DummyHead;
 import jp.vmi.selenium.selenese.command.EndLoop;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
+import jp.vmi.selenium.selenese.inject.Binder;
 
 public class TestCaseParser extends Parser {
 
     private final String baseURI;
-    private final String name;
 
-    public TestCaseParser(Document document, String baseURI) throws InvalidSeleneseException {
-        super(document);
+    public TestCaseParser(File file, Document document, String baseURI) throws InvalidSeleneseException {
+        super(file, document);
         this.baseURI = baseURI;
-        try {
-            this.name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new InvalidSeleneseException(e);
-        }
-
     }
 
-    public Command parse(WebDriverCommandProcessor proc, Context context) {
+    @Override
+    public Selenese parse(Runner runner) {
         try {
-            CommandFactory commandFactory = new CommandFactory(proc);
+            WebDriver driver = runner.getDriver();
+            String baseURI = runner.getBaseURI(this.baseURI);
+            String name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
+            TestCase testCase = Binder.newTestCase(file, name, driver, baseURI);
+            CommandFactory commandFactory = new CommandFactory(testCase.getProc());
             NodeList trList = XPathAPI.selectNodeList(docucment, "//TBODY/TR");
-            Command head = new DummyHead();
-            Command prev = head;
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
             int tri = 0;
             for (Node tr : each(trList)) {
@@ -58,7 +53,7 @@ public class TestCaseParser extends Parser {
                 }
                 Command command = commandFactory.newCommand(tri, cmdWithArgs);
                 if (command instanceof Label) {
-                    context.setLabelCommand((Label) command);
+                    testCase.setLabelCommand((Label) command);
                 } else if (command instanceof StartLoop) {
                     loopCommandStack.push((StartLoop) command);
                 } else if (command instanceof EndLoop) {
@@ -66,24 +61,11 @@ public class TestCaseParser extends Parser {
                     startLoop.setEndLoop((EndLoop) command);
                     ((EndLoop) command).setStartLoop(startLoop);
                 }
-                prev = prev.setNext(command);
+                testCase.addCommand(command);
             }
-            return head.next(null);
+            return testCase;
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public Document getDocument() {
-        return docucment;
-    }
-
-    public String getBaseURI() {
-        return baseURI;
-    }
-
-    public String getName() {
-        return name;
-    }
-
 }

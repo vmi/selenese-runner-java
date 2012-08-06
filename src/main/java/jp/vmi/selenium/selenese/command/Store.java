@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class Store extends Command {
 
@@ -19,9 +19,9 @@ public class Store extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
-        String result = context.doCommand(getter, context.replaceVariables(getterArgs));
-        context.setVariable(result, varName);
+    public Result doCommand(TestCase testCase) {
+        String result = testCase.doBuiltInCommand(getter, testCase.replaceVariables(getterArgs));
+        testCase.setVariable(result, varName);
         return SUCCESS;
     }
 }

@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class StoreFor extends Command implements StartLoop {
 
@@ -16,11 +16,11 @@ public class StoreFor extends Command implements StartLoop {
     }
 
     @Override
-    public Command next(Context context) {
-        String value = context.pollFromCollection(args[0]);
+    public Command next(TestCase testCase) {
+        String value = testCase.pollFromCollection(args[0]);
         if (value == null)
             return endLoop.next;
-        context.setVariable(value, args[1]);
+        testCase.setVariable(value, args[1]);
         return next;
     }
 }

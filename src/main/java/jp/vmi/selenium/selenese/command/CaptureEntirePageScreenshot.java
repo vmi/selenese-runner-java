@@ -7,7 +7,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class CaptureEntirePageScreenshot extends Command {
 
@@ -28,11 +28,11 @@ public class CaptureEntirePageScreenshot extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
+    public Result doCommand(TestCase testCase) {
         if (filename.isEmpty())
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
-        if (context.getProc().getWrappedDriver() instanceof TakesScreenshot) {
-            TakesScreenshot screenshottaker = (TakesScreenshot) context.getProc().getWrappedDriver();
+        if (testCase.getProc().getWrappedDriver() instanceof TakesScreenshot) {
+            TakesScreenshot screenshottaker = (TakesScreenshot) testCase.getProc().getWrappedDriver();
             File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
             if (!tmp.renameTo(new File(filename)))
                 log.warn("fail to rename file to:" + filename);

@@ -2,11 +2,11 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
 
-import jp.vmi.selenium.selenese.Context;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.TestCase;
 
 public class Assertion extends Command {
 
@@ -57,7 +57,7 @@ public class Assertion extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
+    public Result doCommand(TestCase testCase) {
         String message = null;
         for (int i = 0; i < RETRY_COUNT; i++) {
             if (i != 0) {
@@ -69,15 +69,15 @@ public class Assertion extends Command {
                     break;
                 }
             }
-            String[] args = context.replaceVariables(getterArgs);
+            String[] args = testCase.replaceVariables(getterArgs);
             if (this.expected != null) {
-                String result = context.doCommand(getter, args);
-                String expected = context.replaceVariables(this.expected);
+                String result = testCase.doBuiltInCommand(getter, args);
+                String expected = testCase.replaceVariables(this.expected);
                 if (StringUtils.equals(result, expected) ^ isInverse)
                     return SUCCESS;
                 message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
             } else {
-                boolean result = context.isCommand(getter, args);
+                boolean result = testCase.isBuiltInCommand(getter, args);
                 if (result ^ isInverse)
                     return SUCCESS;
                 message = String.format("Assertion failed (Result: [%s] / Expected: [%s]", result, !result);

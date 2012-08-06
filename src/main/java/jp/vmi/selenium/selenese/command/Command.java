@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang.StringUtils;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.utils.LoggerUtils;
 
 // https://github.com/davehunt/selenium-ide-flowcontrol
@@ -135,7 +135,7 @@ public class Command {
      * @param context
      * @return true: コマンド実行成功, false: コマンド実行失敗(verify系コマンドで検証に失敗したときなど)
      */
-    public Result doCommand(Context context) {
+    public Result doCommand(TestCase testCase) {
         return SUCCESS;
     }
 
@@ -143,7 +143,7 @@ public class Command {
         return this.next = next;
     }
 
-    public Command next(Context context) {
+    public Command next(TestCase testCase) {
         return next;
     }
 

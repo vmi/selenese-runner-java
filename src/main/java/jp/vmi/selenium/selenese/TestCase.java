@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -14,26 +15,51 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.command.DummyHead;
 import jp.vmi.selenium.selenese.command.Label;
+import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.utils.LoggerUtils;
 
-public class Context {
+import static jp.vmi.selenium.selenese.command.Command.*;
 
-    private static final Logger log = LoggerFactory.getLogger(Context.class);
+public class TestCase implements Selenese {
 
-    private final WebDriverCommandProcessor proc;
-    private final WebDriver driver;
+    private static final Logger log = LoggerFactory.getLogger(TestCase.class);
+
+    private File file;
+    private String name;
+    private String baseURI;
+    private WebDriverCommandProcessor proc;
+    private WebDriver driver;
 
     private final Map<String, String> variableMap = new HashMap<String, String>();
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
-    public Context(WebDriverCommandProcessor proc, WebDriver driver) {
-        this.proc = proc;
+    private final Command head = new DummyHead();
+    private Command prev = head;
+
+    public TestCase initialize(File file, String name, WebDriver driver, String baseURI) {
+        this.file = file;
+        this.name = name;
         this.driver = driver;
+        this.baseURI = baseURI;
+        this.proc = new WebDriverCommandProcessor(baseURI, driver);
+        return this;
     }
 
-    public String doCommand(String name, String... args) {
+    public WebDriverCommandProcessor getProc() {
+        return proc;
+    }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public String doBuiltInCommand(String name, String... args) {
         try {
             return proc.doCommand(name, args);
         } catch (UnsupportedOperationException e) {
@@ -44,7 +70,7 @@ public class Context {
         }
     }
 
-    public boolean isCommand(String name, String... args) {
+    public boolean isBuiltInCommand(String name, String... args) {
         try {
             return proc.getBoolean(name, args);
         } catch (UnsupportedOperationException e) {
@@ -97,12 +123,35 @@ public class Context {
         return labelCommandMap.get(label);
     }
 
-    public WebDriverCommandProcessor getProc() {
-        return proc;
+    public void addCommand(Command command) {
+        prev = prev.setNext(command);
     }
 
-    public WebDriver getDriver() {
-        return driver;
+    @DoCommand
+    public Result doCommand(Command command) {
+        return command.doCommand(this);
     }
 
+    @ExecuteTestCase
+    @Override
+    public Result execute(Runner runner) {
+        log.info("baseURI: {}", baseURI);
+        Command current = head.next(null);
+        Result totalResult = SUCCESS;
+        while (current != null) {
+            log.info(current.toString());
+            Result result = doCommand(current);
+            runner.takeScreenshotAll(current.getIndex());
+            totalResult = totalResult.update(result);
+            if (totalResult.isInterrupted())
+                break;
+            current = current.next(this);
+        }
+        return totalResult;
+    }
+
+    @Override
+    public String toString() {
+        return "TestCase[" + name + "] (" + file + ")";
+    }
 }

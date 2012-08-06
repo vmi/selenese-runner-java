@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class AddToCollection extends Command {
 
@@ -12,8 +12,8 @@ public class AddToCollection extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
-        context.addToCollection(args[COLLECTION_NAME], context.replaceVariables(args[VALUE]));
+    public Result doCommand(TestCase testCase) {
+        testCase.addToCollection(args[COLLECTION_NAME], testCase.replaceVariables(args[VALUE]));
         return SUCCESS;
     }
 }

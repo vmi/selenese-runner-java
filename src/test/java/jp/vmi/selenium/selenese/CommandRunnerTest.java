@@ -10,14 +10,12 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.selenese.inject.Binder;
-
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
@@ -45,7 +43,7 @@ public abstract class CommandRunnerTest {
     @Test
     public void testSimple() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -57,7 +55,7 @@ public abstract class CommandRunnerTest {
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -69,7 +67,7 @@ public abstract class CommandRunnerTest {
     @Test
     public void testAssertFail() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -93,7 +91,7 @@ public abstract class CommandRunnerTest {
     }
 
     protected void execute(File scriptName) {
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
         runner.setScreenshotAll(true);
@@ -110,7 +108,7 @@ public abstract class CommandRunnerTest {
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.run(script);
     }
@@ -118,51 +116,45 @@ public abstract class CommandRunnerTest {
     @Test(expected = SeleniumException.class)
     public void invalidCommand() throws IllegalArgumentException {
         WebDriver driver = WebDriverManager.getInstance().get();
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
-        CommandFactory commandFactory = new CommandFactory(proc);
-        Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(driver);
-        Context context = new Context(proc, driver);
-        runner.evaluate(context, invalidCommand);
+        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        CommandFactory commandFactory = new CommandFactory(testCase.getProc());
+        Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
+        testCase.addCommand(invalidCommand);
+        testCase.execute(runner);
     }
 
     @Test
     public void capture() throws IllegalArgumentException {
         final String filename = "test.png";
         File pngFile = new File(tmpDir.getRoot(), filename);
-        if (pngFile.exists()) {
+        if (pngFile.exists())
             pngFile.delete();
-        }
-
         WebDriver driver = WebDriverManager.getInstance().get();
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("", driver);
-        CommandFactory commandFactory = new CommandFactory(proc);
-        Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(driver);
-        Context context = new Context(proc, driver);
-        runner.evaluate(context, captureCommand);
-
-        if (driver instanceof TakesScreenshot) {
+        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        CommandFactory commandFactory = new CommandFactory(testCase.getProc());
+        Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
+        testCase.addCommand(captureCommand);
+        testCase.execute(runner);
+        if (driver instanceof TakesScreenshot)
             assertTrue(pngFile.exists());
-        }
     }
 
     @Test
     public void pauseCommand() throws IllegalArgumentException {
         WebDriver driver = WebDriverManager.getInstance().get();
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("",
-            driver);
-        CommandFactory commandFactory = new CommandFactory(proc);
-        Command pause = commandFactory.newCommand(1, "pause", "5000");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(driver);
-        Context context = new Context(proc, driver);
-
+        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        CommandFactory commandFactory = new CommandFactory(testCase.getProc());
+        Command pause = commandFactory.newCommand(1, "pause", "5000");
+        testCase.addCommand(pause);
         StopWatch sw = new StopWatch();
         sw.start();
-        runner.evaluate(context, pause);
+        testCase.execute(runner);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
     }

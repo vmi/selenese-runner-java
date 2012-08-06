@@ -1,55 +1,34 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
-import java.util.Iterator;
 
 import javax.xml.transform.TransformerException;
 
 import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import jp.vmi.selenium.selenese.inject.Binder;
 
 public class TestSuiteParser extends Parser {
 
-    private final File parentDir;
-
-    protected TestSuiteParser(Document document, File parentDir) {
-        super(document);
-        this.parentDir = parentDir;
+    protected TestSuiteParser(File file, Document document) {
+        super(file, document);
     }
 
-    public Iterable<File> getTestCaseFiles() throws InvalidSeleneseException {
-        NodeList nodeList;
+    @Override
+    protected Selenese parse(Runner runner) throws InvalidSeleneseException {
         try {
-            nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
+            TestSuite testSuite = Binder.newTestSuite(file);
+            NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
+            for (Node node : each(nodeList)) {
+                String tcFilename = node.getNodeValue();
+                testSuite.addTestCase(tcFilename);
+            }
+            return testSuite;
         } catch (TransformerException e) {
             throw new InvalidSeleneseException(e);
         }
-        final NodeIterator iter = new NodeIterator(nodeList);
-        return new Iterable<File>() {
-            @Override
-            public Iterator<File> iterator() {
-                return new Iterator<File>() {
-                    @Override
-                    public boolean hasNext() {
-                        return iter.hasNext();
-                    }
-
-                    @Override
-                    public File next() {
-                        String name = iter.next().getNodeValue();
-                        File file = new File(name);
-                        if (!file.isAbsolute())
-                            file = new File(parentDir, name);
-                        return file;
-                    }
-
-                    @Override
-                    public void remove() {
-                        iter.remove();
-                    }
-                };
-            }
-        };
     }
 }

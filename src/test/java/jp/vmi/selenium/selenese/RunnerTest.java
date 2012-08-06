@@ -8,8 +8,6 @@ import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import jp.vmi.selenium.selenese.inject.Binder;
-
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
@@ -28,7 +26,7 @@ public class RunnerTest {
     @Test
     public void emptyFile() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
         runner.run(tmp.getAbsoluteFile());
     }
@@ -36,7 +34,7 @@ public class RunnerTest {
     @Test
     public void runFiles() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
         ArrayList<File> files = new ArrayList<File>();
         files.add(tmp);

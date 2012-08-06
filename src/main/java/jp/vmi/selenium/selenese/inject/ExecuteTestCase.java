@@ -11,5 +11,5 @@ import static java.lang.annotation.RetentionPolicy.*;
 @BindingAnnotation
 @Target({ METHOD })
 @Retention(RUNTIME)
-public @interface RunFile {
+public @interface ExecuteTestCase {
 }

@@ -4,8 +4,6 @@ import java.io.File;
 
 import org.junit.Test;
 
-import jp.vmi.selenium.selenese.inject.Binder;
-
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
@@ -17,7 +15,7 @@ public class TestSuiteTest {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
-        Runner runner = Binder.getRunner();
+        Runner runner = new Runner();
         runner.setDriver(manager.get());
         runner.run(script);
     }

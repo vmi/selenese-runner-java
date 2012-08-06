@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class Echo extends Command {
 
@@ -16,8 +16,8 @@ public class Echo extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
-        log.info(context.replaceVariables(args[MESSAGE]));
+    public Result doCommand(TestCase testCase) {
+        log.info(testCase.replaceVariables(args[MESSAGE]));
         return SUCCESS;
     }
 }

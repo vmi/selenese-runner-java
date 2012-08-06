@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.TestCase;
 
 public class Pause extends Command {
 
@@ -27,7 +27,7 @@ public class Pause extends Command {
     }
 
     @Override
-    public Result doCommand(Context context) {
+    public Result doCommand(TestCase testCase) {
         if (pausemsec.isEmpty()) {
             return new Warning("pause is ignored: empty time.");
         }

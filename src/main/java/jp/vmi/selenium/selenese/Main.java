@@ -23,8 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.inject.Binder;
-
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -192,7 +190,7 @@ public class Main {
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
-            Runner runner = Binder.getRunner();
+            Runner runner = new Runner();
             runner.setDriver(manager.get());
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));

@@ -97,6 +97,14 @@ public class WebDriverManager implements Supplier<WebDriver> {
         this.driverOptions = options;
     }
 
+    public String getDriverName(WebDriver driver) {
+        String name = driver.getClass().getSimpleName();
+        if (StringUtils.isNotBlank(name))
+            return name;
+        else
+            return driver.getClass().getName();
+    }
+
     @Override
     public synchronized WebDriver get() throws IllegalArgumentException {
         String key = factory.getClass().getCanonicalName() + driverOptions.toString();
@@ -105,7 +113,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
             if (isSingleInstance)
                 quitAllDrivers();
             driver = factory.newInstance(driverOptions);
-            log.info("{} initialized.", driver.getClass().getSimpleName());
+            log.info("Initialized: {}", getDriverName(driver));
             driverMap.put(key, driver);
         }
         return driver;
@@ -118,7 +126,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
             } catch (Exception e) {
                 log.warn(e.getMessage());
             } finally {
-                log.info("quit: " + driver.getClass().getSimpleName());
+                log.info("Quit: {}", getDriverName(driver));
             }
         }
         driverMap.clear();
