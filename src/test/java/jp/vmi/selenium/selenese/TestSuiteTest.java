@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.junit.Test;
 
+import jp.vmi.selenium.selenese.inject.Binder;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 

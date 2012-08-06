@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +15,8 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.Context;
 
 import jp.vmi.selenium.selenese.command.Command.Result;
 

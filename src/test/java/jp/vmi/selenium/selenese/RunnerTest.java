@@ -7,6 +7,8 @@ import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.selenese.inject.Binder;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 

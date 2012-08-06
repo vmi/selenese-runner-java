@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.inject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

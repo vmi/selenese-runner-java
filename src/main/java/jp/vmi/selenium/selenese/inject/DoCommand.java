@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.inject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -11,5 +11,5 @@ import static java.lang.annotation.RetentionPolicy.*;
 @BindingAnnotation
 @Target({ METHOD })
 @Retention(RUNTIME)
-public @interface RunFile {
+public @interface DoCommand {
 }

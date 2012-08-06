@@ -13,6 +13,10 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.inject.RunFile;
+import jp.vmi.selenium.selenese.inject.RunFiles;
+
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;

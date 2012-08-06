@@ -14,6 +14,8 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.inject.Binder;
+
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.webdriver.WebDriverManager;
