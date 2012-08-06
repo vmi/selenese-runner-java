@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.inject;
 
 import java.io.File;
+import java.util.List;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -17,9 +18,9 @@ public class RunFilesInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         // arguments
         Object[] args = invocation.getArguments();
-        File file;
+        List<File> files;
         try {
-            file = (File) args[0];
+            files = (List<File>) args[0];
         } catch (Exception e) {
             log.error("method arguments error", e);
             throw new RuntimeException(e);
