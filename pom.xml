@@ -148,6 +148,11 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant-junit</artifactId>
+      <version>1.8.4</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>
