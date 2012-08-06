@@ -3,4 +3,5 @@
 .settings/org.eclipse.m2e.core.prefs
 target/
 tmp/
+*.log
 *.jpage
