@@ -21,12 +21,23 @@ public class JUnitResultTest {
 
     @Test
     public void test() throws IOException {
-        setOutputDir(tmpDir.getRoot().getPath());
-        TestSuite testSuite = Binder.newTestSuite(new File("test-suite.html"));
-        startTestSuite(testSuite);
-        TestCase testCase = Binder.newTestCase(null, "test-case", null, "");
+        setResultDir(tmpDir.getRoot().getPath());
+        TestSuite testSuite1 = Binder.newTestSuite(null, "test-suite1");
+        TestSuite testSuite2 = Binder.newTestSuite(null, "test-suite2");
+        startTestSuite(testSuite1);
+        TestCase testCase = Binder.newTestCase(null, "test-case1", null, "");
         startTestCase(testCase);
-        addFailure("failed.");
+        addFailure("failed1.");
+        endTestCase();
+        startTestSuite(testSuite2);
+        testCase = Binder.newTestCase(null, "test-case2", null, "");
+        startTestCase(testCase);
+        addFailure("failed2.");
+        endTestCase();
+        endTestSuite();
+        testCase = Binder.newTestCase(null, "test-case3", null, "");
+        startTestCase(testCase);
+        addFailure("failed3.");
         endTestCase();
         endTestSuite();
         for (File f : tmpDir.getRoot().listFiles()) {

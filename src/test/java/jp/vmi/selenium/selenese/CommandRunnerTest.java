@@ -118,7 +118,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        TestCase testCase = Binder.newTestCase(null, "invalidCommand", driver, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         testCase.addCommand(invalidCommand);
@@ -134,7 +134,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        TestCase testCase = Binder.newTestCase(null, "capture", driver, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         testCase.addCommand(captureCommand);
@@ -148,7 +148,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, null, driver, "");
+        TestCase testCase = Binder.newTestCase(null, "pauseCommand", driver, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command pause = commandFactory.newCommand(1, "pause", "5000");
         testCase.addCommand(pause);

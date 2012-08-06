@@ -12,15 +12,19 @@ import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 public class TestSuite implements Selenese {
 
     private File file;
-    private String parentDir;
+    private String parentDir = null;
     private String name;
     private final List<File> files = new ArrayList<File>();
 
-    public TestSuite initialize(File file) {
+    public TestSuite initialize(File file, String name) {
         try {
             this.file = file;
-            this.parentDir = file.getCanonicalFile().getParent();
-            this.name = file.getName().replaceFirst("\\.[^.]+$", "");
+            if (file != null)
+                this.parentDir = file.getCanonicalFile().getParent();
+            if (name != null)
+                this.name = name;
+            else if (file != null)
+                this.name = file.getName().replaceFirst("\\.[^.]+$", "");
             return this;
         } catch (IOException e) {
             throw new RuntimeException(e);

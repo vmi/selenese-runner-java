@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
@@ -36,10 +35,7 @@ public class RunnerTest {
         File tmp = File.createTempFile("aaa", "test.html");
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
-        ArrayList<File> files = new ArrayList<File>();
-        files.add(tmp);
-        files.add(tmp);
-        runner.run(files);
+        runner.run(new String[] { tmp.getPath(), tmp.getPath() });
     }
 
 }

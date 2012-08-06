@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -114,6 +112,10 @@ public class Main {
             .hasArg().withArgName("path")
             .withDescription("path to 'chromedriver' binary")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("result-dir")
+            .hasArg().withArgName("dir")
+            .withDescription("directory for XML JUnit result")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message")
             .create('h'));
@@ -178,13 +180,6 @@ public class Main {
             String[] filenames = cli.getArgs();
             if (filenames.length == 0)
                 help();
-            List<File> files = new ArrayList<File>(filenames.length);
-            for (String filename : filenames) {
-                File file = new File(filename);
-                if (!file.isFile())
-                    throw new IllegalArgumentException("File does not exist: \"" + filename + "\"");
-                files.add(file);
-            }
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
             WebDriverManager manager = WebDriverManager.getInstance();
@@ -195,7 +190,8 @@ public class Main {
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
             runner.setBaseURI(cli.getOptionValue("baseuri"));
-            Result totalResult = runner.run(files);
+            runner.setResultDir(cli.getOptionValue("result-dir"));
+            Result totalResult = runner.run(filenames);
             exitCode = totalResult.exitCode();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());

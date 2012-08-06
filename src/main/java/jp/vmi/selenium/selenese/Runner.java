@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.util.Calendar;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
@@ -14,10 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.command.Command.Failure;
 import jp.vmi.selenium.selenese.command.Command.Result;
-import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
-import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
-
-import static jp.vmi.selenium.selenese.command.Command.*;
+import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.junit.JUnitResult;
 
 public class Runner {
 
@@ -27,6 +24,7 @@ public class Runner {
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
     private String baseURI = "";
+    private String resultDir = null;
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
@@ -87,8 +85,17 @@ public class Runner {
             return this.baseURI;
     }
 
-    @ExecuteTestCase
+    public String getResultDir() {
+        return resultDir;
+    }
+
+    public void setResultDir(String resultDir) {
+        this.resultDir = resultDir;
+
+    }
+
     public Result run(File file) {
+        JUnitResult.setResultDir(resultDir);
         try {
             Selenese selenese = Parser.parse(file, this);
             return selenese.execute(this);
@@ -101,11 +108,10 @@ public class Runner {
         }
     }
 
-    @ExecuteTestSuite
-    public Result run(List<File> files) {
-        Result totalResult = SUCCESS;
-        for (File file : files)
-            totalResult = totalResult.update(run(file));
-        return totalResult;
+    public Result run(String[] filenames) {
+        TestSuite testSuite = Binder.newTestSuite(null, "default");
+        for (String filename : filenames)
+            testSuite.addTestCase(filename);
+        return testSuite.execute(this);
     }
 }

@@ -45,8 +45,8 @@ public class Binder {
         return testCase.initialize(file, name, driver, baseURI);
     }
 
-    public static TestSuite newTestSuite(File file) {
+    public static TestSuite newTestSuite(File file, String name) {
         TestSuite testSuite = injector.getInstance(TestSuite.class);
-        return testSuite.initialize(file);
+        return testSuite.initialize(file, name);
     }
 }

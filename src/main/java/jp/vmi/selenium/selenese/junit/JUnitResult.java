@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
@@ -15,21 +19,23 @@ import junit.framework.AssertionFailedError;
 
 public final class JUnitResult {
 
-    private static final ThreadLocal<Formatter> currentFormatter = new ThreadLocal<Formatter>();
-
-    private static String outputDir = ".";
-
     private static class Formatter {
 
         private final XMLJUnitResultFormatter formatter;
         private final OutputStream out;
         private final JUnitTest jUnitTest;
-        private TestCase testCase;
+        private TestCase testCase = null;
 
-        private Formatter(String name) {
+        public Formatter(String name) {
+            if (name == null) {
+                formatter = null;
+                out = null;
+                jUnitTest = null;
+                return;
+            }
             formatter = new XMLJUnitResultFormatter();
             try {
-                out = new FileOutputStream(new File(outputDir, "TEST-" + name + ".xml"));
+                out = new FileOutputStream(new File(resultDir, "TEST-" + name + ".xml"));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -38,21 +44,21 @@ public final class JUnitResult {
             formatter.startTestSuite(jUnitTest);
         }
 
-        private void endTestSuite() {
+        public void endTestSuite() {
             formatter.endTestSuite(jUnitTest);
             IOUtils.closeQuietly(out);
         }
 
-        private void startTestCase(TestCase testCase) {
+        public void startTestCase(TestCase testCase) {
             this.testCase = testCase;
             formatter.startTest(testCase);
         }
 
-        private void endTestCase() {
+        public void endTestCase() {
             formatter.endTest(testCase);
         }
 
-        private void addError(Throwable t) {
+        public void addError(Throwable t) {
             formatter.addError(testCase, t);
         }
 
@@ -65,37 +71,86 @@ public final class JUnitResult {
         }
     }
 
-    public static void setOutputDir(String dir) {
-        outputDir = dir;
+    private static final Formatter EMPTY_FORMATTER = new Formatter(null) {
+
+        @Override
+        public void endTestSuite() {
+        }
+
+        @Override
+        public void startTestCase(TestCase testCase) {
+        }
+
+        @Override
+        public void endTestCase() {
+        }
+
+        @Override
+        public void addError(Throwable t) {
+        }
+
+        @Override
+        public void addFailure(Throwable t) {
+        }
+
+        @Override
+        public void addFailure(String message) {
+        }
+    };
+
+    private static final ThreadLocal<Deque<TestSuite>> currentTestSuite = new ThreadLocal<Deque<TestSuite>>();
+    private static final Map<TestSuite, Formatter> formatterMap = new ConcurrentHashMap<TestSuite, JUnitResult.Formatter>();
+    private static String resultDir = null;
+
+    private static Formatter getFormatter() {
+        Deque<TestSuite> deque = currentTestSuite.get();
+        if (deque == null)
+            return EMPTY_FORMATTER;
+        Formatter formatter = formatterMap.get(deque.peekFirst());
+        if (formatter == null)
+            return EMPTY_FORMATTER;
+        return formatter;
+    }
+
+    public static void setResultDir(String dir) {
+        resultDir = dir;
     }
 
     public static void startTestSuite(TestSuite testSuite) {
-        Formatter result = new Formatter(testSuite.getName());
-        currentFormatter.set(result);
+        Deque<TestSuite> deque = currentTestSuite.get();
+        if (deque == null) {
+            deque = new ArrayDeque<TestSuite>();
+            currentTestSuite.set(deque);
+        }
+        deque.addFirst(testSuite);
+        if (resultDir == null)
+            return;
+        Formatter formatter = new Formatter(testSuite.getName());
+        formatterMap.put(testSuite, formatter);
     }
 
     public static void endTestSuite() {
-        currentFormatter.get().endTestSuite();
-        currentFormatter.remove();
+        TestSuite testSuite = currentTestSuite.get().pollFirst();
+        formatterMap.remove(testSuite).endTestSuite();
     }
 
     public static void startTestCase(TestCase testCase) {
-        currentFormatter.get().startTestCase(testCase);
+        getFormatter().startTestCase(testCase);
     }
 
     public static void endTestCase() {
-        currentFormatter.get().endTestCase();
+        getFormatter().endTestCase();
     }
 
     public static void addError(Throwable t) {
-        currentFormatter.get().addError(t);
+        getFormatter().addError(t);
     }
 
     public static void addFailure(Throwable t) {
-        currentFormatter.get().addFailure(t);
+        getFormatter().addFailure(t);
     }
 
     public static void addFailure(String message) {
-        currentFormatter.get().addFailure(message);
+        getFormatter().addFailure(message);
     }
 }

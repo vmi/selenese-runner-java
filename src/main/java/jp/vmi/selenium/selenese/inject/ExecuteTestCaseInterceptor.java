@@ -5,7 +5,9 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.Selenese;
+import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.junit.JUnitResult;
 import jp.vmi.selenium.utils.LoggerUtils;
 
 public class ExecuteTestCaseInterceptor implements MethodInterceptor {
@@ -14,19 +16,24 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        Selenese selenese;
+        TestCase testCase;
         try {
-            selenese = (Selenese) invocation.getThis();
+            testCase = (TestCase) invocation.getThis();
         } catch (Exception e) {
             log.error("receiver is not Selenese", e);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
-        log.info("Start - {}", selenese);
+        log.info("Start - {}", testCase);
+        JUnitResult.startTestCase(testCase);
         try {
-            return invocation.proceed();
+            Result result = (Result) invocation.proceed();
+            if (result.isFailed())
+                JUnitResult.addFailure(result.getMessage());
+            return result;
         } finally {
-            log.info("End({}) - {}", LoggerUtils.durationToString(stime, System.nanoTime()), selenese);
+            JUnitResult.endTestCase();
+            log.info("End({}) - {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }
     }
 }
