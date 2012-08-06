@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.junit.Ignore;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
@@ -22,18 +23,21 @@ import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.utils.LoggerUtils;
+import junit.framework.Test;
+import junit.framework.TestResult;
 
 import static jp.vmi.selenium.selenese.command.Command.*;
 
-public class TestCase implements Selenese {
+@Ignore
+public class TestCase implements Selenese, Test {
 
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
-    private File file;
-    private String name;
-    private String baseURI;
-    private WebDriverCommandProcessor proc;
-    private WebDriver driver;
+    private File file = null;
+    private String name = null;
+    private String baseURI = null;
+    private WebDriverCommandProcessor proc = null;
+    private WebDriver driver = null;
 
     private final Map<String, String> variableMap = new HashMap<String, String>();
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
@@ -47,8 +51,14 @@ public class TestCase implements Selenese {
         this.name = name;
         this.driver = driver;
         this.baseURI = baseURI;
-        this.proc = new WebDriverCommandProcessor(baseURI, driver);
+        if (driver != null)
+            this.proc = new WebDriverCommandProcessor(baseURI, driver);
         return this;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public WebDriverCommandProcessor getProc() {
@@ -148,6 +158,18 @@ public class TestCase implements Selenese {
             current = current.next(this);
         }
         return totalResult;
+    }
+
+    @Override
+    public int countTestCases() {
+        return 1;
+    }
+
+    // for interface matching only.
+    @Deprecated
+    @Override
+    public void run(TestResult result) {
+        // unused method.
     }
 
     @Override

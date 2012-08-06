@@ -27,6 +27,11 @@ public class TestSuite implements Selenese {
         }
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public void addTestCase(String filename) {
         File tcFile = new File(filename);
         if (!tcFile.isAbsolute())
