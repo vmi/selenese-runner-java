@@ -72,17 +72,17 @@ public class Command {
         public Warning(String message) {
             super(false, message);
         }
-    
+
         @Override
         public boolean isInterrupted() {
             return false;
         }
-    
+
         @Override
         public boolean isFailed() {
             return true;
         }
-    
+
         @Override
         public int exitCode() {
             return 2;

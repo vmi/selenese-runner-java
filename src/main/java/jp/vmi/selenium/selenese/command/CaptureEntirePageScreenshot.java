@@ -21,26 +21,21 @@ public class CaptureEntirePageScreenshot extends Command {
 
     CaptureEntirePageScreenshot(int index, String name, String[] args, String realName, boolean andWait) {
         super(index, name, args);
-        if (args.length >= 1) {
+        if (args.length >= 1)
             filename = args[0];
-        }
-        if (args.length >= 2) {
+        if (args.length >= 2)
             kwargs = args[1];
-        }
     }
 
     @Override
     public Result doCommand(Context context) {
-        if (filename.isEmpty()) {
+        if (filename.isEmpty())
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
-        }
-
         if (context.getProc().getWrappedDriver() instanceof TakesScreenshot) {
             TakesScreenshot screenshottaker = (TakesScreenshot) context.getProc().getWrappedDriver();
             File tmp = screenshottaker.getScreenshotAs(OutputType.FILE);
-            if (!tmp.renameTo(new File(filename))) {
+            if (!tmp.renameTo(new File(filename)))
                 log.warn("fail to rename file to:" + filename);
-            }
             return SUCCESS;
         } else {
             return new Warning("webdriver is not support taking screenshot.");
