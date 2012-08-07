@@ -1,5 +1,7 @@
-Selenese Runner implemented by Java
-===================================
+Selenese Runner Java
+====================
+
+This is selenese script interpreter implemented by Java.
 
 Requirements
 ------------
@@ -20,7 +22,7 @@ That will create the *selenese-runner.jar* file within the 'target' directory.
 Running the Application
 -----------------------
 
-* download latest release or build fron HEAD.
+* download latest release or build from HEAD.
 * execute
   `java -jar selenese-runner.jar`
 * see usage messages.
