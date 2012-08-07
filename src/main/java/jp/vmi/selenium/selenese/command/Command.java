@@ -2,8 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang.StringUtils;
 
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
+
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.utils.LoggerUtils;
 
 // https://github.com/davehunt/selenium-ide-flowcontrol
 public class Command {

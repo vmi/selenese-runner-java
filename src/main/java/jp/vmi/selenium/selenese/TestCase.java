@@ -16,13 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
+
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.selenese.command.DummyHead;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
-import jp.vmi.selenium.utils.LoggerUtils;
 import junit.framework.Test;
 import junit.framework.TestResult;
 

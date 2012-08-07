@@ -1,4 +1,4 @@
-package jp.vmi.selenium.utils;
+package jp.vmi.selenium.selenese.utils;
 
 import java.util.concurrent.TimeUnit;
 

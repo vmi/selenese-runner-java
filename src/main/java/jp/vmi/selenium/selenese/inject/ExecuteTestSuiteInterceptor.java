@@ -5,9 +5,10 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
+
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.junit.JUnitResult;
-import jp.vmi.selenium.utils.LoggerUtils;
 
 public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
