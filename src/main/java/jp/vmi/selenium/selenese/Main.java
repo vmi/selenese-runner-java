@@ -138,6 +138,18 @@ public class Main {
         return "(missing version information)";
     }
 
+    private int getHelpWidth() {
+        String columns = System.getenv("COLUMNS");
+        if (columns != null && columns.matches("\\d+")) {
+            try {
+                return Integer.parseInt(columns) - 2;
+            } catch (NumberFormatException e) {
+                // no operation
+            }
+        }
+        return HELP_WIDTH;
+    }
+
     private void help(String... msgs) {
         if (msgs.length > 0) {
             for (String msg : msgs)
@@ -145,19 +157,19 @@ public class Main {
             System.out.println();
         }
 
+        int helpWidth = getHelpWidth();
         String progName = System.getenv("PROG_NAME");
         if (StringUtils.isBlank(progName))
             progName = "java -jar selenese-runner.jar";
-
         HelpFormatter fmt = new HelpFormatter();
         fmt.setOptionComparator(options.getOptionComparator());
         PrintWriter pw = new PrintWriter(System.out);
         pw.format(PROG_TITLE + " %s\n\n" + HEADER + "\n\n", getVersion());
         fmt.setSyntaxPrefix("Usage: ");
-        fmt.printHelp(pw, HELP_WIDTH, progName + " <option> ... <testcase|testsuite> ...\n",
+        fmt.printHelp(pw, helpWidth, progName + " <option> ... <testcase|testsuite> ...\n",
             null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
         pw.println();
-        fmt.printWrapped(pw, HELP_WIDTH, FOOTER);
+        fmt.printWrapped(pw, helpWidth, FOOTER);
         pw.flush();
         exit(1);
     }
