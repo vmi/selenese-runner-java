@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.taskdefs.optional.junit.JUnitTest;
 import org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
@@ -19,23 +21,30 @@ import junit.framework.AssertionFailedError;
 
 public final class JUnitResult {
 
+    private static final Logger log = LoggerFactory.getLogger(JUnitResult.class);
+
     private static class Formatter {
 
         private final XMLJUnitResultFormatter formatter;
+        private final File file;
         private final OutputStream out;
         private final JUnitTest jUnitTest;
         private TestCase testCase = null;
 
+        // for NULL_FORMATTER
+        public Formatter() {
+            formatter = null;
+            file = null;
+            out = null;
+            jUnitTest = null;
+        }
+
         public Formatter(String name) {
-            if (name == null) {
-                formatter = null;
-                out = null;
-                jUnitTest = null;
-                return;
-            }
             formatter = new XMLJUnitResultFormatter();
             try {
-                out = new FileOutputStream(new File(resultDir, "TEST-" + name + ".xml"));
+                file = new File(resultDir, "TEST-" + name + ".xml");
+                out = new FileOutputStream(file);
+                log.info("Open XML Result File: {}", file);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -47,6 +56,7 @@ public final class JUnitResult {
         public void endTestSuite() {
             formatter.endTestSuite(jUnitTest);
             IOUtils.closeQuietly(out);
+            log.info("Close XML Result File: {}", file);
         }
 
         public void startTestCase(TestCase testCase) {
@@ -71,7 +81,7 @@ public final class JUnitResult {
         }
     }
 
-    private static final Formatter EMPTY_FORMATTER = new Formatter(null) {
+    private static final Formatter NULL_FORMATTER = new Formatter() {
 
         @Override
         public void endTestSuite() {
@@ -105,10 +115,10 @@ public final class JUnitResult {
     private static Formatter getFormatter() {
         Deque<TestSuite> deque = currentTestSuite.get();
         if (deque == null)
-            return EMPTY_FORMATTER;
+            return NULL_FORMATTER;
         Formatter formatter = formatterMap.get(deque.peekFirst());
         if (formatter == null)
-            return EMPTY_FORMATTER;
+            return NULL_FORMATTER;
         return formatter;
     }
 
