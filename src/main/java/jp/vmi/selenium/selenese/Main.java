@@ -105,9 +105,9 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("screenshot-all")
             .withDescription("screenshot all commands")
             .create('S'));
-        options.addOption(OptionBuilder.withLongOpt("baseuri")
-            .hasArg().withArgName("baseURI")
-            .withDescription("override baseURI set in selenese")
+        options.addOption(OptionBuilder.withLongOpt("baseurl")
+            .hasArg().withArgName("baseURL")
+            .withDescription("override base URL set in selenese")
             .create('b'));
         options.addOption(OptionBuilder.withLongOpt("chromedriver")
             .hasArg().withArgName("path")
@@ -194,7 +194,7 @@ public class Main {
             runner.setDriver(manager.get());
             runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
             runner.setScreenshotAll(cli.hasOption("screenshot-all"));
-            runner.setBaseURI(cli.getOptionValue("baseuri"));
+            runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setResultDir(cli.getOptionValue("result-dir"));
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.exitCode();

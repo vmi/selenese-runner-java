@@ -23,20 +23,20 @@ import jp.vmi.selenium.selenese.inject.Binder;
 
 public class TestCaseParser extends Parser {
 
-    private final String baseURI;
+    private final String baseURL;
 
-    public TestCaseParser(File file, Document document, String baseURI) throws InvalidSeleneseException {
+    public TestCaseParser(File file, Document document, String baseURL) throws InvalidSeleneseException {
         super(file, document);
-        this.baseURI = baseURI;
+        this.baseURL = baseURL;
     }
 
     @Override
     public Selenese parse(Runner runner) {
         try {
             WebDriver driver = runner.getDriver();
-            String baseURI = runner.getBaseURI(this.baseURI);
+            String baseURL = runner.getBaseURL(this.baseURL);
             String name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-            TestCase testCase = Binder.newTestCase(file, name, driver, baseURI);
+            TestCase testCase = Binder.newTestCase(file, name, driver, baseURL);
             CommandFactory commandFactory = new CommandFactory(testCase.getProc());
             NodeList trList = XPathAPI.selectNodeList(docucment, "//TBODY/TR");
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();

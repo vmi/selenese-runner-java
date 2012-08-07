@@ -23,7 +23,7 @@ public class Runner {
     private WebDriver driver;
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
-    private String baseURI = "";
+    private String baseURL = "";
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
@@ -69,19 +69,19 @@ public class Runner {
         this.isScreenshotAll = isScreenshotAll;
     }
 
-    public String getBaseURI() {
-        return baseURI;
+    public String getBaseURL() {
+        return baseURL;
     }
 
-    public void setBaseURI(String baseURI) {
-        this.baseURI = baseURI;
+    public void setBaseURL(String baseURL) {
+        this.baseURL = baseURL;
     }
 
-    public String getBaseURI(String baseURI) {
-        if (StringUtils.isBlank(this.baseURI))
-            return baseURI;
+    public String getBaseURL(String baseURL) {
+        if (StringUtils.isBlank(this.baseURL))
+            return baseURL;
         else
-            return this.baseURI;
+            return this.baseURL;
     }
 
     public void setResultDir(String resultDir) {

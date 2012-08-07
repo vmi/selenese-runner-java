@@ -40,9 +40,9 @@ public class Binder {
             );
     }
 
-    public static TestCase newTestCase(File file, String name, WebDriver driver, String baseURI) {
+    public static TestCase newTestCase(File file, String name, WebDriver driver, String baseURL) {
         TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(file, name, driver, baseURI);
+        return testCase.initialize(file, name, driver, baseURL);
     }
 
     public static TestSuite newTestSuite(File file, String name) {

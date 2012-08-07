@@ -62,8 +62,8 @@ abstract public class Parser {
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
             try {
-                String baseURI = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
-                p = new TestCaseParser(file, document, baseURI);
+                String baseURL = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
+                p = new TestCaseParser(file, document, baseURL);
             } catch (NullPointerException e) {
                 try {
                     XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");

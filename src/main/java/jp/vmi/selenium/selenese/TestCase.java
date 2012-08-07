@@ -35,7 +35,7 @@ public class TestCase implements Selenese, Test {
 
     private File file = null;
     private String name = null;
-    private String baseURI = null;
+    private String baseURL = null;
     private WebDriverCommandProcessor proc = null;
     private WebDriver driver = null;
 
@@ -46,13 +46,13 @@ public class TestCase implements Selenese, Test {
     private final Command head = new DummyHead();
     private Command prev = head;
 
-    public TestCase initialize(File file, String name, WebDriver driver, String baseURI) {
+    public TestCase initialize(File file, String name, WebDriver driver, String baseURL) {
         this.file = file;
         this.name = name;
         this.driver = driver;
-        this.baseURI = baseURI;
+        this.baseURL = baseURL;
         if (driver != null)
-            this.proc = new WebDriverCommandProcessor(baseURI, driver);
+            this.proc = new WebDriverCommandProcessor(baseURL, driver);
         return this;
     }
 
@@ -145,7 +145,7 @@ public class TestCase implements Selenese, Test {
     @ExecuteTestCase
     @Override
     public Result execute(Runner runner) {
-        log.info("baseURI: {}", baseURI);
+        log.info("baseURL: {}", baseURL);
         Command current = head.next(null);
         Result totalResult = SUCCESS;
         while (current != null) {
