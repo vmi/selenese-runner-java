@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 public class Main {
@@ -110,7 +111,7 @@ public class Main {
             .create('b'));
         options.addOption(OptionBuilder.withLongOpt("chromedriver")
             .hasArg().withArgName("path")
-            .withDescription("path to 'chromedriver' binary")
+            .withDescription("path to 'chromedriver' binary (implies '--driver chrome')")
             .create());
         options.addOption(OptionBuilder.withLongOpt("result-dir")
             .hasArg().withArgName("dir")
@@ -182,6 +183,8 @@ public class Main {
                 help();
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
+            if (driverName == null && driverOptions.has(DriverOption.CHROMEDRIVER))
+                driverName = WebDriverManager.CHROME;
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
