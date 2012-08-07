@@ -32,7 +32,7 @@ public class Main {
 
     private static final int HELP_WIDTH = 78;
 
-    private static final String PROG_TITLE = "Selenese Runner %s";
+    private static final String PROG_TITLE = "Selenese Runner";
 
     private static final String HEADER = "Selenese script interpreter implemented by Java.";
 
@@ -152,7 +152,7 @@ public class Main {
         HelpFormatter fmt = new HelpFormatter();
         fmt.setOptionComparator(options.getOptionComparator());
         PrintWriter pw = new PrintWriter(System.out);
-        pw.format(PROG_TITLE + "\n\n" + HEADER + "\n\n", getVersion());
+        pw.format(PROG_TITLE + " %s\n\n" + HEADER + "\n\n", getVersion());
         fmt.setSyntaxPrefix("Usage: ");
         fmt.printHelp(pw, HELP_WIDTH, progName + " <option> ... <testcase|testsuite> ...\n",
             null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
@@ -166,8 +166,9 @@ public class Main {
         CommandLine cli = null;
         try {
             cli = new PosixParser().parse(options, args);
+            log.debug("Specified options:");
             for (Option opt : cli.getOptions())
-                log.debug(opt.getLongOpt() + ":" + opt.getValue());
+                log.debug("[{}]=[{}]", opt.getLongOpt(), opt.getValue());
         } catch (ParseException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
@@ -181,6 +182,7 @@ public class Main {
             String[] filenames = cli.getArgs();
             if (filenames.length == 0)
                 help();
+            log.info("Start: " + PROG_TITLE + " {}", getVersion());
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
             if (driverName == null && driverOptions.has(DriverOption.CHROMEDRIVER))

@@ -54,6 +54,9 @@ public class TestSuite implements Selenese {
 
     @Override
     public String toString() {
-        return "TestSuite[" + name + "] (" + file + ")";
+        StringBuilder s = new StringBuilder("TestSuite[").append(name).append("]");
+        if (file != null)
+            s.append(" (").append(file).append(")");
+        return s.toString();
     }
 }

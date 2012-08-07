@@ -174,6 +174,9 @@ public class TestCase implements Selenese, Test {
 
     @Override
     public String toString() {
-        return "TestCase[" + name + "] (" + file + ")";
+        StringBuilder s = new StringBuilder("TestCase[").append(name).append("]");
+        if (file != null)
+            s.append(" (").append(file).append(")");
+        return s.toString();
     }
 }

@@ -24,7 +24,7 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
-        log.info("Start - {}", testCase);
+        log.info("Start: {}", testCase);
         JUnitResult.startTestCase(testCase);
         try {
             Result result = (Result) invocation.proceed();
@@ -33,7 +33,7 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             return result;
         } finally {
             JUnitResult.endTestCase();
-            log.info("End({}) - {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
+            log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }
     }
 }
