@@ -130,8 +130,10 @@ public final class JUnitResult {
     }
 
     public static void endTestSuite() {
-        TestSuite testSuite = currentTestSuite.get().pollFirst();
-        formatterMap.remove(testSuite).endTestSuite();
+        Formatter formatter = formatterMap.remove(currentTestSuite.get().pollFirst());
+        if (formatter == null)
+            return;
+        formatter.endTestSuite();
     }
 
     public static void startTestCase(TestCase testCase) {

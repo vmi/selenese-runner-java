@@ -24,7 +24,6 @@ public class Runner {
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
     private String baseURI = "";
-    private String resultDir = null;
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
@@ -85,17 +84,11 @@ public class Runner {
             return this.baseURI;
     }
 
-    public String getResultDir() {
-        return resultDir;
-    }
-
     public void setResultDir(String resultDir) {
-        this.resultDir = resultDir;
-
+        JUnitResult.setResultDir(resultDir);
     }
 
     public Result run(File file) {
-        JUnitResult.setResultDir(resultDir);
         try {
             Selenese selenese = Parser.parse(file, this);
             return selenese.execute(this);
