@@ -1,14 +1,42 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>jp.vmi.selenium</groupId>
+  <groupId>jp.vmi</groupId>
   <artifactId>selenese-runner-java</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>selenese-runner-java</name>
   <url>https://github.com/vmi/selenese-runner-java</url>
-  <description>This is selenese script interpreter implemented by Java.</description>
+  <description>This is selenese script interpreter implemented by Java.
+It supports test-case and test-suite which are Selenium IDE's native format.</description>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git@github.com:vmi/selenese-runner-java.git</connection>
+    <developerConnection>scm:git:git@github.com:vmi/selenese-runner-java.git</developerConnection>
+    <url>git@github.com:vmi/selenese-runner-java.git</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>vmi</id>
+      <name>IWAMURO Motonori</name>
+      <email>vmi@nifty.com</email>
+    </developer>
+    <developer>
+      <id>hayato1980</id>
+      <name>ITO Hayato</name>
+      <email>haya10.ito@gmail.com</email>
+    </developer>
+  </developers>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

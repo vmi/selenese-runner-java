@@ -123,7 +123,7 @@ public class Main {
     }
 
     public String getVersion() {
-        InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi.selenium/selenese-runner-java/pom.properties");
+        InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties");
         if (is != null) {
             try {
                 Properties prop = new Properties();
