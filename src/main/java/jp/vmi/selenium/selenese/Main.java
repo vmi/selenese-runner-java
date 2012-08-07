@@ -72,7 +72,7 @@ public class Main {
     public Main() {
         options.addOption(OptionBuilder.withLongOpt("driver")
             .hasArg().withArgName("driver")
-            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | FQCN-of-WebDriverFactory.")
+            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | FQCN-of-WebDriverFactory")
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
@@ -103,22 +103,22 @@ public class Main {
             .withDescription("directory for screenshot images. (default: current directory)")
             .create('s'));
         options.addOption(OptionBuilder.withLongOpt("screenshot-all")
-            .withDescription("screenshot all commands")
+            .withDescription("take screenshot at all commands.")
             .create('S'));
         options.addOption(OptionBuilder.withLongOpt("baseurl")
             .hasArg().withArgName("baseURL")
-            .withDescription("override base URL set in selenese")
+            .withDescription("override base URL set in selenese.")
             .create('b'));
         options.addOption(OptionBuilder.withLongOpt("chromedriver")
             .hasArg().withArgName("path")
-            .withDescription("path to 'chromedriver' binary (implies '--driver chrome')")
+            .withDescription("path to 'chromedriver' binary. (implies '--driver chrome')")
             .create());
         options.addOption(OptionBuilder.withLongOpt("result-dir")
             .hasArg().withArgName("dir")
-            .withDescription("directory for XML JUnit result")
+            .withDescription("output XML JUnit results to specified directory. (default: no output)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("show this message")
+            .withDescription("show this message.")
             .create('h'));
     }
 
