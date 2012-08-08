@@ -27,13 +27,14 @@ public class BuiltInCommand extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
+        String result = "";
         try {
-            String result = testCase.doBuiltInCommand(realName, testCase.replaceVariables(args));
+            result = testCase.doBuiltInCommand(realName, testCase.replaceVariables(args));
             if (andWait)
                 testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
             return StringUtils.isNotEmpty(result) ? new Success(result) : SUCCESS;
         } catch (SeleniumException e) {
-            return new Failure(e.getMessage());
+            return new Failure("failed command:" + this.toString() + " result:" + e.getMessage());
         }
     }
 }
