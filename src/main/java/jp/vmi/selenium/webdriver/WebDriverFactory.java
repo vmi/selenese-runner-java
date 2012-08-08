@@ -8,7 +8,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
-abstract public class WebDriverFactory {
+public abstract class WebDriverFactory {
 
     protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {
         if (driverOptions.has(PROXY)) {
@@ -25,5 +25,5 @@ abstract public class WebDriverFactory {
         return capabilities;
     }
 
-    abstract public WebDriver newInstance(DriverOptions driverOptions);
+    public abstract WebDriver newInstance(DriverOptions driverOptions);
 }

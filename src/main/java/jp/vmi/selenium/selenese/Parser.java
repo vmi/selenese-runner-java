@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-abstract public class Parser {
+public abstract class Parser {
 
     protected static class NodeIterator implements Iterator<Node> {
         private final NodeList nodeList;
@@ -90,5 +90,5 @@ abstract public class Parser {
         this.docucment = document;
     }
 
-    abstract protected Selenese parse(Runner runner) throws InvalidSeleneseException;
+    protected abstract Selenese parse(Runner runner) throws InvalidSeleneseException;
 }
