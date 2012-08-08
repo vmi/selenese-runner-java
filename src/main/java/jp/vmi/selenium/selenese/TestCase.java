@@ -46,6 +46,15 @@ public class TestCase implements Selenese, Test {
     private final CommandList commandList = new CommandList();
     private Command prev = commandList;
 
+    /**
+     * Initalize instance.
+     * 
+     * @param file selenese script html file.
+     * @param name This testcase name.
+     * @param driver Target WebDriver instance.
+     * @param baseURL target baseURL.
+     * @return initialized TestCase instance.
+     */
     public TestCase initialize(File file, String name, WebDriver driver, String baseURL) {
         this.file = file;
         this.name = name;

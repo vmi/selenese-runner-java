@@ -16,6 +16,13 @@ public class Command {
     protected final String[] args;
     protected Command next = null;
 
+    /**
+     * constructor.
+     * 
+     * @param index index number of Command
+     * @param name selenese command
+     * @param args command arguments.
+     */
     Command(int index, String name, String... args) {
         this.index = index;
         this.name = name;
