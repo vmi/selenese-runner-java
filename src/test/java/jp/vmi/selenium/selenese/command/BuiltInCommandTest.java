@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.*;
