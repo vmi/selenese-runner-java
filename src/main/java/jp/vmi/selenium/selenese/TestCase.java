@@ -16,14 +16,13 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
-
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.Command.Result;
-import jp.vmi.selenium.selenese.command.DummyHead;
+import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
@@ -44,8 +43,8 @@ public class TestCase implements Selenese, Test {
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
-    private final Command head = new DummyHead();
-    private Command prev = head;
+    private final CommandList commandList = new CommandList();
+    private Command prev = commandList;
 
     public TestCase initialize(File file, String name, WebDriver driver, String baseURL) {
         this.file = file;
@@ -147,7 +146,7 @@ public class TestCase implements Selenese, Test {
     @Override
     public Result execute(Runner runner) {
         log.info("baseURL: {}", baseURL);
-        Command current = head.next(null);
+        Command current = commandList.first();
         Result totalResult = SUCCESS;
         while (current != null) {
             log.info(current.toString());
