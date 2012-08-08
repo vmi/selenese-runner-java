@@ -3,6 +3,9 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.result.Result.*;
 
 public class Store extends Command {
 

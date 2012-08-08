@@ -5,6 +5,11 @@ import org.apache.commons.lang.StringUtils;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.result.Failure;
+import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
+
+import static jp.vmi.selenium.selenese.result.Result.*;
 
 public class BuiltInCommand extends Command {
 

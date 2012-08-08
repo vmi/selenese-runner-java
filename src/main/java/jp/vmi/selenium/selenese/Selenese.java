@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese;
 
-import jp.vmi.selenium.selenese.command.Command.Result;
+import jp.vmi.selenium.selenese.result.Result;
 
 public interface Selenese {
 

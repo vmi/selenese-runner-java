@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.Command.Result;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.result.Result.*;
 
 public class TestSuite implements Selenese {
 
@@ -46,7 +47,7 @@ public class TestSuite implements Selenese {
     @ExecuteTestSuite
     @Override
     public Result execute(Runner runner) {
-        Result totalResult = Command.SUCCESS;
+        Result totalResult = SUCCESS;
         for (File file : files)
             totalResult = totalResult.update(runner.run(file));
         return totalResult;
