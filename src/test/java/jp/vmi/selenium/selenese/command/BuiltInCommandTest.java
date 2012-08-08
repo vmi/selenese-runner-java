@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Test class for BuiltInCommand class.
+ * Test for {@link BuiltInCommand}.
  */
 public class BuiltInCommandTest {
     @Test

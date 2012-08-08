@@ -7,6 +7,9 @@ import org.openqa.selenium.Platform;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for Internet Explorer.
+ */
 public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
 
     @Before

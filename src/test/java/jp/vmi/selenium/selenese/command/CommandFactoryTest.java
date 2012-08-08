@@ -11,6 +11,9 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for {@link CommandFactory}.
+ */
 public class CommandFactoryTest {
 
     private final WebDriverManager manager = WebDriverManager.getInstance();

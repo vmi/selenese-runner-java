@@ -9,7 +9,10 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.junit.Assert.*;
 
-public class ContextTest {
+/**
+ * Test for {@link TestCase}.
+ */
+public class TestCaseTest {
 
     private WebDriver driver;
 

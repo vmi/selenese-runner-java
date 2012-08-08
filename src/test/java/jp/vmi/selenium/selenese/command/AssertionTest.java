@@ -12,7 +12,11 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+/**
+ * test for {@link Assertion}.
+ */
 public class AssertionTest {
+
     @Test
     public void userfriendryAssertionMessage() throws IOException {
         Assertion assertion = new Assertion(1, "assertTitle", new String[] { "title", "title" }, "assert", "getTitle", false, false);

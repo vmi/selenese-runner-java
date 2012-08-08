@@ -5,6 +5,9 @@ import org.junit.Ignore;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for Safari.
+ */
 @Ignore("not yet ready to safari test.")
 public class CommandRunnerSafariTest extends CommandRunnerTest {
 

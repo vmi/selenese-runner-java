@@ -8,6 +8,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test for HtmlUnit.
+ */
 public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
 
     @Override

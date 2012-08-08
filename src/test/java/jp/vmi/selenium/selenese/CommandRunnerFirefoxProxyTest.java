@@ -12,6 +12,9 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for Firefox with proxy.
+ */
 public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     static Proxy proxy = new Proxy();
 

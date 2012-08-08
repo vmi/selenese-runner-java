@@ -7,6 +7,9 @@ import org.junit.Ignore;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for Safari with proxy.
+ */
 @Ignore("not yet ready to safari proxy test.")
 public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
     static Proxy proxy = new Proxy();

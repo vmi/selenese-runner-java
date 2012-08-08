@@ -7,6 +7,9 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for HtmlUnit with proxy.
+ */
 public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
     static Proxy proxy = new Proxy();
 

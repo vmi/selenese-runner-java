@@ -12,6 +12,9 @@ import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test for {@link Runner}.
+ */
 public class RunnerTest {
 
     @Test

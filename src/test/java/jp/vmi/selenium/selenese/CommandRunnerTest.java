@@ -21,6 +21,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+/**
+ * Super class of test classes for running commands.
+ */
 public abstract class CommandRunnerTest {
 
     @Rule

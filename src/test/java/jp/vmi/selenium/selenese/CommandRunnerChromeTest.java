@@ -11,6 +11,9 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for Chrome.
+ */
 public class CommandRunnerChromeTest extends CommandRunnerTest {
 
     protected DriverOptions driverOptions = new DriverOptions();

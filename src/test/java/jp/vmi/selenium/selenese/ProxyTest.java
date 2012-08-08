@@ -5,6 +5,9 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+/**
+ * Test for {@link Proxy}.
+ */
 public class ProxyTest {
 
     @Test

@@ -7,6 +7,9 @@ import org.junit.Test;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Test for {@link TestSuite}.
+ */
 public class TestSuiteTest {
 
     @Test

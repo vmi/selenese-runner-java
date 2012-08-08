@@ -9,6 +9,9 @@ import org.junit.rules.TemporaryFolder;
 
 import static jp.vmi.selenium.webdriver.FirefoxDriverFactory.*;
 
+/**
+ * Test for {@link FirefoxDriverFactory}.
+ */
 public class FirefoxDriverFactoryTest {
 
     @Rule

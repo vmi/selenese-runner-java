@@ -14,6 +14,9 @@ import jp.vmi.selenium.selenese.inject.Binder;
 
 import static jp.vmi.selenium.selenese.junit.JUnitResult.*;
 
+/**
+ * Test for {@link JUnitResult}.
+ */
 public class JUnitResultTest {
 
     @Rule

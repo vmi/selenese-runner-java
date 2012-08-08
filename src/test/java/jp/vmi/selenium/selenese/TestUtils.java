@@ -10,6 +10,9 @@ import java.net.UnknownHostException;
 
 import org.junit.Assume;
 
+/**
+ * Utility for Test.
+ */
 public final class TestUtils {
 
     private TestUtils() {
