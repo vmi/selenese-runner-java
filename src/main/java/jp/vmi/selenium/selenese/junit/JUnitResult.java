@@ -114,6 +114,14 @@ public final class JUnitResult {
         @Override
         public void addFailure(String message) {
         }
+
+        @Override
+        public void addSystemOut(String formattedMessage) {
+        }
+
+        @Override
+        public void addSystemErr(String formattedMessage) {
+        }
     };
 
     private static final ThreadLocal<Deque<TestSuite>> currentTestSuite = new ThreadLocal<Deque<TestSuite>>();
