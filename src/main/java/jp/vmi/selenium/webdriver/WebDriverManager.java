@@ -10,20 +10,41 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Supplier;
 
+/**
+ * Manager of {@link WebDriver} instances.
+ */
 public class WebDriverManager implements Supplier<WebDriver> {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverManager.class);
 
+    /**
+     * Firefox.
+     */
     public static final String FIREFOX = "firefox";
 
+    /**
+     * Chrome.
+     */
     public static final String CHROME = "chrome";
 
+    /**
+     * Internet Explorer.
+     */
     public static final String IE = "ie";
 
+    /**
+     * Html Unit.
+     */
     public static final String HTMLUNIT = "htmlunit";
 
+    /**
+     * Safari.
+     */
     public static final String SAFARI = "safari";
 
+    /**
+     * System property name for user defined {@link WebDriverFactory}.
+     */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
 
     private static final WebDriverManager manager = new WebDriverManager();
@@ -36,6 +57,11 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
     private final Map<String, WebDriver> driverMap = new HashMap<String, WebDriver>();
 
+    /**
+     * Get WebDriverManager instance. (singleton)
+     *
+     * @return WebDriverMangaer.
+     */
     public static WebDriverManager getInstance() {
         return manager;
     }
@@ -51,18 +77,38 @@ public class WebDriverManager implements Supplier<WebDriver> {
         });
     }
 
+    /**
+     * Is single instance of WebDriver?
+     *
+     * @return true if
+     */
     public boolean isSingleInstance() {
         return isSingleInstance;
     }
 
+    /**
+     * Set single instance of WebDriver.
+     *
+     * @param isSingleInstance if true, the number of WebDriver instance is only 1.
+     */
     public void setSingleInstance(boolean isSingleInstance) {
         this.isSingleInstance = isSingleInstance;
     }
 
+    /**
+     * Set current WebDriverFactory.
+     *
+     * @param factory WebDriverFactory instance.
+     */
     public void setWebDriverFactory(WebDriverFactory factory) {
         this.factory = factory;
     }
 
+    /**
+     * Set current WebDriverFactory name.
+     *
+     * @param factoryName WebDriverFactory name.
+     */
     public void setWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;
@@ -89,15 +135,25 @@ public class WebDriverManager implements Supplier<WebDriver> {
         setWebDriverFactory(factory);
     }
 
+    /**
+     * Get current driver options.
+     *
+     * @return DriverOptions instance.
+     */
     public DriverOptions getDriverOptions() {
         return driverOptions;
     }
 
-    public void setDriverOptions(DriverOptions options) {
-        this.driverOptions = options;
+    /**
+     * Set current driver options.
+     *
+     * @param driverOptions DriverOptions instance.
+     */
+    public void setDriverOptions(DriverOptions driverOptions) {
+        this.driverOptions = driverOptions;
     }
 
-    public String getDriverName(WebDriver driver) {
+    private String getDriverName(WebDriver driver) {
         String name = driver.getClass().getSimpleName();
         if (StringUtils.isNotBlank(name))
             return name;
@@ -119,6 +175,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
         return driver;
     }
 
+    /**
+     * Quit all WebDriver instances.
+     */
     public synchronized void quitAllDrivers() {
         for (WebDriver driver : driverMap.values()) {
             try {

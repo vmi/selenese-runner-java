@@ -11,6 +11,9 @@ import com.gargoylesoftware.htmlunit.WebClient;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
+/**
+ * Factory of {@link HtmlUnitDriver}.
+ */
 public class HtmlUnitDriverFactory extends WebDriverFactory {
 
     @Override

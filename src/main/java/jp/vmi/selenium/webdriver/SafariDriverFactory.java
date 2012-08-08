@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
+/**
+ * Factory of {@link SafariDriver}.
+ */
 public class SafariDriverFactory extends WebDriverFactory {
 
     private static Logger log = LoggerFactory.getLogger(SafariDriverFactory.class);

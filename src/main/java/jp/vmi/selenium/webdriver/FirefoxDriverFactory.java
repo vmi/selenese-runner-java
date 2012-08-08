@@ -12,8 +12,14 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
+/**
+ * Factory of {@link FirefoxDriver}.
+ */
 public class FirefoxDriverFactory extends WebDriverFactory {
 
+    /**
+     * System property name for specifying Firefox binary.
+     */
     public static final String WEBDRIVER_FIREFOX_BIN = "webdriver.firefox.bin";
 
     @Override

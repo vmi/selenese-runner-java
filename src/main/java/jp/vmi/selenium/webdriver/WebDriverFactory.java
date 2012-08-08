@@ -8,6 +8,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
+/**
+ * Abstract class of factory for {@link WebDriver}s.
+ */
 public abstract class WebDriverFactory {
 
     protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {
@@ -25,5 +28,11 @@ public abstract class WebDriverFactory {
         return capabilities;
     }
 
+    /**
+     * Create new WebDriver instance with driver options.
+     *
+     * @param driverOptions driver options.
+     * @return WebDriver instance.
+     */
     public abstract WebDriver newInstance(DriverOptions driverOptions);
 }

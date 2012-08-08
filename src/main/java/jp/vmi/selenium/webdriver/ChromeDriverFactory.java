@@ -7,8 +7,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 import static org.openqa.selenium.chrome.ChromeDriverService.*;
 
-/*
- * see: http://code.google.com/p/chromedriver/
+/**
+ * Factory of {@link ChromeDriver}.
+ *
+ * @see <a href="http://code.google.com/p/chromedriver/">chromedriver - WebDriver for Google Chrome</a>
  */
 public class ChromeDriverFactory extends WebDriverFactory {
 

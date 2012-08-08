@@ -4,11 +4,21 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.ui.Duration;
 
+/**
+ * Utilities for logging.
+ */
 public final class LoggerUtils {
 
     private LoggerUtils() {
     }
 
+    /**
+     * convert duration to string.
+     *
+     * @param stime start time.
+     * @param etime end time.
+     * @return duration string.
+     */
     public static String durationToString(long stime, long etime) {
         StringBuilder ds = new StringBuilder();
         Duration d = new Duration(etime - stime, TimeUnit.NANOSECONDS);
@@ -28,10 +38,22 @@ public final class LoggerUtils {
         return ds.toString();
     }
 
+    /**
+     * quote backslash and doublequote.
+     *
+     * @param str raw string.
+     * @return quoted string.
+     */
     public static String quote(String str) {
         return "\"" + str.replaceAll("([\\\\\"])", "\\\\$1") + "\"";
     }
 
+    /**
+     * quote backslash and doublequote for each strings.
+     *
+     * @param strs raw strings.
+     * @return quoted strings.
+     */
     public static String[] quote(String[] strs) {
         int len = strs.length;
         String[] result = new String[len];
