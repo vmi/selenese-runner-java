@@ -5,9 +5,12 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.result.Result;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.junit.JUnitResult;
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 public class ExecuteTestCaseInterceptor implements MethodInterceptor {
@@ -26,12 +29,23 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         long stime = System.nanoTime();
         log.info("Start: {}", testCase);
         JUnitResult.startTestCase(testCase);
+        ListAppender<ILoggingEvent> appender = new ListAppender<ILoggingEvent>();
+        appender.start();
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.addAppender(appender);
         try {
             Result result = (Result) invocation.proceed();
             if (result.isFailed())
                 JUnitResult.addFailure(result.getMessage());
             return result;
         } finally {
+            for (ILoggingEvent e : appender.list) {
+                JUnitResult.addSystemOut(e.getFormattedMessage());
+                if (e.getLevel().isGreaterOrEqual(Level.ERROR))
+                    JUnitResult.addSystemErr(e.getFormattedMessage());
+            }
+            root.detachAppender(appender);
+            appender.stop();
             JUnitResult.endTestCase();
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }

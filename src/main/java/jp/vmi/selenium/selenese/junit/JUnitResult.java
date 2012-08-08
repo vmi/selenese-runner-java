@@ -79,6 +79,14 @@ public final class JUnitResult {
         public void addFailure(String message) {
             formatter.addFailure(testCase, new AssertionFailedError(message));
         }
+
+        public void addSystemOut(String formattedMessage) {
+            formatter.setSystemOutput(formattedMessage);
+        }
+
+        public void addSystemErr(String formattedMessage) {
+            formatter.setSystemError(formattedMessage);
+        }
     }
 
     private static final Formatter NULL_FORMATTER = new Formatter() {
@@ -164,5 +172,13 @@ public final class JUnitResult {
 
     public static void addFailure(String message) {
         getFormatter().addFailure(message);
+    }
+
+    public static void addSystemOut(String formattedMessage) {
+        getFormatter().addSystemOut(formattedMessage);
+    }
+
+    public static void addSystemErr(String formattedMessage) {
+        getFormatter().addSystemErr(formattedMessage);
     }
 }
