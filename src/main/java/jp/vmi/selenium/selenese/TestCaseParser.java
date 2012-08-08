@@ -21,11 +21,14 @@ import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 
+/**
+ * Parse Selenese script of test-case.
+ */
 public class TestCaseParser extends Parser {
 
     private final String baseURL;
 
-    public TestCaseParser(File file, Document document, String baseURL) throws InvalidSeleneseException {
+    protected TestCaseParser(File file, Document document, String baseURL) throws InvalidSeleneseException {
         super(file, document);
         this.baseURL = baseURL;
     }
@@ -34,7 +37,7 @@ public class TestCaseParser extends Parser {
     public Selenese parse(Runner runner) {
         try {
             WebDriver driver = runner.getDriver();
-            String baseURL = runner.getBaseURL(this.baseURL);
+            String baseURL = runner.getEffectiveBaseURL(this.baseURL);
             String name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(file, name, driver, baseURL);
             CommandFactory commandFactory = new CommandFactory(testCase.getProc());

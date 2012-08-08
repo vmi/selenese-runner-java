@@ -11,6 +11,9 @@ import org.w3c.dom.NodeList;
 
 import jp.vmi.selenium.selenese.inject.Binder;
 
+/**
+ * Parse Selenese script of test-suite.
+ */
 public class TestSuiteParser extends Parser {
 
     protected TestSuiteParser(File file, Document document) {

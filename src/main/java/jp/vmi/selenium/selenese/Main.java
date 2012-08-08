@@ -22,11 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.result.Result;
-
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+/**
+ * Provide command line interface.
+ */
 public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -69,6 +71,9 @@ public class Main {
 
     private final SROptions options = new SROptions();
 
+    /**
+     * Constructor.
+     */
     @SuppressWarnings("static-access")
     public Main() {
         options.addOption(OptionBuilder.withLongOpt("driver")
@@ -123,6 +128,13 @@ public class Main {
             .create('h'));
     }
 
+    /**
+     * Get version of Selenese Runner.
+     * <p>
+     * This information is provided by maven generated property file.
+     * </p>
+     * @return version string.
+     */
     public String getVersion() {
         InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties");
         if (is != null) {
@@ -175,6 +187,13 @@ public class Main {
         exit(1);
     }
 
+    /**
+     * Parse command line arguments.
+     *
+     * @param args command line arguments.
+     * @return parsed command line information.
+     * @throws IllegalArgumentException invalid options.
+     */
     public CommandLine parseCommandLine(String[] args) throws IllegalArgumentException {
         CommandLine cli = null;
         try {
@@ -188,6 +207,11 @@ public class Main {
         return cli;
     }
 
+    /**
+     * Start Selenese Runner.
+     *
+     * @param args command line arguments.
+     */
     public void run(String[] args) {
         int exitCode = 1;
         try {
@@ -219,14 +243,14 @@ public class Main {
         exit(exitCode);
     }
 
-    public void exit(int exitCode) {
+    protected void exit(int exitCode) {
         System.exit(exitCode);
     }
 
     /**
      * Selenese Runner main.
      *
-     * @param args options and filenames
+     * @param args command line arguments.
      */
     public static void main(String[] args) {
         new Main().run(args);

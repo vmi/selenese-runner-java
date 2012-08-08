@@ -28,6 +28,9 @@ import junit.framework.TestResult;
 
 import static jp.vmi.selenium.selenese.result.Result.*;
 
+/**
+ * test-case object for execution.
+ */
 @Ignore
 public class TestCase implements Selenese, Test {
 
@@ -47,13 +50,13 @@ public class TestCase implements Selenese, Test {
     private Command prev = commandList;
 
     /**
-     * Initalize instance.
+     * Initialize after constructed.
      * 
-     * @param file selenese script html file.
-     * @param name This testcase name.
-     * @param driver Target WebDriver instance.
-     * @param baseURL target baseURL.
-     * @return initialized TestCase instance.
+     * @param file selenese script file.
+     * @param name test-case name.
+     * @param driver target WebDriver instance.
+     * @param baseURL effective base URL.
+     * @return this.
      */
     public TestCase initialize(File file, String name, WebDriver driver, String baseURL) {
         this.file = file;
@@ -70,14 +73,31 @@ public class TestCase implements Selenese, Test {
         return name;
     }
 
+    /**
+     * Get WebDriverCommandProcessor generated at initialize.
+     *
+     * @return WebDriverCommandProcessor.
+     */
     public WebDriverCommandProcessor getProc() {
         return proc;
     }
 
+    /**
+     * Get WebDriver.
+     *
+     * @return WebDriver.
+     */
     public WebDriver getDriver() {
         return driver;
     }
 
+    /**
+     * Run built-in command of WebDriverCommandProcessor.
+     *
+     * @param name command name.
+     * @param args arguments.
+     * @return result.
+     */
     public String doBuiltInCommand(String name, String... args) {
         try {
             return proc.doCommand(name, args);
@@ -89,6 +109,13 @@ public class TestCase implements Selenese, Test {
         }
     }
 
+    /**
+     * Run built-in command of WebDriverCommandProcessor. It returns boolean.
+     *
+     * @param name command name.
+     * @param args arguments.
+     * @return result.
+     */
     public boolean isBuiltInCommand(String name, String... args) {
         try {
             return proc.getBoolean(name, args);
@@ -100,15 +127,33 @@ public class TestCase implements Selenese, Test {
         }
     }
 
+    /**
+     * Set variable value.
+     *
+     * @param value value.
+     * @param varName variable name.
+     */
     public void setVariable(String value, String varName) {
         variableMap.put(varName, value);
     }
 
+    /**
+     * Replace variable reference to value.
+     *
+     * @param expr expression string.
+     * @return replaced string.
+     */
     public String replaceVariables(String expr) {
         StrSubstitutor s = new StrSubstitutor(variableMap);
         return s.replace(expr);
     }
 
+    /**
+     * Replace variable reference to value for each strings.
+     *
+     * @param exprs expression strings.
+     * @return replaced strings.
+     */
     public String[] replaceVariables(String[] exprs) {
         String[] result = new String[exprs.length];
         for (int i = 0; i < exprs.length; i++)
@@ -116,38 +161,77 @@ public class TestCase implements Selenese, Test {
         return result;
     }
 
+    /**
+     * Evaluate expression and return boolean result.
+     *
+     * @param expr expression string.
+     * @return result.
+     */
     public boolean isTrue(String expr) {
         return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { replaceVariables(expr) }));
     }
 
+    /**
+     * Create new collection (FIFO).
+     *
+     * @param collectionName collection name.
+     */
     public void addCollection(String collectionName) {
         collectionMap.put(collectionName, new ArrayDeque<String>());
     }
 
+    /**
+     * Add value to collection.
+     *
+     * @param collectionName collection name.
+     * @param value value.
+     */
     public void addToCollection(String collectionName, String value) {
         Deque<String> collection = collectionMap.get(collectionName);
         collection.addLast(value);
     }
 
+    /**
+     * Poll value from collection.
+     *
+     * @param collectionName collection name.
+     * @return value.
+     */
     public String pollFromCollection(String collectionName) {
         Deque<String> collection = collectionMap.get(collectionName);
         return collection.pollFirst();
     }
 
+    /**
+     * Register label command.
+     *
+     * @param labelCommand label command.
+     */
     public void setLabelCommand(Label labelCommand) {
         labelCommandMap.put(labelCommand.getLabel(), labelCommand);
     }
 
+    /**
+     * Get label by name.
+     *
+     * @param label label name.
+     * @return label command.
+     */
     public Label getLabelCommand(String label) {
         return labelCommandMap.get(label);
     }
 
+    /**
+     * Add command to command list.
+     *
+     * @param command command.
+     */
     public void addCommand(Command command) {
         prev = prev.setNext(command);
     }
 
     @DoCommand
-    public Result doCommand(Command command) {
+    protected Result doCommand(Command command) {
         return command.doCommand(this);
     }
 

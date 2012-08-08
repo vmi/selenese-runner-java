@@ -10,6 +10,9 @@ import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Result.*;
 
+/**
+ * test-suite object for execution.
+ */
 public class TestSuite implements Selenese {
 
     private File file;
@@ -17,6 +20,13 @@ public class TestSuite implements Selenese {
     private String name;
     private final List<File> files = new ArrayList<File>();
 
+    /**
+     * Initialize after constructed.
+     *
+     * @param file Selenese script file.
+     * @param name test-case name.
+     * @return this.
+     */
     public TestSuite initialize(File file, String name) {
         try {
             this.file = file;
@@ -37,6 +47,11 @@ public class TestSuite implements Selenese {
         return name;
     }
 
+    /**
+     * Add test-case filename.
+     *
+     * @param filename test-case filename.
+     */
     public void addTestCase(String filename) {
         File tcFile = new File(filename);
         if (!tcFile.isAbsolute())

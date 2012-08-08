@@ -14,6 +14,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+/**
+ * Abstract class of selenese parser.
+ */
 public abstract class Parser {
 
     protected static class NodeIterator implements Iterator<Node> {
@@ -51,6 +54,14 @@ public abstract class Parser {
         };
     }
 
+    /**
+     * Parse file.
+     *
+     * @param file selenese script file. (test-case or test-suite)
+     * @param runner Runner object.
+     * @return TestCase or TestSuite.
+     * @throws InvalidSeleneseException syntax error.
+     */
     public static Selenese parse(File file, Runner runner) throws InvalidSeleneseException {
         InputStream is = null;
         Parser p;
