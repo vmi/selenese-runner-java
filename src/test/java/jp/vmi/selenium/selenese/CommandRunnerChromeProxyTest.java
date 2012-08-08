@@ -1,20 +1,20 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
-    Proxy proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
-    @Before
-    public void startProxy() {
+    @BeforeClass
+    public static void startProxy() {
         proxy.start();
     }
 
-    @After
-    public void stopProxy() {
+    @AfterClass
+    public static void stopProxy() {
         proxy.kill();
     }
 

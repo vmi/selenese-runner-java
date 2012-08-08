@@ -1,7 +1,7 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -9,15 +9,15 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 
 @Ignore("not yet ready to safari proxy test.")
 public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
-    Proxy proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
-    @Before
-    public void startProxy() {
+    @BeforeClass
+    public static void startProxy() {
         proxy.start();
     }
 
-    @After
-    public void stopProxy() {
+    @AfterClass
+    public static void stopProxy() {
         proxy.kill();
     }
 
