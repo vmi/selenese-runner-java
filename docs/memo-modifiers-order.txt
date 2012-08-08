@@ -1,0 +1,13 @@
+Modifiers order:
+
+    public protected private
+    abstract
+    static
+    final
+    transient
+    volatile
+    synchronized
+    native
+    strictfp
+
+http://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#toString(int)
