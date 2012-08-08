@@ -2,9 +2,8 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang.StringUtils;
 
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
-
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 // https://github.com/davehunt/selenium-ide-flowcontrol
 public class Command {
@@ -131,10 +130,10 @@ public class Command {
     }
 
     /**
-     * Seleneseコマンドを実行する
+     * execute selenese command.
      *
-     * @param context
-     * @return true: コマンド実行成功, false: コマンド実行失敗(verify系コマンドで検証に失敗したときなど)
+     * @param testCase
+     * @return true if command terminated normally.
      */
     public Result doCommand(TestCase testCase) {
         return SUCCESS;
