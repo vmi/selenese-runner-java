@@ -101,7 +101,7 @@ public class Runner {
         }
     }
 
-    public Result run(String[] filenames) {
+    public Result run(String... filenames) {
         TestSuite testSuite = Binder.newTestSuite(null, "default");
         for (String filename : filenames)
             testSuite.addTestCase(filename);

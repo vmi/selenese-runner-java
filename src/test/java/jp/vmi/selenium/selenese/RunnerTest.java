@@ -35,7 +35,7 @@ public class RunnerTest {
         File tmp = File.createTempFile("aaa", "test.html");
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
-        runner.run(new String[] { tmp.getPath(), tmp.getPath() });
+        runner.run(tmp.getPath(), tmp.getPath());
     }
 
 }
