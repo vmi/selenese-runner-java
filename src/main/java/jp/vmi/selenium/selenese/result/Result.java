@@ -26,9 +26,9 @@ public abstract class Result {
 
     public Result update(Result newResult) {
         if (newResult.isInterrupted())
-            return FAILURE;
+            return new Failure(this.getMessage() + "\n" + newResult.getMessage());
         else if (newResult.isFailed())
-            return WARNING;
+            return new Warning(this.getMessage() + "\n" + newResult.getMessage());
         else
             return this;
     }
