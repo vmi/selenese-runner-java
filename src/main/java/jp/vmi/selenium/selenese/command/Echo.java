@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 
-import static jp.vmi.selenium.selenese.result.Result.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 public class Echo extends Command {
 

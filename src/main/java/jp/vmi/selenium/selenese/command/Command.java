@@ -6,7 +6,7 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
-import static jp.vmi.selenium.selenese.result.Result.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 // https://github.com/davehunt/selenium-ide-flowcontrol
 public class Command {

@@ -8,7 +8,7 @@ import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 
-import static jp.vmi.selenium.selenese.result.Result.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 public class Pause extends Command {
 

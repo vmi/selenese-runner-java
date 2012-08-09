@@ -8,7 +8,7 @@ import java.util.List;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 
-import static jp.vmi.selenium.selenese.result.Result.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * test-suite object for execution.

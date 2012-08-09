@@ -26,7 +26,7 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
-import static jp.vmi.selenium.selenese.result.Result.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * test-case object for execution.
@@ -51,7 +51,7 @@ public class TestCase implements Selenese, Test {
 
     /**
      * Initialize after constructed.
-     * 
+     *
      * @param file selenese script file.
      * @param name test-case name.
      * @param driver target WebDriver instance.

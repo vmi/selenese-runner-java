@@ -5,9 +5,6 @@ package jp.vmi.selenium.selenese.result;
  */
 public abstract class Result {
 
-    /** Default success */
-    public static final Result SUCCESS = new Success("Success");
-
     private final String message;
 
     /**
