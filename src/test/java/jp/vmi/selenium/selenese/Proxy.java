@@ -20,8 +20,8 @@ public class Proxy {
 
     private static final Logger log = LoggerFactory.getLogger(Proxy.class);
 
-    public static int PORTNUM_MAX = 65535;
-    public static int PORTNUM_MIN = 10000;
+    protected static int PORTNUM_MAX = 65535;
+    protected static int PORTNUM_MIN = 10000;
 
     private final ScriptingContainer container;
 
