@@ -50,8 +50,8 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
                 if (e.getLevel().isGreaterOrEqual(Level.ERROR))
                     errorLogs.add(e.getFormattedMessage());
             }
-            JUnitResult.addSystemOut(StringUtils.join(normalLogs, System.getProperty("line.separator")));
-            JUnitResult.addSystemErr(StringUtils.join(errorLogs, System.getProperty("line.separator")));
+            JUnitResult.setSystemOut(StringUtils.join(normalLogs, System.getProperty("line.separator")));
+            JUnitResult.setSystemErr(StringUtils.join(errorLogs, System.getProperty("line.separator")));
             root.detachAppender(appender);
             appender.stop();
             JUnitResult.endTestCase();

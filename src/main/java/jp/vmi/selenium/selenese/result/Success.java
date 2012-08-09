@@ -1,9 +1,17 @@
 package jp.vmi.selenium.selenese.result;
 
+/**
+ * Result of success.
+ */
 public class Success extends Result {
 
+    /**
+     * Constructor.
+     *
+     * @param message success message.
+     */
     public Success(String message) {
-        super(true, message);
+        super(message);
     }
 
     @Override

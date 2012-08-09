@@ -1,13 +1,26 @@
 package jp.vmi.selenium.selenese.result;
 
+/**
+ * Result of failure.
+ */
 public class Failure extends Result {
 
+    /**
+     * Constructor.
+     *
+     * @param message failure message.
+     */
     public Failure(String message) {
-        super(false, message);
+        super(message);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param e Exception.
+     */
     public Failure(Exception e) {
-        super(false, e.getMessage());
+        super(e.getMessage());
     }
 
     @Override

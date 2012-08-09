@@ -19,6 +19,9 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import junit.framework.AssertionFailedError;
 
+/**
+ * Record and output test-suite & test-case results.
+ */
 public final class JUnitResult {
 
     private static final Logger log = LoggerFactory.getLogger(JUnitResult.class);
@@ -80,11 +83,11 @@ public final class JUnitResult {
             formatter.addFailure(testCase, new AssertionFailedError(message));
         }
 
-        public void addSystemOut(String formattedMessage) {
+        public void setSystemOut(String formattedMessage) {
             formatter.setSystemOutput(formattedMessage);
         }
 
-        public void addSystemErr(String formattedMessage) {
+        public void setSystemErr(String formattedMessage) {
             formatter.setSystemError(formattedMessage);
         }
     }
@@ -116,11 +119,11 @@ public final class JUnitResult {
         }
 
         @Override
-        public void addSystemOut(String formattedMessage) {
+        public void setSystemOut(String formattedMessage) {
         }
 
         @Override
-        public void addSystemErr(String formattedMessage) {
+        public void setSystemErr(String formattedMessage) {
         }
     };
 
@@ -138,10 +141,20 @@ public final class JUnitResult {
         return formatter;
     }
 
+    /**
+     * Set directory for storing results.
+     *
+     * @param dir directory.
+     */
     public static void setResultDir(String dir) {
         resultDir = dir;
     }
 
+    /**
+     * Start test-suite.
+     *
+     * @param testSuite test-suite instance.
+     */
     public static void startTestSuite(TestSuite testSuite) {
         Deque<TestSuite> deque = currentTestSuite.get();
         if (deque == null) {
@@ -155,6 +168,9 @@ public final class JUnitResult {
         formatterMap.put(testSuite, formatter);
     }
 
+    /**
+     * End test-suite.
+     */
     public static void endTestSuite() {
         Formatter formatter = formatterMap.remove(currentTestSuite.get().pollFirst());
         if (formatter == null)
@@ -162,31 +178,64 @@ public final class JUnitResult {
         formatter.endTestSuite();
     }
 
+    /**
+     * Start test-case.
+     *
+     * @param testCase test-case instance.
+     */
     public static void startTestCase(TestCase testCase) {
         getFormatter().startTestCase(testCase);
     }
 
+    /**
+     * End test-case.
+     */
     public static void endTestCase() {
         getFormatter().endTestCase();
     }
 
+    /**
+     * Add error in test-case.
+     *
+     * @param t throwable.
+     */
     public static void addError(Throwable t) {
         getFormatter().addError(t);
     }
 
+    /**
+     * Add failure in test-case.
+     *
+     * @param t throwable.
+     */
     public static void addFailure(Throwable t) {
         getFormatter().addFailure(t);
     }
 
+    /**
+     * Add message of failure in test-case.
+     *
+     * @param message failure message.
+     */
     public static void addFailure(String message) {
         getFormatter().addFailure(message);
     }
 
-    public static void addSystemOut(String formattedMessage) {
-        getFormatter().addSystemOut(formattedMessage);
+    /**
+     * Set System.out'ed message string.
+     *
+     * @param formattedMessage message.
+     */
+    public static void setSystemOut(String formattedMessage) {
+        getFormatter().setSystemOut(formattedMessage);
     }
 
-    public static void addSystemErr(String formattedMessage) {
-        getFormatter().addSystemErr(formattedMessage);
+    /**
+     * Set System.err'ed message string.
+     *
+     * @param formattedMessage message.
+     */
+    public static void setSystemErr(String formattedMessage) {
+        getFormatter().setSystemErr(formattedMessage);
     }
 }
