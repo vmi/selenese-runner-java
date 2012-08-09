@@ -11,30 +11,10 @@ import static org.junit.Assert.*;
 public class ProxyTest {
 
     @Test
-    public void usablePort() {
-        for (int i = 0; i < 1000; i++) {
-            int port = Proxy.getUsablePort();
-            assertTrue(Proxy.PORTNUM_MIN < port);
-            assertTrue(port < Proxy.PORTNUM_MAX);
-        }
-    }
-
-    @Test
     public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
             Proxy proxy = new Proxy();
             proxy.start();
-            proxy.kill();
-        }
-    }
-
-    @Test
-    public void testCanUseMethod() {
-        Proxy proxy = new Proxy();
-        proxy.start();
-        try {
-            assertThat(Proxy.canUse(proxy.getPort()), is(not(true)));
-        } finally {
             proxy.kill();
         }
     }
@@ -44,6 +24,6 @@ public class ProxyTest {
         Proxy proxy = new Proxy();
         proxy.start();
         proxy.kill();
-        assertThat(Proxy.canUse(proxy.getPort()), is(true));
+        assertThat(NetUtil.canUse(proxy.getPort()), is(true));
     }
 }
