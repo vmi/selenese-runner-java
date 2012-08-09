@@ -1,7 +1,11 @@
 package jp.vmi.selenium.selenese.inject;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +43,15 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
                 JUnitResult.addFailure(result.getMessage());
             return result;
         } finally {
+            List<String> normalLogs = new LinkedList<String>();
+            List<String> errorLogs = new LinkedList<String>();
             for (ILoggingEvent e : appender.list) {
-                JUnitResult.addSystemOut(e.getFormattedMessage());
+                normalLogs.add(e.getFormattedMessage());
                 if (e.getLevel().isGreaterOrEqual(Level.ERROR))
-                    JUnitResult.addSystemErr(e.getFormattedMessage());
+                    errorLogs.add(e.getFormattedMessage());
             }
+            JUnitResult.addSystemOut(StringUtils.join(normalLogs, System.getProperty("line.separator")));
+            JUnitResult.addSystemErr(StringUtils.join(errorLogs, System.getProperty("line.separator")));
             root.detachAppender(appender);
             appender.stop();
             JUnitResult.endTestCase();
