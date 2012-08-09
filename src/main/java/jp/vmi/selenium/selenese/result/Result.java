@@ -3,8 +3,6 @@ package jp.vmi.selenium.selenese.result;
 public abstract class Result {
 
     public static final Result SUCCESS = new Success("Success");
-    public static final Result WARNING = new Warning("Warning");
-    public static final Result FAILURE = new Failure("Failure");
 
     private final String message;
 
