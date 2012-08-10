@@ -30,6 +30,10 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * test-case object for execution.
+ * <p>
+ * Supports Selenium IDE flow control plugin.
+ * </p>
+ * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
 @Ignore
 public class TestCase implements Selenese, Test {

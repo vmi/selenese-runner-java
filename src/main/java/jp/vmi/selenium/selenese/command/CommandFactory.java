@@ -12,6 +12,9 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+/**
+ * Factory of selenese command.
+ */
 public class CommandFactory {
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
@@ -57,15 +60,35 @@ public class CommandFactory {
 
     private final WebDriverCommandProcessor proc;
 
+    /**
+     * Constructor.
+     *
+     * @param proc WebDriverCommandProcessor instance.
+     */
     public CommandFactory(WebDriverCommandProcessor proc) {
         this.proc = proc;
     }
 
+    /**
+     * Constructs selenese command.
+     *
+     * @param index index in selenese script file.
+     * @param cmdWithArgs cmmand and arguments.
+     * @return Command instance.
+     */
     public Command newCommand(int index, List<String> cmdWithArgs) {
         String name = cmdWithArgs.remove(0);
         return newCommand(index, name, cmdWithArgs.toArray(new String[cmdWithArgs.size()]));
     }
 
+    /**
+     * Constructs selenese command.
+     *
+     * @param index index in selenese script file.
+     * @param name command name.
+     * @param args command arguments.
+     * @return Command instance.
+     */
     public Command newCommand(int index, String name, String... args) {
         boolean andWait = name.endsWith(AND_WAIT);
         String realName = andWait ? name.substring(0, name.length() - AND_WAIT.length()) : name;

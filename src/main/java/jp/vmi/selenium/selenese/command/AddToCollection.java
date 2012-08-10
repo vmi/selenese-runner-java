@@ -5,6 +5,9 @@ import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "addToCollection".
+ */
 public class AddToCollection extends Command {
 
     private static final int COLLECTION_NAME = 0;

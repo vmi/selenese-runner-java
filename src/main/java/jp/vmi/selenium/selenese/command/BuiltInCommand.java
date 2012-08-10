@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang.StringUtils;
+import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -11,6 +12,9 @@ import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Commands implemented by {@link WebDriverCommandProcessor}.
+ */
 public class BuiltInCommand extends Command {
 
     private static final String WAIT_FOR_PAGE_TO_LOAD = "waitForPageToLoad";

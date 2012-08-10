@@ -8,6 +8,9 @@ import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "echo".
+ */
 public class Echo extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(Echo.class);

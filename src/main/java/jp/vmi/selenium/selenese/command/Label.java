@@ -1,6 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
-//https://github.com/davehunt/selenium-ide-flowcontrol
+/**
+ * Command "label".
+ */
 public class Label extends Command {
 
     private static final int LABEL = 0;
@@ -9,6 +11,11 @@ public class Label extends Command {
         super(index, name, args);
     }
 
+    /**
+     * Get label string.
+     *
+     * @return label.
+     */
     public String getLabel() {
         return args[LABEL];
     }

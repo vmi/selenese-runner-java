@@ -4,6 +4,9 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
 
+/**
+ * Command "gotolabel".
+ */
 public class Gotolabel extends Command {
 
     private static final int LABEL = 0;

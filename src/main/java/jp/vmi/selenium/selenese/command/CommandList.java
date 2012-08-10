@@ -9,10 +9,18 @@ package jp.vmi.selenium.selenese.command;
  */
 public class CommandList extends Command {
 
+    /**
+     * Constructor.
+     */
     public CommandList() {
         super(0, "COMMAND_LIST");
     }
 
+    /**
+     * Get first command of command list.
+     *
+     * @return command.
+     */
     public Command first() {
         return next(null);
     }

@@ -7,6 +7,9 @@ import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "store".
+ */
 public class Store extends Command {
 
     private final String getter;

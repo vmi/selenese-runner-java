@@ -8,8 +8,10 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
-// https://github.com/davehunt/selenium-ide-flowcontrol
-public class Command {
+/**
+ * Abstract class for implementing selenese command.
+ */
+public abstract class Command {
 
     private final int index;
     protected final String name;
@@ -17,10 +19,10 @@ public class Command {
     protected Command next = null;
 
     /**
-     * constructor.
-     * 
-     * @param index index number of Command
-     * @param name selenese command
+     * Constructor.
+     *
+     * @param index index number of Command (1 origin).
+     * @param name selenese command name.
      * @param args command arguments.
      */
     Command(int index, String name, String... args) {
@@ -30,19 +32,30 @@ public class Command {
     }
 
     /**
-     * execute selenese command.
+     * Execute selenese command.
      *
-     * @param testCase
+     * @param testCase test-case instatnce.
      * @return true if command terminated normally.
      */
     public Result doCommand(TestCase testCase) {
         return SUCCESS;
     }
 
+    /**
+     * add command at end of command list.
+     * @param next command.
+     * @return same as next.
+     */
     public Command setNext(Command next) {
         return this.next = next;
     }
 
+    /**
+     * Get next command.
+     *
+     * @param testCase test-case instance.
+     * @return next command.
+     */
     public Command next(TestCase testCase) {
         return next;
     }
@@ -52,6 +65,11 @@ public class Command {
         return "Command#" + index + ": " + name + "(" + StringUtils.join(LoggerUtils.quote(args), ", ") + ")";
     }
 
+    /**
+     * Get index in selenese script file (1 origin).
+     *
+     * @return index.
+     */
     public int getIndex() {
         return index;
     }

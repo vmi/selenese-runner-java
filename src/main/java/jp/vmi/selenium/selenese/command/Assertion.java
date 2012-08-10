@@ -13,6 +13,9 @@ import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "*Assert", "*Verify", and "*WaitFor".
+ */
 public class Assertion extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(Assertion.class);

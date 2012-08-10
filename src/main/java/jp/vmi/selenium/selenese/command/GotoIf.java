@@ -4,6 +4,9 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
 
+/**
+ * Command "gotoIf".
+ */
 public class GotoIf extends Command {
 
     private static final int EXPRESSION = 0;

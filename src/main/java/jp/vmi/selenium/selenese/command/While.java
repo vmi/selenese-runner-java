@@ -2,6 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.TestCase;
 
+/**
+ * Command "while".
+ */
 public class While extends Command implements StartLoop {
 
     private EndWhile endLoop;

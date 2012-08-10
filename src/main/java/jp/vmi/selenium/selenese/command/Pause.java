@@ -10,6 +10,9 @@ import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "pause".
+ */
 public class Pause extends Command {
 
     @SuppressWarnings("unused")

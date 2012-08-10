@@ -2,6 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.TestCase;
 
+/**
+ * Command "endFor".
+ */
 public class EndFor extends Command implements EndLoop {
 
     private StoreFor startLoop;

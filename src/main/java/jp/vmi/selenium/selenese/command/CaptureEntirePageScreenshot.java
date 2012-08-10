@@ -13,6 +13,9 @@ import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "captureEntirePageScreenshot".
+ */
 public class CaptureEntirePageScreenshot extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(CaptureEntirePageScreenshot.class);
