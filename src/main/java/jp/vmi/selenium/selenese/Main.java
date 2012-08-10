@@ -177,7 +177,7 @@ public class Main {
         HelpFormatter fmt = new HelpFormatter();
         fmt.setOptionComparator(options.getOptionComparator());
         PrintWriter pw = new PrintWriter(System.out);
-        pw.format(PROG_TITLE + " %s\n\n" + HEADER + "\n\n", getVersion());
+        pw.format(PROG_TITLE + " %s%n%n" + HEADER + "%n%n", getVersion());
         fmt.setSyntaxPrefix("Usage: ");
         fmt.printHelp(pw, helpWidth, progName + " <option> ... <testcase|testsuite> ...\n",
             null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
