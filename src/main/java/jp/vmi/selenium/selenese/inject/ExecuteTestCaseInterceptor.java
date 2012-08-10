@@ -39,6 +39,7 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         ListAppender<ILoggingEvent> appender = new ListAppender<ILoggingEvent>();
         appender.start();
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.INFO);
         root.addAppender(appender);
         try {
             Result result = (Result) invocation.proceed();
@@ -49,9 +50,9 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             List<String> normalLogs = new LinkedList<String>();
             List<String> errorLogs = new LinkedList<String>();
             for (ILoggingEvent e : appender.list) {
-                normalLogs.add(e.getFormattedMessage());
+                normalLogs.add("[" + e.getLevel() + "] " + e.getFormattedMessage());
                 if (e.getLevel().isGreaterOrEqual(Level.ERROR))
-                    errorLogs.add(e.getFormattedMessage());
+                    errorLogs.add("[" + e.getLevel() + "] " + e.getFormattedMessage());
             }
             JUnitResult.setSystemOut(StringUtils.join(normalLogs, System.getProperty("line.separator")));
             JUnitResult.setSystemErr(StringUtils.join(errorLogs, System.getProperty("line.separator")));
