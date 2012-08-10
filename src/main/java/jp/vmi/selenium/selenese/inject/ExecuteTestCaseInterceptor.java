@@ -17,6 +17,9 @@ import jp.vmi.selenium.selenese.junit.JUnitResult;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
+/**
+ * Interceptor for logging and recoding test-case result.
+ */
 public class ExecuteTestCaseInterceptor implements MethodInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestCaseInterceptor.class);

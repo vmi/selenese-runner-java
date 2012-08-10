@@ -9,6 +9,9 @@ import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.junit.JUnitResult;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
+/**
+ * Interceptor for logging and recoding test-suite result.
+ */
 public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestSuiteInterceptor.class);

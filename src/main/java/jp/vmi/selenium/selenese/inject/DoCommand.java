@@ -8,6 +8,9 @@ import com.google.inject.BindingAnnotation;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
+/**
+ * Annotates command execution.
+ */
 @BindingAnnotation
 @Target({ METHOD })
 @Retention(RUNTIME)

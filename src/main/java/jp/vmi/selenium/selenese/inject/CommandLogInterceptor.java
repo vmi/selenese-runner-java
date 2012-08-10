@@ -17,9 +17,12 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.result.Result;
 
+/**
+ * Interceptor for logging each command execution.
+ */
 public class CommandLogInterceptor implements MethodInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(CommandLogInterceptor.class);
