@@ -6,7 +6,7 @@ package jp.vmi.selenium.selenese.result;
 public class Success extends Result {
 
     /** Default success */
-    public static final Success SUCCESS = new Success("Success");
+    public static final Success SUCCESS = new Success("");
 
     /**
      * Constructor.
