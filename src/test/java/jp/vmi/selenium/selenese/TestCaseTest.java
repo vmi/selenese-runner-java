@@ -16,6 +16,9 @@ public class TestCaseTest {
 
     private WebDriver driver;
 
+    /**
+     * Initialize.
+     */
     @Before
     public void initialize() {
         WebDriverManager manager = WebDriverManager.getInstance();
@@ -23,6 +26,9 @@ public class TestCaseTest {
         driver = manager.get();
     }
 
+    /**
+     * Test of replaceVariables(String).
+     */
     @Test
     public void replaceVariable() {
         TestCase c = Binder.newTestCase(null, null, driver, "");
@@ -30,6 +36,9 @@ public class TestCaseTest {
         assertEquals("XYZ", c.replaceVariables("${a}"));
     }
 
+    /**
+     * Test of replaceVariables(String[]).
+     */
     @Test
     public void replaceVariables() {
         TestCase c = Binder.newTestCase(null, null, driver, "");

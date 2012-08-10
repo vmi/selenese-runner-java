@@ -16,8 +16,14 @@ import static org.junit.Assert.*;
  * Test for {@link BuiltInCommand}.
  */
 public class BuiltInCommandTest {
+
+    /**
+     * Test of user friendly error message.
+     *
+     * @throws IOException exception.
+     */
     @Test
-    public void userfriendryErrorMessage() throws IOException {
+    public void userFriendlyErrorMessage() throws IOException {
         Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, "click", false);
 
         File selenesefile = File.createTempFile("selenese", ".html");

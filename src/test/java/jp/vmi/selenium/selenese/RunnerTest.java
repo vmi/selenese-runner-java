@@ -17,6 +17,12 @@ import static org.junit.Assert.*;
  */
 public class RunnerTest {
 
+    /**
+     * Test of --proxy option.
+     *
+     * @throws IllegalArgumentException exception.
+     * @throws IOException exception.
+     */
     @Test
     public void invalidProxyOption() throws IllegalArgumentException, IOException {
         File tmp = File.createTempFile("aaa", "test.html");
@@ -25,6 +31,11 @@ public class RunnerTest {
         assertEquals("proxy.example.com", opt.get(DriverOption.PROXY));
     }
 
+    /**
+     * Test of empty file.
+     *
+     * @throws IOException exception.
+     */
     @Test
     public void emptyFile() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
@@ -33,6 +44,11 @@ public class RunnerTest {
         runner.run(tmp.getAbsoluteFile());
     }
 
+    /**
+     * Test of {@link Runner#run(File)}).
+     *
+     * @throws IOException exception.
+     */
     @Test
     public void runFiles() throws IOException {
         File tmp = File.createTempFile("aaa", "test.html");
@@ -40,5 +56,4 @@ public class RunnerTest {
         runner.setDriver(new HtmlUnitDriver());
         runner.run(tmp.getPath(), tmp.getPath());
     }
-
 }

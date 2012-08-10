@@ -17,8 +17,13 @@ import static org.junit.Assert.*;
  */
 public class AssertionTest {
 
+    /**
+     * test of user friendly assertion message.
+     *
+     * @throws IOException exception.
+     */
     @Test
-    public void userfriendryAssertionMessage() throws IOException {
+    public void userFriendlyAssertionMessage() throws IOException {
         Assertion assertion = new Assertion(1, "assertTitle", new String[] { "title", "title" }, "assert", "getTitle", false, false);
 
         File selenesefile = File.createTempFile("selenese", ".html");

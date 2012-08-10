@@ -19,6 +19,9 @@ public final class TestUtils {
         // no operation
     }
 
+    /**
+     * Check proxy.
+     */
     public static void checkProxy() {
         // assume that local proxy is available.
         try {
@@ -31,6 +34,13 @@ public final class TestUtils {
         }
     }
 
+    /**
+     * Get script file.
+     *
+     * @param clazz target class.
+     * @param name target name.
+     * @return script file.
+     */
     public static File getScriptFile(Class<?> clazz, String name) {
         String html = "/" + clazz.getCanonicalName().replace('.', '/') + name + ".html";
         URL resource = clazz.getResource(html);

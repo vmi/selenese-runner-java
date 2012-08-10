@@ -14,6 +14,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  */
 public class CommandRunnerFirefoxTest extends CommandRunnerTest {
 
+    /**
+     * Check Firefox installation.
+     */
     @Before
     public void assumeInstalledFirefox() {
         try {

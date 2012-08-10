@@ -18,6 +18,9 @@ public class CommandFactoryTest {
 
     private final WebDriverManager manager = WebDriverManager.getInstance();
 
+    /**
+     * Check Firefox installation.
+     */
     @Before
     public void assumeInstalledFirefox() {
         try {
@@ -27,12 +30,20 @@ public class CommandFactoryTest {
         }
     }
 
+    /**
+     * setup WebDriverManager.
+     */
     @Before
     public void setupWebDriverManager() {
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         manager.setDriverOptions(new DriverOptions());
     }
 
+    /**
+     * Test of command "captureEntirePageScreenshot".
+     *
+     * @throws IllegalArgumentException exception.
+     */
     @Test
     public void captureEntirePageScreenshot() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
@@ -40,6 +51,11 @@ public class CommandFactoryTest {
         factory.newCommand(1, "captureEntirePageScreenshot");
     }
 
+    /**
+     * Test of command "deleteAllVisibleCookies".
+     *
+     * @throws IllegalArgumentException exception.
+     */
     @Test
     public void deleteAllVisibleCookies() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
@@ -47,6 +63,11 @@ public class CommandFactoryTest {
         factory.newCommand(1, "deleteAllVisibleCookies");
     }
 
+    /**
+     * Test of command "runScript".
+     *
+     * @throws IllegalArgumentException exception.
+     */
     @Test
     public void runScript() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
@@ -54,6 +75,11 @@ public class CommandFactoryTest {
         factory.newCommand(1, "runScript", "alert('test')");
     }
 
+    /**
+     * Test of command "type".
+     *
+     * @throws IllegalArgumentException exception.
+     */
     @Test
     public void type() throws IllegalArgumentException {
         WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());

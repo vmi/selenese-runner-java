@@ -11,11 +11,17 @@ import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
     static Proxy proxy = new Proxy();
 
+    /**
+     * Start proxy server.
+     */
     @BeforeClass
     public static void startProxy() {
         proxy.start();
     }
 
+    /**
+     * Stop proxy server.
+     */
     @AfterClass
     public static void stopProxy() {
         proxy.kill();

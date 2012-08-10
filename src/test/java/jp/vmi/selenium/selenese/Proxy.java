@@ -26,9 +26,12 @@ public class Proxy {
 
     private Future start;
 
+    /**
+     * Constructor.
+     */
     public Proxy() {
         super();
-        port = NetUtil.getUsablePort();
+        port = NetUtils.getUsablePort();
         container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
         container.setError(System.err);
         container.setOutput(System.out);
@@ -38,14 +41,27 @@ public class Proxy {
         container.runScriptlet("server = WEBrick::HTTPProxyServer.new({:Port => port})");
     }
 
+    /**
+     * Get proxy string as "HOST:PORT".
+     *
+     * @return proxy string.
+     */
     public String getProxyString() {
         return "localhost:" + port;
     }
 
+    /**
+     * Get port number of proxy server.
+     *
+     * @return port number.
+     */
     public int getPort() {
         return port;
     }
 
+    /**
+     * Start proxy server.
+     */
     public void start() {
         start = executor.submit(new Runnable() {
             @Override
@@ -80,6 +96,9 @@ public class Proxy {
         }
     }
 
+    /**
+     * Stop proxy server.
+     */
     public void stop() {
         Future stop = executor.submit(new Runnable() {
             @Override
@@ -115,6 +134,9 @@ public class Proxy {
         }
     }
 
+    /**
+     * Kill proxy server.
+     */
     public void kill() {
         log.info("killing proxy...");
         container.terminate();

@@ -12,6 +12,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  */
 public class CommandRunnerInternetExplorerTest extends CommandRunnerTest {
 
+    /**
+     * Check supported platform.
+     */
     @Before
     public void checkPlatform() {
         Assume.assumeTrue(isSupportedPlatform());

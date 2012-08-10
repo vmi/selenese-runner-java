@@ -14,11 +14,17 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
     static Proxy proxy = new Proxy();
 
+    /**
+     * Start proxy server.
+     */
     @BeforeClass
     public static void startProxy() {
         proxy.start();
     }
 
+    /**
+     * Stop proxy server.
+     */
     @AfterClass
     public static void stopProxy() {
         proxy.kill();

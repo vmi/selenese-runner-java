@@ -19,9 +19,17 @@ import static jp.vmi.selenium.selenese.junit.JUnitResult.*;
  */
 public class JUnitResultTest {
 
+    /**
+     * Temporary directory.
+     */
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
+    /**
+     * Test of JUnitResult.
+     *
+     * @throws IOException exception.
+     */
     @Test
     public void test() throws IOException {
         setResultDir(tmpDir.getRoot().getPath());

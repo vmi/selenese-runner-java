@@ -26,6 +26,9 @@ import static org.junit.Assert.*;
  */
 public abstract class CommandRunnerTest {
 
+    /**
+     * Temprary directory.
+     */
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
@@ -38,11 +41,19 @@ public abstract class CommandRunnerTest {
 
     protected abstract void setupWebDriverManager();
 
+    /**
+     * Setup WebDriverManager.
+     */
     @Before
     public void initBefore() {
         setupWebDriverManager();
     }
 
+    /**
+     * Test of "CommandRunnerTestSimple.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void testSimple() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
@@ -55,6 +66,11 @@ public abstract class CommandRunnerTest {
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    /**
+     * Test of "CommandRunnerTestError.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
@@ -67,6 +83,11 @@ public abstract class CommandRunnerTest {
         assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    /**
+     * Test of "CommandRunnerTestAssertFail.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void testAssertFail() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
@@ -79,6 +100,11 @@ public abstract class CommandRunnerTest {
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    /**
+     * Test of "CommandRunnerTestFlowControl.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void testFlowControl() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
@@ -86,6 +112,11 @@ public abstract class CommandRunnerTest {
         assertEquals(28, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    /**
+     * Test of "CommandRunnerTestForEach.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void testForEach() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
@@ -101,6 +132,11 @@ public abstract class CommandRunnerTest {
         runner.run(scriptName);
     }
 
+    /**
+     * Test of "CommandRunnerTestNoCommand.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void noCommandSelenese() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "NoCommand"));
@@ -108,6 +144,11 @@ public abstract class CommandRunnerTest {
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    /**
+     * Test of "CommandRunnerTestInvalidCommand.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
@@ -116,6 +157,11 @@ public abstract class CommandRunnerTest {
         runner.run(script);
     }
 
+    /**
+     * Test of invalid command.
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test(expected = SeleniumException.class)
     public void invalidCommand() throws IllegalArgumentException {
         WebDriver driver = WebDriverManager.getInstance().get();
@@ -128,6 +174,11 @@ public abstract class CommandRunnerTest {
         testCase.execute(runner);
     }
 
+    /**
+     * Test of capture screenshot.
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void capture() throws IllegalArgumentException {
         final String filename = "test.png";
@@ -146,6 +197,11 @@ public abstract class CommandRunnerTest {
             assertTrue(pngFile.exists());
     }
 
+    /**
+     * Test of "pauseCommand".
+     *
+     * @throws IllegalArgumentException exception
+     */
     @Test
     public void pauseCommand() throws IllegalArgumentException {
         WebDriver driver = WebDriverManager.getInstance().get();

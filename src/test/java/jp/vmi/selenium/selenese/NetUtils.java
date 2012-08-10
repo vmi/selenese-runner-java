@@ -4,7 +4,10 @@ import java.net.ServerSocket;
 
 import org.apache.commons.lang.math.RandomUtils;
 
-public class NetUtil {
+/**
+ * Network utilities.
+ */
+public class NetUtils {
     protected static int PORTNUM_MAX = 65535;
     protected static int PORTNUM_MIN = 10000;
 

@@ -12,6 +12,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  */
 public class TestSuiteTest {
 
+    /**
+     * Test of "TestSuiteTest.html".
+     */
     @Test
     public void testTestSuite() {
         File script = TestUtils.getScriptFile(TestSuiteTest.class, "");

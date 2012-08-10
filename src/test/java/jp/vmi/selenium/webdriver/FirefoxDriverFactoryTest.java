@@ -14,16 +14,21 @@ import static jp.vmi.selenium.webdriver.FirefoxDriverFactory.*;
  */
 public class FirefoxDriverFactoryTest {
 
+    /**
+     * Temporary directory.
+     */
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     /**
-     * backup Systemproperty and restore.
+     * backup and restore System property.
      */
     @Rule
-    public ExternalResource systemproperty = new ExternalResource() {
+    public ExternalResource systemProperty = new ExternalResource() {
+
+        private static final String key = WEBDRIVER_FIREFOX_BIN;
+
         String original;
-        final String key = WEBDRIVER_FIREFOX_BIN;
 
         @Override
         protected void before() throws Throwable {
@@ -43,9 +48,14 @@ public class FirefoxDriverFactoryTest {
         }
     };
 
+    /**
+     * Test of not finding Firefox binary.
+     *
+     * @throws IOException exception.
+     * @throws IllegalArgumentException exception.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
-        //TODO 定数化
         System.setProperty(WEBDRIVER_FIREFOX_BIN, folder.newFolder().getAbsolutePath());
         new FirefoxDriverFactory().newInstance(new DriverOptions());
     }
