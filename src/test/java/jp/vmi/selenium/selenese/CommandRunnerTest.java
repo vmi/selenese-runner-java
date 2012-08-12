@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -16,6 +18,7 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
@@ -25,6 +28,8 @@ import static org.junit.Assert.*;
  * Super class of test classes for running commands.
  */
 public abstract class CommandRunnerTest {
+
+    protected static final WebServer webserver = new WebServer();
 
     /**
      * Temprary directory.
@@ -47,6 +52,19 @@ public abstract class CommandRunnerTest {
     @Before
     public void initBefore() {
         setupWebDriverManager();
+    }
+
+    /**
+     * Setup Webserver
+     */
+    @BeforeClass
+    public static void setupWebServer() {
+        webserver.start();
+    }
+
+    @AfterClass
+    public static void shutdownWebServer() {
+        webserver.kill();
     }
 
     /**
@@ -216,5 +234,18 @@ public abstract class CommandRunnerTest {
         testCase.execute(runner);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
+    }
+
+    /**
+     * Test of "basic auth access"
+     */
+    @Test
+    public void basicauth() {
+        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
+        Runner runner = new Runner();
+        runner.setDriver(WebDriverManager.getInstance().get());
+        runner.setBaseURL("http://user:pass@" + webserver.getServerNameString() + "/");
+        Result result = runner.run(script);
+        assertThat(result.isSuccess(), is(true));
     }
 }
