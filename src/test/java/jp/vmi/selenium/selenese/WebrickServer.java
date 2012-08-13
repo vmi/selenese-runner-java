@@ -39,16 +39,16 @@ public abstract class WebrickServer {
     protected abstract ScriptingContainer createScriptingContainer();
 
     /**
-     * Get proxy string as "HOST:PORT".
+     * Get server string as "HOST:PORT".
      *
-     * @return proxy string.
+     * @return server string.
      */
     public String getServerNameString() {
         return "localhost:" + port;
     }
 
     /**
-     * Get port number of proxy server.
+     * Get port number of server.
      *
      * @return port number.
      */
@@ -57,7 +57,7 @@ public abstract class WebrickServer {
     }
 
     /**
-     * Start proxy server.
+     * Start server.
      */
     public void start() {
         start = executor.submit(new Runnable() {
@@ -94,7 +94,7 @@ public abstract class WebrickServer {
     }
 
     /**
-     * Stop proxy server.
+     * Stop server.
      */
     public void stop() {
         Future stop = executor.submit(new Runnable() {
@@ -132,7 +132,7 @@ public abstract class WebrickServer {
     }
 
     /**
-     * Kill proxy server.
+     * Kill server.
      */
     public void kill() {
         log.info("killing webrick server...");
