@@ -16,7 +16,7 @@ public class ProxyTest {
     @Test
     public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
-            Proxy proxy = new Proxy();
+            WebrickServer proxy = new Proxy();
             proxy.start();
             proxy.kill();
         }
@@ -27,7 +27,7 @@ public class ProxyTest {
      */
     @Test(timeout = 10000)
     public void startAndKill() {
-        Proxy proxy = new Proxy();
+        WebrickServer proxy = new Proxy();
         proxy.start();
         proxy.kill();
         assertThat(NetUtils.canUse(proxy.getPort()), is(true));

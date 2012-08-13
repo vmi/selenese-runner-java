@@ -9,7 +9,7 @@ import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
  * Test for Chrome with proxy.
  */
 public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
-    static Proxy proxy = new Proxy();
+    static WebrickServer proxy = new Proxy();
 
     /**
      * Start proxy server.

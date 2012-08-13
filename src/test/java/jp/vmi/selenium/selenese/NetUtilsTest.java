@@ -27,7 +27,7 @@ public class NetUtilsTest {
      */
     @Test
     public void testCanUse() {
-        Proxy proxy = new Proxy();
+        WebrickServer proxy = new Proxy();
         proxy.start();
         try {
             assertThat(NetUtils.canUse(proxy.getPort()), is(not(true)));
