@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings({ "rawtypes", "unused" })
 public abstract class WebrickServer {
 
-    private static final Logger log = LoggerFactory.getLogger(Proxy.class);
+    private static final Logger log = LoggerFactory.getLogger(WebrickServer.class);
     protected final ScriptingContainer container;
     protected int port;
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
