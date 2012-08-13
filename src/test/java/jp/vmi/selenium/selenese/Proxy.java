@@ -20,7 +20,7 @@ public class Proxy extends WebrickServer {
 
     private final ScriptingContainer container;
 
-    private final int port;
+    private int port;
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -31,14 +31,20 @@ public class Proxy extends WebrickServer {
      */
     public Proxy() {
         super();
+        container = createScriptingContainer();
+    }
+
+    @Override
+    protected ScriptingContainer createScriptingContainer() {
         port = NetUtils.getUsablePort();
-        container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
+        ScriptingContainer container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
         container.setError(System.err);
         container.setOutput(System.out);
         container.put("port", port);
         container.runScriptlet("require 'webrick'");
         container.runScriptlet("require 'webrick/httpproxy'");
         container.runScriptlet("server = WEBrick::HTTPProxyServer.new({:Port => port})");
+        return container;
     }
 
     /**

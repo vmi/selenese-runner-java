@@ -22,7 +22,7 @@ public class WebServer extends WebrickServer {
 
     private final ScriptingContainer container;
 
-    private final int port;
+    private int port;
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
@@ -30,8 +30,14 @@ public class WebServer extends WebrickServer {
 
     public WebServer() {
         super();
+        container = createScriptingContainer();
+    }
+
+    @Override
+    protected ScriptingContainer createScriptingContainer() {
         port = NetUtils.getUsablePort();
-        container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
+
+        ScriptingContainer container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
         container.setError(System.err);
         container.setOutput(System.out);
         container.put("port", port);
@@ -45,6 +51,7 @@ public class WebServer extends WebrickServer {
 
         container
             .runScriptlet("server = WEBrick::HTTPServer.new({:Port => port, :DocumentRoot => documentroot, :RequestCallback => lambda {|req,res| HTTPAuth.basic_auth(req,res,'realm') {|u,p| u==user && p==pass }} })");
+        return container;
     }
 
     public String getServerNameString() {
