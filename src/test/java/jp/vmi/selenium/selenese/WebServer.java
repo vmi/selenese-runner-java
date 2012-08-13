@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * TODO: merge to Proxy.java
  */
 @SuppressWarnings({ "rawtypes", "unused" })
-public class WebServer {
+public class WebServer extends WebrickServer {
 
     private static final Logger log = LoggerFactory.getLogger(WebServer.class);
 

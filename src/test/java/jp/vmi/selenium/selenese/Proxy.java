@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * Proxy for unit test.
  */
 @SuppressWarnings({ "rawtypes", "unused" })
-public class Proxy {
+public class Proxy extends WebrickServer {
 
     private static final Logger log = LoggerFactory.getLogger(Proxy.class);
 
