@@ -29,7 +29,7 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
 
     @Override
     protected void setupWebDriverManager() {
-        driverOptions.set(DriverOption.PROXY, proxy.getProxyString());
+        driverOptions.set(DriverOption.PROXY, proxy.getServerNameString());
         super.setupWebDriverManager();
     }
 }

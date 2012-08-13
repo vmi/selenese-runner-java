@@ -33,6 +33,6 @@ public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getProxyString()));
+        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getServerNameString()));
     }
 }

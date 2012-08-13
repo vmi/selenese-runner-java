@@ -52,7 +52,7 @@ public class Proxy extends WebrickServer {
      *
      * @return proxy string.
      */
-    public String getProxyString() {
+    public String getServerNameString() {
         return "localhost:" + port;
     }
 
