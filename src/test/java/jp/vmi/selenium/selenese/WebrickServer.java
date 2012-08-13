@@ -23,6 +23,9 @@ public abstract class WebrickServer {
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private Future start;
 
+    /**
+     * constructor.
+     */
     public WebrickServer() {
         super();
         container = createScriptingContainer();
