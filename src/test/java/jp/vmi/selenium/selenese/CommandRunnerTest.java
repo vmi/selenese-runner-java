@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -29,8 +27,6 @@ import static org.junit.Assert.*;
  */
 public abstract class CommandRunnerTest {
 
-    protected static final WebServer webserver = new WebServer();
-
     /**
      * Temprary directory.
      */
@@ -52,19 +48,6 @@ public abstract class CommandRunnerTest {
     @Before
     public void initBefore() {
         setupWebDriverManager();
-    }
-
-    /**
-     * Setup Webserver
-     */
-    @BeforeClass
-    public static void setupWebServer() {
-        webserver.start();
-    }
-
-    @AfterClass
-    public static void shutdownWebServer() {
-        webserver.kill();
     }
 
     /**
@@ -242,10 +225,16 @@ public abstract class CommandRunnerTest {
     @Test
     public void basicauth() {
         File script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
+
+        WebServer webserver = new WebServer();
+        webserver.start();
+
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setBaseURL("http://user:pass@" + webserver.getServerNameString() + "/");
         Result result = runner.run(script);
         assertThat(result.isSuccess(), is(true));
+
+        webserver.stop();
     }
 }
