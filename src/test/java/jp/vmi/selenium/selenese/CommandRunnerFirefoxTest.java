@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Assume;
 import org.junit.Before;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
@@ -23,6 +24,20 @@ public class CommandRunnerFirefoxTest extends CommandRunnerTest {
             new FirefoxBinary();
         } catch (SeleniumException e) {
             Assume.assumeNoException(e);
+        }
+    }
+
+    /**
+     * Check Firefox connected.
+     */
+    @Before
+    public void assumeConnectFirefox() {
+        setupWebDriverManager();
+        try {
+            WebDriverManager.getInstance().get();
+        } catch (WebDriverException e) {
+            if (e.getMessage().contains("no display specified"))
+                Assume.assumeNoException(e);
         }
     }
 
