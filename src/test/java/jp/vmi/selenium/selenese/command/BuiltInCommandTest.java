@@ -27,7 +27,7 @@ public class BuiltInCommandTest {
         try {
             WebDriverManager wdm = WebDriverManager.getInstance();
             wdm.setWebDriverFactory(WebDriverManager.FIREFOX);
-            WebDriverManager.getInstance();
+            WebDriverManager.getInstance().get();
         } catch (WebDriverException e) {
             if (e.getMessage().contains("no display specified"))
                 Assume.assumeNoException(e);
