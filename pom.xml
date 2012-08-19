@@ -49,6 +49,13 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <skipTests>false</skipTests>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
       <id>package</id>
@@ -174,7 +181,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
   <dependencies>
@@ -247,6 +253,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>jruby-stdlib</artifactId>
       <version>1.6.7.2</version>
       <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>jenkins-core</artifactId>
+      <version>[1.0,2.0)</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
