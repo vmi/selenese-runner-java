@@ -36,6 +36,9 @@ public class WebServer extends WebrickServer {
 
         container
             .runScriptlet("server = WEBrick::HTTPServer.new({:Port => port, :DocumentRoot => documentroot, :RequestCallback => lambda {|req,res| HTTPAuth.basic_auth(req,res,'realm') {|u,p| u==user && p==pass }} })");
+        container
+            .runScriptlet("server.mount_proc('/redirect'){|req,res| res.set_redirect(WEBrick::HTTPStatus[301],'http://"
+                + this.getServerNameString() + "/index.html')}");
         return container;
     }
 }
