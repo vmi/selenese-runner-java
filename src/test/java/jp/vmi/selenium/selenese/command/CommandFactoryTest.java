@@ -4,6 +4,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriverCommandProcessor;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
@@ -17,6 +18,20 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 public class CommandFactoryTest {
 
     private final WebDriverManager manager = WebDriverManager.getInstance();
+
+    /**
+     * Check Firefox connected.
+     */
+    @Before
+    public void assumeConnectFirefox() {
+        setupWebDriverManager();
+        try {
+            WebDriverManager.getInstance().get();
+        } catch (WebDriverException e) {
+            if (e.getMessage().contains("no display specified"))
+                Assume.assumeNoException(e);
+        }
+    }
 
     /**
      * Check Firefox installation.

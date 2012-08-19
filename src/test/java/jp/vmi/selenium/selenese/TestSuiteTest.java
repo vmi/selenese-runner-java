@@ -19,7 +19,7 @@ public class TestSuiteTest {
     public void testTestSuite() {
         File script = TestUtils.getScriptFile(TestSuiteTest.class, "");
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
+        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(manager.get());
