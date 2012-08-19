@@ -39,16 +39,19 @@ public class JUnitResultTest {
         TestCase testCase = Binder.newTestCase(null, "test-case1", null, "");
         startTestCase(testCase);
         addFailure("failed1.");
+        setSystemOut("SysOut1");
         endTestCase();
         startTestSuite(testSuite2);
         testCase = Binder.newTestCase(null, "test-case2", null, "");
         startTestCase(testCase);
         addFailure("failed2.");
+        setSystemOut("SysOut2");
         endTestCase();
         endTestSuite();
         testCase = Binder.newTestCase(null, "test-case3", null, "");
         startTestCase(testCase);
         addFailure("failed3.");
+        setSystemOut("SysOut3");
         endTestCase();
         endTestSuite();
         for (File f : tmpDir.getRoot().listFiles()) {
