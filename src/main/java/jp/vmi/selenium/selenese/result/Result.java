@@ -3,6 +3,8 @@ package jp.vmi.selenium.selenese.result;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Result of command execution.
  */
@@ -21,6 +23,26 @@ public abstract class Result {
      */
     public Result(String message) {
         this.message = message;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param result object.
+     */
+    public Result(Result... results) {
+        //message
+        List<String> messages = new LinkedList<String>();
+        for (Result result : results) {
+            messages.add(result.getMessage());
+        }
+        this.message = StringUtils.join(messages, "\n");
+
+        //logs
+        for (Result result : results) {
+            this.getErrorLogs().addAll(result.getErrorLogs());
+            this.getNormalLogs().addAll(result.getNormalLogs());
+        }
     }
 
     /**
@@ -85,9 +107,9 @@ public abstract class Result {
      */
     public Result update(Result newResult) {
         if (newResult.isInterrupted())
-            return new Failure(this.getMessage() + "\n" + newResult.getMessage());
+            return new Failure(this, newResult);
         else if (newResult.isFailed())
-            return new Warning(this.getMessage() + "\n" + newResult.getMessage());
+            return new Warning(this, newResult);
         else
             return this;
     }
