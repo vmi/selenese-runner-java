@@ -14,6 +14,10 @@ public class Warning extends Result {
         super(message);
     }
 
+    public Warning(Result... results) {
+        super(results);
+    }
+
     @Override
     public boolean isSuccess() {
         return false;
