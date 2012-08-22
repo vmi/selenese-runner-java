@@ -1,11 +1,18 @@
 package jp.vmi.selenium.selenese.result;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Result of command execution.
  */
 public abstract class Result {
 
     private final String message;
+
+    private final List<String> errorLogs = new LinkedList<String>();
+
+    private final List<String> normalLogs = new LinkedList<String>();
 
     /**
      * Constructor.
@@ -23,6 +30,23 @@ public abstract class Result {
      */
     public String getMessage() {
         return message;
+    }
+
+    public List<String> getErrorLogs() {
+        return errorLogs;
+    }
+
+    public List<String> getNormalLogs() {
+        return normalLogs;
+    }
+
+    public void addErrorLog(String log) {
+        errorLogs.add(log);
+        normalLogs.add(log);
+    }
+
+    public void addNormalLog(String log) {
+        normalLogs.add(log);
     }
 
     /**
