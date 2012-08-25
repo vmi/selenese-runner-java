@@ -57,19 +57,30 @@ public class CommandLogInterceptor implements MethodInterceptor {
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 log.error("- {}", result);
+                result.addErrorLog(String.format("[ERROR] - %s", result));
             } else {
                 log.info("- {}", result);
+                result.addNormalLog(String.format("[INFO] - %s", result));
             }
         } else {
             Iterator<String> iter = messages.iterator();
+            String message = iter.next();
             if (result.isFailed()) {
-                log.error("- {} {}", result, iter.next());
-                while (iter.hasNext())
-                    log.error(iter.next());
+                log.error("- {} {}", result, message);
+                result.addErrorLog(String.format("[ERROR] - %s %s", result, message));
+                while (iter.hasNext()) {
+                    message = iter.next();
+                    log.error(message);
+                    result.addErrorLog(message);
+                }
             } else {
-                log.info("- {} {}", result, iter.next());
-                while (iter.hasNext())
-                    log.info(iter.next());
+                log.info("- {} {}", result, message);
+                result.addNormalLog(String.format("[INFO] - %s %s", result, message));
+                while (iter.hasNext()) {
+                    message = iter.next();
+                    log.info(message);
+                    result.addNormalLog(message);
+                }
             }
             prevMessages = messages;
         }
