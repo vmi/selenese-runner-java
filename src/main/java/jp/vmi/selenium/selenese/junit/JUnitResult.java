@@ -135,7 +135,10 @@ public final class JUnitResult {
         Deque<TestSuite> deque = currentTestSuite.get();
         if (deque == null)
             return NULL_FORMATTER;
-        Formatter formatter = formatterMap.get(deque.peekFirst());
+        TestSuite testSuite = deque.peekFirst();
+        if (testSuite == null)
+            return NULL_FORMATTER;
+        Formatter formatter = formatterMap.get(testSuite);
         if (formatter == null)
             return NULL_FORMATTER;
         return formatter;
