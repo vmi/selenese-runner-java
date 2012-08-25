@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -21,14 +22,16 @@ public final class TestUtils {
      * @param name target name.
      * @return script file.
      */
-    public static File getScriptFile(Class<?> clazz, String name) {
+    public static String getScriptFile(Class<?> clazz, String name) {
         String html = "/" + clazz.getCanonicalName().replace('.', '/') + name + ".html";
         URL resource = clazz.getResource(html);
         if (resource == null)
             throw new RuntimeException(new FileNotFoundException(html));
         try {
-            return new File(resource.toURI());
+            return new File(resource.toURI()).getCanonicalPath();
         } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

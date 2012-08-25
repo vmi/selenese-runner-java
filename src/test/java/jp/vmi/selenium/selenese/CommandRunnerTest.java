@@ -57,7 +57,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testSimple() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -74,7 +74,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -91,7 +91,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testAssertFail() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -125,7 +125,7 @@ public abstract class CommandRunnerTest {
         assertEquals(18, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
-    protected void execute(File scriptName) {
+    protected void execute(String scriptName) {
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -152,7 +152,7 @@ public abstract class CommandRunnerTest {
      */
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.run(script);
@@ -224,7 +224,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void basicauth() {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
 
         WebServer webserver = new WebServer();
         webserver.start();

@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
+import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -14,6 +18,8 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * test-suite object for execution.
  */
 public class TestSuite implements Selenese {
+
+    private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
     private File file;
     private String parentDir = null;
@@ -63,8 +69,21 @@ public class TestSuite implements Selenese {
     @Override
     public Result execute(Runner runner) {
         Result totalResult = SUCCESS;
-        for (File file : files)
-            totalResult = totalResult.update(runner.run(file));
+        for (File file : files) {
+            Result result = null;
+            try {
+                Selenese selenese = Parser.parse(file, runner);
+                result = selenese.execute(runner);
+            } catch (RuntimeException e) {
+                log.error(e.getMessage());
+                throw e;
+            } catch (InvalidSeleneseException e) {
+                result = new Failure(e.getMessage());
+                result.addErrorLog(e.getMessage());
+                log.error(e.getMessage());
+            }
+            totalResult = totalResult.update(result);
+        }
         return totalResult;
     }
 

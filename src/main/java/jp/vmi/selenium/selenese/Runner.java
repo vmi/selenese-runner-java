@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.junit.JUnitResult;
-import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
@@ -157,27 +156,6 @@ public class Runner {
      */
     public void setResultDir(String resultDir) {
         JUnitResult.setResultDir(resultDir);
-    }
-
-    /**
-     * Run Selenese script file.
-     *
-     * @param file Selenese script file. (test-case or test-suite)
-     * @return result.
-     */
-    public Result run(File file) {
-        try {
-            Selenese selenese = Parser.parse(file, this);
-            return selenese.execute(this);
-        } catch (RuntimeException e) {
-            log.error(e.getMessage());
-            throw e;
-        } catch (InvalidSeleneseException e) {
-            Result result = new Failure(e.getMessage());
-            result.addErrorLog(e.getMessage());
-            log.error(e.getMessage());
-            return result;
-        }
     }
 
     /**
