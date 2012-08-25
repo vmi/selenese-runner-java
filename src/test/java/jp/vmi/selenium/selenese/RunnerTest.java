@@ -7,9 +7,11 @@ import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -42,6 +44,21 @@ public class RunnerTest {
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
         runner.run(tmp.getAbsoluteFile());
+    }
+
+    /**
+     * Test of no file.
+     *
+     * @throws IOException exception.
+     */
+    @Test
+    public void nosuchFile() throws IOException {
+        File tmp = new File("nosuchfile.html");
+        Runner runner = new Runner();
+        runner.setDriver(new HtmlUnitDriver());
+        Result result = runner.run(tmp);
+        assertThat(result.isFailed(), is(true));
+        assertThat(result.getErrorLogs().size(), is(greaterThan(0)));
     }
 
     /**

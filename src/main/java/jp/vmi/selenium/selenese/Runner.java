@@ -173,8 +173,10 @@ public class Runner {
             log.error(e.getMessage());
             throw e;
         } catch (InvalidSeleneseException e) {
+            Result result = new Failure(e.getMessage());
+            result.addErrorLog(e.getMessage());
             log.error(e.getMessage());
-            return new Failure(e.getMessage());
+            return result;
         }
     }
 
