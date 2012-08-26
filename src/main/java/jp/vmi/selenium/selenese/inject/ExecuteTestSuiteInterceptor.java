@@ -5,8 +5,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.TestSuite;
-import jp.vmi.selenium.selenese.junit.JUnitResult;
+import jp.vmi.junit.result.ITestSuite;
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 /**
@@ -18,11 +18,11 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestSuite testSuite;
+        ITestSuite testSuite;
         try {
-            testSuite = (TestSuite) invocation.getThis();
+            testSuite = (ITestSuite) invocation.getThis();
         } catch (Exception e) {
-            log.error("receiver is not Selenese", e);
+            log.error("receiver is not ITestSuite.", e);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
@@ -31,7 +31,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         try {
             return invocation.proceed();
         } finally {
-            JUnitResult.endTestSuite();
+            JUnitResult.endTestSuite(testSuite);
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testSuite);
         }
     }

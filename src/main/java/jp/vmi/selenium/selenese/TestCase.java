@@ -24,8 +24,6 @@ import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
-import junit.framework.Test;
-import junit.framework.TestResult;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -37,7 +35,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
 @Ignore
-public class TestCase implements Selenese, ITestCase, Test {
+public class TestCase implements Selenese, ITestCase {
 
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
@@ -256,18 +254,6 @@ public class TestCase implements Selenese, ITestCase, Test {
             current = current.next(this);
         }
         return totalResult;
-    }
-
-    @Override
-    public int countTestCases() {
-        return 1;
-    }
-
-    // for interface matching only.
-    @Deprecated
-    @Override
-    public void run(TestResult result) {
-        // unused method.
     }
 
     @Override

@@ -6,8 +6,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.junit.JUnitResult;
+import jp.vmi.junit.result.ITestCase;
+import jp.vmi.junit.result.ITestSuite;
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
@@ -20,28 +21,35 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestCase testCase;
+        ITestSuite testSuite;
+        ITestCase testCase;
         try {
-            testCase = (TestCase) invocation.getThis();
+            testCase = (ITestCase) invocation.getThis();
+            testSuite = (ITestSuite) invocation.getArguments()[0];
         } catch (Exception e) {
-            log.error("receiver is not Selenese", e);
+            log.error("receiver is not ITestCase, or 1st argument is not ITestSuite.", e);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
         log.info("Start: {}", testCase);
-        JUnitResult.startTestCase(testCase);
+        JUnitResult.startTestCase(testSuite, testCase);
         Result result = null;
         try {
             result = (Result) invocation.proceed();
-            if (result.isFailed())
-                JUnitResult.addFailure(result.getMessage());
+            if (result.isSuccess())
+                JUnitResult.setSuccess(testCase);
+            else
+                JUnitResult.setFailure(testCase, result.getMessage(), null);
             return result;
+        } catch (Throwable t) {
+            JUnitResult.setError(testCase, t.getMessage(), t.toString());
+            throw t;
         } finally {
             if (result != null) {
-                JUnitResult.setSystemOut(StringUtils.join(result.getNormalLogs(), System.getProperty("line.separator")));
-                JUnitResult.setSystemErr(StringUtils.join(result.getErrorLogs(), System.getProperty("line.separator")));
+                JUnitResult.addSystemOut(testCase, StringUtils.join(result.getNormalLogs(), System.getProperty("line.separator")));
+                JUnitResult.addSystemErr(testCase, StringUtils.join(result.getErrorLogs(), System.getProperty("line.separator")));
             }
-            JUnitResult.endTestCase();
+            JUnitResult.endTestCase(testCase);
             log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }
     }
