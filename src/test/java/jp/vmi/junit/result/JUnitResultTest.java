@@ -59,11 +59,6 @@ public class JUnitResultTest {
             testCases[i] = new ITestCase() {
 
                 @Override
-                public ITestSuite getTestSuite() {
-                    return testSuite;
-                }
-
-                @Override
                 public String getName() {
                     return "test-case" + num;
                 }
@@ -75,7 +70,7 @@ public class JUnitResultTest {
         addProperty(testSuite, "prop-name3", "prop-value3");
         ITestCase tc;
         tc = testCases[0];
-        startTestCase(tc);
+        startTestCase(testSuite, tc);
         setSuccess(tc);
         addSystemOut(tc, "systemOut00\n");
         addSystemErr(tc, "systemErr00\n");
@@ -86,21 +81,21 @@ public class JUnitResultTest {
         Thread.sleep(100);
         endTestCase(tc);
         tc = testCases[1];
-        startTestCase(tc);
+        startTestCase(testSuite, tc);
         setError(tc, "detail1", "trace1");
         addSystemOut(tc, "systemOut1");
         addSystemErr(tc, "systemErr1");
         Thread.sleep(50);
         endTestCase(tc);
         tc = testCases[2];
-        startTestCase(tc);
+        startTestCase(testSuite, tc);
         setFailure(tc, "detail2", "trace2");
         addSystemOut(tc, "systemOut2");
         addSystemErr(tc, "systemErr2");
         Thread.sleep(10);
         endTestCase(tc);
         tc = testCases[3];
-        startTestCase(tc);
+        startTestCase(testSuite, tc);
         endTestCase(tc);
         endTestSuite(testSuite);
         for (File file : tmp.getRoot().listFiles()) {

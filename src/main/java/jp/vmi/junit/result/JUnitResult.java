@@ -87,11 +87,11 @@ public final class JUnitResult {
 
     /**
      * Start test-case.
-     *
+     * @param testSuite test-suite instance.
      * @param testCase test-case instance.
      */
-    public static void startTestCase(ITestCase testCase) {
-        TestSuiteResult suiteResult = (TestSuiteResult) map.get(testCase.getTestSuite());
+    public static void startTestCase(ITestSuite testSuite, ITestCase testCase) {
+        TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);
         TestCaseResult caseResult = new TestCaseResult(testCase.getName());
         suiteResult.addTestCaseResult(caseResult);
         map.put(testCase, caseResult);

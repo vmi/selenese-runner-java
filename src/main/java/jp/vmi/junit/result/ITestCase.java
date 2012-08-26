@@ -11,11 +11,4 @@ public interface ITestCase {
      * @return test-case name.
      */
     String getName();
-
-    /**
-     * Get parent test-suite instance.
-     *
-     * @return test-suite instatnce.
-     */
-    ITestSuite getTestSuite();
 }
