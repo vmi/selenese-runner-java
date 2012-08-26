@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
-import jp.vmi.selenium.selenese.result.Failure;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -17,7 +19,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 /**
  * test-suite object for execution.
  */
-public class TestSuite implements Selenese {
+public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
@@ -41,7 +43,7 @@ public class TestSuite implements Selenese {
             if (name != null)
                 this.name = name;
             else if (file != null)
-                this.name = file.getName().replaceFirst("\\.[^.]+$", "");
+                this.name = FilenameUtils.getBaseName(file.getName());
             return this;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -67,18 +69,18 @@ public class TestSuite implements Selenese {
 
     @ExecuteTestSuite
     @Override
-    public Result execute(Runner runner) {
+    public Result execute(Selenese parent, Runner runner) {
         Result totalResult = SUCCESS;
         for (File file : files) {
-            Result result = null;
+            Selenese selenese = Parser.parse(file, runner);
+            Result result;
             try {
-                Selenese selenese = Parser.parse(file, runner);
-                result = selenese.execute(runner);
+                result = selenese.execute(this, runner);
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
                 throw e;
             } catch (InvalidSeleneseException e) {
-                result = new Failure(e.getMessage());
+                result = new Error(e);
                 result.addErrorLog(e.getMessage());
                 log.error(e.getMessage());
             }

@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -21,7 +22,7 @@ public class TestSuiteParser extends Parser {
     }
 
     @Override
-    protected Selenese parse(Runner runner) throws InvalidSeleneseException {
+    protected Selenese parse(Runner runner) {
         try {
             TestSuite testSuite = Binder.newTestSuite(file, null);
             NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
@@ -31,7 +32,7 @@ public class TestSuiteParser extends Parser {
             }
             return testSuite;
         } catch (TransformerException e) {
-            throw new InvalidSeleneseException(e);
+            return Binder.newErrorTestSuite(FilenameUtils.getBaseName(file.getName()), new InvalidSeleneseException(e));
         }
     }
 }

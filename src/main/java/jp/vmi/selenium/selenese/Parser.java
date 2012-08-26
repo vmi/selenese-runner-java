@@ -2,10 +2,12 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.xpath.XPathAPI;
 import org.cyberneko.html.parsers.DOMParser;
@@ -13,6 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import jp.vmi.selenium.selenese.inject.Binder;
 
 /**
  * Abstract class of selenese parser.
@@ -60,9 +64,9 @@ public abstract class Parser {
      * @param file selenese script file. (test-case or test-suite)
      * @param runner Runner object.
      * @return TestCase or TestSuite.
-     * @throws InvalidSeleneseException syntax error.
      */
-    public static Selenese parse(File file, Runner runner) throws InvalidSeleneseException {
+    public static Selenese parse(File file, Runner runner) {
+        String name = FilenameUtils.getBaseName(file.getName());
         InputStream is = null;
         Parser p;
         try {
@@ -80,13 +84,14 @@ public abstract class Parser {
                     XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
                     p = new TestSuiteParser(file, document);
                 } catch (NullPointerException e2) {
-                    throw new InvalidSeleneseException("neither 'selenium.base' link nor table with 'suiteTable' id");
+                    return Binder.newErrorTestCase(name, new InvalidSeleneseException(
+                        "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
                 }
             }
-        } catch (RuntimeException e) {
-            throw e;
+        } catch (FileNotFoundException e) {
+            return Binder.newErrorTestCase(name, new InvalidSeleneseException(e.getMessage()));
         } catch (Exception e) {
-            throw new InvalidSeleneseException(e);
+            return Binder.newErrorTestCase(name, new InvalidSeleneseException(e));
         } finally {
             IOUtils.closeQuietly(is);
         }
@@ -101,5 +106,5 @@ public abstract class Parser {
         this.docucment = document;
     }
 
-    protected abstract Selenese parse(Runner runner) throws InvalidSeleneseException;
+    protected abstract Selenese parse(Runner runner);
 }

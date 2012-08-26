@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.xpath.XPathAPI;
 import org.openqa.selenium.WebDriver;
 import org.w3c.dom.Document;
@@ -35,10 +36,11 @@ public class TestCaseParser extends Parser {
 
     @Override
     public Selenese parse(Runner runner) {
+        String name = null;
         try {
             WebDriver driver = runner.getDriver();
             String baseURL = runner.getEffectiveBaseURL(this.baseURL);
-            String name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
+            name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(file, name, driver, baseURL);
             CommandFactory commandFactory = new CommandFactory(testCase.getProc());
             NodeList trList = XPathAPI.selectNodeList(docucment, "//TBODY/TR");
@@ -68,7 +70,9 @@ public class TestCaseParser extends Parser {
             }
             return testCase;
         } catch (TransformerException e) {
-            throw new RuntimeException(e);
+            if (name == null)
+                name = FilenameUtils.getBaseName(file.getName());
+            return Binder.newErrorTestCase(name, new InvalidSeleneseException(e));
         }
     }
 }

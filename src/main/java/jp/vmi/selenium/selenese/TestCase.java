@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
@@ -36,7 +37,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
 @Ignore
-public class TestCase implements Selenese, Test {
+public class TestCase implements Selenese, ITestCase, Test {
 
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
@@ -241,7 +242,7 @@ public class TestCase implements Selenese, Test {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Runner runner) {
+    public Result execute(Selenese parent, Runner runner) {
         log.info("baseURL: {}", baseURL);
         Command current = commandList.first();
         Result totalResult = SUCCESS;
