@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.junit.Ignore;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
@@ -34,7 +33,6 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * </p>
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
-@Ignore
 public class TestCase implements Selenese, ITestCase {
 
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
