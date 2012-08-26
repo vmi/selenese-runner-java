@@ -9,17 +9,19 @@ public class InvalidSeleneseException extends Exception {
 
     /**
      * Constructor.
-     *
-     * @param e exception.
+     * <p>
+     * {@link Throwable#Throwable(Throwable)}
+     * </p>
      */
-    public InvalidSeleneseException(Exception e) {
-        super(e);
+    public InvalidSeleneseException(Throwable cause) {
+        super(cause);
     }
 
     /**
      * Constructor.
-     *
-     * @param message message.
+     * <p>
+     * {@link Throwable#Throwable(String)}
+     * </p>
      */
     public InvalidSeleneseException(String message) {
         super(message);

@@ -17,8 +17,10 @@ public interface Selenese {
     /**
      * Execute script.
      *
-     * @param runner Runner object.
+     * @param parent parent selenese instance or null.
+     * @param runner Runner instance.
+     * @exception InvalidSeleneseException failed in parsing or executing selenese.
      * @return result.
      */
-    Result execute(Runner runner);
+    Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException;
 }

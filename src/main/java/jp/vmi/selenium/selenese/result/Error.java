@@ -1,16 +1,16 @@
 package jp.vmi.selenium.selenese.result;
 
 /**
- * Result of failure.
+ * Result of error.
  */
-public class Failure extends Result {
+public class Error extends Result {
 
     /**
      * Constructor.
      *
-     * @param message failure message.
+     * @param message error message.
      */
-    public Failure(String message) {
+    public Error(String message) {
         super(message);
     }
 
@@ -19,7 +19,7 @@ public class Failure extends Result {
      *
      * @param e Exception.
      */
-    public Failure(Exception e) {
+    public Error(Exception e) {
         super(e.getMessage());
     }
 

@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
-
 import org.junit.Test;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -17,7 +15,7 @@ public class TestSuiteTest {
      */
     @Test
     public void testTestSuite() {
-        File script = TestUtils.getScriptFile(TestSuiteTest.class, "");
+        String script = TestUtils.getScriptFile(TestSuiteTest.class, "");
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions());

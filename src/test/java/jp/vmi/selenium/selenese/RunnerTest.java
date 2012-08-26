@@ -11,7 +11,6 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -43,7 +42,7 @@ public class RunnerTest {
         File tmp = File.createTempFile("aaa", "test.html");
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
-        runner.run(tmp.getAbsoluteFile());
+        runner.run(tmp.getCanonicalPath());
     }
 
     /**
@@ -53,16 +52,14 @@ public class RunnerTest {
      */
     @Test
     public void nosuchFile() throws IOException {
-        File tmp = new File("nosuchfile.html");
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
-        Result result = runner.run(tmp);
-        assertThat(result.isFailed(), is(true));
-        assertThat(result.getErrorLogs().size(), is(greaterThan(0)));
+        Result result = runner.run("nosuchfile.html");
+        assertTrue(result.isFailed());
     }
 
     /**
-     * Test of {@link Runner#run(File)}).
+     * Test of {@link Runner#run(String...)}).
      *
      * @throws IOException exception.
      */

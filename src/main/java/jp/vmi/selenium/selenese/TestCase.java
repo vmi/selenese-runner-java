@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.junit.Ignore;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
@@ -23,8 +23,6 @@ import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
-import junit.framework.Test;
-import junit.framework.TestResult;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -35,8 +33,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * </p>
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
-@Ignore
-public class TestCase implements Selenese, Test {
+public class TestCase implements Selenese, ITestCase {
 
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
@@ -93,6 +90,15 @@ public class TestCase implements Selenese, Test {
      */
     public WebDriver getDriver() {
         return driver;
+    }
+
+    /**
+     * Get base URL.
+     *
+     * @return base URL.
+     */
+    public String getBaseURL() {
+        return baseURL;
     }
 
     /**
@@ -241,12 +247,10 @@ public class TestCase implements Selenese, Test {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Runner runner) {
-        log.info("baseURL: {}", baseURL);
+    public Result execute(Selenese parent, Runner runner) {
         Command current = commandList.first();
         Result totalResult = SUCCESS;
         while (current != null) {
-            log.info(current.toString());
             Result result = doCommand(current);
             runner.takeScreenshotAll(current.getIndex());
             totalResult = totalResult.update(result);
@@ -255,18 +259,6 @@ public class TestCase implements Selenese, Test {
             current = current.next(this);
         }
         return totalResult;
-    }
-
-    @Override
-    public int countTestCases() {
-        return 1;
-    }
-
-    // for interface matching only.
-    @Deprecated
-    @Override
-    public void run(TestResult result) {
-        // unused method.
     }
 
     @Override

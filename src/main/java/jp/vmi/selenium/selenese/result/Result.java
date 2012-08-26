@@ -1,20 +1,11 @@
 package jp.vmi.selenium.selenese.result;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Result of command execution.
  */
 public abstract class Result {
 
     private final String message;
-
-    private final List<String> errorLogs = new LinkedList<String>();
-
-    private final List<String> normalLogs = new LinkedList<String>();
 
     /**
      * Constructor.
@@ -26,49 +17,12 @@ public abstract class Result {
     }
 
     /**
-     * Constructor.
-     *
-     * @param result object.
-     */
-    public Result(Result... results) {
-        //message
-        List<String> messages = new LinkedList<String>();
-        for (Result result : results) {
-            messages.add(result.getMessage());
-        }
-        this.message = StringUtils.join(messages, "\n");
-
-        //logs
-        for (Result result : results) {
-            this.getErrorLogs().addAll(result.getErrorLogs());
-            this.getNormalLogs().addAll(result.getNormalLogs());
-        }
-    }
-
-    /**
      * Get result message.
      *
      * @return result message.
      */
     public String getMessage() {
         return message;
-    }
-
-    public List<String> getErrorLogs() {
-        return errorLogs;
-    }
-
-    public List<String> getNormalLogs() {
-        return normalLogs;
-    }
-
-    public void addErrorLog(String log) {
-        errorLogs.add(log);
-        normalLogs.add(log);
-    }
-
-    public void addNormalLog(String log) {
-        normalLogs.add(log);
     }
 
     /**
@@ -107,9 +61,9 @@ public abstract class Result {
      */
     public Result update(Result newResult) {
         if (newResult.isInterrupted())
-            return new Failure(this, newResult);
+            return new Failure(this.getMessage() + "\n" + newResult.getMessage());
         else if (newResult.isFailed())
-            return new Warning(this, newResult);
+            return new Warning(this.getMessage() + "\n" + newResult.getMessage());
         else
             return this;
     }

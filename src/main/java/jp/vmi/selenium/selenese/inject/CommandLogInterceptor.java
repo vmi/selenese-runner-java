@@ -18,7 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.junit.result.JUnitResult.*;
 
 /**
  * Interceptor for logging each command execution.
@@ -57,29 +60,29 @@ public class CommandLogInterceptor implements MethodInterceptor {
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 log.error("- {}", result);
-                result.addErrorLog(String.format("[ERROR] - %s", result));
+                logError(testCase, "-", result.toString());
             } else {
                 log.info("- {}", result);
-                result.addNormalLog(String.format("[INFO] - %s", result));
+                logInfo(testCase, "-", result.toString());
             }
         } else {
             Iterator<String> iter = messages.iterator();
             String message = iter.next();
             if (result.isFailed()) {
                 log.error("- {} {}", result, message);
-                result.addErrorLog(String.format("[ERROR] - %s %s", result, message));
+                logError(testCase, "-", result.toString(), message);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.error(message);
-                    result.addErrorLog(message);
+                    logError(testCase, message);
                 }
             } else {
                 log.info("- {} {}", result, message);
-                result.addNormalLog(String.format("[INFO] - %s %s", result, message));
+                logInfo(testCase, "-", result.toString(), message);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.info(message);
-                    result.addNormalLog(message);
+                    logInfo(testCase, message);
                 }
             }
             prevMessages = messages;
@@ -88,15 +91,23 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestCase testCase;
+        TestCase testCase = null;
         try {
             testCase = (TestCase) invocation.getThis();
-        } catch (Exception e) {
-            log.error("receiver is not TestCase", e);
+            Command command = (Command) invocation.getArguments()[0];
+            log.info(command.toString());
+            logInfo(testCase, command.toString());
+            Result result = (Result) invocation.proceed();
+            log(result, testCase);
+            return result;
+        } catch (ClassCastException e) {
+            log.error("receiver \"{}\" is not TestCase: {}", invocation.getThis(), e);
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            if (testCase != null)
+                setError(testCase, e.getMessage(), e.toString());
+            throw e;
         }
-        Result result = (Result) invocation.proceed();
-        log(result, testCase);
-        return result;
     }
 }

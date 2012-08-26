@@ -49,6 +49,13 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <skipTests>false</skipTests>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
       <id>package</id>
@@ -174,7 +181,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
   <dependencies>
@@ -182,6 +188,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -225,11 +232,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>3.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant-junit</artifactId>
-      <version>1.8.4</version>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-library</artifactId>
       <version>1.1</version>
@@ -247,6 +249,18 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>jruby-stdlib</artifactId>
       <version>1.6.7.2</version>
       <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>jenkins-core</artifactId>
+      <version>1.478</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

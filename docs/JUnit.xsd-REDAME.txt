@@ -1,0 +1,8 @@
+* You can get JUnit.xsd from:
+  http://windyroad.org/2011/02/07/apache-ant-junit-xml-schema/
+  http://windyroad.org/dl/Open%20Source/JUnit.xsd
+
+* LICENSE
+  The Apache Ant JUnit XML Schema is distributed under the terms of
+  the GNU Lesser General Public License (LGPL). Permission to waive
+  conditions of this license may be requested from Windy Road Support.

@@ -11,9 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
-import jp.vmi.selenium.selenese.junit.JUnitResult;
-import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
@@ -27,6 +26,8 @@ public class Runner {
     private File screenshotDir = null;
     private boolean isScreenshotAll = false;
     private String baseURL = "";
+
+    private final int countForDefault = 0;
 
     private void takeScreenshot(int index) {
         FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
@@ -160,36 +161,15 @@ public class Runner {
     }
 
     /**
-     * Run Selenese script file.
-     *
-     * @param file Selenese script file. (test-case or test-suite)
-     * @return result.
-     */
-    public Result run(File file) {
-        try {
-            Selenese selenese = Parser.parse(file, this);
-            return selenese.execute(this);
-        } catch (RuntimeException e) {
-            log.error(e.getMessage());
-            throw e;
-        } catch (InvalidSeleneseException e) {
-            Result result = new Failure(e.getMessage());
-            result.addErrorLog(e.getMessage());
-            log.error(e.getMessage());
-            return result;
-        }
-    }
-
-    /**
      * Run Selenese script files.
      *
      * @param filenames Selenese script filenames.
      * @return result.
      */
     public Result run(String... filenames) {
-        TestSuite testSuite = Binder.newTestSuite(null, "default");
+        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault));
         for (String filename : filenames)
             testSuite.addTestCase(filename);
-        return testSuite.execute(this);
+        return testSuite.execute(null, this);
     }
 }

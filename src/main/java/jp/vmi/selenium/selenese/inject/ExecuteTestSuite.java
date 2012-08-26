@@ -10,6 +10,9 @@ import static java.lang.annotation.RetentionPolicy.*;
 
 /**
  * Annotates TestSuite execution.
+ * <p>
+ * Expected signature: {@code Result ITestSuite#method(...)}
+ * </p>
  */
 @BindingAnnotation
 @Target({ METHOD })

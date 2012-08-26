@@ -57,7 +57,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testSimple() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -74,7 +74,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -91,7 +91,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testAssertFail() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -125,7 +125,7 @@ public abstract class CommandRunnerTest {
         assertEquals(18, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
-    protected void execute(File scriptName) {
+    protected void execute(String scriptName) {
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot());
@@ -152,7 +152,7 @@ public abstract class CommandRunnerTest {
      */
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.run(script);
@@ -172,7 +172,7 @@ public abstract class CommandRunnerTest {
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         testCase.addCommand(invalidCommand);
-        testCase.execute(runner);
+        testCase.execute(null, runner);
     }
 
     /**
@@ -193,7 +193,7 @@ public abstract class CommandRunnerTest {
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         testCase.addCommand(captureCommand);
-        testCase.execute(runner);
+        testCase.execute(null, runner);
         if (driver instanceof TakesScreenshot)
             assertTrue(pngFile.exists());
     }
@@ -214,7 +214,7 @@ public abstract class CommandRunnerTest {
         testCase.addCommand(pause);
         StopWatch sw = new StopWatch();
         sw.start();
-        testCase.execute(runner);
+        testCase.execute(null, runner);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
     }
@@ -224,7 +224,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void basicauth() {
-        File script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
 
         WebServer webserver = new WebServer();
         webserver.start();
