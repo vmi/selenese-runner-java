@@ -81,8 +81,6 @@ public class TestSuite implements Selenese, ITestSuite {
                 throw e;
             } catch (InvalidSeleneseException e) {
                 result = new Error(e);
-                result.addErrorLog(e.getMessage());
-                log.error(e.getMessage());
             }
             totalResult = totalResult.update(result);
         }

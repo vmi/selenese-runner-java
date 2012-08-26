@@ -26,6 +26,8 @@ import org.apache.commons.lang.StringUtils;
 })
 public class TestCaseResult extends TestResult {
 
+    private static final String NL = System.getProperty("line.separator");
+
     @XmlTransient
     private final List<String> systemOuts = new ArrayList<String>();
 
@@ -149,7 +151,7 @@ public class TestCaseResult extends TestResult {
      */
     @XmlElement(name = "system-out")
     public String getSystemOut() {
-        return (systemOuts.size() != 0) ? StringUtils.join(systemOuts, "") : null;
+        return (systemOuts.size() != 0) ? StringUtils.join(systemOuts, NL) : null;
     }
 
     /**
@@ -159,6 +161,6 @@ public class TestCaseResult extends TestResult {
      */
     @XmlElement(name = "system-err")
     public String getSystemErr() {
-        return (systemErrs.size() != 0) ? StringUtils.join(systemErrs, "") : null;
+        return (systemErrs.size() != 0) ? StringUtils.join(systemErrs, NL) : null;
     }
 }

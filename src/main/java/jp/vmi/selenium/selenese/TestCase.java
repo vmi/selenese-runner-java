@@ -95,6 +95,15 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
+     * Get base URL.
+     *
+     * @return base URL.
+     */
+    public String getBaseURL() {
+        return baseURL;
+    }
+
+    /**
      * Run built-in command of WebDriverCommandProcessor.
      *
      * @param name command name.
@@ -241,11 +250,9 @@ public class TestCase implements Selenese, ITestCase {
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent, Runner runner) {
-        log.info("baseURL: {}", baseURL);
         Command current = commandList.first();
         Result totalResult = SUCCESS;
         while (current != null) {
-            log.info(current.toString());
             Result result = doCommand(current);
             runner.takeScreenshotAll(current.getIndex());
             totalResult = totalResult.update(result);

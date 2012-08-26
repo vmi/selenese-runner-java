@@ -11,7 +11,6 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -56,8 +55,7 @@ public class RunnerTest {
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver());
         Result result = runner.run("nosuchfile.html");
-        assertThat(result.isFailed(), is(true));
-        assertThat(result.getErrorLogs().size(), is(greaterThan(0)));
+        assertTrue(result.isFailed());
     }
 
     /**

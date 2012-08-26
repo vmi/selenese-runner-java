@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.jboss.netty.util.internal.ConcurrentIdentityHashMap;
 
 /**
@@ -18,6 +19,8 @@ import org.jboss.netty.util.internal.ConcurrentIdentityHashMap;
  * @see <a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/tasks/junit/CaseResult.java">Jenkins CaseResult class.</a>
  */
 public final class JUnitResult {
+
+    private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
     private static JAXBContext context;
 
@@ -91,10 +94,12 @@ public final class JUnitResult {
      * @param testCase test-case instance.
      */
     public static void startTestCase(ITestSuite testSuite, ITestCase testCase) {
-        TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);
         TestCaseResult caseResult = new TestCaseResult(testCase.getName());
-        suiteResult.addTestCaseResult(caseResult);
         map.put(testCase, caseResult);
+        if (testSuite != null) {
+            TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);
+            suiteResult.addTestCaseResult(caseResult);
+        }
     }
 
     /**
@@ -161,5 +166,35 @@ public final class JUnitResult {
     public static void addSystemErr(ITestCase testCase, String message) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.addSystemErr(message);
+    }
+
+    private static String logFormat(String level, String... messages) {
+        StringBuilder logMsg = new StringBuilder(DATE_TIME_FORMAT.format(System.currentTimeMillis()));
+        logMsg.append(level);
+        for (String message : messages)
+            logMsg.append(" ").append(message);
+        return logMsg.toString();
+    }
+
+    /**
+     * Add System.out'ed message string.
+     *
+     * @param testCase test-case instance.
+     * @param messages info log messages.
+     */
+    public static void logInfo(ITestCase testCase, String... messages) {
+        TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
+        caseResult.addSystemOut(logFormat("[INFO]", messages));
+    }
+
+    /**
+     * Add System.err'ed message string.
+     *
+     * @param testCase test-case instance.
+     * @param messages error log messages.
+     */
+    public static void logError(ITestCase testCase, String... messages) {
+        TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
+        caseResult.addSystemErr(logFormat("[ERROR]", messages));
     }
 }

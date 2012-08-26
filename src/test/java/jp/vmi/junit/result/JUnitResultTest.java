@@ -72,12 +72,12 @@ public class JUnitResultTest {
         tc = testCases[0];
         startTestCase(testSuite, tc);
         setSuccess(tc);
-        addSystemOut(tc, "systemOut00\n");
-        addSystemErr(tc, "systemErr00\n");
-        addSystemOut(tc, "systemOut01\n");
-        addSystemErr(tc, "systemErr01\n");
-        addSystemOut(tc, "systemOut02\n");
-        addSystemErr(tc, "systemErr02\n");
+        logInfo(tc, "systemOut00");
+        logError(tc, "systemErr00");
+        logInfo(tc, "systemOut01");
+        logError(tc, "systemErr01");
+        logInfo(tc, "systemOut02");
+        logError(tc, "systemErr02");
         Thread.sleep(100);
         endTestCase(tc);
         tc = testCases[1];
@@ -131,8 +131,8 @@ public class JUnitResultTest {
         assertEquals(1, caseResult.getPassCount());
         assertEquals(0, caseResult.getFailCount());
         assertEquals(0, caseResult.getSkipCount());
-        assertEquals("systemOut00\nsystemOut01\nsystemOut02\n", caseResult.getStdout());
-        assertEquals("systemErr00\nsystemErr01\nsystemErr02\n", caseResult.getStderr());
+        assertTrue(caseResult.getStdout().matches("(?s).*systemOut00.*\n.*systemOut01.*\n.*systemOut02.*"));
+        assertTrue(caseResult.getStderr().matches("(?s).*systemErr00.*\n.*systemErr01.*\n.*systemErr02.*"));
         // test-case 1 test.
         caseResult = caseResults.get(1);
         assertEquals(Result.UNSTABLE, caseResult.getBuildResult());

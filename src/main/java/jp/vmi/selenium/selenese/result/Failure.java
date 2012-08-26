@@ -23,10 +23,6 @@ public class Failure extends Result {
         super(e.getMessage());
     }
 
-    public Failure(Result... results) {
-        super(results);
-    }
-
     @Override
     public boolean isSuccess() {
         return false;
