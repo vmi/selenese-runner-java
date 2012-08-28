@@ -155,9 +155,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <filters>
             <filter>
               <artifact>org.seleniumhq.selenium:selenium-server</artifact>
-              <excludes>
-                <exclude>**</exclude>
-              </excludes>
               <includes>
                 <include>**/*.js</include>
               </includes>
