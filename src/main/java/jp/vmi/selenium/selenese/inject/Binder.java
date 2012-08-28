@@ -2,8 +2,6 @@ package jp.vmi.selenium.selenese.inject;
 
 import java.io.File;
 
-import org.openqa.selenium.WebDriver;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,6 +10,7 @@ import com.google.inject.matcher.Matchers;
 import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 
@@ -51,13 +50,13 @@ public class Binder {
      *
      * @param file selenese script file.
      * @param name test-case name.
-     * @param driver target WebDriver instance.
+     * @param runner Runner instance.
      * @param baseURL effective base URL.
      * @return TestCase instance.
      */
-    public static TestCase newTestCase(File file, String name, WebDriver driver, String baseURL) {
+    public static TestCase newTestCase(File file, String name, Runner runner, String baseURL) {
         TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(file, name, driver, baseURL);
+        return testCase.initialize(file, name, runner, baseURL);
     }
 
     /**
@@ -65,11 +64,12 @@ public class Binder {
      *
      * @param file Selenese script file.
      * @param name test-case name.
+     * @param runner Runner instance.
      * @return TestSuite instance.
      */
-    public static TestSuite newTestSuite(File file, String name) {
+    public static TestSuite newTestSuite(File file, String name, Runner runner) {
         TestSuite testSuite = injector.getInstance(TestSuite.class);
-        return testSuite.initialize(file, name);
+        return testSuite.initialize(file, name, runner);
     }
 
     /**

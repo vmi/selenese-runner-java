@@ -60,8 +60,8 @@ public abstract class CommandRunnerTest {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
+        runner.setScreenshotDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
         runner.run(script);
 
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
@@ -77,8 +77,8 @@ public abstract class CommandRunnerTest {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
+        runner.setScreenshotDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
         runner.run(script);
 
         assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
@@ -94,8 +94,8 @@ public abstract class CommandRunnerTest {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
+        runner.setScreenshotDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
         runner.run(script);
 
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
@@ -128,8 +128,8 @@ public abstract class CommandRunnerTest {
     protected void execute(String scriptName) {
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot());
-        runner.setScreenshotAll(true);
+        runner.setScreenshotDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
         runner.run(scriptName);
     }
 
@@ -168,11 +168,11 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "invalidCommand", driver, "");
+        TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         testCase.addCommand(invalidCommand);
-        testCase.execute(null, runner);
+        testCase.execute(null);
     }
 
     /**
@@ -189,11 +189,11 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "capture", driver, "");
+        TestCase testCase = Binder.newTestCase(null, "capture", runner, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         testCase.addCommand(captureCommand);
-        testCase.execute(null, runner);
+        testCase.execute(null);
         if (driver instanceof TakesScreenshot)
             assertTrue(pngFile.exists());
     }
@@ -208,13 +208,13 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "pauseCommand", driver, "");
+        TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, "");
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command pause = commandFactory.newCommand(1, "pause", "5000");
         testCase.addCommand(pause);
         StopWatch sw = new StopWatch();
         sw.start();
-        testCase.execute(null, runner);
+        testCase.execute(null);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
     }

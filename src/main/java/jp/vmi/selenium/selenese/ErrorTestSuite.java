@@ -30,9 +30,14 @@ public class ErrorTestSuite implements Selenese, ITestSuite {
         return name;
     }
 
+    @Override
+    public Runner getRunner() {
+        return null;
+    }
+
     @ExecuteTestSuite
     @Override
-    public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {
+    public Result execute(Selenese parent) throws InvalidSeleneseException {
         throw e;
     }
 }

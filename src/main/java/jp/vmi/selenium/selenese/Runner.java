@@ -22,38 +22,51 @@ public class Runner {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
+    private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
+
     private WebDriver driver;
-    private File screenshotDir = null;
-    private boolean isScreenshotAll = false;
+    private String screenshotDir = null;
+    private String screenshotAllDir = null;
     private String baseURL = "";
 
     private final int countForDefault = 0;
 
-    private void takeScreenshot(int index) {
-        FastDateFormat format = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
-        if (!(driver instanceof TakesScreenshot)) {
-            log.warn("webdriver is not support taking screenshot.");
-            return;
-        }
-        TakesScreenshot taker = (TakesScreenshot) driver;
-        File tmp = taker.getScreenshotAs(OutputType.FILE);
-        String dateTime = format.format(Calendar.getInstance().getTime());
-        File target = new File(screenshotDir, "capture_" + dateTime + "_" + index + ".png");
-        if (!tmp.renameTo(target.getAbsoluteFile()))
-            log.error("fail to rename file to :" + target.getAbsolutePath());
-        log.info(" - capture screenshot:{}", target.getAbsolutePath());
+    private void takeScreenshot(File file) {
+        File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        if (!tmp.renameTo(file))
+            throw new RuntimeException("failed to rename captured screenshot image: " + file);
+        log.info(" - captured screenshot: {}", file);
     }
 
     /**
-     * Take screenshot at all commands if isScreenshotAll flag if true.
+     * Take screenshot to filename. (override directory if --screenshot-dir option specified)
+     * <p>
+     * <p>Internal use only.</p>
+     * </p>
+     * @param filename filename.
+     * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
+     */
+    public void takeScreenshot(String filename) throws UnsupportedOperationException {
+        if (!(driver instanceof TakesScreenshot))
+            throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
+        File file = new File(filename).getAbsoluteFile();
+        if (screenshotDir != null)
+            file = new File(screenshotDir, file.getName()).getAbsoluteFile();
+        takeScreenshot(file);
+    }
+
+    /**
+     * Take screenshot at all commands if --screenshot-all option specified.
      * <p>
      * <b>Internal use only.</b>
      * </p>
      * @param index command index.
      */
     public void takeScreenshotAll(int index) {
-        if (isScreenshotAll)
-            takeScreenshot(index);
+        if (screenshotAllDir == null || !(driver instanceof TakesScreenshot))
+            return;
+        String filename = String.format("capture_%s_%d.png", FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        takeScreenshot(new File(screenshotAllDir, filename));
     }
 
     /**
@@ -77,43 +90,27 @@ public class Runner {
     }
 
     /**
-     * Get directory for storing screenshots.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @return directory.
-     */
-    public File getScreenshotDir() {
-        return screenshotDir;
-    }
-
-    /**
      * Set directory for storing screenshots.
      *
      * @param screenshotDir directory.
+     * @exception IllegalArgumentException throws if screenshotDir is not directory.
      */
-    public void setScreenshotDir(File screenshotDir) {
+    public void setScreenshotDir(String screenshotDir) throws IllegalArgumentException {
+        if (screenshotDir != null && !new File(screenshotDir).isDirectory())
+            throw new IllegalArgumentException(screenshotDir + " is not directory.");
         this.screenshotDir = screenshotDir;
     }
 
     /**
-     * Is taking screenshot at all commands.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @return isScreenshotAll flag.
-     */
-    public boolean isScreenshotAll() {
-        return isScreenshotAll;
-    }
-
-    /**
-     * Set flag of taking screenshot at all commands.
+     * Set directory for storing screenshots at all commands.
      *
-     * @param isScreenshotAll flag.
+     * @param screenshotAllDir directory.
+     * @exception IllegalArgumentException throws if screenshotAllDir is not directory.
      */
-    public void setScreenshotAll(boolean isScreenshotAll) {
-        this.isScreenshotAll = isScreenshotAll;
+    public void setScreenshotAllDir(String screenshotAllDir) throws IllegalArgumentException {
+        if (screenshotAllDir != null && !new File(screenshotAllDir).isDirectory())
+            throw new IllegalArgumentException(screenshotAllDir + " is not directory.");
+        this.screenshotAllDir = screenshotAllDir;
     }
 
     /**
@@ -167,9 +164,9 @@ public class Runner {
      * @return result.
      */
     public Result run(String... filenames) {
-        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault));
+        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault), this);
         for (String filename : filenames)
             testSuite.addTestCase(filename);
-        return testSuite.execute(null, this);
+        return testSuite.execute(null);
     }
 }

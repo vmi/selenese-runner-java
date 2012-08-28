@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -14,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class TestCaseTest {
 
-    private WebDriver driver;
+    private final Runner runner = new Runner();
 
     /**
      * Initialize.
@@ -23,7 +22,7 @@ public class TestCaseTest {
     public void initialize() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        driver = manager.get();
+        runner.setDriver(manager.get());
     }
 
     /**
@@ -31,7 +30,7 @@ public class TestCaseTest {
      */
     @Test
     public void replaceVariable() {
-        TestCase c = Binder.newTestCase(null, null, driver, "");
+        TestCase c = Binder.newTestCase(null, null, runner, "");
         c.setVariable("XYZ", "a");
         assertEquals("XYZ", c.replaceVariables("${a}"));
     }
@@ -41,7 +40,7 @@ public class TestCaseTest {
      */
     @Test
     public void replaceVariables() {
-        TestCase c = Binder.newTestCase(null, null, driver, "");
+        TestCase c = Binder.newTestCase(null, null, runner, "");
         c.setVariable("XYZ", "a");
         assertArrayEquals(new String[] { "abc", "XYZ", "abcXYZbca" }, c.replaceVariables(new String[] { "abc", "${a}", "abc${a}bca" }));
     }

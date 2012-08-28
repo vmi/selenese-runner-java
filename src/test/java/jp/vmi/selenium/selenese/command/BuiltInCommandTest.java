@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriverException;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -47,7 +48,9 @@ public class BuiltInCommandTest {
 
         TestCase testcase = new TestCase();
         WebDriverManager wdm = WebDriverManager.getInstance();
-        testcase.initialize(selenesefile, "test", wdm.get(), "");
+        Runner runner = new Runner();
+        runner.setDriver(wdm.get());
+        testcase.initialize(selenesefile, "test", runner, "");
 
         Result result = click.doCommand(testcase);
 

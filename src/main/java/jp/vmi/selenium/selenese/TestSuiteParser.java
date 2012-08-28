@@ -24,7 +24,7 @@ public class TestSuiteParser extends Parser {
     @Override
     protected Selenese parse(Runner runner) {
         try {
-            TestSuite testSuite = Binder.newTestSuite(file, null);
+            TestSuite testSuite = Binder.newTestSuite(file, null, runner);
             NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
             for (Node node : each(nodeList)) {
                 String tcFilename = node.getNodeValue();

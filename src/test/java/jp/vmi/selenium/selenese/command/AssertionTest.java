@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -31,7 +32,9 @@ public class AssertionTest {
         TestCase testcase = new TestCase();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        testcase.initialize(selenesefile, "test", wdm.get(), "");
+        Runner runner = new Runner();
+        runner.setDriver(wdm.get());
+        testcase.initialize(selenesefile, "test", runner, "");
 
         Result result = assertion.doCommand(testcase);
 

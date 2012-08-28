@@ -54,7 +54,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     private void log(Result result, TestCase testCase) {
         List<String> messages = new ArrayList<String>();
-        WebDriver driver = testCase.getDriver();
+        WebDriver driver = testCase.getRunner().getDriver();
         messages.add(String.format("URL: [%s] / Title: [%s]", driver.getCurrentUrl(), driver.getTitle()));
         cookieToMessage(messages, driver.manage().getCookies());
         if (ListUtils.isEqualList(messages, prevMessages)) {

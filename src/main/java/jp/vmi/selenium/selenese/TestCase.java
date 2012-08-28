@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +38,9 @@ public class TestCase implements Selenese, ITestCase {
 
     private File file = null;
     private String name = null;
+    private Runner runner = null;
     private String baseURL = null;
     private WebDriverCommandProcessor proc = null;
-    private WebDriver driver = null;
 
     private final Map<String, String> variableMap = new HashMap<String, String>();
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
@@ -55,23 +54,27 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @param file selenese script file.
      * @param name test-case name.
-     * @param driver target WebDriver instance.
+     * @param runner Runner instance.
      * @param baseURL effective base URL.
      * @return this.
      */
-    public TestCase initialize(File file, String name, WebDriver driver, String baseURL) {
+    public TestCase initialize(File file, String name, Runner runner, String baseURL) {
         this.file = file;
         this.name = name;
-        this.driver = driver;
+        this.runner = runner;
         this.baseURL = baseURL;
-        if (driver != null)
-            this.proc = new WebDriverCommandProcessor(baseURL, driver);
+        this.proc = new WebDriverCommandProcessor(baseURL, runner.getDriver());
         return this;
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Runner getRunner() {
+        return runner;
     }
 
     /**
@@ -81,15 +84,6 @@ public class TestCase implements Selenese, ITestCase {
      */
     public WebDriverCommandProcessor getProc() {
         return proc;
-    }
-
-    /**
-     * Get WebDriver.
-     *
-     * @return WebDriver.
-     */
-    public WebDriver getDriver() {
-        return driver;
     }
 
     /**
@@ -247,7 +241,7 @@ public class TestCase implements Selenese, ITestCase {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Selenese parent, Runner runner) {
+    public Result execute(Selenese parent) {
         Command current = commandList.first();
         Result totalResult = SUCCESS;
         while (current != null) {

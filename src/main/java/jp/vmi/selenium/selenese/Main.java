@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -106,10 +105,11 @@ public class Main {
             .create());
         options.addOption(OptionBuilder.withLongOpt("screenshot-dir")
             .hasArg().withArgName("dir")
-            .withDescription("directory for screenshot images. (default: current directory)")
+            .withDescription("override captureEntirePageScreenshot directory.")
             .create('s'));
         options.addOption(OptionBuilder.withLongOpt("screenshot-all")
-            .withDescription("take screenshot at all commands.")
+            .hasArg().withArgName("dir")
+            .withDescription("take screenshot at all commands to specified directory.")
             .create('S'));
         options.addOption(OptionBuilder.withLongOpt("baseurl")
             .hasArg().withArgName("baseURL")
@@ -229,8 +229,8 @@ public class Main {
             manager.setDriverOptions(driverOptions);
             Runner runner = new Runner();
             runner.setDriver(manager.get());
-            runner.setScreenshotDir(new File(cli.getOptionValue("screenshot-dir", new File(".").getAbsoluteFile().getParent())));
-            runner.setScreenshotAll(cli.hasOption("screenshot-all"));
+            runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
+            runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setResultDir(cli.getOptionValue("result-dir"));
             Result totalResult = runner.run(filenames);

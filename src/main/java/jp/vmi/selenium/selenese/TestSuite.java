@@ -26,6 +26,7 @@ public class TestSuite implements Selenese, ITestSuite {
     private File file;
     private String parentDir = null;
     private String name;
+    private Runner runner;
     private final List<File> files = new ArrayList<File>();
 
     /**
@@ -33,9 +34,10 @@ public class TestSuite implements Selenese, ITestSuite {
      *
      * @param file Selenese script file.
      * @param name test-case name.
+     * @param runner Runner instance.
      * @return this.
      */
-    public TestSuite initialize(File file, String name) {
+    public TestSuite initialize(File file, String name, Runner runner) {
         try {
             this.file = file;
             if (file != null)
@@ -44,6 +46,7 @@ public class TestSuite implements Selenese, ITestSuite {
                 this.name = name;
             else if (file != null)
                 this.name = FilenameUtils.getBaseName(file.getName());
+            this.runner = runner;
             return this;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -53,6 +56,11 @@ public class TestSuite implements Selenese, ITestSuite {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Runner getRunner() {
+        return runner;
     }
 
     /**
@@ -69,13 +77,13 @@ public class TestSuite implements Selenese, ITestSuite {
 
     @ExecuteTestSuite
     @Override
-    public Result execute(Selenese parent, Runner runner) {
+    public Result execute(Selenese parent) {
         Result totalResult = SUCCESS;
         for (File file : files) {
             Selenese selenese = Parser.parse(file, runner);
             Result result;
             try {
-                result = selenese.execute(this, runner);
+                result = selenese.execute(this);
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
                 throw e;
