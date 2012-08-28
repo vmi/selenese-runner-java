@@ -30,7 +30,8 @@ public final class JUnitResult {
 
     static {
         try {
-            context = JAXBContext.newInstance(TestSuiteResult.class.getPackage().getName());
+            ClassLoader cl = JUnitResult.class.getClassLoader();
+            context = JAXBContext.newInstance(TestSuiteResult.class.getPackage().getName(), cl);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
