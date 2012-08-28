@@ -11,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 
@@ -22,7 +21,7 @@ public class Runner {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
-    private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMddHHmmssSSS");
+    private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMdd_HHmmssSSS");
 
     private WebDriver driver;
     private String screenshotDir = null;
@@ -146,15 +145,6 @@ public class Runner {
             return baseURL;
         else
             return this.baseURL;
-    }
-
-    /**
-     * Set directory for storing XML result files.
-     *
-     * @param resultDir directory.
-     */
-    public void setResultDir(String resultDir) {
-        JUnitResult.setResultDir(resultDir);
     }
 
     /**

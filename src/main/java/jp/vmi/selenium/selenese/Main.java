@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -119,7 +120,7 @@ public class Main {
             .hasArg().withArgName("path")
             .withDescription("path to 'chromedriver' binary. (implies '--driver chrome')")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("result-dir")
+        options.addOption(OptionBuilder.withLongOpt("xml-result")
             .hasArg().withArgName("dir")
             .withDescription("output XML JUnit results to specified directory. (default: no output)")
             .create());
@@ -232,7 +233,7 @@ public class Main {
             runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
-            runner.setResultDir(cli.getOptionValue("result-dir"));
+            JUnitResult.setResultDir(cli.getOptionValue("xml-result"));
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.exitCode();
         } catch (IllegalArgumentException e) {

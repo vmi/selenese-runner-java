@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.util.DateUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,6 +38,14 @@ public class JUnitResultTest {
     @Before
     public void init() throws IOException {
         setResultDir(tmp.getRoot().getPath());
+    }
+
+    /**
+     * finalize for test.
+     */
+    @After
+    public void finish() {
+        setResultDir(null);
     }
 
     /**
