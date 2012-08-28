@@ -122,7 +122,7 @@ public class Main {
             .create());
         options.addOption(OptionBuilder.withLongOpt("xml-result")
             .hasArg().withArgName("dir")
-            .withDescription("output XML JUnit results to specified directory. (default: no output)")
+            .withDescription("output XML JUnit results to specified directory.")
             .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
@@ -180,7 +180,7 @@ public class Main {
         PrintWriter pw = new PrintWriter(System.out);
         pw.format(PROG_TITLE + " %s%n%n" + HEADER + "%n%n", getVersion());
         fmt.setSyntaxPrefix("Usage: ");
-        fmt.printHelp(pw, helpWidth, progName + " <option> ... <testcase|testsuite> ...\n",
+        fmt.printHelp(pw, helpWidth, progName + " <option> ... <test-case|test-suite> ...\n",
             null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null);
         pw.println();
         fmt.printWrapped(pw, helpWidth, FOOTER);

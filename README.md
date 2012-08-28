@@ -19,7 +19,7 @@ Features
 Usage
 -----
 
-    java -jar selenese-runner.jar <option> ... <testcase|testsuite> ...
+    java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
      -d,--driver <driver>             firefox (default) | chrome | ie | safari | htmlunit | FQCN-of-WebDriverFactory
      -p,--profile <name>              profile name (Firefox only)
@@ -28,11 +28,11 @@ Usage
         --proxy-user <user>           proxy username (HtmlUnit only *)
         --proxy-password <password>   proxy password (HtmlUnit only *)
         --no-proxy <no-proxy>         no-proxy hosts
-     -s,--screenshot-dir <dir>        directory for screenshot images. (default: current directory)
-     -S,--screenshot-all              take screenshot at all commands.
+     -s,--screenshot-dir <dir>        override captureEntirePageScreenshot directory.
+     -S,--screenshot-all <dir>        take screenshot at all commands to specified directory.
      -b,--baseurl <baseURL>           override base URL set in selenese.
         --chromedriver <path>         path to 'chromedriver' binary. (implies '--driver chrome')
-        --result-dir <dir>            output XML JUnit results to specified directory. (default: no output)
+        --xml-result <dir>            output XML JUnit results to specified directory.
      -h,--help                        show this message.
 
 Requirements
