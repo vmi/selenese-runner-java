@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.openqa.selenium.WebDriverCommandProcessor;
@@ -37,6 +38,7 @@ public class TestCase implements Selenese, ITestCase {
     private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
     private File file = null;
+    private String basename = null;
     private String name = null;
     private Runner runner = null;
     private String baseURL = null;
@@ -60,6 +62,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     public TestCase initialize(File file, String name, Runner runner, String baseURL) {
         this.file = file;
+        this.basename = (file != null) ? FilenameUtils.getBaseName(file.getName()) : "nofile";
         this.name = name;
         this.runner = runner;
         this.baseURL = baseURL;
@@ -246,7 +249,7 @@ public class TestCase implements Selenese, ITestCase {
         Result totalResult = SUCCESS;
         while (current != null) {
             Result result = doCommand(current);
-            runner.takeScreenshotAll(current.getIndex());
+            runner.takeScreenshotAll(basename, current.getIndex());
             totalResult = totalResult.update(result);
             if (totalResult.isInterrupted())
                 break;

@@ -59,12 +59,13 @@ public class Runner {
      * <p>
      * <b>Internal use only.</b>
      * </p>
+     * @param prefix prefix name.
      * @param index command index.
      */
-    public void takeScreenshotAll(int index) {
+    public void takeScreenshotAll(String prefix, int index) {
         if (screenshotAllDir == null || !(driver instanceof TakesScreenshot))
             return;
-        String filename = String.format("capture_%s_%d.png", FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         takeScreenshot(new File(screenshotAllDir, filename));
     }
 
