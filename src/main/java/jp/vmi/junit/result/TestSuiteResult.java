@@ -20,7 +20,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "error",
     "testCaseResults"
 })
-@SuppressWarnings("unused")
 public class TestSuiteResult extends TestResult {
 
     @XmlAttribute

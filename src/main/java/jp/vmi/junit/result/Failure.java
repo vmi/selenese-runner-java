@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlType(name = "", propOrder = {
     "value"
 })
-@SuppressWarnings("unused")
 class Failure {
 
     @XmlAttribute

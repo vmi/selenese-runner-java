@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAttribute;
  * property element.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@SuppressWarnings("unused")
 class Property {
 
     @XmlAttribute
