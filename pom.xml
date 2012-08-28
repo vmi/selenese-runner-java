@@ -154,10 +154,13 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <finalName>selenese-runner</finalName>
           <filters>
             <filter>
-              <artifact>junit:junit</artifact>
+              <artifact>org.seleniumhq.selenium:selenium-server</artifact>
               <excludes>
-                <exclude>org/hamcrest/**</exclude>
+                <exclude>**</exclude>
               </excludes>
+              <includes>
+                <include>**/*.js</include>
+              </includes>
             </filter>
           </filters>
           <transformers>
@@ -296,6 +299,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>jenkins-core</artifactId>
       <version>1.478</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
