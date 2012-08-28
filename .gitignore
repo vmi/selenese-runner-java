@@ -5,3 +5,4 @@ target/
 tmp/
 *.log
 *.jpage
+TEST-*.xml
