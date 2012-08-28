@@ -47,6 +47,15 @@ public abstract class Result {
     public abstract boolean isFailed();
 
     /**
+     * Is empty?
+     *
+     * @return ture if result is empty.
+     */
+    public boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * exit code for terminating Selenese Runner.
      *
      * @return exit code.

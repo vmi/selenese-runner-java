@@ -47,6 +47,9 @@ public class CommandFactory {
         addConstructor(Label.class);
         addConstructor(Gotolabel.class);
         addConstructor(GotoIf.class);
+
+        // commands for comment
+        addConstructor(Comment.class);
     }
 
     private static final String AND_WAIT = "AndWait";

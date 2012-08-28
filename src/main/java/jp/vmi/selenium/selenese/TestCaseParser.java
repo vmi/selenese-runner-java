@@ -41,18 +41,31 @@ public class TestCaseParser extends Parser {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(file, name, runner, baseURL);
             CommandFactory commandFactory = new CommandFactory(testCase.getProc());
-            NodeList trList = XPathAPI.selectNodeList(docucment, "//TBODY/TR");
+            Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
+            NodeList trList = tbody.getChildNodes();
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
             int tri = 0;
             for (Node tr : each(trList)) {
-                tri++;
-                List<String> cmdWithArgs = new ArrayList<String>(3);
-                for (Node td : each(tr.getChildNodes())) {
-                    if ("TD".equals(td.getNodeName())) {
-                        String value = td.getTextContent();
-                        if (value.length() > 0)
-                            cmdWithArgs.add(value);
+                List<String> cmdWithArgs;
+                switch (tr.getNodeType()) {
+                case Node.ELEMENT_NODE: // TD
+                    tri++;
+                    cmdWithArgs = new ArrayList<String>(3);
+                    for (Node td : each(tr.getChildNodes())) {
+                        if ("TD".equals(td.getNodeName())) {
+                            String value = td.getTextContent();
+                            if (value.length() > 0)
+                                cmdWithArgs.add(value);
+                        }
                     }
+                    break;
+                case Node.COMMENT_NODE:
+                    cmdWithArgs = new ArrayList<String>(2);
+                    cmdWithArgs.add("comment");
+                    cmdWithArgs.add(tr.getNodeValue().trim());
+                    break;
+                default: // skip whitespace text.
+                    continue;
                 }
                 Command command = commandFactory.newCommand(tri, cmdWithArgs);
                 if (command instanceof Label) {

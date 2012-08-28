@@ -18,6 +18,8 @@ import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.inject.Binder;
 
+import static org.apache.xerces.impl.Constants.*;
+
 /**
  * Abstract class of selenese parser.
  */
@@ -73,6 +75,7 @@ public abstract class Parser {
             DOMParser dp = new DOMParser();
             dp.setEntityResolver(null);
             dp.setFeature("http://xml.org/sax/features/namespaces", false);
+            dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
             is = new FileInputStream(file);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
