@@ -21,17 +21,11 @@ class Failure {
     @XmlValue
     private String value;
 
-    public Failure() {
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param message failure message.
-     * @param value failure value.
-     */
-    public Failure(String message, String value) {
-        this.message = message;
+    public void setValue(String value) {
         this.value = value;
     }
 }

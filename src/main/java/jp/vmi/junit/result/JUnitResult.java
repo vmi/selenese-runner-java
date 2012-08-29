@@ -10,6 +10,8 @@ import javax.xml.bind.Marshaller;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.jboss.netty.util.internal.ConcurrentIdentityHashMap;
 
+import static jp.vmi.junit.result.ObjectFactory.*;
+
 /**
  * Record and output test-suite & test-case results.
  * <p>
@@ -22,16 +24,15 @@ public final class JUnitResult {
 
     private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
-    private static JAXBContext context;
+    private static JAXBContext context = initContext();
 
     private static final Map<Object, TestResult> map = new ConcurrentIdentityHashMap<Object, TestResult>();
 
     private static String resultDir = null;
 
-    static {
+    private static JAXBContext initContext() {
         try {
-            ClassLoader cl = JUnitResult.class.getClassLoader();
-            context = JAXBContext.newInstance(TestSuiteResult.class.getPackage().getName(), cl);
+            return JAXBContext.newInstance(ObjectFactory.class);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +53,7 @@ public final class JUnitResult {
      * @param testSuite test-suite instance.
      */
     public static void startTestSuite(ITestSuite testSuite) {
-        map.put(testSuite, new TestSuiteResult(testSuite.getName()));
+        map.put(testSuite, factory.createTestSuiteResult(testSuite.getName()));
     }
 
     /**
@@ -95,7 +96,7 @@ public final class JUnitResult {
      * @param testCase test-case instance.
      */
     public static void startTestCase(ITestSuite testSuite, ITestCase testCase) {
-        TestCaseResult caseResult = new TestCaseResult(testCase.getName());
+        TestCaseResult caseResult = factory.createTestCaseResult(testCase.getName());
         map.put(testCase, caseResult);
         if (testSuite != null) {
             TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);

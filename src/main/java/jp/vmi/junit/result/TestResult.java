@@ -21,11 +21,6 @@ public abstract class TestResult {
         startTest();
     }
 
-    protected TestResult(String name) {
-        this.name = name;
-        startTest();
-    }
-
     private void startTest() {
         this.endTime = this.startTime = System.nanoTime();
         this.startTimeOfUTC = System.currentTimeMillis();
@@ -33,6 +28,15 @@ public abstract class TestResult {
 
     protected void endTest() {
         this.endTime = System.nanoTime();
+    }
+
+    /**
+     * Set test name.
+     *
+     * @param name test name.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

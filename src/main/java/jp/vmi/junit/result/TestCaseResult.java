@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
 
+import static jp.vmi.junit.result.ObjectFactory.*;
+
 /**
  * testcase element.
  */
@@ -42,22 +44,6 @@ public class TestCaseResult extends TestResult {
 
     @XmlElement
     private Failure failure = null;
-
-    /**
-     * Constructor.
-     */
-    public TestCaseResult() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param name test-case name.
-     */
-    public TestCaseResult(String name) {
-        super(name);
-    }
 
     /**
      * Add system-out message.
@@ -95,7 +81,7 @@ public class TestCaseResult extends TestResult {
      * @param value error value.
      */
     public void setError(String message, String value) {
-        error = new Error(message, value);
+        error = factory.createError(message, value);
     }
 
     /**
@@ -105,7 +91,7 @@ public class TestCaseResult extends TestResult {
      * @param value failure value.
      */
     public void setFailure(String message, String value) {
-        failure = new Failure(message, value);
+        failure = factory.createFailure(message, value);
     }
 
     /**
