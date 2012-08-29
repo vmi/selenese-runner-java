@@ -14,6 +14,11 @@ public class EndFor extends Command implements EndLoop {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public void setStartLoop(StartLoop startLoop) {
         this.startLoop = (StoreFor) startLoop;
     }

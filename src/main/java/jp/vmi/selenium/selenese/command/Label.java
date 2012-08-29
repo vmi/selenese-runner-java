@@ -11,6 +11,11 @@ public class Label extends Command {
         super(index, name, args);
     }
 
+    @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
     /**
      * Get label string.
      *

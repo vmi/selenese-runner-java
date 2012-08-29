@@ -17,6 +17,11 @@ public class GotoIf extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Command next(TestCase testCase) {
         if (!testCase.isTrue(args[EXPRESSION]))
             return next;

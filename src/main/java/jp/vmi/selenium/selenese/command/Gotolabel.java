@@ -16,6 +16,11 @@ public class Gotolabel extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Command next(TestCase testCase) {
         Label labelCommand = testCase.getLabelCommand(args[LABEL]);
         if (labelCommand == null)

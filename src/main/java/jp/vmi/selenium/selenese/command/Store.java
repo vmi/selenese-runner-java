@@ -25,6 +25,11 @@ public class Store extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Result doCommand(TestCase testCase) {
         String result = testCase.doBuiltInCommand(getter, testCase.replaceVariables(getterArgs));
         testCase.setVariable(result, varName);

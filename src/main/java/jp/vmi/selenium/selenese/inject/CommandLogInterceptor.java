@@ -98,7 +98,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
             log.info(command.toString());
             logInfo(testCase, command.toString());
             Result result = (Result) invocation.proceed();
-            if (!result.isEmpty())
+            if (command.hasResult())
                 log(result, testCase);
             return result;
         } catch (ClassCastException e) {

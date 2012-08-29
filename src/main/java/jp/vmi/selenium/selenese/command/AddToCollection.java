@@ -18,6 +18,11 @@ public class AddToCollection extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Result doCommand(TestCase testCase) {
         testCase.addToCollection(args[COLLECTION_NAME], testCase.replaceVariables(args[VALUE]));
         return SUCCESS;

@@ -2,7 +2,9 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -108,9 +111,8 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testFlowControl() throws IllegalArgumentException {
-        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
-
-        assertEquals(28, tmpDir.getRoot().listFiles(pngFilter).length);
+        String result = execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
+        assertThat(result, containsString("[Finished with x = 15 and y = 14]"));
     }
 
     /**
@@ -120,17 +122,27 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void testForEach() throws IllegalArgumentException {
-        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
-
-        assertEquals(18, tmpDir.getRoot().listFiles(pngFilter).length);
+        String result = execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
+        assertThat(result, containsString("[chedder]"));
+        assertThat(result, containsString("[edam]"));
+        assertThat(result, containsString("[swiss]"));
     }
 
-    protected void execute(String scriptName) {
+    protected String execute(String scriptName) {
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot().getPath());
-        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
-        runner.run(scriptName);
+        String tmpPath = tmpDir.getRoot().getPath();
+        runner.setScreenshotDir(tmpPath);
+        runner.setScreenshotAllDir(tmpPath);
+        JUnitResult.setResultDir(tmpPath);
+        try {
+            runner.run(scriptName);
+            return FileUtils.readFileToString(new File(tmpPath, "TEST-default-00.xml"), "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            JUnitResult.setResultDir(null);
+        }
     }
 
     /**

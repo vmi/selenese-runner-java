@@ -16,6 +16,11 @@ public class Echo extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Result doCommand(TestCase testCase) {
         return new Success(testCase.replaceVariables(args[MESSAGE]));
     }

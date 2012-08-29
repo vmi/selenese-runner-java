@@ -28,6 +28,11 @@ public class CaptureEntirePageScreenshot extends Command {
     }
 
     @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Result doCommand(TestCase testCase) {
         if (StringUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");

@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 
-import static jp.vmi.selenium.selenese.result.Empty.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * <!-- comment -->
@@ -21,8 +21,18 @@ public class Comment extends Command {
     }
 
     @Override
+    public boolean hasResult() {
+        return false;
+    }
+
+    @Override
+    public boolean canUpdate() {
+        return false;
+    }
+
+    @Override
     public Result doCommand(TestCase testCase) {
-        return EMPTY;
+        return SUCCESS;
     }
 
     @Override

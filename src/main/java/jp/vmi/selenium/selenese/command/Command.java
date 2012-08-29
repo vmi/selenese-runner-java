@@ -32,6 +32,35 @@ public abstract class Command {
     }
 
     /**
+     * Has this command result?
+     * <p>
+     * For example, "echo" and "comment" have no result.
+     * </p>
+     * @return true if command has result.
+     */
+    public boolean hasResult() {
+        return true;
+    }
+
+    /**
+     * Can this command update screen?
+     *
+     * @return true if command can update screen.
+     */
+    public boolean canUpdate() {
+        return true;
+    }
+
+    /**
+     * Get index in selenese script file (1 origin).
+     *
+     * @return index.
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
      * Execute selenese command.
      *
      * @param testCase test-case instatnce.
@@ -63,14 +92,5 @@ public abstract class Command {
     @Override
     public String toString() {
         return "Command#" + index + ": " + name + "(" + StringUtils.join(LoggerUtils.quote(args), ", ") + ")";
-    }
-
-    /**
-     * Get index in selenese script file (1 origin).
-     *
-     * @return index.
-     */
-    public int getIndex() {
-        return index;
     }
 }
