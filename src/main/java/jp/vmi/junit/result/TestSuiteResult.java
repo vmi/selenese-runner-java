@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import static jp.vmi.junit.result.ObjectFactory.*;
+
 /**
  * Result of test-suite.
  */
@@ -42,29 +44,13 @@ public class TestSuiteResult extends TestResult {
     private final List<TestCaseResult> testCaseResults = new ArrayList<TestCaseResult>();
 
     /**
-     * Constructor.
-     */
-    public TestSuiteResult() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param name test-suite name.
-     */
-    public TestSuiteResult(String name) {
-        super(name);
-    }
-
-    /**
      * Add property.
      *
      * @param name property name.
      * @param value property value.
      */
     public void addProperty(String name, String value) {
-        Property property = new Property(name, value);
+        Property property = factory.createProperty(name, value);
         synchronized (properties) {
             properties.add(property);
         }

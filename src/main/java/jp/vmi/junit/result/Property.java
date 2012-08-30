@@ -19,14 +19,11 @@ class Property {
     public Property() {
     }
 
-    /**
-     * Constructor.
-     *
-     * @param name property name.
-     * @param value property value.
-     */
-    public Property(String name, String value) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public void setValue(String value) {
         this.value = value;
     }
 }
