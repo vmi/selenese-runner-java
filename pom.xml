@@ -173,6 +173,14 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.3.2</version>
+          <configuration>
+            <pushChanges>false</pushChanges>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
