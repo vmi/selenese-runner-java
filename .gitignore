@@ -6,3 +6,6 @@ tmp/
 *.log
 *.jpage
 TEST-*.xml
+pom.xml.releaseBackup
+release.properties
+
