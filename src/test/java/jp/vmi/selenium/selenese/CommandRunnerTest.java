@@ -37,6 +37,12 @@ public abstract class CommandRunnerTest {
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
+    /**
+     * Screenshot on fail directory.
+     */
+    @Rule
+    public TemporaryFolder screenshotOnFailDir = new TemporaryFolder();
+
     protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
@@ -100,8 +106,10 @@ public abstract class CommandRunnerTest {
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot().getPath());
         runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
+        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
