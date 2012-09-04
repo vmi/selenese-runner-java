@@ -36,6 +36,7 @@ public class Runner {
         if (!tmp.renameTo(file))
             throw new RuntimeException("failed to rename captured screenshot image: " + file);
         log.info(" - captured screenshot: {}", file);
+        log.info("[[ATTACHMENT|{}]]", file.getAbsolutePath());
     }
 
     /**
