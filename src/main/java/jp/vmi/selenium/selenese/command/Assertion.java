@@ -14,7 +14,7 @@ import jp.vmi.selenium.selenese.result.Warning;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Command "*Assert", "*Verify", and "*WaitFor".
+ * Commands of "assert*", "verify*", and "waitFor*".
  */
 public class Assertion extends Command {
 
