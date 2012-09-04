@@ -26,6 +26,7 @@ public class Runner {
     private WebDriver driver;
     private String screenshotDir = null;
     private String screenshotAllDir = null;
+    private String screenshotOnFailDir = null;
     private String baseURL = "";
 
     private final int countForDefault = 0;
@@ -70,6 +71,21 @@ public class Runner {
     }
 
     /**
+     * Take screenshot on fail commands if --screenshot-on-fail option specified.
+     * <p>
+     * <b>Internal use only.</b>
+     * </p>
+     * @param prefix prefix name.
+     * @param index command index.
+     */
+    public void takeScreenshotOnFail(String prefix, int index) {
+        if (screenshotOnFailDir == null || !(driver instanceof TakesScreenshot))
+            return;
+        String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        takeScreenshot(new File(screenshotOnFailDir, filename));
+    }
+
+    /**
      * Get WebDriver.
      * <p>
      * <b>Internal use only.</b>
@@ -111,6 +127,16 @@ public class Runner {
         if (screenshotAllDir != null && !new File(screenshotAllDir).isDirectory())
             throw new IllegalArgumentException(screenshotAllDir + " is not directory.");
         this.screenshotAllDir = screenshotAllDir;
+    }
+
+    public String getScreenshotOnFailDir() {
+        return screenshotOnFailDir;
+    }
+
+    public void setScreenshotOnFailDir(String screenshotOnFailDir) {
+        if (screenshotOnFailDir != null && !new File(screenshotOnFailDir).isDirectory())
+            throw new IllegalArgumentException(screenshotOnFailDir + " is not directory.");
+        this.screenshotOnFailDir = screenshotOnFailDir;
     }
 
     /**
