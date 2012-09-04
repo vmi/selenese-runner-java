@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -17,22 +16,8 @@ public class NetUtilsTest {
     public void testGetUsablePort() {
         for (int i = 0; i < 1000; i++) {
             int port = NetUtils.getUsablePort();
-            assertTrue(NetUtils.PORTNUM_MIN < port);
-            assertTrue(port < NetUtils.PORTNUM_MAX);
-        }
-    }
-
-    /**
-     * Test of canUse().
-     */
-    @Test
-    public void testCanUse() {
-        WebrickServer proxy = new Proxy();
-        proxy.start();
-        try {
-            assertThat(NetUtils.canUse(proxy.getPort()), is(not(true)));
-        } finally {
-            proxy.kill();
+            assertTrue(1024 < port);
+            assertTrue(port < 65536);
         }
     }
 }

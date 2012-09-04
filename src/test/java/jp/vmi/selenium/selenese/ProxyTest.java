@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.net.PortProber;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -32,6 +33,6 @@ public class ProxyTest {
         WebrickServer proxy = new Proxy();
         proxy.start();
         proxy.kill();
-        assertThat(NetUtils.canUse(proxy.getPort()), is(true));
+        assertThat(PortProber.pollPort(proxy.getPort()), is(true));
     }
 }
