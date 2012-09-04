@@ -27,8 +27,7 @@ public class ProxyTest {
     /**
      * Test of start() and kill().
      */
-    @Test(timeout = 10000)
-    @Ignore("ignore by #30")
+    @Test(timeout = 30000)
     public void startAndKill() {
         WebrickServer proxy = new Proxy();
         proxy.start();
