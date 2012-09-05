@@ -112,6 +112,10 @@ public class Main {
             .hasArg().withArgName("dir")
             .withDescription("take screenshot at all commands to specified directory.")
             .create('S'));
+        options.addOption(OptionBuilder.withLongOpt("screenshot-on-fail")
+            .hasArg().withArgName("dir")
+            .withDescription("take screenshot on fail commands to specified directory.")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("baseurl")
             .hasArg().withArgName("baseURL")
             .withDescription("override base URL set in selenese.")
@@ -232,6 +236,7 @@ public class Main {
             runner.setDriver(manager.get());
             runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
+            runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             JUnitResult.setResultDir(cli.getOptionValue("xml-result"));
             Result totalResult = runner.run(filenames);

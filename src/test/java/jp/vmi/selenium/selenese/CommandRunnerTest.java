@@ -37,6 +37,12 @@ public abstract class CommandRunnerTest {
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
+    /**
+     * Screenshot on fail directory.
+     */
+    @Rule
+    public TemporaryFolder screenshotOnFailDir = new TemporaryFolder();
+
     protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
         public boolean accept(File dir, String name) {
@@ -66,8 +72,10 @@ public abstract class CommandRunnerTest {
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot().getPath());
         runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
+        assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
@@ -83,8 +91,10 @@ public abstract class CommandRunnerTest {
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot().getPath());
         runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
+        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
@@ -100,8 +110,10 @@ public abstract class CommandRunnerTest {
         runner.setDriver(WebDriverManager.getInstance().get());
         runner.setScreenshotDir(tmpDir.getRoot().getPath());
         runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
+        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
@@ -135,6 +147,8 @@ public abstract class CommandRunnerTest {
         String tmpPath = tmpDir.getRoot().getPath();
         runner.setScreenshotDir(tmpPath);
         runner.setScreenshotAllDir(tmpPath);
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
+
         JUnitResult.setResultDir(tmpPath);
         try {
             runner.run(scriptName);
@@ -155,6 +169,7 @@ public abstract class CommandRunnerTest {
     public void noCommandSelenese() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "NoCommand"));
 
+        assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
@@ -168,7 +183,11 @@ public abstract class CommandRunnerTest {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.run(script);
+        try {
+            runner.run(script);
+        } finally {
+            assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
+        }
     }
 
     /**
