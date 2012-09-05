@@ -110,6 +110,14 @@ public class CommandFactory {
             }
         }
 
+        // FIXME #32 workaround alert command handling.
+        if (realName.matches("(?i)(?:assert|verify|waitFor)(?:Alert|Confirmation|Prompt)(?:(?:Not)?Present)?")) {
+            StringBuilder echo = new StringBuilder(name);
+            for (String arg : args)
+                echo.append(" ").append(arg);
+            return new Echo(index, name, new String[] { echo.toString() }, "echo", false);
+        }
+
         // See: http://selenium.googlecode.com/svn/trunk/ide/main/src/content/selenium-core/reference.html
         // Assertion or Accessor
         Matcher matcher = COMMAND_PATTERN.matcher(name);
