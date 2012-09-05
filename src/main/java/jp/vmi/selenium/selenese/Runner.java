@@ -134,6 +134,11 @@ public class Runner {
         return screenshotOnFailDir;
     }
 
+    /**
+     * Set directory for storing screenshot on fail.
+     *
+     * @param screenshotOnFailDir directory.
+     */
     public void setScreenshotOnFailDir(String screenshotOnFailDir) {
         if (screenshotOnFailDir != null && !new File(screenshotOnFailDir).isDirectory())
             throw new IllegalArgumentException(screenshotOnFailDir + " is not directory.");
