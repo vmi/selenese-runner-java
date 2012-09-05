@@ -115,7 +115,7 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("screenshot-on-fail")
             .hasArg().withArgName("dir")
             .withDescription("take screenshot on fail commands to specified directory.")
-            .create('S'));
+            .create());
         options.addOption(OptionBuilder.withLongOpt("baseurl")
             .hasArg().withArgName("baseURL")
             .withDescription("override base URL set in selenese.")
