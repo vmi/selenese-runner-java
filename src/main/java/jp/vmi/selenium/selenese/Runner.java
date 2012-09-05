@@ -130,10 +130,6 @@ public class Runner {
         this.screenshotAllDir = screenshotAllDir;
     }
 
-    public String getScreenshotOnFailDir() {
-        return screenshotOnFailDir;
-    }
-
     /**
      * Set directory for storing screenshot on fail.
      *
