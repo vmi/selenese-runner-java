@@ -37,7 +37,7 @@ public class CaptureEntirePageScreenshot extends Command {
         if (StringUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
         try {
-            testCase.getRunner().takeScreenshot(filename);
+            testCase.getRunner().takeScreenshot(filename, testCase);
             return SUCCESS;
         } catch (UnsupportedOperationException e) {
             return new Warning(e.getMessage());

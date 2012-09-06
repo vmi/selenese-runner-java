@@ -250,9 +250,9 @@ public class TestCase implements Selenese, ITestCase {
         while (current != null) {
             Result result = doCommand(current);
             if (current.canUpdate()) {
-                runner.takeScreenshotAll(basename, current.getIndex());
+                runner.takeScreenshotAll(basename, current.getIndex(), this);
                 if (!result.isSuccess())
-                    runner.takeScreenshotOnFail(basename, current.getIndex());
+                    runner.takeScreenshotOnFail(basename, current.getIndex(), this);
             }
             totalResult = totalResult.update(result);
             if (totalResult.isInterrupted())

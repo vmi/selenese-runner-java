@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 
@@ -31,12 +32,12 @@ public class Runner {
 
     private final int countForDefault = 0;
 
-    private void takeScreenshot(File file) {
+    private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         if (!tmp.renameTo(file))
             throw new RuntimeException("failed to rename captured screenshot image: " + file);
         log.info(" - captured screenshot: {}", file);
-        log.info("[[ATTACHMENT|{}]]", file.getAbsolutePath());
+        JUnitResult.addSystemOut(testcase, "[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
     }
 
     /**
@@ -47,13 +48,13 @@ public class Runner {
      * @param filename filename.
      * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
      */
-    public void takeScreenshot(String filename) throws UnsupportedOperationException {
+    public void takeScreenshot(String filename, TestCase testcase) throws UnsupportedOperationException {
         if (!(driver instanceof TakesScreenshot))
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         File file = new File(filename).getAbsoluteFile();
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName()).getAbsoluteFile();
-        takeScreenshot(file);
+        takeScreenshot(file, testcase);
     }
 
     /**
@@ -64,11 +65,11 @@ public class Runner {
      * @param prefix prefix name.
      * @param index command index.
      */
-    public void takeScreenshotAll(String prefix, int index) {
+    public void takeScreenshotAll(String prefix, int index, TestCase testcase) {
         if (screenshotAllDir == null || !(driver instanceof TakesScreenshot))
             return;
         String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(new File(screenshotAllDir, filename));
+        takeScreenshot(new File(screenshotAllDir, filename), testcase);
     }
 
     /**
@@ -79,11 +80,11 @@ public class Runner {
      * @param prefix prefix name.
      * @param index command index.
      */
-    public void takeScreenshotOnFail(String prefix, int index) {
+    public void takeScreenshotOnFail(String prefix, int index, TestCase testcase) {
         if (screenshotOnFailDir == null || !(driver instanceof TakesScreenshot))
             return;
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(new File(screenshotOnFailDir, filename));
+        takeScreenshot(new File(screenshotOnFailDir, filename), testcase);
     }
 
     /**
