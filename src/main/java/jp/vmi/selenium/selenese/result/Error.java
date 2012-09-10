@@ -24,22 +24,7 @@ public class Error extends Result {
     }
 
     @Override
-    public boolean isSuccess() {
-        return false;
-    }
-
-    @Override
-    public boolean isInterrupted() {
-        return true;
-    }
-
-    @Override
-    public boolean isFailed() {
-        return true;
-    }
-
-    @Override
-    public int exitCode() {
-        return 3;
+    public Level getLevel() {
+        return Level.ERROR;
     }
 }

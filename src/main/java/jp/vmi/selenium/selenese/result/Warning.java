@@ -15,22 +15,7 @@ public class Warning extends Result {
     }
 
     @Override
-    public boolean isSuccess() {
-        return false;
-    }
-
-    @Override
-    public boolean isInterrupted() {
-        return false;
-    }
-
-    @Override
-    public boolean isFailed() {
-        return true;
-    }
-
-    @Override
-    public int exitCode() {
-        return 2;
+    public Level getLevel() {
+        return Level.WARNING;
     }
 }

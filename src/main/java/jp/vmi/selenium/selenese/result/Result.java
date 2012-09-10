@@ -5,6 +5,25 @@ package jp.vmi.selenium.selenese.result;
  */
 public abstract class Result {
 
+    /**
+     * Result Level.
+     */
+    @SuppressWarnings("javadoc")
+    public static enum Level {
+        SUCCESS(0, 0),
+        WARNING(1, 0),
+        FAILURE(2, 3),
+        ERROR(3, 3);
+
+        public final int value;
+        public final int exitCode;
+
+        private Level(int value, int exitCode) {
+            this.value = value;
+            this.exitCode = exitCode;
+        }
+    }
+
     private final String message;
 
     /**
@@ -15,6 +34,13 @@ public abstract class Result {
     public Result(String message) {
         this.message = message;
     }
+
+    /**
+     * Get result level.
+     *
+     * @return result level.
+     */
+    public abstract Level getLevel();
 
     /**
      * Get result message.
@@ -30,28 +56,27 @@ public abstract class Result {
      *
      * @return true if this is Success.
      */
-    public abstract boolean isSuccess();
+    public boolean isSuccess() {
+        return getLevel() == Level.SUCCESS;
+    }
 
     /**
      * Is command interrupted?
      *
      * @return true if command is interrupted.
      */
-    public abstract boolean isInterrupted();
+    public boolean isAborted() {
+        return getLevel().value >= Level.FAILURE.value;
+    }
 
     /**
      * Is command failed?
      *
      * @return true if command is failed.
      */
-    public abstract boolean isFailed();
-
-    /**
-     * exit code for terminating Selenese Runner.
-     *
-     * @return exit code.
-     */
-    public abstract int exitCode();
+    public boolean isFailed() {
+        return getLevel().value >= Level.WARNING.value;
+    }
 
     /**
      * Update total result.
@@ -60,12 +85,7 @@ public abstract class Result {
      * @return updated total result.
      */
     public Result update(Result newResult) {
-        if (newResult.isInterrupted())
-            return new Failure(this.getMessage() + "\n" + newResult.getMessage());
-        else if (newResult.isFailed())
-            return new Warning(this.getMessage() + "\n" + newResult.getMessage());
-        else
-            return this;
+        return newResult.getLevel().value > this.getLevel().value ? newResult : this;
     }
 
     @Override

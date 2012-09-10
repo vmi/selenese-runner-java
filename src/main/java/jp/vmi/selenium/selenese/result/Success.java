@@ -18,22 +18,7 @@ public class Success extends Result {
     }
 
     @Override
-    public boolean isSuccess() {
-        return true;
-    }
-
-    @Override
-    public boolean isInterrupted() {
-        return false;
-    }
-
-    @Override
-    public boolean isFailed() {
-        return false;
-    }
-
-    @Override
-    public int exitCode() {
-        return 0;
+    public Level getLevel() {
+        return Level.SUCCESS;
     }
 }

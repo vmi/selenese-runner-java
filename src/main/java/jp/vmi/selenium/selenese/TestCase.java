@@ -255,7 +255,7 @@ public class TestCase implements Selenese, ITestCase {
                     runner.takeScreenshotOnFail(basename, current.getIndex(), this);
             }
             totalResult = totalResult.update(result);
-            if (totalResult.isInterrupted())
+            if (totalResult.isAborted())
                 break;
             current = current.next(this);
         }

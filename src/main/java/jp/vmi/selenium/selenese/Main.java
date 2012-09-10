@@ -240,7 +240,7 @@ public class Main {
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             JUnitResult.setResultDir(cli.getOptionValue("xml-result"));
             Result totalResult = runner.run(filenames);
-            exitCode = totalResult.exitCode();
+            exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
         } catch (Throwable t) {
