@@ -46,6 +46,7 @@ public class Runner {
      * <p>Internal use only.</p>
      * </p>
      * @param filename filename.
+     * @param testcase test-case instance.
      * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
      */
     public void takeScreenshot(String filename, TestCase testcase) throws UnsupportedOperationException {
@@ -64,6 +65,7 @@ public class Runner {
      * </p>
      * @param prefix prefix name.
      * @param index command index.
+     * @param testcase test-case instance.
      */
     public void takeScreenshotAll(String prefix, int index, TestCase testcase) {
         if (screenshotAllDir == null || !(driver instanceof TakesScreenshot))
@@ -79,6 +81,7 @@ public class Runner {
      * </p>
      * @param prefix prefix name.
      * @param index command index.
+     * @param testcase test-case instance.
      */
     public void takeScreenshotOnFail(String prefix, int index, TestCase testcase) {
         if (screenshotOnFailDir == null || !(driver instanceof TakesScreenshot))
