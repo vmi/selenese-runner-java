@@ -33,8 +33,10 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         }
         long stime = System.nanoTime();
         startTestCase(testSuite, testCase);
-        log.info("Start: {}", testCase);
-        logInfo(testCase, "Start:", testCase.toString());
+        if (!testCase.isError()) {
+            log.info("Start: {}", testCase);
+            logInfo(testCase, "Start:", testCase.toString());
+        }
         if (testCase instanceof TestCase) {
             String baseURL = ((TestCase) testCase).getBaseURL();
             log.info("baseURL: {}", baseURL);
@@ -48,11 +50,15 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
                 setFailure(testCase, result.getMessage(), null);
             return result;
         } catch (Throwable t) {
-            setError(testCase, t.getMessage(), t.toString());
+            String msg = t.getMessage();
+            log.error(msg);
+            logError(testCase, msg);
+            setError(testCase, msg, t.toString());
             throw t;
         } finally {
             endTestCase(testCase);
-            log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
+            if (!testCase.isError())
+                log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }
     }
 }

@@ -26,13 +26,18 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
-        log.info("Start: {}", testSuite);
+        if (!testSuite.isError())
+            log.info("Start: {}", testSuite);
         JUnitResult.startTestSuite(testSuite);
         try {
             return invocation.proceed();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw t;
         } finally {
             JUnitResult.endTestSuite(testSuite);
-            log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testSuite);
+            if (!testSuite.isError())
+                log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testSuite);
         }
     }
 }

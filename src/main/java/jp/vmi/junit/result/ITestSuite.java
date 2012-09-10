@@ -11,4 +11,11 @@ public interface ITestSuite {
      * @return test-suite name.
      */
     String getName();
+
+    /**
+     * Is error instance?
+     *
+     * @return true if this is error instance.
+     */
+    boolean isError();
 }

@@ -54,6 +54,11 @@ public class JUnitResultTest {
             public String getName() {
                 return "test-suite";
             }
+
+            @Override
+            public boolean isError() {
+                return false;
+            }
         };
         ITestCase[] testCases = new ITestCase[4];
         for (int i = 0; i < testCases.length; i++) {
@@ -63,6 +68,11 @@ public class JUnitResultTest {
                 @Override
                 public String getName() {
                     return "test-case" + num;
+                }
+
+                @Override
+                public boolean isError() {
+                    return false;
                 }
             };
         }

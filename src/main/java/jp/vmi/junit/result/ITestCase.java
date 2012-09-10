@@ -11,4 +11,11 @@ public interface ITestCase {
      * @return test-case name.
      */
     String getName();
+
+    /**
+     * Is error instance?
+     *
+     * @return true if this is error instance.
+     */
+    boolean isError();
 }

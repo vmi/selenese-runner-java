@@ -26,6 +26,11 @@ public class ErrorTestCase implements Selenese, ITestCase {
     }
 
     @Override
+    public boolean isError() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

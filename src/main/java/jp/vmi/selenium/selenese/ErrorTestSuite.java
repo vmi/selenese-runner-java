@@ -26,6 +26,11 @@ public class ErrorTestSuite implements Selenese, ITestSuite {
     }
 
     @Override
+    public boolean isError() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

@@ -71,6 +71,11 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     @Override
+    public boolean isError() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
