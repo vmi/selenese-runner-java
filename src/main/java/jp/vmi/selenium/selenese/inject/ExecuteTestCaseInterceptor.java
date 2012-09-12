@@ -56,9 +56,12 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             setError(testCase, msg, t.toString());
             throw t;
         } finally {
+            if (!testCase.isError()) {
+                String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testCase;
+                log.info(msg);
+                logInfo(testCase, msg);
+            }
             endTestCase(testCase);
-            if (!testCase.isError())
-                log.info("End({}): {}", LoggerUtils.durationToString(stime, System.nanoTime()), testCase);
         }
     }
 }

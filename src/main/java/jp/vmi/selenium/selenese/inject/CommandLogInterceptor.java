@@ -105,9 +105,11 @@ public class CommandLogInterceptor implements MethodInterceptor {
             log.error("receiver \"{}\" is not TestCase: {}", invocation.getThis(), e);
             throw new RuntimeException(e);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            String msg = e.getMessage();
+            log.error(msg);
+            logError(testCase, msg);
             if (testCase != null)
-                setError(testCase, e.getMessage(), e.toString());
+                setError(testCase, msg, e.toString());
             throw e;
         }
     }
