@@ -1,6 +1,7 @@
 package jp.vmi.junit.result;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -30,6 +31,8 @@ public final class JUnitResult {
 
     private static String resultDir = null;
 
+    private static PrintStream ps = null;
+
     private static JAXBContext initContext() {
         try {
             return JAXBContext.newInstance(ObjectFactory.class);
@@ -45,6 +48,15 @@ public final class JUnitResult {
      */
     public static void setResultDir(String dir) {
         resultDir = dir;
+    }
+
+    /**
+     * Set PrintStream instance.
+     *
+     * @param ps PrintStream instance.
+     */
+    public static void setPrintStream(PrintStream ps) {
+        JUnitResult.ps = ps;
     }
 
     /**
@@ -185,8 +197,13 @@ public final class JUnitResult {
      * @param messages info log messages.
      */
     public static void logInfo(ITestCase testCase, String... messages) {
-        TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
-        caseResult.addSystemOut(logFormat("[INFO]", messages));
+        String msg = logFormat("[INFO]", messages);
+        if (testCase != null) {
+            TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
+            caseResult.addSystemOut(msg);
+        }
+        if (ps != null)
+            ps.println(msg);
     }
 
     /**
@@ -196,7 +213,12 @@ public final class JUnitResult {
      * @param messages error log messages.
      */
     public static void logError(ITestCase testCase, String... messages) {
-        TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
-        caseResult.addSystemErr(logFormat("[ERROR]", messages));
+        String msg = logFormat("[ERROR]", messages);
+        if (testCase != null) {
+            TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
+            caseResult.addSystemErr(msg);
+        }
+        if (ps != null)
+            ps.println(msg);
     }
 }
