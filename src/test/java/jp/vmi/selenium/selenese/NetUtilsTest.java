@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -16,8 +17,8 @@ public class NetUtilsTest {
     public void testGetUsablePort() {
         for (int i = 0; i < 1000; i++) {
             int port = NetUtils.getUsablePort();
-            assertTrue(1024 < port);
-            assertTrue(port < 65536);
+            assertThat(port, is(greaterThan(1024)));
+            assertThat(port, is(lessThan(65536)));
         }
     }
 }
