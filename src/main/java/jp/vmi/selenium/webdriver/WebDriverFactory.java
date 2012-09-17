@@ -1,5 +1,8 @@
 package jp.vmi.selenium.webdriver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +15,7 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  * Abstract class of factory for {@link WebDriver}s.
  */
 public abstract class WebDriverFactory {
+    Map<String, String> environmentVariables = new HashMap<String, String>();
 
     protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {
         if (driverOptions.has(PROXY)) {
@@ -26,6 +30,10 @@ public abstract class WebDriverFactory {
             capabilities.setCapability(CapabilityType.PROXY, proxy);
         }
         return capabilities;
+    }
+
+    public Map<String, String> getEnvironmentVariables() {
+        return environmentVariables;
     }
 
     /**

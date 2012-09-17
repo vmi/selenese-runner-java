@@ -1,6 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -37,6 +38,9 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             binary = new FirefoxBinary();
         } catch (WebDriverException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
+        }
+        for (Map.Entry<String, String> entry : getEnvironmentVariables().entrySet()) {
+            binary.setEnvironmentProperty(entry.getKey(), entry.getValue());
         }
 
         String profileName = driverOptions.get(PROFILE);

@@ -57,6 +57,8 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
     private final Map<String, WebDriver> driverMap = new HashMap<String, WebDriver>();
 
+    private final Map<String, String> environmentVariables = new HashMap<String, String>();
+
     /**
      * Get WebDriverManager instance. (singleton)
      *
@@ -161,8 +163,15 @@ public class WebDriverManager implements Supplier<WebDriver> {
             return driver.getClass().getName();
     }
 
+    public Map<String, String> getEnvironmentVariables() {
+        return environmentVariables;
+    }
+
     @Override
     public synchronized WebDriver get() throws IllegalArgumentException {
+        factory.getEnvironmentVariables().clear();
+        factory.getEnvironmentVariables().putAll(getEnvironmentVariables());
+
         String key = factory.getClass().getCanonicalName() + driverOptions.toString();
         WebDriver driver = driverMap.get(key);
         if (driver == null) {
