@@ -68,7 +68,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
         return manager;
     }
 
-    private WebDriverManager() {
+    public WebDriverManager() {
         String factoryName = System.getProperty(WEBDRIVER_FACTORY, FIREFOX);
         setWebDriverFactory(factoryName);
         Runtime.getRuntime().addShutdownHook(new Thread() {
