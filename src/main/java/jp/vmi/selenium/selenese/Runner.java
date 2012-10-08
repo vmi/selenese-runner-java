@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Calendar;
 
 import org.apache.commons.lang.StringUtils;
@@ -199,5 +200,13 @@ public class Runner {
      */
     public void setResultDir(String dir) {
         JUnitResult.setResultDir(dir);
+    }
+
+    /**
+     * set PrintStream for logging.
+     * @param out PrintStream for logging.
+     */
+    public void setPrintStream(PrintStream out) {
+        JUnitResult.setPrintStream(out);
     }
 }

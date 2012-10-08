@@ -238,6 +238,7 @@ public class Main {
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setResultDir(cli.getOptionValue("xml-result"));
+            runner.setPrintStream(System.out);
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
