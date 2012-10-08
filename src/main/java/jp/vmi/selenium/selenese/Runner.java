@@ -192,4 +192,12 @@ public class Runner {
             testSuite.addTestCase(filename);
         return testSuite.execute(null);
     }
+
+    /**
+     * set directory path for JUnit result xml file. 
+     * @param dir directory path
+     */
+    public void setResultDir(String dir) {
+        JUnitResult.setResultDir(dir);
+    }
 }

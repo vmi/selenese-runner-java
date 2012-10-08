@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -238,7 +237,7 @@ public class Main {
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
-            JUnitResult.setResultDir(cli.getOptionValue("xml-result"));
+            runner.setResultDir(cli.getOptionValue("xml-result"));
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
