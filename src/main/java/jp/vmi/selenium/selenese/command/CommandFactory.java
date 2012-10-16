@@ -31,7 +31,10 @@ public class CommandFactory {
     }
 
     static {
-        // unsupported commands on WebDriverCommandProcessor
+        // commands overriding the command of WebDriverCommandProcessor.
+        addConstructor(Open.class);
+
+        // commands unsupported by WebDriverCommandProcessor 
         addConstructor(Echo.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Pause.class);
@@ -96,10 +99,6 @@ public class CommandFactory {
         boolean andWait = name.endsWith(AND_WAIT);
         String realName = andWait ? name.substring(0, name.length() - AND_WAIT.length()) : name;
 
-        // command supported by WebDriverCommandProcessor
-        if (proc.isMethodAvailable(realName))
-            return new BuiltInCommand(index, name, args, realName, andWait);
-
         // command supported by subclass of Command without BuiltInCommand
         Constructor<? extends Command> constructor = constructorMap.get(realName);
         if (constructor != null) {
@@ -109,6 +108,10 @@ public class CommandFactory {
                 throw new SeleniumException(e);
             }
         }
+
+        // command supported by WebDriverCommandProcessor
+        if (proc.isMethodAvailable(realName))
+            return new BuiltInCommand(index, name, args, realName, andWait);
 
         // FIXME #32 workaround alert command handling.
         if (realName.matches("(?i)(?:assert|verify|waitFor)(?:Alert|Confirmation|Prompt)(?:(?:Not)?Present)?")) {

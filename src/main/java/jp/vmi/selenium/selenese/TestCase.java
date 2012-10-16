@@ -65,7 +65,7 @@ public class TestCase implements Selenese, ITestCase {
         this.basename = (file != null) ? FilenameUtils.getBaseName(file.getName()) : "nofile";
         this.name = name;
         this.runner = runner;
-        this.baseURL = baseURL;
+        this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
         this.proc = new WebDriverCommandProcessor(baseURL, runner.getDriver());
         return this;
     }
