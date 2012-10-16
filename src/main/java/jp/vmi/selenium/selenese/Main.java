@@ -17,6 +17,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,6 +128,10 @@ public class Main {
             .hasArg().withArgName("dir")
             .withDescription("output XML JUnit results to specified directory.")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("timeout")
+            .hasArg().withArgName("timeout")
+            .withDescription("set timeout (ms) for waiting. (default: 30000 ms)")
+            .create('t'));
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
@@ -238,6 +243,10 @@ public class Main {
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setResultDir(cli.getOptionValue("xml-result"));
+            int timeout = NumberUtils.toInt(cli.getOptionValue("timeout"));
+            if (timeout <= 0)
+                throw new IllegalArgumentException("Invalid timeout value. (" + cli.getOptionValue("timeout") + ")");
+            runner.setTimeout(timeout);
             runner.setPrintStream(System.out);
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.getLevel().exitCode;

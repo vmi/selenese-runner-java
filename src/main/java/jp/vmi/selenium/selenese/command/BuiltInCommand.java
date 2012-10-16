@@ -19,7 +19,6 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 public class BuiltInCommand extends Command {
 
     private static final String WAIT_FOR_PAGE_TO_LOAD = "waitForPageToLoad";
-    private static final String WAIT_MSEC = "30000";
 
     private static final String[] CANNOT_UPDATES = {
         "createCookie",
@@ -48,8 +47,10 @@ public class BuiltInCommand extends Command {
         String result = "";
         try {
             result = testCase.doBuiltInCommand(realName, testCase.replaceVariables(args));
-            if (andWait)
-                testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, WAIT_MSEC);
+            if (andWait) {
+                int timeout = testCase.getRunner().getTimeout();
+                testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, Integer.toString(timeout));
+            }
             return StringUtils.isNotEmpty(result) ? new Success(result) : SUCCESS;
         } catch (SeleniumException e) {
             return new Failure("failed command:" + this.toString() + " result:" + e.getMessage());

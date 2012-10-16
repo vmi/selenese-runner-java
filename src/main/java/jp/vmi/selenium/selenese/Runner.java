@@ -30,6 +30,7 @@ public class Runner {
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
     private String baseURL = "";
+    private int timeout = 30 * 1000; /* ms */
 
     private final int countForDefault = 0;
 
@@ -182,6 +183,24 @@ public class Runner {
     }
 
     /**
+     * Get timeout for waiting. (ms)
+     *
+     * @return timeout for waiting.
+     */
+    public int getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * Set timeout for waiting. (ms)
+     *
+     * @param timeout for waiting.
+     */
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    /**
      * Run Selenese script files.
      *
      * @param filenames Selenese script filenames.
@@ -195,7 +214,7 @@ public class Runner {
     }
 
     /**
-     * set directory path for JUnit result xml file. 
+     * set directory path for JUnit result xml file.
      * @param dir directory path
      */
     public void setResultDir(String dir) {

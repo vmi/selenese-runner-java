@@ -20,9 +20,7 @@ public class Assertion extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(Assertion.class);
 
-    private static final int TIMEOUT = 30000 /* ms */;
     private static final int RETRY_INTERVAL = 100 /* ms */;
-    private static final int RETRY_COUNT = TIMEOUT / RETRY_INTERVAL;
 
     private enum Type {
         ASSERT("assert"), // throw exception
@@ -67,7 +65,8 @@ public class Assertion extends Command {
     @Override
     public Result doCommand(TestCase testCase) {
         String message = null;
-        for (int i = 0; i < RETRY_COUNT; i++) {
+        int retryCount = testCase.getRunner().getTimeout() / RETRY_INTERVAL;
+        for (int i = 0; i < retryCount; i++) {
             if (i != 0) {
                 // don't wait before first test and after last test.
                 try {
