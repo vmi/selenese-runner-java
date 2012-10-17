@@ -28,30 +28,29 @@ public class CommandProcessorWithoutTimer extends WebDriverCommandProcessor {
 
     @Override
     public String getString(String commandName, String[] args) {
-        return execute(commandName, args);
+        return (String) execute(commandName, args);
     }
 
     @Override
     public String[] getStringArray(String commandName, String[] args) {
-        return execute(commandName, args);
+        return (String[]) execute(commandName, args);
     }
 
     @Override
     public Number getNumber(String commandName, String[] args) {
-        return execute(commandName, args);
+        return (Number) execute(commandName, args);
     }
 
     @Override
     public boolean getBoolean(String commandName, String[] args) {
-        return execute(commandName, args);
+        return (Boolean) execute(commandName, args);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T execute(String commandName, final String[] args) {
+    private Object execute(String commandName, final String[] args) {
         final SeleneseCommand<?> command = getMethod(commandName);
         if (command == null)
             throw new UnsupportedOperationException(commandName);
-        return (T) command.apply(getWrappedDriver(), args);
+        return command.apply(getWrappedDriver(), args);
     }
 
 }
