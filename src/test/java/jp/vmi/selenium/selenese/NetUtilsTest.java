@@ -17,7 +17,7 @@ public class NetUtilsTest {
     public void testGetUsablePort() {
         for (int i = 0; i < 1000; i++) {
             int port = NetUtils.getUsablePort();
-            assertThat(port, is(greaterThan(1024)));
+            assertThat(port, is(greaterThanOrEqualTo(1024)));
             assertThat(port, is(lessThan(65536)));
         }
     }
