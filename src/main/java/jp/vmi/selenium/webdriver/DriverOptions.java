@@ -27,6 +27,8 @@ public class DriverOptions {
         NO_PROXY,
         /** --chromedriver */
         CHROMEDRIVER,
+        /** --iedriver */
+        IEDRIVER,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = new IdentityHashMap<DriverOptions.DriverOption, String>();
