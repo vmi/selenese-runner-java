@@ -7,6 +7,9 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.firefox.FirefoxBinary;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
@@ -20,6 +23,21 @@ import static org.junit.Assert.*;
  * Test for {@link BuiltInCommand}.
  */
 public class BuiltInCommandTest {
+
+    /**
+     * Check Firefox installation.
+     */
+    @Before
+    public void assumeInstalledFirefox() {
+        try {
+            new FirefoxBinary();
+        } catch (SeleniumException e) {
+            Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
+            Assume.assumeNoException(e);
+        }
+    }
+
     /**
      * Check Firefox connected.
      */

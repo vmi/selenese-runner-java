@@ -42,6 +42,8 @@ public class CommandFactoryTest {
             new FirefoxBinary();
         } catch (SeleniumException e) {
             Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
+            Assume.assumeNoException(e);
         }
     }
 

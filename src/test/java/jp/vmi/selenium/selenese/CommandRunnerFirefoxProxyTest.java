@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
@@ -40,6 +41,8 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
         try {
             new FirefoxBinary();
         } catch (SeleniumException e) {
+            Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
             Assume.assumeNoException(e);
         }
     }

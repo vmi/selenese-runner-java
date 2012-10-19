@@ -27,6 +27,8 @@ public class CommandRunnerFirefoxTest extends CommandRunnerTest {
             new FirefoxBinary();
         } catch (SeleniumException e) {
             Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
+            Assume.assumeNoException(e);
         }
     }
 
