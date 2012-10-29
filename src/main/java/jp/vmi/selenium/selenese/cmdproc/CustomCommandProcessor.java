@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.cmdproc;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
@@ -7,14 +7,14 @@ import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 /**
  * WebDriverCommandProcessor no timeout version.
  */
-public class CommandProcessorWithoutTimer extends WebDriverCommandProcessor {
+public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     /**
      * Constructor.
      *
      * @param driver WebDriver instance.
      */
-    public CommandProcessorWithoutTimer(WebDriver driver) {
+    public CustomCommandProcessor(WebDriver driver) {
         // baseUrl is only used in "open" command.
         // "open" command is re-implemented.
         super("", driver);

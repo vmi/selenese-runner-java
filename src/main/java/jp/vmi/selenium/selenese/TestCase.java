@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.junit.result.ITestCase;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
@@ -66,7 +67,7 @@ public class TestCase implements Selenese, ITestCase {
         this.name = name;
         this.runner = runner;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
-        this.proc = new CommandProcessorWithoutTimer(runner.getDriver());
+        this.proc = new CustomCommandProcessor(runner.getDriver());
         return this;
     }
 
