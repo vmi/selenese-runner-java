@@ -12,12 +12,11 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     /**
      * Constructor.
      *
+     * @param baseUrl base URL.
      * @param driver WebDriver instance.
      */
-    public CustomCommandProcessor(WebDriver driver) {
-        // baseUrl is only used in "open" command.
-        // "open" command is re-implemented.
-        super("", driver);
+    public CustomCommandProcessor(String baseUrl, WebDriver driver) {
+        super(baseUrl, driver);
     }
 
     @Override
