@@ -46,7 +46,7 @@ public class BuiltInCommand extends Command {
     public Result doCommand(TestCase testCase) {
         String result = "";
         try {
-            result = testCase.doBuiltInCommand(realName, testCase.replaceVariables(args));
+            result = testCase.doBuiltInCommand(realName, args);
             if (andWait) {
                 int timeout = testCase.getRunner().getTimeout();
                 testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, Integer.toString(timeout));

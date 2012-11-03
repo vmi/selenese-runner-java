@@ -24,7 +24,7 @@ public class AddToCollection extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        testCase.addToCollection(args[COLLECTION_NAME], testCase.replaceVariables(args[VALUE]));
+        testCase.addToCollection(args[COLLECTION_NAME], testCase.getProc().replaceVars(args[VALUE]));
         return SUCCESS;
     }
 }

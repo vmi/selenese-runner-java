@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrSubstitutor;
-import org.openqa.selenium.WebDriverCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +41,8 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private Runner runner = null;
     private String baseURL = null;
-    private WebDriverCommandProcessor proc = null;
+    private CustomCommandProcessor proc = null;
 
-    private final Map<String, String> variableMap = new HashMap<String, String>();
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
@@ -87,11 +84,11 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Get WebDriverCommandProcessor generated at initialize.
+     * Get CustomCommandProcessor generated at initialize.
      *
-     * @return WebDriverCommandProcessor.
+     * @return CustomCommandProcessor.
      */
-    public WebDriverCommandProcessor getProc() {
+    public CustomCommandProcessor getProc() {
         return proc;
     }
 
@@ -141,47 +138,14 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Set variable value.
-     *
-     * @param value value.
-     * @param varName variable name.
-     */
-    public void setVariable(String value, String varName) {
-        variableMap.put(varName, value);
-    }
-
-    /**
-     * Replace variable reference to value.
-     *
-     * @param expr expression string.
-     * @return replaced string.
-     */
-    public String replaceVariables(String expr) {
-        StrSubstitutor s = new StrSubstitutor(variableMap);
-        return s.replace(expr);
-    }
-
-    /**
-     * Replace variable reference to value for each strings.
-     *
-     * @param exprs expression strings.
-     * @return replaced strings.
-     */
-    public String[] replaceVariables(String[] exprs) {
-        String[] result = new String[exprs.length];
-        for (int i = 0; i < exprs.length; i++)
-            result[i] = replaceVariables(exprs[i]);
-        return result;
-    }
-
-    /**
      * Evaluate expression and return boolean result.
      *
      * @param expr expression string.
      * @return result.
      */
     public boolean isTrue(String expr) {
-        return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { replaceVariables(expr) }));
+        // return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { replaceVariables(expr) }));
+        return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { expr }));
     }
 
     /**

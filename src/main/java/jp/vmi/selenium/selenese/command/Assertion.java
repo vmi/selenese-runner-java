@@ -76,15 +76,14 @@ public class Assertion extends Command {
                     break;
                 }
             }
-            String[] args = testCase.replaceVariables(getterArgs);
             if (this.expected != null) {
-                String result = testCase.doBuiltInCommand(getter, args);
-                String expected = testCase.replaceVariables(this.expected);
+                String result = testCase.doBuiltInCommand(getter, getterArgs);
+                String expected = testCase.getProc().replaceVars(this.expected);
                 if (StringUtils.equals(result, expected) ^ isInverse)
                     return SUCCESS;
                 message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
             } else {
-                boolean result = testCase.isBuiltInCommand(getter, args);
+                boolean result = testCase.isBuiltInCommand(getter, getterArgs);
                 if (result ^ isInverse)
                     return SUCCESS;
                 message = String.format("Assertion failed (Result: [%s] / Expected: [%s]", result, !result);

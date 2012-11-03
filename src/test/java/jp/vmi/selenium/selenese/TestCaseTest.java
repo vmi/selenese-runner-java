@@ -29,19 +29,20 @@ public class TestCaseTest {
      * Test of replaceVariables(String).
      */
     @Test
-    public void replaceVariable() {
+    public void replaceVars() {
         TestCase c = Binder.newTestCase(null, null, runner, "");
-        c.setVariable("XYZ", "a");
-        assertEquals("XYZ", c.replaceVariables("${a}"));
+        c.getProc().setVar("XYZ", "a");
+        assertEquals("XYZ", c.getProc().replaceVars("${a}"));
     }
 
     /**
      * Test of replaceVariables(String[]).
      */
     @Test
-    public void replaceVariables() {
+    public void replaceVarsForArray() {
         TestCase c = Binder.newTestCase(null, null, runner, "");
-        c.setVariable("XYZ", "a");
-        assertArrayEquals(new String[] { "abc", "XYZ", "abcXYZbca" }, c.replaceVariables(new String[] { "abc", "${a}", "abc${a}bca" }));
+        c.getProc().setVar("XYZ", "a");
+        assertArrayEquals(new String[] { "abc", "XYZ", "abcXYZbca" },
+            c.getProc().replaceVarsForArray(new String[] { "abc", "${a}", "abc${a}bca" }));
     }
 }

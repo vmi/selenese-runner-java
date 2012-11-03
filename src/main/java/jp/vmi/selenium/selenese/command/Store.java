@@ -31,8 +31,8 @@ public class Store extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        String result = testCase.doBuiltInCommand(getter, testCase.replaceVariables(getterArgs));
-        testCase.setVariable(result, varName);
+        String result = testCase.doBuiltInCommand(getter, getterArgs);
+        testCase.getProc().setVar(result, varName);
         return SUCCESS;
     }
 }

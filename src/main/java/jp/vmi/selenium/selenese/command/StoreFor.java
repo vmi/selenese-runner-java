@@ -28,7 +28,7 @@ public class StoreFor extends Command implements StartLoop {
         String value = testCase.pollFromCollection(args[0]);
         if (value == null)
             return endLoop.next;
-        testCase.setVariable(value, args[1]);
+        testCase.getProc().setVar(value, args[1]);
         return next;
     }
 }

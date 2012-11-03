@@ -22,6 +22,6 @@ public class Echo extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        return new Success(testCase.replaceVariables(args[MESSAGE]));
+        return new Success(testCase.getProc().replaceVars(args[MESSAGE]));
     }
 }
