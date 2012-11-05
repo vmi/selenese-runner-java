@@ -12,6 +12,11 @@ public class WaitForCondition extends SeleneseCommand<Void> {
 
     private final Eval eval;
 
+    /**
+     * Constructor.
+     *
+     * @param eval evaluator.
+     */
     public WaitForCondition(Eval eval) {
         this.eval = eval;
     }

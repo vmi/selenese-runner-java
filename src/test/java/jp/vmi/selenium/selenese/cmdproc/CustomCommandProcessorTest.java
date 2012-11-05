@@ -5,8 +5,16 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test for {@link CustomCommandProcessor}
+ * @author iwa
+ *
+ */
 public class CustomCommandProcessorTest {
 
+    /**
+     * Test of getEval with "storedVars".
+     */
     @Test
     public void test() {
         HtmlUnitDriver driver = new HtmlUnitDriver(true);

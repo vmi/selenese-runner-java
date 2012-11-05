@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.seleniumemulation.CompoundMutator;
 
 /**
- * Mutator for script including "storedVars" variable.
+ * Evaluator of script including "storedVars" variable.
  */
 public class Eval {
 
@@ -19,15 +19,23 @@ public class Eval {
     private final Map<String, Object> varsMap;
 
     /**
-     * Mutator for supporting StoredVars.
+     * Constructor.
      *
      * @param baseUrl base URL.
+     * @param varsMap variable map.
      */
     public Eval(String baseUrl, Map<String, Object> varsMap) {
         this.mutator = new CompoundMutator(baseUrl);
         this.varsMap = varsMap;
     }
 
+    /**
+     * Evaluate script including "storedVars" variable.
+     *
+     * @param driver WebDriver instance.
+     * @param script JavaScript code.
+     * @return result of evaluating script.
+     */
     public Object eval(WebDriver driver, String script) {
         boolean hasStoredVars = script.matches(".*\\bstoredVars\\b.*");
         StringBuilderWriter writer = new StringBuilderWriter();

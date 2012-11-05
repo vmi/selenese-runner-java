@@ -32,6 +32,11 @@ public abstract class WebDriverFactory {
         return capabilities;
     }
 
+    /**
+     * Get environmnent variable map.
+     *
+     * @return environment variable map.
+     */
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }

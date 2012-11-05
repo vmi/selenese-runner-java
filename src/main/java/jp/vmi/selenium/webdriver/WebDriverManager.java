@@ -68,6 +68,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
         return manager;
     }
 
+    /**
+     * Constructor.
+     */
     public WebDriverManager() {
         String factoryName = System.getProperty(WEBDRIVER_FACTORY, FIREFOX);
         setWebDriverFactory(factoryName);
@@ -163,6 +166,11 @@ public class WebDriverManager implements Supplier<WebDriver> {
             return driver.getClass().getName();
     }
 
+    /**
+     * Get environment variable map.
+     *
+     * @return environment variable map.
+     */
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }

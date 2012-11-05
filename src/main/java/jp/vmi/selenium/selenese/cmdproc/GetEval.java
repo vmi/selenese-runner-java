@@ -9,6 +9,11 @@ public class GetEval extends org.openqa.selenium.internal.seleniumemulation.GetE
 
     private final Eval eval;
 
+    /**
+     * Constructor.
+     *
+     * @param eval evaluator.
+     */
     public GetEval(Eval eval) {
         super(null);
         this.eval = eval;
