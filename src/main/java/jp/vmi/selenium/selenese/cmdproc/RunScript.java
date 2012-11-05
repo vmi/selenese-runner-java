@@ -16,7 +16,7 @@ public class RunScript extends SeleneseCommand<Void> {
 
     @Override
     protected Void handleSeleneseCommand(WebDriver driver, String script, String ignored) {
-        Object result = eval.eval(driver, script);
+        eval.eval(driver, script);
         return null;
     }
 }
