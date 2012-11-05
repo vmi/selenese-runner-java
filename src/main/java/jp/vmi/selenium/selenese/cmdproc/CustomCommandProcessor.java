@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
+import org.openqa.selenium.internal.seleniumemulation.OpenWindow;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 /**
@@ -13,7 +14,13 @@ import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
  */
 public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
-    private final Map<String, String> varsMap = new HashMap<String, String>();
+    // seleneseMethods.put("getEval", new GetEval(scriptMutator));
+    // seleneseMethods.put("openWindow", new OpenWindow(new GetEval(scriptMutator)));
+    // seleneseMethods.put("runScript", new RunScript(scriptMutator));
+    // seleneseMethods.put("waitForCondition", new WaitForCondition(scriptMutator));
+
+    private final Map<String, Object> varsMap;
+    private final Eval eval;
 
     /**
      * Constructor.
@@ -23,6 +30,13 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     public CustomCommandProcessor(String baseUrl, WebDriver driver) {
         super(baseUrl, driver);
+        this.varsMap = new HashMap<String, Object>();
+        this.eval = new Eval(baseUrl, varsMap);
+        addMethod("getEval", new GetEval(eval));
+        addMethod("openWindow", new OpenWindow(new GetEval(eval)));
+        addMethod("runScript", new RunScript(eval));
+        addMethod("waitForCondition", new WaitForCondition(eval));
+
     }
 
     @Override
@@ -64,8 +78,18 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param value value.
      * @param varName variable name.
      */
-    public void setVar(String value, String varName) {
+    public void setVar(Object value, String varName) {
         varsMap.put(varName, value);
+    }
+
+    /**
+     * Get variable value.
+     *
+     * @param varName variable name.
+     * @return value.
+     */
+    public Object getVar(String varName) {
+        return varsMap.get(varName);
     }
 
     /**
