@@ -108,9 +108,9 @@ public class TestCase implements Selenese, ITestCase {
      * @param args arguments.
      * @return result.
      */
-    public String doBuiltInCommand(String name, String... args) {
+    public Object doBuiltInCommand(String name, String... args) {
         try {
-            return proc.doCommand(name, args);
+            return proc.execute(name, args);
         } catch (UnsupportedOperationException e) {
             throw new SeleniumException("No such command: " + name);
         } catch (SeleniumException e) {

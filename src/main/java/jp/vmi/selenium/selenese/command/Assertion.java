@@ -77,9 +77,10 @@ public class Assertion extends Command {
                 }
             }
             if (this.expected != null) {
-                String result = testCase.doBuiltInCommand(getter, getterArgs);
+                Object result = testCase.doBuiltInCommand(getter, getterArgs);
+                String resultString = (result != null) ? result.toString() : "";
                 String expected = testCase.getProc().replaceVars(this.expected);
-                if (StringUtils.equals(result, expected) ^ isInverse)
+                if (StringUtils.equals(resultString, expected) ^ isInverse)
                     return SUCCESS;
                 message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
             } else {

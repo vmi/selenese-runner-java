@@ -1,11 +1,12 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 /**
  * An implementation of the "getEval" method from Selenium.
  */
-public class GetEval extends org.openqa.selenium.internal.seleniumemulation.GetEval {
+public class GetEval extends SeleneseCommand<Object> {
 
     private final Eval eval;
 
@@ -15,13 +16,11 @@ public class GetEval extends org.openqa.selenium.internal.seleniumemulation.GetE
      * @param eval evaluator.
      */
     public GetEval(Eval eval) {
-        super(null);
         this.eval = eval;
     }
 
     @Override
-    protected String handleSeleneseCommand(WebDriver driver, String script, String ignored) {
-        Object result = eval.eval(driver, script);
-        return result == null ? "" : result.toString();
+    protected Object handleSeleneseCommand(WebDriver driver, String script, String ignored) {
+        return eval.eval(driver, script);
     }
 }

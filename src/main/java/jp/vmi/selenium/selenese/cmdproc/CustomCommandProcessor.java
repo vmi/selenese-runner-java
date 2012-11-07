@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
-import org.openqa.selenium.internal.seleniumemulation.OpenWindow;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 /**
@@ -33,7 +32,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         this.varsMap = new HashMap<String, Object>();
         this.eval = new Eval(baseUrl, varsMap);
         addMethod("getEval", new GetEval(eval));
-        addMethod("openWindow", new OpenWindow(new GetEval(eval)));
+        addMethod("openWindow", new OpenWindow(eval));
         addMethod("runScript", new RunScript(eval));
         addMethod("waitForCondition", new WaitForCondition(eval));
 
@@ -65,8 +64,15 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         return (Boolean) execute(commandName, args);
     }
 
-    private Object execute(String commandName, final String[] args) {
-        final SeleneseCommand<?> command = getMethod(commandName);
+    /**
+     * Execute command.
+     *
+     * @param commandName command name.
+     * @param args arguments.
+     * @return command result.
+     */
+    public Object execute(String commandName, String[] args) {
+        SeleneseCommand<?> command = getMethod(commandName);
         if (command == null)
             throw new UnsupportedOperationException(commandName);
         return command.apply(getWrappedDriver(), replaceVarsForArray(args));

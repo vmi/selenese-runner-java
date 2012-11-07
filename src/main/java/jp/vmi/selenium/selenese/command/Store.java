@@ -4,8 +4,7 @@ import java.util.Arrays;
 
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
-
-import static jp.vmi.selenium.selenese.result.Success.*;
+import jp.vmi.selenium.selenese.result.Success;
 
 /**
  * Command "store".
@@ -31,8 +30,8 @@ public class Store extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        String result = testCase.doBuiltInCommand(getter, getterArgs);
+        Object result = testCase.doBuiltInCommand(getter, getterArgs);
         testCase.getProc().setVar(result, varName);
-        return SUCCESS;
+        return new Success(String.valueOf(result));
     }
 }
