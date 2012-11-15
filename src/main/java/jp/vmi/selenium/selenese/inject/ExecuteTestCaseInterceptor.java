@@ -28,7 +28,9 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             testCase = (ITestCase) invocation.getThis();
             testSuite = (ITestSuite) invocation.getArguments()[0];
         } catch (Exception e) {
-            log.error("receiver is not ITestCase, or 1st argument is not ITestSuite.", e);
+            String msg = "receiver is not ITestCase, or 1st argument is not ITestSuite: " + e;
+            log.error(msg);
+            logError(null, msg);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();

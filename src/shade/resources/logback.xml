@@ -6,8 +6,9 @@
       <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] %msg%n</Pattern>
     </encoder>
   </appender>
+  <logger name="jp.vmi.selenium.selenese.inject" level="OFF" />
   <root>
-    <level value="OFF" />
+    <level value="INFO" />
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

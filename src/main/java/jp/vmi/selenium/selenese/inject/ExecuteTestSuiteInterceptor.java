@@ -24,7 +24,9 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         try {
             testSuite = (ITestSuite) invocation.getThis();
         } catch (Exception e) {
-            log.error("receiver is not ITestSuite.", e);
+            String msg = "receiver is not ITestSuite: " + e;
+            log.error(msg);
+            logError(null, msg);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
