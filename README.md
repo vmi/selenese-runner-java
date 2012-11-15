@@ -30,9 +30,12 @@ Usage
         --no-proxy <no-proxy>         no-proxy hosts
      -s,--screenshot-dir <dir>        override captureEntirePageScreenshot directory.
      -S,--screenshot-all <dir>        take screenshot at all commands to specified directory.
+        --screenshot-on-fail <dir>    take screenshot on fail commands to specified directory.
      -b,--baseurl <baseURL>           override base URL set in selenese.
         --chromedriver <path>         path to 'chromedriver' binary. (implies '--driver chrome')
+        --iedriver <path>             path to 'IEDriverServer' binary. (implies '--driver ie')
         --xml-result <dir>            output XML JUnit results to specified directory.
+     -t,--timeout <timeout>           set timeout (ms) for waiting. (default: 30000 ms)
      -h,--help                        show this message.
 
 Requirements
