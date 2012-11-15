@@ -31,8 +31,9 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
 
     @Override
     protected void setupWebDriverManager() {
+        super.setupWebDriverManager();
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.IE);
-        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getServerNameString()));
+        DriverOptions opts = manager.getDriverOptions();
+        opts.set(DriverOption.PROXY, proxy.getServerNameString());
     }
 }
