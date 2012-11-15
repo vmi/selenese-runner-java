@@ -20,7 +20,7 @@ public class IEDriverFactory extends WebDriverFactory {
 
     private static Logger log = LoggerFactory.getLogger(IEDriverFactory.class);
 
-    // 参考: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
+    // see: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
@@ -41,10 +41,12 @@ public class IEDriverFactory extends WebDriverFactory {
             log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
 
         if (driverOptions.has(IEDRIVER)) {
-            //TODO IEDRIVERが存在しない場合のチェック
+            File ieds = new File(driverOptions.get(IEDRIVER));
+            if (!ieds.canExecute())
+                throw new IllegalArgumentException("Missing IEDriverServer.exe: " + ieds);
             InternetExplorerDriverService is = new InternetExplorerDriverService.Builder()
                 .usingAnyFreePort()
-                .usingDriverExecutable(new File(driverOptions.get(IEDRIVER)))
+                .usingDriverExecutable(ieds)
                 .build();
             return new InternetExplorerDriver(is);
         } else {

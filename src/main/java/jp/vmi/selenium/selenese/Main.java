@@ -237,8 +237,12 @@ public class Main {
             log.info("Start: " + PROG_TITLE + " {}", getVersion());
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
-            if (driverName == null && driverOptions.has(DriverOption.CHROMEDRIVER))
-                driverName = WebDriverManager.CHROME;
+            if (driverName == null) {
+                if (driverOptions.has(DriverOption.CHROMEDRIVER))
+                    driverName = WebDriverManager.CHROME;
+                else if (driverOptions.has(DriverOption.IEDRIVER))
+                    driverName = WebDriverManager.IE;
+            }
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
