@@ -306,17 +306,17 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.6</version>
+      <version>1.7.2</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.6</version>
+      <version>1.0.7</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.6.6</version>
+      <version>1.7.2</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
@@ -343,15 +343,13 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.jruby</groupId>
       <artifactId>jruby</artifactId>
-      <version>1.6.7.2</version>
-      <type>jar</type>
+      <version>1.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jruby</groupId>
       <artifactId>jruby-stdlib</artifactId>
-      <version>1.6.7.2</version>
-      <type>jar</type>
+      <version>1.7.0</version>
       <scope>test</scope>
     </dependency>
     <!--
