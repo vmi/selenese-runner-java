@@ -38,6 +38,7 @@ public class CommandFactory {
         addConstructor(Echo.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Pause.class);
+        addConstructor(SetSpeed.class);
 
         // commands of selenium-ide-flowcontrol
         // https://github.com/davehunt/selenium-ide-flowcontrol

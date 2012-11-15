@@ -41,6 +41,8 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private Runner runner = null;
     private String baseURL = null;
+    private long speed = 0;
+
     private CustomCommandProcessor proc = null;
 
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
@@ -99,6 +101,24 @@ public class TestCase implements Selenese, ITestCase {
      */
     public String getBaseURL() {
         return baseURL;
+    }
+
+    /**
+     * Set speed of command execution (= wait time per each command).
+     *
+     * @param speed wait time (ms).
+     */
+    public void setSpeed(long speed) {
+        this.speed = speed;
+    }
+
+    /**
+     * Get speed of command execution.
+     *
+     * @return wait time (ms).
+     */
+    public long getSpeed() {
+        return speed;
     }
 
     /**
@@ -228,6 +248,13 @@ public class TestCase implements Selenese, ITestCase {
             if (totalResult.isAborted())
                 break;
             current = current.next(this);
+            if (speed > 0) {
+                try {
+                    Thread.sleep(speed);
+                } catch (InterruptedException e) {
+                    // ignore it.
+                }
+            }
         }
         return totalResult;
     }
