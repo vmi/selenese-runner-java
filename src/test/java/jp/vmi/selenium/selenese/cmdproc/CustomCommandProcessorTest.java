@@ -18,7 +18,7 @@ public class CustomCommandProcessorTest {
     @Test
     public void test() {
         HtmlUnitDriver driver = new HtmlUnitDriver(true);
-        String htmlUrl = CustomCommandProcessorTest.class.getResource("dummy.html").toString();
+        String htmlUrl = CustomCommandProcessorTest.class.getResource("/jp/vmi/selenium/selenese/dummy.html").toString();
         CustomCommandProcessor proc = new CustomCommandProcessor(htmlUrl, driver);
         proc.doCommand("open", new String[] { "/" });
         String script = "storedVars['logoutpresent'] ? storedVars['link_logout'] : storedVars['body']";
