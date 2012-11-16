@@ -1,9 +1,11 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Calendar;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.OutputType;
@@ -36,9 +38,12 @@ public class Runner {
 
     private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        if (!tmp.renameTo(file))
-            throw new RuntimeException("failed to rename captured screenshot image: " + file);
-        log.info(" - captured screenshot: {}", file);
+        try {
+            FileUtils.moveFile(tmp, file);
+        } catch (IOException e) {
+            throw new RuntimeException("failed to rename captured screenshot image: " + file, e);
+        }
+        log.info("- captured screenshot: {}", file);
         JUnitResult.addSystemOut(testcase, "[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
     }
 
