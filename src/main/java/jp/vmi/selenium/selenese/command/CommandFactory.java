@@ -34,7 +34,7 @@ public class CommandFactory {
         // commands overriding the command of WebDriverCommandProcessor.
         addConstructor(Open.class);
 
-        // commands unsupported by WebDriverCommandProcessor 
+        // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Pause.class);
@@ -58,12 +58,15 @@ public class CommandFactory {
 
     private static final String AND_WAIT = "AndWait";
 
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?:(assert|verify|waitFor)(Not)?|store)(.+)?",
+    private static final Pattern COMMAND_PATTERN = Pattern.compile(
+        "(?:(assert|verify|waitFor)(Not)?|store)(?:(.+?)(?:(Not)?(Present))?)?",
         Pattern.CASE_INSENSITIVE);
 
     private static final int ASSERTION = 1;
     private static final int IS_INVERSE = 2;
     private static final int TARGET = 3;
+    private static final int IS_PRESENT_INVERSE = 4;
+    private static final int PRESENT = 5;
 
     private final WebDriverCommandProcessor proc;
 
@@ -131,6 +134,8 @@ public class CommandFactory {
         String target = matcher.group(TARGET);
         if (target == null)
             target = "Expression";
+        if (matcher.group(PRESENT) != null)
+            target += "Present";
         String getter = "get" + target;
         boolean isBoolean = false;
         if (!proc.isMethodAvailable(getter)) {
@@ -140,7 +145,7 @@ public class CommandFactory {
             isBoolean = true;
         }
         if (assertion != null) {
-            boolean isInverse = matcher.group(IS_INVERSE) != null;
+            boolean isInverse = matcher.group(IS_INVERSE) != null || matcher.group(IS_PRESENT_INVERSE) != null;
             return new Assertion(index, name, args, assertion, getter, isBoolean, isInverse);
         } else { // Accessor
             return new Store(index, name, args, getter);
