@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,5 +151,16 @@ public class CommandFactory {
         } else { // Accessor
             return new Store(index, name, args, getter);
         }
+    }
+
+    /**
+     * Add names of command implemented by selenese-runner.
+     *
+     * @param commandNames collection of command names.
+     */
+    public static void addCommandNames(Collection<String> commandNames) {
+        for (String name : constructorMap.keySet())
+            commandNames.add(name);
+        commandNames.add("store"); // rewrite storeExpression
     }
 }
