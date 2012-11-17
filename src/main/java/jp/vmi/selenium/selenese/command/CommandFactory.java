@@ -58,7 +58,7 @@ public class CommandFactory {
 
     private static final String AND_WAIT = "AndWait";
 
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?:(assert|verify|waitFor)(No)?|store)(.+)?",
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?:(assert|verify|waitFor)(Not)?|store)(.+)?",
         Pattern.CASE_INSENSITIVE);
 
     private static final int ASSERTION = 1;
