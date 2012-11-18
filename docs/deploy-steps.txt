@@ -18,3 +18,5 @@ Go to https://oss.sonatype.org/index.html
 Click "Staging Repositories".
 Select your uploaded repository.
 Click "Close".
+Re-select your closed repository.
+Click "Release".
