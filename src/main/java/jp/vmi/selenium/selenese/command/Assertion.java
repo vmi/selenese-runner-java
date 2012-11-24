@@ -89,14 +89,7 @@ public class Assertion extends Command {
                 String resultString = (result != null) ? result.toString() : "";
                 String expected = testCase.getProc().replaceVars(this.expected);
                 if (expected.startsWith("glob:")) {
-                    org.apache.oro.text.regex.Pattern p;
-                    try {
-                        p = new GlobCompiler().compile(expected.replaceFirst("^glob:", ""));
-                    } catch (MalformedPatternException e) {
-                        throw new SeleniumException("malformed glob pattern:" + expected, e);
-                    }
-                    PatternMatcher m = new Perl5Matcher();
-                    if (m.matches(resultString, p) ^ isInverse)
+                    if (globMatches(resultString, expected.replaceFirst("^glob:", "")) ^ isInverse)
                         return SUCCESS;
                 } else if (expected.startsWith("regexp:")) {
                     Pattern p = Pattern.compile(expected.replaceFirst("^regexp:", ""));
@@ -112,14 +105,7 @@ public class Assertion extends Command {
                     if (StringUtils.equals(resultString, expected.replaceFirst("^exact:", "")) ^ isInverse)
                         return SUCCESS;
                 } else {
-                    org.apache.oro.text.regex.Pattern p;
-                    try {
-                        p = new GlobCompiler().compile(expected);
-                    } catch (MalformedPatternException e) {
-                        throw new SeleniumException("malformed glob pattern:" + expected, e);
-                    }
-                    PatternMatcher m = new Perl5Matcher();
-                    if (m.matches(resultString, p) ^ isInverse)
+                    if (globMatches(resultString, expected) ^ isInverse)
                         return SUCCESS;
                 }
                 message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
@@ -139,5 +125,16 @@ public class Assertion extends Command {
         default: // VERIFY
             return new Warning(message);
         }
+    }
+
+    private boolean globMatches(String resultString, String expected) {
+        org.apache.oro.text.regex.Pattern p;
+        try {
+            p = new GlobCompiler().compile(expected);
+        } catch (MalformedPatternException e) {
+            throw new SeleniumException("malformed glob pattern:" + expected, e);
+        }
+        PatternMatcher m = new Perl5Matcher();
+        return m.matches(resultString, p);
     }
 }
