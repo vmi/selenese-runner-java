@@ -1,10 +1,18 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.oro.text.GlobCompiler;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -80,8 +88,40 @@ public class Assertion extends Command {
                 Object result = testCase.doBuiltInCommand(getter, getterArgs);
                 String resultString = (result != null) ? result.toString() : "";
                 String expected = testCase.getProc().replaceVars(this.expected);
-                if (StringUtils.equals(resultString, expected) ^ isInverse)
-                    return SUCCESS;
+                if (expected.startsWith("glob:")) {
+                    org.apache.oro.text.regex.Pattern p;
+                    try {
+                        p = new GlobCompiler().compile(expected.replaceFirst("^glob:", ""));
+                    } catch (MalformedPatternException e) {
+                        throw new SeleniumException("malformed glob pattern:" + expected, e);
+                    }
+                    PatternMatcher m = new Perl5Matcher();
+                    if (m.matches(resultString, p) ^ isInverse)
+                        return SUCCESS;
+                } else if (expected.startsWith("regexp:")) {
+                    Pattern p = Pattern.compile(expected.replaceFirst("^regexp:", ""));
+                    Matcher m = p.matcher(resultString);
+                    if (m.find() ^ isInverse)
+                        return SUCCESS;
+                } else if (expected.startsWith("regexpi:")) {
+                    Pattern p = Pattern.compile(expected.replaceFirst("^regexpi:", ""), Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(resultString);
+                    if (m.find() ^ isInverse)
+                        return SUCCESS;
+                } else if (expected.startsWith("exact:")) {
+                    if (StringUtils.equals(resultString, expected.replaceFirst("^exact:", "")) ^ isInverse)
+                        return SUCCESS;
+                } else {
+                    org.apache.oro.text.regex.Pattern p;
+                    try {
+                        p = new GlobCompiler().compile(expected);
+                    } catch (MalformedPatternException e) {
+                        throw new SeleniumException("malformed glob pattern:" + expected, e);
+                    }
+                    PatternMatcher m = new Perl5Matcher();
+                    if (m.matches(resultString, p) ^ isInverse)
+                        return SUCCESS;
+                }
                 message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
             } else {
                 boolean result = testCase.isBuiltInCommand(getter, getterArgs);
