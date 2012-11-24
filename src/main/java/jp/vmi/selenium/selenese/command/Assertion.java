@@ -92,14 +92,10 @@ public class Assertion extends Command {
                     if (globMatches(resultString, expected.replaceFirst("^glob:", "")) ^ isInverse)
                         return SUCCESS;
                 } else if (expected.startsWith("regexp:")) {
-                    Pattern p = Pattern.compile(expected.replaceFirst("^regexp:", ""));
-                    Matcher m = p.matcher(resultString);
-                    if (m.find() ^ isInverse)
+                    if (regexpMatches(resultString, expected.replaceFirst("^regexp:", "")) ^ isInverse)
                         return SUCCESS;
                 } else if (expected.startsWith("regexpi:")) {
-                    Pattern p = Pattern.compile(expected.replaceFirst("^regexpi:", ""), Pattern.CASE_INSENSITIVE);
-                    Matcher m = p.matcher(resultString);
-                    if (m.find() ^ isInverse)
+                    if (regexpMatches(resultString, expected.replaceFirst("^regexpi:", ""), Pattern.CASE_INSENSITIVE) ^ isInverse)
                         return SUCCESS;
                 } else if (expected.startsWith("exact:")) {
                     if (StringUtils.equals(resultString, expected.replaceFirst("^exact:", "")) ^ isInverse)
@@ -125,6 +121,16 @@ public class Assertion extends Command {
         default: // VERIFY
             return new Warning(message);
         }
+    }
+
+    private boolean regexpMatches(String resultString, String expected, int flags) {
+        Pattern p = Pattern.compile(expected, flags);
+        Matcher m = p.matcher(resultString);
+        return m.find();
+    }
+
+    private boolean regexpMatches(String resultString, String expected) {
+        return regexpMatches(resultString, expected, 0);
     }
 
     private boolean globMatches(String resultString, String expected) {
