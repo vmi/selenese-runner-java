@@ -72,7 +72,15 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         SeleneseCommand<?> command = getMethod(commandName);
         if (command == null)
             throw new SeleniumException("No such command: " + commandName);
-        return command.apply(getWrappedDriver(), replaceVarsForArray(args));
+        try {
+            return command.apply(getWrappedDriver(), replaceVarsForArray(args));
+        } catch (RuntimeException e) {
+            // for HtmlUnit
+            if (!e.getClass().getSimpleName().contains("Script"))
+                throw e;
+            String message = e.getMessage().replaceFirst("\\s*\\([^()]+\\)$", "");
+            throw new SeleniumException(message, e);
+        }
     }
 
     /**
