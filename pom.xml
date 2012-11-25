@@ -240,7 +240,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>2.25.0</version>
+      <version>2.26.0</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -252,42 +252,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       workaround for broken selenium-java-2.25.0.
       see: http://code.google.com/p/selenium/issues/detail?id=4314#c3
     -->
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-server</artifactId>
-      <version>2.25.0</version>
-      <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>bcprov-jdk15on</artifactId>
-          <groupId>org.bouncycastle</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>bcpkix-jdk15on</artifactId>
-          <groupId>org.bouncycastle</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mx4j-tools</artifactId>
-          <groupId>mx4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>servlet-api-2.5</artifactId>
-          <groupId>org.mortbay.jetty</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jetty-repacked</artifactId>
-          <groupId>org.seleniumhq.selenium</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jcip-annotations</artifactId>
-          <groupId>net.jcip</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>snakeyaml</artifactId>
-          <groupId>org.yaml</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
