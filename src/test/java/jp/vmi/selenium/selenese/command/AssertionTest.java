@@ -39,7 +39,7 @@ public class AssertionTest {
 
         Result result = assertion.doCommand(testcase);
 
-        assertThat(result.getMessage(), is("Assertion failed (Result: [] / Expected: [title]"));
+        assertThat(result.getMessage(), is("Assertion failed (Result: [] / Expected: [title])"));
     }
 
     /**

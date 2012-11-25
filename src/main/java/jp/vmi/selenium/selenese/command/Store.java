@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
@@ -16,7 +17,8 @@ public class Store extends Command {
     private final String varName;
 
     Store(int index, String name, String[] args, String getter) {
-        super(index, name, args);
+        super(index, name, args, CustomCommandProcessor.getArgumentCount(getter) + 1);
+        args = this.args;
         this.getter = getter;
         int len = args.length;
         getterArgs = Arrays.copyOf(args, len - 1);
@@ -30,8 +32,9 @@ public class Store extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        Object result = testCase.doBuiltInCommand(getter, getterArgs);
-        testCase.getProc().setVar(result, varName);
+        CustomCommandProcessor proc = testCase.getProc();
+        Object result = proc.execute(getter, getterArgs);
+        proc.setVar(result, varName);
         return new Success(String.valueOf(result));
     }
 }

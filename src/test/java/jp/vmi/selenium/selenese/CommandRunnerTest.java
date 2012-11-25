@@ -174,6 +174,19 @@ public abstract class CommandRunnerTest {
     }
 
     /**
+     * Test of "CommandRunnerTestNoCommand.html".
+     *
+     * @throws IllegalArgumentException exception
+     */
+    @Test
+    public void verifyNotText() throws IllegalArgumentException {
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
+
+        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+    }
+
+    /**
      * Test of "CommandRunnerTestInvalidCommand.html".
      *
      * @throws IllegalArgumentException exception

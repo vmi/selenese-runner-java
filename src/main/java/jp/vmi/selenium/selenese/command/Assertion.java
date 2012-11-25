@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
@@ -56,7 +57,8 @@ public class Assertion extends Command {
     private final boolean isInverse;
 
     Assertion(int index, String name, String[] args, String assertion, String getter, boolean isBoolean, boolean isInverse) {
-        super(index, name, args);
+        super(index, name, args, CustomCommandProcessor.getArgumentCount(getter) + (isBoolean ? 0 : 1));
+        args = this.args;
         type = Type.of(assertion);
         this.getter = getter;
         if (isBoolean) {
@@ -72,9 +74,13 @@ public class Assertion extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
+        CustomCommandProcessor proc = testCase.getProc();
+        boolean found = true;
         String message = null;
-        int retryCount = testCase.getRunner().getTimeout() / RETRY_INTERVAL;
+        int timeout = testCase.getRunner().getTimeout();
+        int retryCount = timeout / RETRY_INTERVAL;
         for (int i = 0; i < retryCount; i++) {
+            found = true;
             if (i != 0) {
                 // don't wait before first test and after last test.
                 try {
@@ -85,42 +91,61 @@ public class Assertion extends Command {
                 }
             }
             if (this.expected != null) {
-                Object result = testCase.doBuiltInCommand(getter, getterArgs);
-                String resultString = (result != null) ? result.toString() : "";
-                String expected = testCase.getProc().replaceVars(this.expected);
-                if (expected.startsWith("glob:")) {
-                    if (globMatches(resultString, expected.replaceFirst("^glob:", "")) ^ isInverse)
+                try {
+                    Object result = proc.execute(getter, getterArgs);
+                    String resultString = (result != null) ? result.toString() : "";
+                    String expected = testCase.getProc().replaceVars(this.expected);
+                    if (matches(resultString, expected) ^ isInverse)
                         return SUCCESS;
-                } else if (expected.startsWith("regexp:")) {
-                    if (regexpMatches(resultString, expected.replaceFirst("^regexp:", "")) ^ isInverse)
-                        return SUCCESS;
-                } else if (expected.startsWith("regexpi:")) {
-                    if (regexpMatches(resultString, expected.replaceFirst("^regexpi:", ""), Pattern.CASE_INSENSITIVE) ^ isInverse)
-                        return SUCCESS;
-                } else if (expected.startsWith("exact:")) {
-                    if (StringUtils.equals(resultString, expected.replaceFirst("^exact:", "")) ^ isInverse)
-                        return SUCCESS;
-                } else {
-                    if (globMatches(resultString, expected) ^ isInverse)
-                        return SUCCESS;
+                    message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
+                        resultString, isInverse ? "Not " : "", expected);
+                } catch (SeleniumException e) {
+                    String error = e.getMessage();
+                    if (!error.endsWith(" not found"))
+                        throw e;
+                    message = String.format("Assertion failed (%s)", error);
+                    found = false;
                 }
-                message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
             } else {
-                boolean result = testCase.isBuiltInCommand(getter, getterArgs);
-                if (result ^ isInverse)
-                    return SUCCESS;
-                message = String.format("Assertion failed (Result: [%s] / Expected: [%s]", result, !result);
+                try {
+                    boolean result = proc.getBoolean(getter, getterArgs);
+                    if (result ^ isInverse)
+                        return SUCCESS;
+                    message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
+                } catch (SeleniumException e) {
+                    String error = e.getMessage();
+                    if (!error.endsWith(" not found"))
+                        throw e;
+                    message = String.format("Assertion failed (%s)", error);
+                    found = false;
+                }
             }
             if (type != Type.WAIT_FOR)
                 break;
         }
         switch (type) {
         case ASSERT:
-        case WAIT_FOR:
             return new Failure(message);
-        default: // VERIFY
-            return new Warning(message);
+        case VERIFY:
+            return found ? new Warning(message) : new Failure(message);
+        default: // == WAIT_FOR
+            return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
         }
+    }
+
+    private boolean matches(String resultString, String expected) {
+        String[] pattern = expected.split(":", 2);
+        if (pattern.length == 2) {
+            if ("regexp".equals(pattern[0]))
+                return regexpMatches(resultString, pattern[1]);
+            else if ("regexpi".equals(pattern[0]))
+                return regexpMatches(resultString, pattern[1], Pattern.CASE_INSENSITIVE);
+            else if ("exact".equals(pattern[0]))
+                return StringUtils.equals(resultString, pattern[1]);
+            else if ("glob".equals(pattern[0]))
+                expected = pattern[1];
+        }
+        return globMatches(resultString, expected);
     }
 
     private boolean regexpMatches(String resultString, String expected, int flags) {

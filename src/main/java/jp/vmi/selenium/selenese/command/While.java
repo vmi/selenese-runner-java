@@ -7,10 +7,12 @@ import jp.vmi.selenium.selenese.TestCase;
  */
 public class While extends Command implements StartLoop {
 
+    private static final int CONDITION = 0;
+
     private EndWhile endLoop;
 
     While(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args);
+        super(index, name, args, 1);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class While extends Command implements StartLoop {
 
     @Override
     public Command next(TestCase testCase) {
-        if (testCase.isTrue(args[0]))
+        if (testCase.isTrue(args[CONDITION]))
             return next;
         else
             return endLoop.next;
