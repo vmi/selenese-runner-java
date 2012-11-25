@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -31,7 +32,7 @@ public class BuiltInCommand extends Command {
     private final boolean canUpdate;
 
     BuiltInCommand(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args);
+        super(index, name, args, CustomCommandProcessor.getArgumentCount(realName));
         this.realName = realName;
         this.andWait = andWait;
         this.canUpdate = !ArrayUtils.contains(CANNOT_UPDATES, realName);
