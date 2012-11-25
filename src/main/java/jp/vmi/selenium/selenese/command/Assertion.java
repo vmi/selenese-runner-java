@@ -5,10 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.oro.text.GlobCompiler;
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.Perl5Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +133,7 @@ public class Assertion extends Command {
         String[] pattern = expected.split(":", 2);
         if (pattern.length == 2) {
             if ("regexp".equals(pattern[0]))
-                return regexpMatches(resultString, pattern[1]);
+                return regexpMatches(resultString, pattern[1], 0);
             else if ("regexpi".equals(pattern[0]))
                 return regexpMatches(resultString, pattern[1], Pattern.CASE_INSENSITIVE);
             else if ("exact".equals(pattern[0]))
@@ -154,18 +150,10 @@ public class Assertion extends Command {
         return m.find();
     }
 
-    private boolean regexpMatches(String resultString, String expected) {
-        return regexpMatches(resultString, expected, 0);
-    }
-
     private boolean globMatches(String resultString, String expected) {
-        org.apache.oro.text.regex.Pattern p;
-        try {
-            p = new GlobCompiler().compile(expected);
-        } catch (MalformedPatternException e) {
-            throw new SeleniumException("malformed glob pattern:" + expected, e);
-        }
-        PatternMatcher m = new Perl5Matcher();
-        return m.matches(resultString, p);
+        // see http://stackoverflow.com/a/3619098
+        Pattern p = Pattern.compile("\\Q" + expected.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"));
+        Matcher m = p.matcher(resultString);
+        return m.matches();
     }
 }
