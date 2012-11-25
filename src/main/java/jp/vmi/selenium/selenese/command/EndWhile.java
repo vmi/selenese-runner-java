@@ -10,7 +10,7 @@ public class EndWhile extends Command implements EndLoop {
     private While startLoop;
 
     EndWhile(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args);
+        super(index, name, args, 0);
     }
 
     @Override

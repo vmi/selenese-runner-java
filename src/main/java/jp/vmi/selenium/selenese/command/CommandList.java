@@ -9,11 +9,13 @@ package jp.vmi.selenium.selenese.command;
  */
 public class CommandList extends Command {
 
+    private static final String[] EMPTY_ARGS = new String[0];
+
     /**
      * Constructor.
      */
     public CommandList() {
-        super(0, "COMMAND_LIST");
+        super(0, "COMMAND_LIST", EMPTY_ARGS, 0);
     }
 
     /**
