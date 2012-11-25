@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
@@ -48,7 +49,8 @@ public class Assertion extends Command {
     private final boolean isInverse;
 
     Assertion(int index, String name, String[] args, String assertion, String getter, boolean isBoolean, boolean isInverse) {
-        super(index, name, args);
+        super(index, name, args, CustomCommandProcessor.getArgumentCount(getter) + (isBoolean ? 0 : 1));
+        args = this.args;
         type = Type.of(assertion);
         this.getter = getter;
         if (isBoolean) {

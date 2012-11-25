@@ -54,8 +54,7 @@ public class TestCaseParser extends Parser {
                     for (Node td : each(tr.getChildNodes())) {
                         if ("TD".equals(td.getNodeName())) {
                             String value = td.getTextContent();
-                            if (value.length() > 0)
-                                cmdWithArgs.add(value);
+                            cmdWithArgs.add(value);
                         }
                     }
                     break;
