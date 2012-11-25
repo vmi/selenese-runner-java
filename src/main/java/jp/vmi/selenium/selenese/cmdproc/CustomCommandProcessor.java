@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 /**
  * WebDriverCommandProcessor no timeout version.
  */
@@ -69,7 +71,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     public Object execute(String commandName, String[] args) {
         SeleneseCommand<?> command = getMethod(commandName);
         if (command == null)
-            throw new UnsupportedOperationException(commandName);
+            throw new SeleniumException("No such command: " + commandName);
         return command.apply(getWrappedDriver(), replaceVarsForArray(args));
     }
 

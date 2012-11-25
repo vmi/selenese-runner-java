@@ -6,6 +6,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -66,9 +68,13 @@ public class Assertion extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
+        CustomCommandProcessor proc = testCase.getProc();
+        boolean found = true;
         String message = null;
-        int retryCount = testCase.getRunner().getTimeout() / RETRY_INTERVAL;
+        int timeout = testCase.getRunner().getTimeout();
+        int retryCount = timeout / RETRY_INTERVAL;
         for (int i = 0; i < retryCount; i++) {
+            found = true;
             if (i != 0) {
                 // don't wait before first test and after last test.
                 try {
@@ -79,27 +85,45 @@ public class Assertion extends Command {
                 }
             }
             if (this.expected != null) {
-                Object result = testCase.doBuiltInCommand(getter, getterArgs);
-                String resultString = (result != null) ? result.toString() : "";
-                String expected = testCase.getProc().replaceVars(this.expected);
-                if (StringUtils.equals(resultString, expected) ^ isInverse)
-                    return SUCCESS;
-                message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s]", result, isInverse ? "Not " : "", expected);
+                try {
+                    Object result = proc.execute(getter, getterArgs);
+                    String resultString = (result != null) ? result.toString() : "";
+                    String expected = testCase.getProc().replaceVars(this.expected);
+                    if (StringUtils.equals(resultString, expected) ^ isInverse)
+                        return SUCCESS;
+                    message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
+                        resultString, isInverse ? "Not " : "", expected);
+                } catch (SeleniumException e) {
+                    String error = e.getMessage();
+                    if (!error.endsWith(" not found"))
+                        throw e;
+                    message = String.format("Assertion failed (%s)", error);
+                    found = false;
+                }
             } else {
-                boolean result = testCase.isBuiltInCommand(getter, getterArgs);
-                if (result ^ isInverse)
-                    return SUCCESS;
-                message = String.format("Assertion failed (Result: [%s] / Expected: [%s]", result, !result);
+                try {
+                    boolean result = proc.getBoolean(getter, getterArgs);
+                    if (result ^ isInverse)
+                        return SUCCESS;
+                    message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
+                } catch (SeleniumException e) {
+                    String error = e.getMessage();
+                    if (!error.endsWith(" not found"))
+                        throw e;
+                    message = String.format("Assertion failed (%s)", error);
+                    found = false;
+                }
             }
             if (type != Type.WAIT_FOR)
                 break;
         }
         switch (type) {
         case ASSERT:
-        case WAIT_FOR:
             return new Failure(message);
-        default: // VERIFY
-            return new Warning(message);
+        case VERIFY:
+            return found ? new Warning(message) : new Failure(message);
+        default: // == WAIT_FOR
+            return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
         }
     }
 }

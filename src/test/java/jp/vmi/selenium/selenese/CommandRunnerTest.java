@@ -178,12 +178,12 @@ public abstract class CommandRunnerTest {
      *
      * @throws IllegalArgumentException exception
      */
-    @Test(expected = SeleniumException.class)
+    @Test
     public void verifyNotText() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
 
-        assertEquals(2, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(2, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     /**

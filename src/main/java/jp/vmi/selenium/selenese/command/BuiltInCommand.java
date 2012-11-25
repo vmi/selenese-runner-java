@@ -45,12 +45,13 @@ public class BuiltInCommand extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
+        CustomCommandProcessor proc = testCase.getProc();
         try {
-            Object result = testCase.doBuiltInCommand(realName, args);
+            Object result = proc.execute(realName, args);
             String resultString = (result != null) ? result.toString() : "";
             if (andWait) {
                 int timeout = testCase.getRunner().getTimeout();
-                testCase.doBuiltInCommand(WAIT_FOR_PAGE_TO_LOAD, Integer.toString(timeout));
+                proc.execute(WAIT_FOR_PAGE_TO_LOAD, new String[] { Integer.toString(timeout) });
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
         } catch (SeleniumException e) {
