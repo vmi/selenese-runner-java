@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang.StringUtils;
 
 import jp.vmi.selenium.selenese.TestCase;
@@ -25,10 +27,10 @@ public abstract class Command {
      * @param name selenese command name.
      * @param args command arguments.
      */
-    Command(int index, String name, String... args) {
+    Command(int index, String name, String[] args, int argCnt) {
         this.index = index;
         this.name = name;
-        this.args = args;
+        this.args = (args.length == argCnt) ? args : Arrays.copyOf(args, argCnt);
     }
 
     /**

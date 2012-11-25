@@ -58,4 +58,10 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
         assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
+    @Override
+    @Test
+    public void verifyNotText() throws IllegalArgumentException {
+        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
+        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
+    }
 }

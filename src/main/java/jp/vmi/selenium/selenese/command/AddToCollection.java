@@ -14,7 +14,7 @@ public class AddToCollection extends Command {
     private static final int VALUE = 1;
 
     AddToCollection(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args);
+        super(index, name, args, 2);
     }
 
     @Override

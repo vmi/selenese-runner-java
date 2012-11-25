@@ -7,11 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
@@ -21,7 +16,6 @@ import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -33,8 +27,6 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
 public class TestCase implements Selenese, ITestCase {
-
-    private static final Logger log = LoggerFactory.getLogger(TestCase.class);
 
     private File file = null;
     private String basename = null;
@@ -122,49 +114,12 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Run built-in command of WebDriverCommandProcessor.
-     *
-     * @param name command name.
-     * @param args arguments.
-     * @return result.
-     */
-    public Object doBuiltInCommand(String name, String... args) {
-        try {
-            return proc.execute(name, args);
-        } catch (UnsupportedOperationException e) {
-            throw new SeleniumException("No such command: " + name);
-        } catch (SeleniumException e) {
-            log.error("{}({})", name, StringUtils.join(LoggerUtils.quote(args), ", "));
-            throw e;
-        }
-    }
-
-    /**
-     * Run built-in command of WebDriverCommandProcessor. It returns boolean.
-     *
-     * @param name command name.
-     * @param args arguments.
-     * @return result.
-     */
-    public boolean isBuiltInCommand(String name, String... args) {
-        try {
-            return proc.getBoolean(name, args);
-        } catch (UnsupportedOperationException e) {
-            throw new SeleniumException("No such command: " + name);
-        } catch (SeleniumException e) {
-            log.error("{}({})", name, StringUtils.join(LoggerUtils.quote(args), ", "));
-            throw e;
-        }
-    }
-
-    /**
      * Evaluate expression and return boolean result.
      *
      * @param expr expression string.
      * @return result.
      */
     public boolean isTrue(String expr) {
-        // return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { replaceVariables(expr) }));
         return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { expr }));
     }
 

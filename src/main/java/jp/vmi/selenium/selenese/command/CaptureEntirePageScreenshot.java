@@ -13,18 +13,10 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public class CaptureEntirePageScreenshot extends Command {
 
-    private String filename = "";
-
-    // not handle this parameter.
-    @SuppressWarnings("unused")
-    private String kwargs = "";
+    private static final int FILENAME = 0;
 
     CaptureEntirePageScreenshot(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args);
-        if (args.length >= 1)
-            filename = args[0];
-        if (args.length >= 2)
-            kwargs = args[1];
+        super(index, name, args, 1);
     }
 
     @Override
@@ -34,6 +26,7 @@ public class CaptureEntirePageScreenshot extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
+        String filename = args[FILENAME];
         if (StringUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
         try {
