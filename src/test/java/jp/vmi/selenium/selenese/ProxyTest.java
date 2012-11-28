@@ -19,7 +19,7 @@ public class ProxyTest {
     @Ignore("ignore by #29")
     public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
-            WebrickServer proxy = new Proxy();
+            Proxy proxy = new Proxy();
             proxy.start();
             proxy.kill();
         }
@@ -30,7 +30,7 @@ public class ProxyTest {
      */
     @Test(timeout = 30000)
     public void startAndKill() {
-        WebrickServer proxy = new Proxy();
+        Proxy proxy = new Proxy();
         proxy.start();
         proxy.kill();
         assertThat(PortProber.pollPort(proxy.getPort()), is(true));

@@ -11,7 +11,7 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  * Test for Internet Explorer with proxy.
  */
 public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInternetExplorerTest {
-    static WebrickServer proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
     /**
      * Start proxy server.
