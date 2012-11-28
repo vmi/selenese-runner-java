@@ -322,6 +322,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>1.7.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.littleshoot</groupId>
+      <artifactId>littleproxy</artifactId>
+      <version>0.4</version>
+      <scope>test</scope>
+    </dependency>
     <!--
     <dependency>
       <groupId>org.jenkins-ci.main</groupId>
