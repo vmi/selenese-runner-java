@@ -1,7 +1,6 @@
 package jp.vmi.selenium.selenese;
 
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -18,30 +17,6 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions());
-    }
-
-    @Override
-    @Test
-    public void testSimple() {
-        //no test
-        //original test is occur javascript error on htmlunit.
-        throw new AssumptionViolatedException("HtmlUnitDriver is not supported google javascript");
-    }
-
-    @Override
-    @Test
-    public void testFailSubmit() throws IllegalArgumentException {
-        //no test
-        //original test is occur javascript error on htmlunit.
-        throw new AssumptionViolatedException("HtmlUnitDriver is not supported google javascript");
-    }
-
-    @Override
-    @Test
-    public void testAssertFail() throws IllegalArgumentException {
-        //no test
-        //original test is occur javascript error on htmlunit.
-        throw new AssumptionViolatedException("HtmlUnitDriver is not supported google javascript");
     }
 
     @Override

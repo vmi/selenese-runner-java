@@ -76,7 +76,8 @@ public abstract class CommandRunnerTest {
         runner.run(script);
 
         assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
+        if (runner.getDriver() instanceof TakesScreenshot)
+            assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
     }
 
     /**
@@ -94,8 +95,10 @@ public abstract class CommandRunnerTest {
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
-        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+        if (runner.getDriver() instanceof TakesScreenshot) {
+            assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
+            assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+        }
     }
 
     /**
@@ -113,8 +116,10 @@ public abstract class CommandRunnerTest {
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
-        assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
+        if (runner.getDriver() instanceof TakesScreenshot) {
+            assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
+            assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
+        }
     }
 
     /**
