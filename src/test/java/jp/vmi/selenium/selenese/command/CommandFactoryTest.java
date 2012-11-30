@@ -1,13 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriverCommandProcessor;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.firefox.FirefoxBinary;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -20,39 +15,11 @@ public class CommandFactoryTest {
     private final WebDriverManager manager = WebDriverManager.getInstance();
 
     /**
-     * Check Firefox connected.
-     */
-    @Before
-    public void assumeConnectFirefox() {
-        setupWebDriverManager();
-        try {
-            WebDriverManager.getInstance().get();
-        } catch (WebDriverException e) {
-            if (e.getMessage().contains("no display specified"))
-                Assume.assumeNoException(e);
-        }
-    }
-
-    /**
-     * Check Firefox installation.
-     */
-    @Before
-    public void assumeInstalledFirefox() {
-        try {
-            new FirefoxBinary();
-        } catch (SeleniumException e) {
-            Assume.assumeNoException(e);
-        } catch (WebDriverException e) {
-            Assume.assumeNoException(e);
-        }
-    }
-
-    /**
      * setup WebDriverManager.
      */
     @Before
     public void setupWebDriverManager() {
-        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
+        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         manager.setDriverOptions(new DriverOptions());
     }
 
