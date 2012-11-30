@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.net.PortProber;
 
@@ -16,7 +15,6 @@ public class ProxyTest {
      * Test of start() and kill() continuously.
      */
     @Test
-    @Ignore("ignore by #29")
     public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
             Proxy proxy = new Proxy();
