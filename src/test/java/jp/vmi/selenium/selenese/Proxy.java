@@ -23,7 +23,8 @@ public class Proxy {
      */
     public void start() {
         port = NetUtils.getUsablePort();
-        server = new DefaultHttpProxyServer(NetUtils.getUsablePort());
+        server = new DefaultHttpProxyServer(port);
+        server.start();
     }
 
     /**
@@ -46,7 +47,7 @@ public class Proxy {
      * @return server name
      */
     public String getServerNameString() {
-        return "localhost";
+        return "localhost:" + getPort();
     }
 
 }
