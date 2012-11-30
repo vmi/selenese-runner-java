@@ -17,7 +17,7 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  * Test for Firefox with proxy.
  */
 public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
-    static WebrickServer proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
     /**
      * Start proxy server.

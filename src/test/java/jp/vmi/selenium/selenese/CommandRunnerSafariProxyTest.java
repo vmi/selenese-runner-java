@@ -12,7 +12,7 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  */
 @Ignore("not yet ready to safari proxy test.")
 public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
-    static WebrickServer proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
     /**
      * Start proxy server.

@@ -11,7 +11,7 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  * Test for HtmlUnit with proxy.
  */
 public class CommandRunnerHtmlUnitProxyTest extends CommandRunnerHtmlUnitTest {
-    static WebrickServer proxy = new Proxy();
+    static Proxy proxy = new Proxy();
 
     /**
      * Start proxy server.

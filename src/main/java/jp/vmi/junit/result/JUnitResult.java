@@ -3,13 +3,13 @@ package jp.vmi.junit.result;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang.time.FastDateFormat;
-import org.jboss.netty.util.internal.ConcurrentIdentityHashMap;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
 
@@ -27,7 +27,7 @@ public final class JUnitResult {
 
     private static JAXBContext context = initContext();
 
-    private static final Map<Object, TestResult> map = new ConcurrentIdentityHashMap<Object, TestResult>();
+    private static final Map<Object, TestResult> map = new ConcurrentHashMap<Object, TestResult>();
 
     private static String resultDir = null;
 

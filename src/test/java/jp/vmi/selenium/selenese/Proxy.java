@@ -1,30 +1,53 @@
 package jp.vmi.selenium.selenese;
 
-import org.jruby.embed.LocalVariableBehavior;
-import org.jruby.embed.ScriptingContainer;
+import org.littleshoot.proxy.DefaultHttpProxyServer;
+import org.littleshoot.proxy.HttpProxyServer;
 
 /**
  * Proxy for unit test.
  */
-public class Proxy extends WebrickServer {
+public class Proxy {
+
+    HttpProxyServer server = null;
+
+    int port = 0;
 
     /**
      * Constructor.
      */
     public Proxy() {
-        super();
     }
 
-    @Override
-    protected ScriptingContainer createScriptingContainer() {
+    /**
+     * start proxy.
+     */
+    public void start() {
         port = NetUtils.getUsablePort();
-        ScriptingContainer container = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
-        container.setError(System.err);
-        container.setOutput(System.out);
-        container.put("port", port);
-        container.runScriptlet("require 'webrick'");
-        container.runScriptlet("require 'webrick/httpproxy'");
-        container.runScriptlet("server = WEBrick::HTTPProxyServer.new({:Port => port})");
-        return container;
+        server = new DefaultHttpProxyServer(port);
+        server.start();
     }
+
+    /**
+     * kill proxy.
+     */
+    public void kill() {
+        server.stop();
+    }
+
+    /**
+     * get port number
+     * @return port number
+     */
+    public int getPort() {
+        return port;
+    }
+
+    /**
+     * get server name (ex. localhost)
+     * @return server name
+     */
+    public String getServerNameString() {
+        return "localhost:" + getPort();
+    }
+
 }
