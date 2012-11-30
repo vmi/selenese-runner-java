@@ -6,13 +6,14 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
+import org.junit.Assume;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -272,9 +273,11 @@ public abstract class CommandRunnerTest {
     /**
      * Test of "basic auth access"
      */
-    @Ignore("failed on IE.")
     @Test
     public void basicauth() {
+        //TODO failed on IE
+        Assume.assumeThat(WebDriverManager.getInstance().get(), instanceOf(InternetExplorerDriver.class));
+
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
 
         WebServer webserver = new WebServer();
