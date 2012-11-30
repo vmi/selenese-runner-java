@@ -27,6 +27,7 @@ public class BuiltInCommandTest {
     @Test
     public void userFriendlyErrorMessage() throws IOException {
         Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, "click", false);
+        Command open = new Open(1, "open", new String[] { "http://localhost/" }, "open", false);
 
         File selenesefile = File.createTempFile("selenese", ".html");
 
@@ -37,6 +38,7 @@ public class BuiltInCommandTest {
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile, "test", runner, "");
 
+        assertTrue(open.doCommand(testcase).isSuccess());
         Result result = click.doCommand(testcase);
 
         assertThat(result.getMessage(), is("failed command:Command#1: click(\"link=linktext\") result:Element link=linktext not found"));
