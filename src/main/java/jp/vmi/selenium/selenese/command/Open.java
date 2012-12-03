@@ -18,7 +18,7 @@ public class Open extends Command {
 
     @Override
     public Result doCommand(TestCase testCase) {
-        String url = args[URL];
+        String url = testCase.getProc().replaceVars(args[URL]);
         if (!url.contains("://"))
             url = testCase.getBaseURL() + (url.startsWith("/") ? "" : "/") + url;
         testCase.getRunner().getDriver().get(url);
