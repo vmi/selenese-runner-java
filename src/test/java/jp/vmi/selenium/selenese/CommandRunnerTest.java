@@ -39,6 +39,12 @@ public abstract class CommandRunnerTest {
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
     /**
+     * Webserver for test
+     */
+    @Rule
+    public WebServerResouce webserver = new WebServerResouce();
+
+    /**
      * Screenshot on fail directory.
      */
     @Rule
@@ -280,15 +286,10 @@ public abstract class CommandRunnerTest {
 
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
 
-        WebServer webserver = new WebServer();
-        webserver.start();
-
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setBaseURL("http://user:pass@" + webserver.getServerNameString() + "/");
+        runner.setBaseURL("http://user:pass@" + webserver.getServer().getServerNameString() + "/");
         Result result = runner.run(script);
         assertThat(result.isSuccess(), is(true));
-
-        webserver.stop();
     }
 }
