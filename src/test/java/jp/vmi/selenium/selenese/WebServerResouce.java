@@ -2,6 +2,9 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.rules.ExternalResource;
 
+/**
+ * Web server for unit test.
+ */
 public class WebServerResouce extends ExternalResource {
 
     private WebServer server;
