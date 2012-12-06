@@ -40,7 +40,7 @@ public class AssertionTest extends TestBase {
 
         Result result = assertion.doCommand(testcase);
 
-        assertThat(result.getMessage(), is("Assertion failed (Result: [Test for Selenese Runner] / Expected: [title])"));
+        assertThat(result.getMessage(), is("Assertion failed (Result: [] / Expected: [title])"));
     }
 
     /**
