@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.TestBase;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestUtils;
 import jp.vmi.selenium.selenese.result.Result;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * test for {@link Assertion}.
  */
-public class AssertionTest {
+public class AssertionTest extends TestBase {
 
     /**
      * test of user friendly assertion message.
@@ -35,16 +36,16 @@ public class AssertionTest {
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile, "test", runner, "");
+        testcase.initialize(selenesefile, "test", runner, ws.getUrl());
 
         Result result = assertion.doCommand(testcase);
 
-        assertThat(result.getMessage(), is("Assertion failed (Result: [] / Expected: [title])"));
+        assertThat(result.getMessage(), is("Assertion failed (Result: [Test for Selenese Runner] / Expected: [title])"));
     }
 
     /**
      * test for string-match
-     * 
+     *
      * @see "http://release.seleniumhq.org/selenium-core/1.0.1/reference.html#patterns"
      *
      * @throws IOException exception.
@@ -86,7 +87,7 @@ public class AssertionTest {
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile, "test", runner, "");
+        testcase.initialize(selenesefile, "test", runner, ws.getUrl());
 
         assertTrue(open.doCommand(testcase).isSuccess());
 

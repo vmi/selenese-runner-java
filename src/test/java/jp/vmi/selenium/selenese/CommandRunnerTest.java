@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -30,19 +31,13 @@ import static org.junit.Assert.*;
 /**
  * Super class of test classes for running commands.
  */
-public abstract class CommandRunnerTest {
+public abstract class CommandRunnerTest extends TestBase {
 
     /**
      * Temprary directory.
      */
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
-
-    /**
-     * Webserver for test
-     */
-    @Rule
-    public WebServerResouce webserver = new WebServerResouce();
 
     /**
      * Screenshot on fail directory.
@@ -71,12 +66,15 @@ public abstract class CommandRunnerTest {
      * Test of "CommandRunnerTestSimple.html".
      *
      * @throws IllegalArgumentException exception
+     * @throws IOException exception
      */
     @Test
-    public void testSimple() throws IllegalArgumentException {
+    public void testSimple() throws IllegalArgumentException, IOException {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
+        tmpDir.create();
+        screenshotOnFailDir.create();
         runner.setScreenshotDir(tmpDir.getRoot().getPath());
         runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
@@ -225,7 +223,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, "");
+        TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         testCase.addCommand(invalidCommand);
@@ -246,7 +244,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "capture", runner, "");
+        TestCase testCase = Binder.newTestCase(null, "capture", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         testCase.addCommand(captureCommand);
@@ -265,7 +263,7 @@ public abstract class CommandRunnerTest {
         WebDriver driver = WebDriverManager.getInstance().get();
         Runner runner = new Runner();
         runner.setDriver(driver);
-        TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, "");
+        TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command pause = commandFactory.newCommand(1, "pause", "5000");
         testCase.addCommand(pause);
@@ -279,6 +277,7 @@ public abstract class CommandRunnerTest {
     /**
      * Test of "basic auth access"
      */
+    @Ignore
     @Test
     public void basicauth() {
         //TODO failed on IE
@@ -288,7 +287,7 @@ public abstract class CommandRunnerTest {
 
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setBaseURL("http://user:pass@" + webserver.getServer().getServerNameString() + "/");
+        runner.setBaseURL("http://user:pass@" + ws.getServer().getServerNameString() + "/");
         Result result = runner.run(script);
         assertThat(result.isSuccess(), is(true));
     }

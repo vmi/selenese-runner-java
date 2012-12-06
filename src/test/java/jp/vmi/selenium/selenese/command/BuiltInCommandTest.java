@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.TestBase;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
@@ -17,13 +18,13 @@ import static org.junit.Assert.*;
 /**
  * Test for {@link BuiltInCommand}.
  */
-public class BuiltInCommandTest {
+public class BuiltInCommandTest extends TestBase {
 
     /**
-     * Test of user friendly error message.
-     *
-     * @throws IOException exception.
-     */
+    * Test of user friendly error message.
+    *
+    * @throws IOException exception.
+    */
     @Test
     public void userFriendlyErrorMessage() throws IOException {
         Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, "click", false);
@@ -36,7 +37,7 @@ public class BuiltInCommandTest {
         wdm.setWebDriverFactory(new HtmlUnitDriverFactory());
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile, "test", runner, "");
+        testcase.initialize(selenesefile, "test", runner, ws.getUrl());
 
         assertTrue(open.doCommand(testcase).isSuccess());
         Result result = click.doCommand(testcase);

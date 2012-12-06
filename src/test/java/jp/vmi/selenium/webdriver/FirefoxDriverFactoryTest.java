@@ -34,6 +34,7 @@ public class FirefoxDriverFactoryTest {
         protected void before() throws Throwable {
             super.before();
             original = System.getProperty(key);
+            folder.create(); // why need?
             System.setProperty(key, folder.newFolder().getAbsolutePath());
         }
 

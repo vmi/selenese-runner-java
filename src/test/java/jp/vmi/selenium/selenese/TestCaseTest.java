@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Test for {@link TestCase}.
  */
-public class TestCaseTest {
+public class TestCaseTest extends TestBase {
 
     private final Runner runner = new Runner();
 
@@ -30,7 +30,7 @@ public class TestCaseTest {
      */
     @Test
     public void replaceVars() {
-        TestCase c = Binder.newTestCase(null, null, runner, "");
+        TestCase c = Binder.newTestCase(null, null, runner, ws.getUrl());
         c.getProc().setVar("XYZ", "a");
         assertEquals("XYZ", c.getProc().replaceVars("${a}"));
     }
@@ -40,7 +40,7 @@ public class TestCaseTest {
      */
     @Test
     public void replaceVarsForArray() {
-        TestCase c = Binder.newTestCase(null, null, runner, "");
+        TestCase c = Binder.newTestCase(null, null, runner, ws.getUrl());
         c.getProc().setVar("XYZ", "a");
         assertArrayEquals(new String[] { "abc", "XYZ", "abcXYZbca" },
             c.getProc().replaceVarsForArray(new String[] { "abc", "${a}", "abc${a}bca" }));

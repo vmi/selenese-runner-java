@@ -4,8 +4,6 @@ import java.io.File;
 
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
-import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
-import org.webbitserver.handler.authentication.InMemoryPasswords;
 
 /**
  * Webserver for unit test.
@@ -33,7 +31,7 @@ public class WebServer {
         File classpath = new File(this.getClass().getResource("").getPath());
         File documentroot = new File(classpath, "htdocs");
         server = WebServers.createWebServer(port)
-            .add(new BasicAuthenticationHandler(new InMemoryPasswords().add("user", "pass")))
+            //.add(new BasicAuthenticationHandler(new InMemoryPasswords().add("user", "pass")))
             .add(new StaticFileHandler(documentroot))
             .add("/redirect", new RedirectHandler("http://" + getServerNameString() + "/index.html"));
         server.start();
