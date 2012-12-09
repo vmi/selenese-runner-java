@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Utility for Test.
  */
@@ -19,11 +21,12 @@ public final class TestUtils {
      * Get script file.
      *
      * @param clazz target class.
-     * @param name target name.
+     * @param suffixes target suffixes.
      * @return script file.
      */
-    public static String getScriptFile(Class<?> clazz, String name) {
-        String html = "/" + clazz.getCanonicalName().replace('.', '/') + name + ".html";
+    public static String getScriptFile(Class<?> clazz, String... suffixes) {
+        String suffix = StringUtils.join(suffixes);
+        String html = "/" + clazz.getCanonicalName().replace('.', '/') + suffix + ".html";
         URL resource = clazz.getResource(html);
         if (resource == null)
             throw new RuntimeException(new FileNotFoundException(html));
