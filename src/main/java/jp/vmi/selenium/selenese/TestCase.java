@@ -15,6 +15,7 @@ import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -193,7 +194,12 @@ public class TestCase implements Selenese, ITestCase {
         Command current = commandList.first();
         Result totalResult = SUCCESS;
         while (current != null) {
-            Result result = doCommand(current);
+            Result result = null;
+            try {
+                result = doCommand(current);
+            } catch (Exception e) {
+                result = new Error(e);
+            }
             if (current.canUpdate()) {
                 runner.takeScreenshotAll(basename, current.getIndex(), this);
                 if (!result.isSuccess())
