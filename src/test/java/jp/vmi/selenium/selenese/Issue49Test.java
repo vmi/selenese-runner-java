@@ -1,7 +1,13 @@
 package jp.vmi.selenium.selenese;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.AssumptionViolatedException;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.firefox.FirefoxBinary;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -17,11 +23,42 @@ public class Issue49Test extends TestBase {
 
     private final Runner runner = new Runner();
 
+    private static boolean noDisplay = false;
+
     /**
-     * Initialize.
+     * Check Firefox installation.
      */
     @Before
-    public void initialize() {
+    public void assumeInstalledFirefox() {
+        try {
+            new FirefoxBinary();
+        } catch (SeleniumException e) {
+            Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
+            Assume.assumeNoException(e);
+        }
+    }
+
+    /**
+     * Check Firefox connected.
+     */
+    @Before
+    public void assumeConnectFirefox() {
+        if (noDisplay)
+            throw new AssumptionViolatedException("no display specified");
+
+        setupWebDriverManager();
+        try {
+            WebDriverManager.getInstance().get();
+        } catch (WebDriverException e) {
+            if (e.getMessage().contains("no display specified")) {
+                noDisplay = true;
+                Assume.assumeNoException(e);
+            }
+        }
+    }
+
+    protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         runner.setDriver(manager.get());
