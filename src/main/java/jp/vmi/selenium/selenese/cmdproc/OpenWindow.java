@@ -21,7 +21,7 @@ public class OpenWindow extends SeleneseCommand<Void> {
 
     @Override
     protected Void handleSeleneseCommand(WebDriver driver, String url, String windowID) {
-        String script = String.format("window.open('%s', '%s');", url, windowID);
+        String script = String.format("window.open('%s', '%s'); null;", url, windowID);
         eval.eval(driver, script);
         return null;
     }
