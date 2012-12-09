@@ -42,6 +42,6 @@ public class BuiltInCommandTest extends TestBase {
         assertTrue(open.doCommand(testcase).isSuccess());
         Result result = click.doCommand(testcase);
 
-        assertThat(result.getMessage(), is("failed command:Command#1: click(\"link=linktext\") result:Element link=linktext not found"));
+        assertThat(result.getMessage(), is("Failure: Element link=linktext not found"));
     }
 }
