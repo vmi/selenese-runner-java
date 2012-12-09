@@ -8,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -295,11 +294,9 @@ public abstract class CommandRunnerTest extends TestBase {
     /**
      * Test of "basic auth access"
      */
-    @Ignore
     @Test
     public void basicauth() {
-        //TODO failed on IE
-        Assume.assumeThat(WebDriverManager.getInstance().get(), instanceOf(InternetExplorerDriver.class));
+        Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(InternetExplorerDriver.class)));
 
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
 
