@@ -239,7 +239,7 @@ public abstract class CommandRunnerTest {
      */
     @Test
     public void issue48() throws IllegalArgumentException {
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "issue48");
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Issue48");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
         Result result = runner.run(script);
