@@ -13,6 +13,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,15 @@ public class CommandLogInterceptor implements MethodInterceptor {
     private void log(Result result, TestCase testCase) {
         List<String> messages = new ArrayList<String>();
         WebDriver driver = testCase.getRunner().getDriver();
-        messages.add(String.format("URL: [%s] / Title: [%s]", driver.getCurrentUrl(), driver.getTitle()));
-        cookieToMessage(messages, driver.manage().getCookies());
+        try {
+            String url = driver.getCurrentUrl();
+            String title = driver.getTitle();
+            Set<Cookie> cookies = driver.manage().getCookies();
+            messages.add(String.format("URL: [%s] / Title: [%s]", url, title));
+            cookieToMessage(messages, cookies);
+        } catch (UnhandledAlertException e) {
+            messages.add(String.format("No page information: [%s]", e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "")));
+        }
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 log.error("- {}", result);
@@ -94,18 +102,20 @@ public class CommandLogInterceptor implements MethodInterceptor {
         TestCase testCase = null;
         try {
             testCase = (TestCase) invocation.getThis();
-            Command command = (Command) invocation.getArguments()[0];
-            log.info(command.toString());
-            logInfo(testCase, command.toString());
-            Result result = (Result) invocation.proceed();
-            if (command.hasResult())
-                log(result, testCase);
-            return result;
         } catch (ClassCastException e) {
             String msg = "receiver \"" + invocation.getThis() + "\" is not TestCase: " + e;
             log.error(msg);
             logError(null, msg);
             throw new RuntimeException(e);
+        }
+        Command command = (Command) invocation.getArguments()[0];
+        log.info(command.toString());
+        logInfo(testCase, command.toString());
+        try {
+            Result result = (Result) invocation.proceed();
+            if (command.hasResult())
+                log(result, testCase);
+            return result;
         } catch (Exception e) {
             String msg = e.getMessage();
             log.error(msg);

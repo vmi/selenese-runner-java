@@ -11,7 +11,7 @@ public class Failure extends Result {
      * @param message failure message.
      */
     public Failure(String message) {
-        super(message);
+        super("Failure: " + message);
     }
 
     /**

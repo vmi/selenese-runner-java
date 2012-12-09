@@ -55,7 +55,8 @@ public class BuiltInCommand extends Command {
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
         } catch (SeleniumException e) {
-            return new Failure("failed command:" + this.toString() + " result:" + e.getMessage());
+            String msg = e.getMessage().replaceAll("(\r?\n)+", " / ");
+            return new Failure(msg);
         }
     }
 }

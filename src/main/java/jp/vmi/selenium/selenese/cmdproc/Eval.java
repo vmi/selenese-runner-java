@@ -10,6 +10,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.seleniumemulation.CompoundMutator;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 /**
  * Evaluator of script including "storedVars" variable.
  */
@@ -56,18 +58,21 @@ public class Eval {
         writer.append("];");
         if (hasStoredVars)
             writer.append("})();");
-        List<?> result = (List<?>) ((JavascriptExecutor) driver).executeScript(writer.toString());
-        switch (result.size()) {
+        Object result = ((JavascriptExecutor) driver).executeScript(writer.toString());
+        if (!(result instanceof List))
+            throw new SeleniumException(result.toString());
+        List<?> list = (List<?>) result;
+        switch (list.size()) {
         case 0:
             return null;
         case 1:
-            return result.get(0);
+            return list.get(0);
         default: // case 2:
             @SuppressWarnings("unchecked")
-            Map<String, Object> newVarsMap = (Map<String, Object>) result.get(1);
+            Map<String, Object> newVarsMap = (Map<String, Object>) list.get(1);
             varsMap.clear();
             varsMap.putAll(newVarsMap);
-            return result.get(0);
+            return list.get(0);
         }
     }
 
