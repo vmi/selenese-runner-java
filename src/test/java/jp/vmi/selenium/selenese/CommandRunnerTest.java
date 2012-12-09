@@ -231,6 +231,22 @@ public abstract class CommandRunnerTest extends TestBase {
     }
 
     /**
+     * Test of issue #48.
+     *
+     * @throws IllegalArgumentException exception
+     */
+    @Test
+    public void issue48() throws IllegalArgumentException {
+        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "issue48");
+        Runner runner = new Runner();
+        runner.setDriver(WebDriverManager.getInstance().get());
+        Result result = runner.run(script);
+        assertThat(result.isAborted(), is(false));
+        assertThat(result.isFailed(), is(false));
+        assertThat(result.isSuccess(), is(true));
+    }
+
+    /**
      * Test of capture screenshot.
      *
      * @throws IllegalArgumentException exception
