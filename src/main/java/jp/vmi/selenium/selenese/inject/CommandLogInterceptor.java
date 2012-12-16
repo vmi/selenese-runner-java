@@ -13,6 +13,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -54,17 +55,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
     }
 
     private void log(Result result, TestCase testCase) {
-        List<String> messages = new ArrayList<String>();
-        WebDriver driver = testCase.getRunner().getDriver();
-        try {
-            String url = driver.getCurrentUrl();
-            String title = driver.getTitle();
-            Set<Cookie> cookies = driver.manage().getCookies();
-            messages.add(String.format("URL: [%s] / Title: [%s]", url, title));
-            cookieToMessage(messages, cookies);
-        } catch (UnhandledAlertException e) {
-            messages.add(String.format("No page information: [%s]", e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "")));
-        }
+        List<String> messages = getPageInformation(testCase);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 log.error("- {}", result);
@@ -95,6 +86,27 @@ public class CommandLogInterceptor implements MethodInterceptor {
             }
             prevMessages = messages;
         }
+    }
+
+    private List<String> getPageInformation(TestCase testCase) {
+        List<String> messages = new ArrayList<String>();
+        WebDriver driver = testCase.getRunner().getDriver();
+        try {
+            String url = driver.getCurrentUrl();
+            String title = driver.getTitle();
+            Set<Cookie> cookies = driver.manage().getCookies();
+            messages.add(String.format("URL: [%s] / Title: [%s]", url, title));
+            cookieToMessage(messages, cookies);
+        } catch (NoSuchWindowException e) {
+            messages.add("No focused window.");
+        } catch (UnhandledAlertException e) {
+            String msg = e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "");
+            messages.add(String.format("No page information: [%s]", msg));
+        } catch (Exception e) {
+            String msg = e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "");
+            messages.add(String.format("Failed to get page information: [%s]", msg));
+        }
+        return messages;
     }
 
     @Override
