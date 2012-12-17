@@ -250,10 +250,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         </exclusion>
       </exclusions>
     </dependency>
-    <!--
-      workaround for broken selenium-java-2.25.0.
-      see: http://code.google.com/p/selenium/issues/detail?id=4314#c3
-    -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
