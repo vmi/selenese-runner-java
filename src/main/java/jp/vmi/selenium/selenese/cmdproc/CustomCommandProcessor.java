@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.cmdproc;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;

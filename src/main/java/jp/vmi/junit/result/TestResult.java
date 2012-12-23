@@ -2,7 +2,7 @@ package jp.vmi.junit.result;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * Test result interface. (for TestResult map in JUnitResult)
