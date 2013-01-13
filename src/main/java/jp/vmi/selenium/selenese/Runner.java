@@ -59,6 +59,8 @@ public class Runner {
     public void takeScreenshot(String filename, TestCase testcase) throws UnsupportedOperationException {
         if (!(driver instanceof TakesScreenshot))
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
+        if (File.separatorChar != '\\' && filename.contains("\\"))
+            filename = filename.replace('\\', File.separatorChar);
         File file = new File(filename).getAbsoluteFile();
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName()).getAbsoluteFile();
