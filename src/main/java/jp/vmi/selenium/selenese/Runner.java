@@ -32,6 +32,7 @@ public class Runner {
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
     private String baseURL = "";
+    private boolean ignoreScreenshotCommand = false;
     private int timeout = 30 * 1000; /* ms */
 
     private final int countForDefault = 0;
@@ -172,6 +173,24 @@ public class Runner {
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
+    }
+
+    /**
+     * Set ignore screenshot command flag.
+     * 
+     * @param ignoreScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
+     */
+    public void setIgnoreScreenshotCommand(boolean ignoreScreenshotCommand) {
+        this.ignoreScreenshotCommand = ignoreScreenshotCommand;
+    }
+
+    /**
+     * Get ignore screenshot command flag.
+     * 
+     * @return flag to ignore "captureEntirePageScreenshot"
+     */
+    public boolean isIgnoreScreenshotCommand() {
+        return ignoreScreenshotCommand;
     }
 
     /**

@@ -118,6 +118,9 @@ public class Main {
             .hasArg().withArgName("dir")
             .withDescription("take screenshot on fail commands to specified directory.")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("ignore-screenshot-command")
+            .withDescription("ignore captureEntirePageScreenshot command.")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("baseurl")
             .hasArg().withArgName("baseURL")
             .withDescription("override base URL set in selenese.")
@@ -252,6 +255,7 @@ public class Main {
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
+            runner.setIgnoreScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
             runner.setResultDir(cli.getOptionValue("xml-result"));
             int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));
             if (timeout <= 0)
