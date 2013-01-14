@@ -26,13 +26,13 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         } catch (Exception e) {
             String msg = "receiver is not ITestSuite: " + e;
             log.error(msg);
-            logError(null, msg);
+            sysErrLog(null, ERROR, msg);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
         if (!testSuite.isError()) {
             log.info("Start: {}", testSuite);
-            logInfo(null, "Start:", testSuite.toString());
+            sysOutLog(null, INFO, "Start: " + testSuite);
         }
         JUnitResult.startTestSuite(testSuite);
         try {
@@ -40,14 +40,14 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);
-            logError(null, msg);
+            sysErrLog(null, ERROR, msg);
             throw t;
         } finally {
             JUnitResult.endTestSuite(testSuite);
             if (!testSuite.isError()) {
                 String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testSuite;
                 log.info(msg);
-                logInfo(null, msg);
+                sysOutLog(null, INFO, msg);
             }
         }
     }

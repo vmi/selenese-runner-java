@@ -30,19 +30,19 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         } catch (Exception e) {
             String msg = "receiver is not ITestCase, or 1st argument is not ITestSuite: " + e;
             log.error(msg);
-            logError(null, msg);
+            sysErrLog(null, ERROR, msg);
             throw new RuntimeException(e);
         }
         long stime = System.nanoTime();
         startTestCase(testSuite, testCase);
         if (!testCase.isError()) {
             log.info("Start: {}", testCase);
-            logInfo(testCase, "Start:", testCase.toString());
+            sysOutLog(testCase, INFO, "Start: " + testCase);
         }
         if (testCase instanceof TestCase) {
             String baseURL = ((TestCase) testCase).getBaseURL();
             log.info("baseURL: {}", baseURL);
-            logInfo(testCase, "baseURL:", baseURL);
+            sysOutLog(testCase, INFO, "baseURL: " + baseURL);
         }
         try {
             Result result = (Result) invocation.proceed();
@@ -54,14 +54,14 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);
-            logError(testCase, msg);
+            sysErrLog(testCase, ERROR, msg);
             setError(testCase, msg, t.toString());
             throw t;
         } finally {
             if (!testCase.isError()) {
                 String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testCase;
                 log.info(msg);
-                logInfo(testCase, msg);
+                sysOutLog(testCase, INFO, msg);
             }
             endTestCase(testCase);
         }

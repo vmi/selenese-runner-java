@@ -84,12 +84,12 @@ public class JUnitResultTest {
         tc = testCases[0];
         startTestCase(testSuite, tc);
         setSuccess(tc);
-        logInfo(tc, "systemOut00");
-        logError(tc, "systemErr00");
-        logInfo(tc, "systemOut01");
-        logError(tc, "systemErr01");
-        logInfo(tc, "systemOut02");
-        logError(tc, "systemErr02");
+        sysOutLog(tc, INFO, "systemOut00");
+        sysErrLog(tc, ERROR, "systemErr00");
+        sysOutLog(tc, INFO, "systemOut01");
+        sysErrLog(tc, ERROR, "systemErr01");
+        sysOutLog(tc, INFO, "systemOut02");
+        sysErrLog(tc, ERROR, "systemErr02");
         Thread.sleep(100);
         endTestCase(tc);
         tc = testCases[1];

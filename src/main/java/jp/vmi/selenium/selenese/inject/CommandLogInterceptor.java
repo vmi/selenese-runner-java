@@ -54,34 +54,38 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(Result result, TestCase testCase) {
+    private void log(String cmdStr, Result result, TestCase testCase) {
         List<String> messages = getPageInformation(testCase);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
-                log.error("- {}", result);
-                logError(testCase, "-", result.toString());
+                String resStr = cmdStr + " => " + result;
+                log.error(resStr);
+                sysErrLog(testCase, ERROR, resStr);
             } else {
-                log.info("- {}", result);
-                logInfo(testCase, "-", result.toString());
+                String resStr = "- " + result;
+                log.info(resStr);
+                sysOutLog(testCase, INFO, resStr);
             }
         } else {
             Iterator<String> iter = messages.iterator();
             String message = iter.next();
             if (result.isFailed()) {
-                log.error("- {} {}", result, message);
-                logError(testCase, "-", result.toString(), message);
+                String resStr = cmdStr + " => " + result + " " + message;
+                log.error(resStr);
+                sysErrLog(testCase, ERROR, resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.error(message);
-                    logError(testCase, message);
+                    sysErrLog(testCase, ERROR, message);
                 }
             } else {
-                log.info("- {} {}", result, message);
-                logInfo(testCase, "-", result.toString(), message);
+                String resStr = "- " + result + " " + message;
+                log.info(resStr);
+                sysOutLog(testCase, INFO, resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.info(message);
-                    logInfo(testCase, message);
+                    sysOutLog(testCase, INFO, message);
                 }
             }
             prevMessages = messages;
@@ -117,23 +121,24 @@ public class CommandLogInterceptor implements MethodInterceptor {
         } catch (ClassCastException e) {
             String msg = "receiver \"" + invocation.getThis() + "\" is not TestCase: " + e;
             log.error(msg);
-            logError(null, msg);
+            sysErrLog(null, ERROR, msg);
             throw new RuntimeException(e);
         }
         Command command = (Command) invocation.getArguments()[0];
-        log.info(command.toString());
-        logInfo(testCase, command.toString());
+        String cmdStr = command.toString();
+        log.info(cmdStr);
+        sysOutLog(testCase, INFO, cmdStr);
         try {
             Result result = (Result) invocation.proceed();
             if (command.hasResult())
-                log(result, testCase);
+                log(cmdStr, result, testCase);
             return result;
         } catch (Exception e) {
-            String msg = e.getMessage();
+            String msg = cmdStr + " => " + e.getMessage();
             log.error(msg);
-            logError(testCase, msg);
+            sysErrLog(testCase, ERROR, msg);
             if (testCase != null)
-                setError(testCase, msg, e.toString());
+                setError(testCase, e.getMessage(), e.toString());
             throw e;
         }
     }

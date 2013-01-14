@@ -23,6 +23,12 @@ import static jp.vmi.junit.result.ObjectFactory.*;
  */
 public final class JUnitResult {
 
+    /** level info. */
+    public static String INFO = "INFO";
+
+    /** level error. */
+    public static String ERROR = "ERROR";
+
     private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
     private static JAXBContext context = initContext();
@@ -182,26 +188,21 @@ public final class JUnitResult {
         caseResult.addSystemErr(message);
     }
 
-    private static String logFormat(String level, String... messages) {
-        StringBuilder logMsg = new StringBuilder(DATE_TIME_FORMAT.format(System.currentTimeMillis()));
-        logMsg.append(level);
-        for (String message : messages)
-            logMsg.append(" ").append(message);
-        return logMsg.toString();
+    private static String logFormat(String level, String message) {
+        return DATE_TIME_FORMAT.format(System.currentTimeMillis()) + "[" + level + "] " + message;
     }
 
     /**
      * Add System.out'ed message string.
      *
      * @param testCase test-case instance.
-     * @param messages info log messages.
+     * @param level level string.
+     * @param message info log message.
      */
-    public static void logInfo(ITestCase testCase, String... messages) {
-        String msg = logFormat("[INFO]", messages);
-        if (testCase != null) {
-            TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
-            caseResult.addSystemOut(msg);
-        }
+    public static void sysOutLog(ITestCase testCase, String level, String message) {
+        String msg = logFormat(level, message);
+        if (testCase != null)
+            addSystemOut(testCase, msg);
         if (ps != null)
             ps.println(msg);
     }
@@ -210,13 +211,14 @@ public final class JUnitResult {
      * Add System.err'ed message string.
      *
      * @param testCase test-case instance.
-     * @param messages error log messages.
+     * @param level level string.
+     * @param message error log message.
      */
-    public static void logError(ITestCase testCase, String... messages) {
-        String msg = logFormat("[ERROR]", messages);
+    public static void sysErrLog(ITestCase testCase, String level, String message) {
+        String msg = logFormat(level, message);
         if (testCase != null) {
-            TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
-            caseResult.addSystemErr(msg);
+            addSystemOut(testCase, msg);
+            addSystemErr(testCase, msg);
         }
         if (ps != null)
             ps.println(msg);
