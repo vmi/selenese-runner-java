@@ -178,7 +178,7 @@ public class Runner {
     /**
      * Set ignore screenshot command flag.
      * 
-     * @param ignoreScreenshotCommand
+     * @param ignoreScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
      */
     public void setIgnoreScreenshotCommand(boolean ignoreScreenshotCommand) {
         this.ignoreScreenshotCommand = ignoreScreenshotCommand;
@@ -187,7 +187,7 @@ public class Runner {
     /**
      * Get ignore screenshot command flag.
      * 
-     * @param ignoreScreenshotCommand
+     * @return flag to ignore "captureEntirePageScreenshot"
      */
     public boolean isIgnoreScreenshotCommand() {
         return ignoreScreenshotCommand;
