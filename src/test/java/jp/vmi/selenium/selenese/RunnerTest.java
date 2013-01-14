@@ -5,11 +5,16 @@ import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.FileUtils;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -75,8 +80,17 @@ public class RunnerTest {
      */
     @Test
     public void ignoreScreenshotCommand() throws IOException {
+        // assumption installed firefox
+        // TODO merge duplicated codes.
+        try {
+            new FirefoxBinary();
+        } catch (SeleniumException e) {
+            Assume.assumeNoException(e);
+        } catch (WebDriverException e) {
+            Assume.assumeNoException(e);
+        }
+
         Runner runner = new Runner();
-        //FIXME skip if firefox is not installed
         runner.setDriver(new FirefoxDriver());
         runner.setIgnoreScreenshotCommand(true);
         runner.setScreenshotDir(tmpDir.getRoot().getAbsolutePath());
