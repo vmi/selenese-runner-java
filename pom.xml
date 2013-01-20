@@ -102,7 +102,23 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                   <file>src/shade/resources/logback.xml</file>
                 </transformer>
               </transformers>
-            </configuration>
+              <filters>
+                <filter>
+                  <artifact>org.seleniumhq.selenium:selenium-server</artifact>
+                  <includes>
+                    <include>org/openqa/selenium/internal/seleniumemulation/**/*.js</include>
+                  </includes>
+                </filter>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+             </configuration>
             <executions>
               <execution>
                 <phase>package</phase>
@@ -247,6 +263,49 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <exclusion>
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-server</artifactId>
+      <version>2.29.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jetty-repacked</artifactId>
+          <groupId>org.seleniumhq.selenium</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mx4j-tools</artifactId>
+          <groupId>mx4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-codec</artifactId>
+          <groupId>commons-codec</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bcprov-jdk15on</artifactId>
+          <groupId>org.bouncycastle</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>snakeyaml</artifactId>
+          <groupId>org.yaml</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jcip-annotations</artifactId>
+          <groupId>net.jcip</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>servlet-api-2.5</artifactId>
+          <groupId>org.mortbay.jetty</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bcpkix-jdk15on</artifactId>
+          <groupId>org.bouncycastle</groupId>
         </exclusion>
       </exclusions>
     </dependency>
