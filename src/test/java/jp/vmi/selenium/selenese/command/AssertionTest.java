@@ -79,6 +79,10 @@ public class AssertionTest extends TestBase {
             true);
         Assertion assertionNotExact = new Assertion(5, "assertTitle", new String[] { "exact:title" }, "assert", "getTitle", false,
             true);
+            true);
+
+        Assertion issue56 = new Assertion(6, "assertText", new String[] { "test", "something*" }, "assert", "getText", false,
+            false);
 
         File selenesefile = File.createTempFile("selenese", ".html");
 
@@ -109,5 +113,6 @@ public class AssertionTest extends TestBase {
         assertTrue(assertionNotRegexpi.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
         assertTrue(assertionNotExact.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
 
+        assertTrue(issue56.doCommand(testcase).getMessage(), issue56.doCommand(testcase).isSuccess());
     }
 }
