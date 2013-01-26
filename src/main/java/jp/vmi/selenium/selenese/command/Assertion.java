@@ -152,7 +152,7 @@ public class Assertion extends Command {
 
     private boolean globMatches(String resultString, String expected) {
         // see http://stackoverflow.com/a/3619098
-        Pattern p = Pattern.compile("\\Q" + expected.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"));
+        Pattern p = Pattern.compile("\\Q" + expected.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"), Pattern.DOTALL);
         Matcher m = p.matcher(resultString);
         return m.matches();
     }
