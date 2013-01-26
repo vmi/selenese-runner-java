@@ -71,14 +71,15 @@ public class AssertionTest extends TestBase {
             false);
         Assertion assertionFailExact = new Assertion(5, "assertTitle", new String[] { "exact:titl" }, "assert", "getTitle", false,
             false);
-        Assertion assertionNotDefaultGlob = new Assertion(1, "assertTitle", new String[] { "ti*" }, "assert", "getTitle", false, true);
-        Assertion assertionNotGlob = new Assertion(2, "assertTitle", new String[] { "glob:ti*" }, "assert", "getTitle", false, true);
-        Assertion assertionNotRegexp = new Assertion(3, "assertTitle", new String[] { "regexp:ti.+" }, "assert", "getTitle", false,
+        Assertion assertionNotDefaultGlob = new Assertion(1, "assertNotTitle", new String[] { "ti*" }, "assert", "getTitle", false,
             true);
-        Assertion assertionNotRegexpi = new Assertion(4, "assertTitle", new String[] { "regexpi:TI.+" }, "assert", "getTitle", false,
+        Assertion assertionNotGlob = new Assertion(2, "assertNotTitle", new String[] { "glob:ti*" }, "assert", "getTitle", false, true);
+        Assertion assertionNotRegexp = new Assertion(3, "assertNotTitle", new String[] { "regexp:ti.+" }, "assert", "getTitle", false,
             true);
-        Assertion assertionNotExact = new Assertion(5, "assertTitle", new String[] { "exact:title" }, "assert", "getTitle", false,
+        Assertion assertionNotRegexpi = new Assertion(4, "assertNotTitle", new String[] { "regexpi:TI.+" }, "assert", "getTitle",
+            false,
             true);
+        Assertion assertionNotExact = new Assertion(5, "assertNotTitle", new String[] { "exact:title" }, "assert", "getTitle", false,
             true);
 
         Assertion issue56 = new Assertion(6, "assertText", new String[] { "test", "something*" }, "assert", "getText", false,
@@ -108,10 +109,10 @@ public class AssertionTest extends TestBase {
         assertTrue(assertionFailExact.doCommand(testcase).getMessage(), assertionFailExact.doCommand(testcase).isFailed());
 
         assertTrue(assertionNotDefaultGlob.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
-        assertTrue(assertionNotGlob.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
-        assertTrue(assertionNotRegexp.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
-        assertTrue(assertionNotRegexpi.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
-        assertTrue(assertionNotExact.doCommand(testcase).getMessage(), assertionNotDefaultGlob.doCommand(testcase).isFailed());
+        assertTrue(assertionNotGlob.doCommand(testcase).getMessage(), assertionNotGlob.doCommand(testcase).isFailed());
+        assertTrue(assertionNotRegexp.doCommand(testcase).getMessage(), assertionNotRegexp.doCommand(testcase).isFailed());
+        assertTrue(assertionNotRegexpi.doCommand(testcase).getMessage(), assertionNotRegexpi.doCommand(testcase).isFailed());
+        assertTrue(assertionNotExact.doCommand(testcase).getMessage(), assertionNotExact.doCommand(testcase).isFailed());
 
         assertTrue(issue56.doCommand(testcase).getMessage(), issue56.doCommand(testcase).isSuccess());
     }
