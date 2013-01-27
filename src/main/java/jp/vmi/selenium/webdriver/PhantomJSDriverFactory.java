@@ -8,7 +8,7 @@ public class PhantomJSDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = new DesiredCapabilities();
+        DesiredCapabilities caps = setupProxy(DesiredCapabilities.phantomjs(), driverOptions);
         return new PhantomJSDriver(caps);
     }
 }
