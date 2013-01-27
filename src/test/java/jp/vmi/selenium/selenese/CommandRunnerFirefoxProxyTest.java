@@ -45,6 +45,7 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     @After
     public void checkCount() {
         assumeInstalledFirefox();
+        assumeConnectFirefox();
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
