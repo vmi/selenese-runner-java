@@ -38,6 +38,7 @@ public class CommandRunnerPhantomJSProxyTest extends CommandRunnerPhantomJSTest 
      */
     @After
     public void checkCount() {
+        assumeInstalledPhantomJS();
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
