@@ -1,12 +1,19 @@
 package jp.vmi.selenium.selenese;
 
+import java.util.HashMap;
+
+import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.littleshoot.proxy.DefaultHttpProxyServer;
+import org.littleshoot.proxy.HttpFilter;
 import org.littleshoot.proxy.HttpProxyServer;
+import org.littleshoot.proxy.HttpRequestFilter;
 
 /**
  * Proxy for unit test.
  */
 public class Proxy {
+
+    private int count = 0;
 
     HttpProxyServer server = null;
 
@@ -23,7 +30,12 @@ public class Proxy {
      */
     public void start() {
         port = NetUtils.getUsablePort();
-        server = new DefaultHttpProxyServer(port);
+        server = new DefaultHttpProxyServer(port, new HttpRequestFilter() {
+            @Override
+            public void filter(HttpRequest httpRequest) {
+                count++;
+            }
+        }, new HashMap<String, HttpFilter>());
         server.start();
     }
 
@@ -40,6 +52,14 @@ public class Proxy {
      */
     public int getPort() {
         return port;
+    }
+
+    /**
+     * get request count
+     * @return request count.
+     */
+    public int getCount() {
+        return count;
     }
 
     /**
