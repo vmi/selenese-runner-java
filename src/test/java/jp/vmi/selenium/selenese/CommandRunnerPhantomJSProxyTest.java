@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -38,7 +39,11 @@ public class CommandRunnerPhantomJSProxyTest extends CommandRunnerPhantomJSTest 
      */
     @After
     public void checkCount() {
-        assumeInstalledPhantomJS();
+        try {
+            assumeInstalledPhantomJS();
+        } catch (AssumptionViolatedException e) {
+            return;
+        }
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 

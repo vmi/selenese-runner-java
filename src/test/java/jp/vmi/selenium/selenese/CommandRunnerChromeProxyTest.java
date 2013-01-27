@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
@@ -36,7 +37,11 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
      */
     @After
     public void checkCount() {
-        setupWebDriverManager();
+        try {
+            setupWebDriverManager();
+        } catch (AssumptionViolatedException e) {
+            return;
+        }
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 

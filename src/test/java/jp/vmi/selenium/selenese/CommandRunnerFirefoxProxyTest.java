@@ -5,6 +5,7 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.internal.AssumptionViolatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
@@ -44,8 +45,12 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
      */
     @After
     public void checkCount() {
-        assumeInstalledFirefox();
-        assumeConnectFirefox();
+        try {
+            assumeInstalledFirefox();
+            assumeConnectFirefox();
+        } catch (AssumptionViolatedException e) {
+            return;
+        }
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 

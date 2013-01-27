@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.internal.AssumptionViolatedException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -39,7 +40,11 @@ public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
      */
     @After
     public void checkCount() {
-        //TODO assume installed safari.
+        try {
+            //TODO assume installed safari.
+        } catch (AssumptionViolatedException e) {
+            return;
+        }
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
