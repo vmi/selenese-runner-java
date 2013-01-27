@@ -80,7 +80,7 @@ public class Main {
     public Main() {
         options.addOption(OptionBuilder.withLongOpt("driver")
             .hasArg().withArgName("driver")
-            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | FQCN-of-WebDriverFactory")
+            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | phantomjs | FQCN-of-WebDriverFactory")
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
