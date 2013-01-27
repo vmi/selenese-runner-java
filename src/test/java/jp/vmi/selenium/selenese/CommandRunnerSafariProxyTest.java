@@ -1,11 +1,15 @@
 package jp.vmi.selenium.selenese;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Test for Safari with proxy.
@@ -28,6 +32,14 @@ public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
     @AfterClass
     public static void stopProxy() {
         proxy.kill();
+    }
+
+    /**
+     * test using proxy
+     */
+    @After
+    public void checkCount() {
+        assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
     @Override

@@ -8,6 +8,7 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
@@ -37,7 +38,7 @@ public class CommandRunnerPhantomJSProxyTest extends CommandRunnerPhantomJSTest 
      */
     @After
     public void checkCount() {
-        assertTrue(proxy.getCount() > 0);
+        assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
     @Override
