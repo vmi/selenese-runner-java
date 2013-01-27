@@ -54,6 +54,10 @@ public class Proxy {
         return port;
     }
 
+    /**
+     * get request count
+     * @return request count.
+     */
     public int getCount() {
         return count;
     }

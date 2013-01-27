@@ -10,6 +10,9 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test for PhantomJS with proxy.
+ */
 public class CommandRunnerPhantomJSProxyTest extends CommandRunnerPhantomJSTest {
     static Proxy proxy = new Proxy();
 
@@ -29,6 +32,9 @@ public class CommandRunnerPhantomJSProxyTest extends CommandRunnerPhantomJSTest 
         proxy.kill();
     }
 
+    /**
+     * test using proxy
+     */
     @After
     public void checkCount() {
         assertTrue(proxy.getCount() > 0);

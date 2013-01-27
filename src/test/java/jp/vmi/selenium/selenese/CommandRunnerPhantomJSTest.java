@@ -4,7 +4,7 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 /**
- * Test for HtmlUnit.
+ * Test for PhantomJS.
  */
 public class CommandRunnerPhantomJSTest extends CommandRunnerTest {
 
