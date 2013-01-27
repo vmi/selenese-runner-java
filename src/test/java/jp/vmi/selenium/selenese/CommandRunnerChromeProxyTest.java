@@ -36,6 +36,7 @@ public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
      */
     @After
     public void checkCount() {
+        setupWebDriverManager();
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 

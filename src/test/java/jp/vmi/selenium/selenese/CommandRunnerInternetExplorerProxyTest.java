@@ -38,6 +38,7 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
      */
     @After
     public void checkCount() {
+        checkPlatform();
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 

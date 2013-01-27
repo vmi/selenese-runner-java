@@ -39,6 +39,7 @@ public class CommandRunnerSafariProxyTest extends CommandRunnerSafariTest {
      */
     @After
     public void checkCount() {
+        //TODO assume installed safari.
         assertThat(proxy.getCount(), is(greaterThan(0)));
     }
 
