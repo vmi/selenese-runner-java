@@ -42,6 +42,8 @@ public class WebDriverManager implements Supplier<WebDriver> {
      */
     public static final String SAFARI = "safari";
 
+    public static final String PHANTOMJS = "phantomjs";
+
     /**
      * System property name for user defined {@link WebDriverFactory}.
      */
@@ -130,6 +132,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new SafariDriverFactory();
         else if (HTMLUNIT.equals(factoryName))
             factory = new HtmlUnitDriverFactory();
+        else if (PHANTOMJS.equals(factoryName)) {
+            factory = new PhantomJSDriverFactory();
+        }
         else {
             try {
                 factory = (WebDriverFactory) Class.forName(factoryName).newInstance();
