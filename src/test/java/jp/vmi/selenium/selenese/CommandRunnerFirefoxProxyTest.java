@@ -1,11 +1,9 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.internal.AssumptionViolatedException;
+import org.junit.Rule;
+import org.junit.rules.Verifier;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
@@ -22,37 +20,22 @@ import static org.junit.Assert.*;
  * Test for Firefox with proxy.
  */
 public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
-    static Proxy proxy = new Proxy();
+    /**
+     * proxy resource
+     */
+    @Rule
+    public WebProxyResource proxy = new WebProxyResource();
 
     /**
-     * Start proxy server.
+     * verify used proxy in testmethod.
      */
-    @BeforeClass
-    public static void startProxy() {
-        proxy.start();
-    }
-
-    /**
-     * Stop proxy server.
-     */
-    @AfterClass
-    public static void stopProxy() {
-        proxy.kill();
-    }
-
-    /**
-     * test using proxy
-     */
-    @After
-    public void checkCount() {
-        try {
-            assumeInstalledFirefox();
-            assumeConnectFirefox();
-        } catch (AssumptionViolatedException e) {
-            return;
+    @Rule
+    public Verifier proxyused = new Verifier() {
+        @Override
+        protected void verify() throws Throwable {
+            assertThat(proxy.getProxy().getCount(), is(greaterThan(0)));
         }
-        assertThat(proxy.getCount(), is(greaterThan(0)));
-    }
+    };
 
     @Override
     @Before
@@ -70,6 +53,6 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     protected void setupWebDriverManager() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
-        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getServerNameString()));
+        manager.setDriverOptions(new DriverOptions().set(DriverOption.PROXY, proxy.getProxy().getServerNameString()));
     }
 }

@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.internal.AssumptionViolatedException;
+import org.junit.Rule;
+import org.junit.rules.Verifier;
 
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
@@ -14,40 +12,26 @@ import static org.junit.Assert.*;
  * Test for Chrome with proxy.
  */
 public class CommandRunnerChromeProxyTest extends CommandRunnerChromeTest {
-    static Proxy proxy = new Proxy();
+    /**
+     * proxy resource
+     */
+    @Rule
+    public WebProxyResource proxy = new WebProxyResource();
 
     /**
-     * Start proxy server.
+     * verify used proxy in testmethod.
      */
-    @BeforeClass
-    public static void startProxy() {
-        proxy.start();
-    }
-
-    /**
-     * Stop proxy server.
-     */
-    @AfterClass
-    public static void stopProxy() {
-        proxy.kill();
-    }
-
-    /**
-     * test using proxy
-     */
-    @After
-    public void checkCount() {
-        try {
-            setupWebDriverManager();
-        } catch (AssumptionViolatedException e) {
-            return;
+    @Rule
+    public Verifier proxyused = new Verifier() {
+        @Override
+        protected void verify() throws Throwable {
+            assertThat(proxy.getProxy().getCount(), is(greaterThan(0)));
         }
-        assertThat(proxy.getCount(), is(greaterThan(0)));
-    }
+    };
 
     @Override
     protected void setupWebDriverManager() {
-        driverOptions.set(DriverOption.PROXY, proxy.getServerNameString());
+        driverOptions.set(DriverOption.PROXY, proxy.getProxy().getServerNameString());
         super.setupWebDriverManager();
     }
 }
