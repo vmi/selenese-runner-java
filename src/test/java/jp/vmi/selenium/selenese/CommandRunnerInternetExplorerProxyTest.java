@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.rules.Verifier;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -18,14 +18,14 @@ public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInterne
     /**
      * proxy resource
      */
-    @Rule
-    public WebProxyResource proxy = new WebProxyResource();
+    @ClassRule
+    public static WebProxyResource proxy = new WebProxyResource();
 
     /**
      * verify used proxy in testmethod.
      */
-    @Rule
-    public Verifier proxyused = new Verifier() {
+    @ClassRule
+    public static Verifier proxyused = new Verifier() {
         @Override
         protected void verify() throws Throwable {
             assertThat(proxy.getProxy().getCount(), is(greaterThan(0)));
