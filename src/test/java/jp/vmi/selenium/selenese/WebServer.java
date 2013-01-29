@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 
+import org.openqa.selenium.net.PortProber;
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
 import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
@@ -28,7 +29,7 @@ public class WebServer {
      * start web server.
      */
     public void start() {
-        port = NetUtils.getUsablePort();
+        port = PortProber.findFreePort();
 
         File classpath = new File(this.getClass().getResource("").getPath());
         File documentroot = new File(classpath, "htdocs");

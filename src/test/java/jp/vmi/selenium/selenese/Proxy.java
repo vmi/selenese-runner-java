@@ -7,6 +7,7 @@ import org.littleshoot.proxy.DefaultHttpProxyServer;
 import org.littleshoot.proxy.HttpFilter;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpRequestFilter;
+import org.openqa.selenium.net.PortProber;
 
 /**
  * Proxy for unit test.
@@ -29,7 +30,7 @@ public class Proxy {
      * start proxy.
      */
     public void start() {
-        port = NetUtils.getUsablePort();
+        port = PortProber.findFreePort();
         server = new DefaultHttpProxyServer(port, new HttpRequestFilter() {
             @Override
             public void filter(HttpRequest httpRequest) {
