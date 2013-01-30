@@ -21,6 +21,9 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
     @ClassRule
     public static WebProxyResource proxy = new WebProxyResource();
 
+    /**
+     * check firefox
+     */
     @Rule
     public AssumptionFirefox assumptionFirefox = new AssumptionFirefox();
 
