@@ -1,14 +1,8 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.Assume;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.Verifier;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.firefox.FirefoxBinary;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -40,18 +34,6 @@ public class CommandRunnerFirefoxProxyTest extends CommandRunnerFirefoxTest {
             assertThat(proxy.getProxy().getCount(), is(greaterThan(0)));
         }
     };
-
-    @Override
-    @Before
-    public void assumeInstalledFirefox() {
-        try {
-            new FirefoxBinary();
-        } catch (SeleniumException e) {
-            Assume.assumeNoException(e);
-        } catch (WebDriverException e) {
-            Assume.assumeNoException(e);
-        }
-    }
 
     @Override
     protected void setupWebDriverManager() {
