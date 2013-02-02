@@ -1,13 +1,7 @@
 package jp.vmi.selenium.selenese;
 
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.AssumptionViolatedException;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.firefox.FirefoxBinary;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -23,39 +17,21 @@ public class Issue49Test extends TestBase {
 
     private final Runner runner = new Runner();
 
-    private static boolean noDisplay = false;
-
     /**
-     * Initialize Firefox.
+     * assumption firefox.
      */
-    @Before
-    public void initialize() {
-        if (noDisplay)
-            throw new AssumptionViolatedException("no display specified");
-        try {
-            new FirefoxBinary();
-        } catch (SeleniumException e) {
-            Assume.assumeNoException(e);
-        } catch (WebDriverException e) {
-            Assume.assumeNoException(e);
-        }
-        try {
-            WebDriverManager manager = WebDriverManager.getInstance();
-            manager.setWebDriverFactory(WebDriverManager.FIREFOX);
-            runner.setDriver(manager.get());
-        } catch (WebDriverException e) {
-            if (e.getMessage().contains("no display specified")) {
-                noDisplay = true;
-                Assume.assumeNoException(e);
-            }
-        }
-    }
+    @Rule
+    public AssumptionFirefox nofirefox = new AssumptionFirefox();
 
     /**
      * Test about issue #49.
      */
     @Test
     public void test() {
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
+        runner.setDriver(manager.get());
+
         String html = TestUtils.getScriptFile(getClass());
         Result result = runner.run(html);
         assertThat(result, is(instanceOf(Success.class)));
