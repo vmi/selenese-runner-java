@@ -37,7 +37,7 @@ public abstract class CommandRunnerTest extends TestBase {
      * Temprary directory.
      */
     @Rule
-    public TemporaryFolder tmpDir = new TemporaryFolder();
+    public TemporaryFolder screenshotDir = new TemporaryFolder();
 
     /**
      * Screenshot on fail directory.
@@ -73,16 +73,16 @@ public abstract class CommandRunnerTest extends TestBase {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        tmpDir.create();
+        screenshotDir.create();
         screenshotOnFailDir.create();
-        runner.setScreenshotDir(tmpDir.getRoot().getPath());
-        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
+        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
         assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         if (runner.getDriver() instanceof TakesScreenshot)
-            assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
+            assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 
     /**
@@ -95,14 +95,14 @@ public abstract class CommandRunnerTest extends TestBase {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot().getPath());
-        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
+        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
         if (runner.getDriver() instanceof TakesScreenshot) {
             assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-            assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+            assertEquals(3, screenshotDir.getRoot().listFiles(pngFilter).length);
         }
     }
 
@@ -116,14 +116,14 @@ public abstract class CommandRunnerTest extends TestBase {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(tmpDir.getRoot().getPath());
-        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
+        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
+        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.run(script);
 
         if (runner.getDriver() instanceof TakesScreenshot) {
             assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-            assertEquals(5, tmpDir.getRoot().listFiles(pngFilter).length);
+            assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
         }
     }
 
@@ -154,7 +154,7 @@ public abstract class CommandRunnerTest extends TestBase {
     protected String execute(String scriptName) {
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        String tmpPath = tmpDir.getRoot().getPath();
+        String tmpPath = screenshotDir.getRoot().getPath();
         runner.setScreenshotDir(tmpPath);
         runner.setScreenshotAllDir(tmpPath);
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
@@ -180,7 +180,7 @@ public abstract class CommandRunnerTest extends TestBase {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "NoCommand"));
 
         assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(0, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 
     /**
@@ -193,7 +193,7 @@ public abstract class CommandRunnerTest extends TestBase {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
 
         assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        assertEquals(3, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(3, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 
     /**
@@ -255,7 +255,7 @@ public abstract class CommandRunnerTest extends TestBase {
     @Test
     public void capture() throws IllegalArgumentException {
         final String filename = "test.png";
-        File pngFile = new File(tmpDir.getRoot(), filename);
+        File pngFile = new File(screenshotDir.getRoot(), filename);
         if (pngFile.exists())
             pngFile.delete();
         WebDriver driver = WebDriverManager.getInstance().get();

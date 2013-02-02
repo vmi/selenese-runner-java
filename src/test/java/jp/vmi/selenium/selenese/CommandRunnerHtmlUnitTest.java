@@ -23,20 +23,20 @@ public class CommandRunnerHtmlUnitTest extends CommandRunnerTest {
     @Test
     public void testFlowControl() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
-        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(0, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Override
     @Test
     public void testForEach() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
-        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(0, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 
     @Override
     @Test
     public void verifyNotText() throws IllegalArgumentException {
         execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
-        assertEquals(0, tmpDir.getRoot().listFiles(pngFilter).length);
+        assertEquals(0, screenshotDir.getRoot().listFiles(pngFilter).length);
     }
 }
