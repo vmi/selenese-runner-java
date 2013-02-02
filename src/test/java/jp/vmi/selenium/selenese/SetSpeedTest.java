@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -24,9 +25,10 @@ public class SetSpeedTest {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         runner.setDriver(manager.get());
-        long startTime = System.currentTimeMillis();
+        StopWatch sw = new StopWatch();
+        sw.start();
         runner.run(script);
-        long endTime = System.currentTimeMillis();
-        assertThat((Long) (endTime - startTime), greaterThanOrEqualTo(3 * 1000L));
+        sw.stop();
+        assertThat(sw.getTime(), greaterThanOrEqualTo(3 * 1000L));
     }
 }
