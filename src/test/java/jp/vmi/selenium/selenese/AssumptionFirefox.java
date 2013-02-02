@@ -1,7 +1,6 @@
 package jp.vmi.selenium.selenese;
 
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ExternalResource;
 import org.openqa.selenium.WebDriverException;
@@ -30,7 +29,6 @@ public class AssumptionFirefox extends ExternalResource {
     /**
      * Check Firefox installation.
      */
-    @Before
     public void assumeInstalledFirefox() {
         try {
             new FirefoxBinary();
@@ -44,7 +42,6 @@ public class AssumptionFirefox extends ExternalResource {
     /**
      * Check Firefox connected.
      */
-    @Before
     public void assumeConnectFirefox() {
         if (noDisplay)
             throw new AssumptionViolatedException("no display specified");
