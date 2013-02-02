@@ -73,8 +73,6 @@ public abstract class CommandRunnerTest extends TestBase {
         String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         Runner runner = new Runner();
         runner.setDriver(WebDriverManager.getInstance().get());
-        screenshotDir.create();
-        screenshotOnFailDir.create();
         runner.setScreenshotDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
