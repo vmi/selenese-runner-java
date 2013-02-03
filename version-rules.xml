@@ -12,5 +12,10 @@
         <ignoreVersion type="regex">.*preview.*</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="com.github.detro.ghostdriver">
+      <ignoreVersions>
+        <ignoreVersion type="regex">.*-dev</ignoreVersion>
+      </ignoreVersions>
+    </rule>
   </rules>
 </ruleset>

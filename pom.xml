@@ -118,7 +118,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                   </excludes>
                 </filter>
               </filters>
-             </configuration>
+            </configuration>
             <executions>
               <execution>
                 <phase>package</phase>
@@ -268,13 +268,20 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-server</artifactId>
+      <artifactId>selenium-remote-driver</artifactId>
       <version>2.29.1</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
         </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-server</artifactId>
+      <version>2.29.1</version>
+      <exclusions>
         <exclusion>
           <artifactId>jetty-repacked</artifactId>
           <groupId>org.seleniumhq.selenium</groupId>
@@ -313,6 +320,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <groupId>com.github.detro.ghostdriver</groupId>
       <artifactId>phantomjsdriver</artifactId>
       <version>1.0.1</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>selenium-server</artifactId>
+          <groupId>org.seleniumhq.selenium</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
