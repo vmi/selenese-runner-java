@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 import org.openqa.selenium.net.PortProber;
 import org.webbitserver.WebServers;
@@ -38,14 +39,26 @@ public class WebServer {
             .add(new StaticFileHandler(documentroot))
             .add("/redirect", new RedirectHandler("http://" + getServerNameString() + "/index.html"))
             .add("/basic/redirect", new RedirectHandler("http://" + getServerNameString() + "/basic/index.html"));
-        server.start();
+        try {
+            server.start().get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * stop web server.
      */
     public void stop() {
-        server.stop();
+        try {
+            server.stop().get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
