@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -8,6 +8,8 @@ import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
 import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
 import org.webbitserver.handler.authentication.InMemoryPasswords;
+
+import jp.vmi.selenium.selenese.RedirectHandler;
 
 /**
  * Webserver for unit test.
