@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import org.junit.Test;
 import org.openqa.selenium.net.PortProber;
