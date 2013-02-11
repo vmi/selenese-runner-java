@@ -185,7 +185,11 @@ public class TestCase implements Selenese, ITestCase {
 
     @DoCommand
     protected Result doCommand(Command command) {
-        return command.doCommand(this);
+        try {
+            return command.doCommand(this);
+        } catch (Exception e) {
+            return new Error(e);
+        }
     }
 
     @ExecuteTestCase
@@ -194,12 +198,7 @@ public class TestCase implements Selenese, ITestCase {
         Command command = commandList.first();
         Result totalResult = SUCCESS;
         while (command != null) {
-            Result result = null;
-            try {
-                result = doCommand(command);
-            } catch (Exception e) {
-                result = new Error(e);
-            }
+            Result result = doCommand(command);
             if (command.canUpdate()) {
                 runner.takeScreenshotAll(baseName, command.getIndex(), this);
                 if (!result.isSuccess())
