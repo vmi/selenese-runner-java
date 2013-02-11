@@ -191,24 +191,24 @@ public class TestCase implements Selenese, ITestCase {
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent) {
-        Command current = commandList.first();
+        Command command = commandList.first();
         Result totalResult = SUCCESS;
-        while (current != null) {
+        while (command != null) {
             Result result = null;
             try {
-                result = doCommand(current);
+                result = doCommand(command);
             } catch (Exception e) {
                 result = new Error(e);
             }
-            if (current.canUpdate()) {
-                runner.takeScreenshotAll(baseName, current.getIndex(), this);
+            if (command.canUpdate()) {
+                runner.takeScreenshotAll(baseName, command.getIndex(), this);
                 if (!result.isSuccess())
-                    runner.takeScreenshotOnFail(baseName, current.getIndex(), this);
+                    runner.takeScreenshotOnFail(baseName, command.getIndex(), this);
             }
             totalResult = totalResult.update(result);
             if (totalResult.isAborted())
                 break;
-            current = current.next(this);
+            command = command.next(this);
             if (speed > 0) {
                 try {
                     Thread.sleep(speed);
