@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -8,6 +8,8 @@ import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
 import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
 import org.webbitserver.handler.authentication.InMemoryPasswords;
+
+import jp.vmi.selenium.selenese.RedirectHandler;
 
 /**
  * Webserver for unit test.
@@ -53,7 +55,21 @@ public class WebServer {
      */
     public void stop() {
         try {
-            server.stop().get();
+            int count = 0;
+            while (true) {
+                try {
+                    server.stop().get();
+                    return;
+                } catch (AssertionError e) {
+                    // WebServer.stop() throw AssertionError frequently, and retry stopping.
+                    if (count > 3) {
+                        throw e;
+                    }
+                    count++;
+                    Thread.sleep(1000);
+                    continue;
+                }
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (ExecutionException e) {

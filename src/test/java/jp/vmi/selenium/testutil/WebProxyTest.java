@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import org.junit.Test;
 import org.openqa.selenium.net.PortProber;
@@ -7,9 +7,9 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Test for {@link Proxy}.
+ * Test for {@link WebProxy}.
  */
-public class ProxyTest {
+public class WebProxyTest {
 
     /**
      * Test of start() and kill() continuously.
@@ -17,7 +17,7 @@ public class ProxyTest {
     @Test
     public void continuouslyInvoke() {
         for (int i = 0; i < 20; i++) {
-            Proxy proxy = new Proxy();
+            WebProxy proxy = new WebProxy();
             proxy.start();
             proxy.kill();
         }
@@ -28,7 +28,7 @@ public class ProxyTest {
      */
     @Test(timeout = 30000)
     public void startAndKill() {
-        Proxy proxy = new Proxy();
+        WebProxy proxy = new WebProxy();
         proxy.start();
         proxy.kill();
         assertThat(PortProber.pollPort(proxy.getPort()), is(true));

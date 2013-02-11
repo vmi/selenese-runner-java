@@ -3,6 +3,8 @@ package jp.vmi.selenium.selenese;
 import org.junit.ClassRule;
 import org.junit.rules.Verifier;
 
+import jp.vmi.selenium.testutil.WebProxyResource;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
