@@ -2,12 +2,12 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Assume;
 import org.junit.internal.AssumptionViolatedException;
-import org.junit.rules.ExternalResource;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.testutil.PreCondition;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
@@ -16,10 +16,10 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  * 
  * @author hayato
  */
-public class AssumptionFirefox extends ExternalResource {
+public class AssumptionFirefox extends PreCondition {
 
     @Override
-    protected void before() throws Throwable {
+    protected void verify() {
         assumeInstalledFirefox();
         assumeConnectFirefox();
     }
