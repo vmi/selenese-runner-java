@@ -55,7 +55,21 @@ public class WebServer {
      */
     public void stop() {
         try {
-            server.stop().get();
+            int count = 0;
+            while (true) {
+                try {
+                    server.stop().get();
+                    return;
+                } catch (AssertionError e) {
+                    // WebServer.stop() throw AssertionError frequently, and retry stopping.
+                    if (count > 3) {
+                        throw e;
+                    }
+                    count++;
+                    Thread.sleep(1000);
+                    continue;
+                }
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (ExecutionException e) {
