@@ -20,9 +20,15 @@ public class AssumptionFirefox extends PreCondition {
 
     @Override
     protected void verify() {
+        if (enableFirefox)
+            return;
+
         assumeInstalledFirefox();
         assumeConnectFirefox();
+        enableFirefox = true;
     }
+
+    private static boolean enableFirefox = false;
 
     private static boolean noDisplay = false;
 
