@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import java.util.HashMap;
 
@@ -12,7 +12,7 @@ import org.openqa.selenium.net.PortProber;
 /**
  * Proxy for unit test.
  */
-public class Proxy {
+public class WebProxy {
 
     private int count = 0;
 
@@ -23,7 +23,7 @@ public class Proxy {
     /**
      * Constructor.
      */
-    public Proxy() {
+    public WebProxy() {
     }
 
     /**

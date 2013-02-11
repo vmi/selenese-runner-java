@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutil;
 
 import org.junit.rules.ExternalResource;
 
@@ -8,19 +8,19 @@ import org.junit.rules.ExternalResource;
  * @author hayato
  */
 public class WebProxyResource extends ExternalResource {
-    private Proxy proxy;
+    private WebProxy proxy;
 
     /**
      * get proxy instance
      * @return proxy server
      */
-    public Proxy getProxy() {
+    public WebProxy getProxy() {
         return proxy;
     }
 
     @Override
     protected void before() throws Throwable {
-        proxy = new Proxy();
+        proxy = new WebProxy();
         proxy.start();
     }
 
