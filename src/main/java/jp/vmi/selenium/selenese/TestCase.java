@@ -68,6 +68,15 @@ public class TestCase implements Selenese, ITestCase {
         return false;
     }
 
+    /**
+     * Get base name for screenshot file name.
+     *
+     * @return base name
+     */
+    public String getBaseName() {
+        return baseName;
+    }
+
     @Override
     public String getName() {
         return name;
@@ -199,11 +208,6 @@ public class TestCase implements Selenese, ITestCase {
         Result totalResult = SUCCESS;
         while (command != null) {
             Result result = doCommand(command);
-            if (command.canUpdate()) {
-                runner.takeScreenshotAll(baseName, command.getIndex(), this);
-                if (!result.isSuccess())
-                    runner.takeScreenshotOnFail(baseName, command.getIndex(), this);
-            }
             totalResult = totalResult.update(result);
             if (totalResult.isAborted())
                 break;

@@ -28,7 +28,8 @@ public class Binder {
                     bindInterceptor(
                         Matchers.any(),
                         Matchers.annotatedWith(DoCommand.class),
-                        new CommandLogInterceptor()
+                        new CommandLogInterceptor(), /* 1st */
+                        new ScreenshotInterceptor() /* 2nd */
                     );
                     bindInterceptor(
                         Matchers.any(),

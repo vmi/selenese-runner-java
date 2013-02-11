@@ -115,15 +115,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestCase testCase = null;
-        try {
-            testCase = (TestCase) invocation.getThis();
-        } catch (ClassCastException e) {
-            String msg = "receiver \"" + invocation.getThis() + "\" is not TestCase: " + e;
-            log.error(msg);
-            sysErrLog(null, ERROR, msg);
-            throw new RuntimeException(e);
-        }
+        TestCase testCase = (TestCase) invocation.getThis();
         Command command = (Command) invocation.getArguments()[0];
         String cmdStr = command.toString();
         log.info(cmdStr);
