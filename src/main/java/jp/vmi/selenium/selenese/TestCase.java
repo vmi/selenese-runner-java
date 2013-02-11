@@ -30,7 +30,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 public class TestCase implements Selenese, ITestCase {
 
     private File file = null;
-    private String basename = null;
+    private String baseName = null;
     private String name = null;
     private Runner runner = null;
     private String baseURL = null;
@@ -55,7 +55,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     public TestCase initialize(File file, String name, Runner runner, String baseURL) {
         this.file = file;
-        this.basename = (file != null) ? FilenameUtils.getBaseName(file.getName()) : "nofile";
+        this.baseName = (file != null) ? FilenameUtils.getBaseName(file.getName()) : "nofile";
         this.name = name;
         this.runner = runner;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
@@ -201,9 +201,9 @@ public class TestCase implements Selenese, ITestCase {
                 result = new Error(e);
             }
             if (current.canUpdate()) {
-                runner.takeScreenshotAll(basename, current.getIndex(), this);
+                runner.takeScreenshotAll(baseName, current.getIndex(), this);
                 if (!result.isSuccess())
-                    runner.takeScreenshotOnFail(basename, current.getIndex(), this);
+                    runner.takeScreenshotOnFail(baseName, current.getIndex(), this);
             }
             totalResult = totalResult.update(result);
             if (totalResult.isAborted())
