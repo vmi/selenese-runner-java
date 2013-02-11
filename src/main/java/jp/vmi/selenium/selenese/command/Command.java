@@ -15,9 +15,12 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public abstract class Command {
 
+    protected static final int[] NO_LOCATOR_INDEX = new int[0];
+
     private final int index;
     protected final String name;
     protected final String[] args;
+    protected final String[] locators;
     protected Command next = null;
 
     /**
@@ -26,11 +29,17 @@ public abstract class Command {
      * @param index index number of Command (1 origin).
      * @param name selenese command name.
      * @param args command arguments.
+     * @param locatorIndexes locator indexes.
      */
-    Command(int index, String name, String[] args, int argCnt) {
+    Command(int index, String name, String[] args, int argCnt, int[] locatorIndexes) {
         this.index = index;
         this.name = name;
         this.args = (args.length == argCnt) ? args : Arrays.copyOf(args, argCnt);
+        this.locators = new String[locatorIndexes.length];
+        int i = 0;
+        for (int ndx : locatorIndexes)
+            this.locators[i++] = args[ndx];
+
     }
 
     /**
@@ -60,6 +69,15 @@ public abstract class Command {
      */
     public int getIndex() {
         return index;
+    }
+
+    /**
+     * Get locators of command.
+     *
+     * @return locators (array length is 0 if the command has no locator).
+     */
+    public String[] getLocators() {
+        return locators;
     }
 
     /**

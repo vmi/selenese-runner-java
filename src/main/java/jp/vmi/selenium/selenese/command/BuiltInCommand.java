@@ -12,6 +12,7 @@ import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
+import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -32,7 +33,7 @@ public class BuiltInCommand extends Command {
     private final boolean canUpdate;
 
     BuiltInCommand(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, CustomCommandProcessor.getArgumentCount(realName));
+        super(index, name, args, getArgumentCount(realName), getLocatorIndexes(realName));
         this.realName = realName;
         this.andWait = andWait;
         this.canUpdate = !ArrayUtils.contains(CANNOT_UPDATES, realName);

@@ -1,29 +1,30 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.HighlightStyle;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Command "addCollection".
+ * Command "highlight".
  */
-public class AddCollection extends Command {
+public class Highlight extends Command {
 
-    private static final int COLLECTION_NAME = 0;
+    private static final int LOCATOR = 0;
 
-    AddCollection(int index, String name, String[] args, String realName, boolean andWait) {
+    Highlight(int index, String name, String[] args, String realName, boolean andWait) {
         super(index, name, args, 1, NO_LOCATOR_INDEX);
     }
 
     @Override
     public boolean canUpdate() {
-        return false;
+        return true;
     }
 
     @Override
     public Result doCommand(TestCase testCase) {
-        testCase.addCollection(args[COLLECTION_NAME]);
+        testCase.getProc().highlight(args[LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
         return SUCCESS;
     }
 }

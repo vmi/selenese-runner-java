@@ -17,7 +17,7 @@ public class CaptureEntirePageScreenshot extends Command {
     private static final int FILENAME = 0;
 
     CaptureEntirePageScreenshot(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+        super(index, name, args, 1, NO_LOCATOR_INDEX);
     }
 
     @Override

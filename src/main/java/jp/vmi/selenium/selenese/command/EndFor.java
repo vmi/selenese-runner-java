@@ -10,7 +10,7 @@ public class EndFor extends Command implements EndLoop {
     private StoreFor startLoop;
 
     EndFor(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 0);
+        super(index, name, args, 0, NO_LOCATOR_INDEX);
     }
 
     @Override

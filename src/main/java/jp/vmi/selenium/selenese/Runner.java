@@ -33,6 +33,7 @@ public class Runner {
     private String screenshotOnFailDir = null;
     private String baseURL = "";
     private boolean ignoreScreenshotCommand = false;
+    private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
 
     private final int countForDefault = 0;
@@ -177,7 +178,7 @@ public class Runner {
 
     /**
      * Set ignore screenshot command flag.
-     * 
+     *
      * @param ignoreScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
      */
     public void setIgnoreScreenshotCommand(boolean ignoreScreenshotCommand) {
@@ -186,11 +187,29 @@ public class Runner {
 
     /**
      * Get ignore screenshot command flag.
-     * 
+     *
      * @return flag to ignore "captureEntirePageScreenshot"
      */
     public boolean isIgnoreScreenshotCommand() {
         return ignoreScreenshotCommand;
+    }
+
+    /**
+     * Get locator highlighting.
+     *
+     * @return true if use locator highlighting.
+     */
+    public boolean isHighlight() {
+        return isHighlight;
+    }
+
+    /**
+     * Set locator highlighting.
+     *
+     * @param isHighlight true if use locator highlighting.
+     */
+    public void setHighlight(boolean isHighlight) {
+        this.isHighlight = isHighlight;
     }
 
     /**

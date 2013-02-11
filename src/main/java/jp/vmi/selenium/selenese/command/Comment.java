@@ -17,7 +17,7 @@ public class Comment extends Command {
     private static final int MESSAGE = 0;
 
     Comment(int index, String name, String[] args, String realName, boolean andWait) {
-        super(-1, name, args, 1);
+        super(-1, name, args, 1, NO_LOCATOR_INDEX);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class While extends Command implements StartLoop {
     private EndWhile endLoop;
 
     While(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+        super(index, name, args, 1, NO_LOCATOR_INDEX);
     }
 
     @Override

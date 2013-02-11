@@ -13,7 +13,7 @@ public class StoreFor extends Command implements StartLoop {
     private EndFor endLoop;
 
     StoreFor(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 2);
+        super(index, name, args, 2, NO_LOCATOR_INDEX);
     }
 
     @Override

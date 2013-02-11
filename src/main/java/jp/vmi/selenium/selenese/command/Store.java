@@ -7,6 +7,8 @@ import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
+import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
+
 /**
  * Command "store".
  */
@@ -17,7 +19,7 @@ public class Store extends Command {
     private final String varName;
 
     Store(int index, String name, String[] args, String getter) {
-        super(index, name, args, CustomCommandProcessor.getArgumentCount(getter) + 1);
+        super(index, name, args, getArgumentCount(getter) + 1, getLocatorIndexes(getter));
         args = this.args;
         this.getter = getter;
         int len = args.length;
