@@ -21,16 +21,18 @@ Usage
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
-     -d,--driver <driver>             firefox (default) | chrome | ie | safari | htmlunit | FQCN-of-WebDriverFactory
+     -d,--driver <driver>             firefox (default) | chrome | ie | safari | htmlunit | phantomjs | FQCN-of-WebDriverFactory
      -p,--profile <name>              profile name (Firefox only)
      -P,--profile-dir <dir>           profile directory (Firefox only)
         --proxy <proxy>               proxy host and port (HOST:PORT) (excepting IE)
         --proxy-user <user>           proxy username (HtmlUnit only *)
         --proxy-password <password>   proxy password (HtmlUnit only *)
         --no-proxy <no-proxy>         no-proxy hosts
+     -H,--highlight                   highlight locator always.
      -s,--screenshot-dir <dir>        override captureEntirePageScreenshot directory.
      -S,--screenshot-all <dir>        take screenshot at all commands to specified directory.
         --screenshot-on-fail <dir>    take screenshot on fail commands to specified directory.
+        --ignore-screenshot-command   ignore captureEntirePageScreenshot command.
      -b,--baseurl <baseURL>           override base URL set in selenese.
         --chromedriver <path>         path to 'chromedriver' binary. (implies '--driver chrome')
         --iedriver <path>             path to 'IEDriverServer' binary. (implies '--driver ie')
