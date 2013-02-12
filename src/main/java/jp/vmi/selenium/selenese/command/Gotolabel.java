@@ -12,7 +12,7 @@ public class Gotolabel extends Command {
     private static final int LABEL = 0;
 
     Gotolabel(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1, NO_LOCATOR_INDEX);
+        super(index, name, args, 1);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class CommandList extends Command {
      * Constructor.
      */
     public CommandList() {
-        super(0, "COMMAND_LIST", EMPTY_ARGS, 0, NO_LOCATOR_INDEX);
+        super(0, "COMMAND_LIST", EMPTY_ARGS, 0);
     }
 
     /**

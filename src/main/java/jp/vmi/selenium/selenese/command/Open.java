@@ -13,7 +13,7 @@ public class Open extends Command {
     private static final int URL = 0;
 
     Open(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1, NO_LOCATOR_INDEX);
+        super(index, name, args, 1);
     }
 
     @Override
