@@ -106,6 +106,9 @@ public class Main {
             .hasArg().withArgName("no-proxy")
             .withDescription("no-proxy hosts")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("highlight")
+            .withDescription("highlight locator always.")
+            .create('H'));
         options.addOption(OptionBuilder.withLongOpt("screenshot-dir")
             .hasArg().withArgName("dir")
             .withDescription("override captureEntirePageScreenshot directory.")
@@ -251,6 +254,7 @@ public class Main {
             manager.setDriverOptions(driverOptions);
             Runner runner = new Runner();
             runner.setDriver(manager.get());
+            runner.setHighlight(cli.hasOption("highlight"));
             runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));

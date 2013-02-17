@@ -46,13 +46,22 @@ while (<>) {
     if (/^\s*\)\s*$/) {
       # end arguments.
       $args =~ s/\s+//gs;
-      my $arg_cnt = scalar(split(/,/, $args));
+      my @arg_list = split(/,/, $args);
+      print STDERR "  Arguments: [", join("] [", @arg_list), "]";
       if ($mode eq 'accessors') {
 	# last argument is variable name.
-	--$arg_cnt;
+	pop(@arg_list);
+	print STDERR " - (remove last argument)";
       }
-      print STDERR "$cmd: $arg_cnt\n";
-      print qq'        argCntMap.put("$cmd", $arg_cnt);\n';
+      print STDERR "\n";
+      my $arg_cnt = scalar(@arg_list);
+      my @loc_ndx = ();
+      for (my $i = 0; $i <= $#arg_list; $i++) {
+	push(@loc_ndx, $i) if ($arg_list[$i] =~ /locator/i);
+      }
+      my $loc_ndx_str = @loc_ndx == 0 ? "" : ", ".join(", ", @loc_ndx);
+      print STDERR "  $cmd: $arg_cnt$loc_ndx_str\n";
+      print qq'        m.put("$cmd", $arg_cnt$loc_ndx_str);\n';
       $cmd = undef;
       $arg_mode = 0;
     } else {

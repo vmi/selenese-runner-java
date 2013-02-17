@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>highlight test</title>
+<script>
+var clickCount = 0;
+function clickButton() {
+  clickCount++;
+  document.getElementById("button").textContent = "click count=" + clickCount;
+  return null;
+}
+</script>
+</head>
+<body>
+<h1>highlight test</h1>
+<hr>
+<form id="form" action="highlight2.html" method="GET">
+<ul>
+<li>
+<input type="checkbox" id="checkbox">Do check and uncheck.
+</li>
+<li><span id="span"><span id="child1">This</span> is <span id="child2">text in span tag</span>.</li>
+<li><input type="text" id="text" value="This is value of text field."></li>
+<li><input type="radio" id="radioOn" checked>Checked.</li>
+<li><input type="radio" id="radioOff">Not checked.</li>
+<li><button type="button" id="button" onclick="clickButton()">click count=0</button></li>
+<li>
+<select id="select1">
+<option id="opt11">opt1-1</option>
+<option id="opt12">opt1-2</option>
+<option id="opt13">opt1-3</option>
+</select>
+</li>
+<li>
+<select id="select2" multiple>
+<option id="opt21">opt2-1</option>
+<option id="opt22">opt2-2</option>
+<option id="opt23">opt2-3</option>
+</select>
+</li>
+</ul>
+</form>
+</body>
+</html>

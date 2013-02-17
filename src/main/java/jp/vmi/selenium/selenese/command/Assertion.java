@@ -16,6 +16,7 @@ import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 
+import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -53,7 +54,7 @@ public class Assertion extends Command {
     private final boolean isInverse;
 
     Assertion(int index, String name, String[] args, String assertion, String getter, boolean isBoolean, boolean isInverse) {
-        super(index, name, args, CustomCommandProcessor.getArgumentCount(getter) + (isBoolean ? 0 : 1));
+        super(index, name, args, getArgumentCount(getter) + (isBoolean ? 0 : 1), getLocatorIndexes(getter));
         args = this.args;
         type = Type.of(assertion);
         this.getter = getter;

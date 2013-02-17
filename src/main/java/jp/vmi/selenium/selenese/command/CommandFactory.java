@@ -34,6 +34,7 @@ public class CommandFactory {
     static {
         // commands overriding the command of WebDriverCommandProcessor.
         addConstructor(Open.class);
+        addConstructor(Highlight.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);
