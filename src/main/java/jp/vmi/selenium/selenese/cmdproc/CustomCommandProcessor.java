@@ -162,7 +162,13 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     public void highlight(String locator, HighlightStyle highlightStyle) {
         WebDriver driver = getWrappedDriver();
-        WebElement element = finder.findElement(driver, locator);
+        WebElement element;
+        try {
+            element = finder.findElement(driver, locator);
+        } catch (SeleniumException e) {
+            // element specified by locator is not found.
+            return;
+        }
         Map<String, String> prevStyles = highlightStyle.doHighlight(driver, element);
         HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, element);
         styleBackups.add(backup);
@@ -172,6 +178,8 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * Unhighlight backed up styles.
      */
     public void unhighlight() {
+        if (styleBackups.isEmpty())
+            return;
         WebDriver driver = getWrappedDriver();
         for (HighlightStyleBackup backup : styleBackups)
             backup.restore(driver);

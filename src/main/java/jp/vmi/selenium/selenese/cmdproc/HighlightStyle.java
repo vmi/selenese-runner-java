@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -17,7 +18,7 @@ public class HighlightStyle {
      */
     public static HighlightStyle[] ELEMENT_STYLES = new HighlightStyle[] {
         new HighlightStyle("backgroundColor: yellow", "outline: #8f8 solid 1px"),
-        new HighlightStyle("backgroudnColor: blue", "outline: #808 solid 1px")
+        new HighlightStyle("backgroundColor: orange", "outline: #484 solid 1px")
     };
 
     private static final String SCRIPT = "return (function(element, hlStyle) {\n"
@@ -63,7 +64,12 @@ public class HighlightStyle {
      */
     @SuppressWarnings("unchecked")
     public Map<String, String> doHighlight(WebDriver driver, WebElement element) {
-        Object result = ((JavascriptExecutor) driver).executeScript(SCRIPT, element, styles);
-        return result instanceof Map ? (Map<String, String>) result : null;
+        try {
+            Object result = ((JavascriptExecutor) driver).executeScript(SCRIPT, element, styles);
+            return result instanceof Map ? (Map<String, String>) result : null;
+        } catch (StaleElementReferenceException e) {
+            // target element disappeared.
+            return null;
+        }
     }
 }

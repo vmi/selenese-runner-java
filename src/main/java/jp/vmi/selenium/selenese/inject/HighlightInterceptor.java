@@ -20,6 +20,7 @@ public class HighlightInterceptor implements MethodInterceptor {
         TestCase testCase = (TestCase) invocation.getThis();
         Runner runner = testCase.getRunner();
         CustomCommandProcessor proc = testCase.getProc();
+        proc.unhighlight();
         Command command = (Command) invocation.getArguments()[0];
         if (runner.isHighlight()) {
             int i = 0;
@@ -27,7 +28,6 @@ public class HighlightInterceptor implements MethodInterceptor {
                 proc.highlight(locator, HighlightStyle.ELEMENT_STYLES[i++]);
         }
         Result result = (Result) invocation.proceed();
-        proc.unhighlight();
         return result;
     }
 
