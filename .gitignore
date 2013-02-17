@@ -8,4 +8,4 @@ tmp/
 TEST-*.xml
 pom.xml.releaseBackup
 release.properties
-
+/htdocs
