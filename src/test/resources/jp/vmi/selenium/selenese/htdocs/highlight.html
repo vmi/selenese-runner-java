@@ -7,7 +7,7 @@
 var clickCount = 0;
 function clickButton() {
   clickCount++;
-  document.getElementById("button").textContent = "click count=" + clickCount;
+  document.getElementById("button").value = "click count=" + clickCount;
   return null;
 }
 </script>
@@ -24,7 +24,7 @@ function clickButton() {
 <li><input type="text" id="text" value="This is value of text field."></li>
 <li><input type="radio" id="radioOn" checked>Checked.</li>
 <li><input type="radio" id="radioOff">Not checked.</li>
-<li><button type="button" id="button" onclick="clickButton()">click count=0</button></li>
+<li><input type="button" id="button" onclick="clickButton()" value="click count=0"></li>
 <li>
 <select id="select1">
 <option id="opt11">opt1-1</option>
