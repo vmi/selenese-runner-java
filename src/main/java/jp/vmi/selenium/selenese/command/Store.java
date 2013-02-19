@@ -25,6 +25,13 @@ public class Store extends Command {
         int len = args.length;
         getterArgs = Arrays.copyOf(args, len - 1);
         varName = args[len - 1];
+        // "getAttribute" has a special locator argument.
+        // Please check Assertion.java if want to modify following code.
+        if ("getAttribute".equals(getter)) {
+            int at = locators[0].lastIndexOf('@');
+            if (at >= 0)
+                locators[0] = locators[0].substring(0, at);
+        }
     }
 
     @Override

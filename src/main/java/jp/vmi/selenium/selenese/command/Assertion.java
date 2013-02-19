@@ -67,6 +67,13 @@ public class Assertion extends Command {
             expected = args[len - 1];
         }
         this.isInverse = isInverse;
+        // "getAttribute" has a special locator argument.
+        // Please check Store.java if want to modify following code.
+        if ("getAttribute".equals(getter)) {
+            int at = locators[0].lastIndexOf('@');
+            if (at >= 0)
+                locators[0] = locators[0].substring(0, at);
+        }
     }
 
     @Override
