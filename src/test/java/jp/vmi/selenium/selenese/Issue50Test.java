@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -11,11 +12,15 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Test for issue #49.
+ * Test for issue #50.
  */
+@SuppressWarnings("javadoc")
 public class Issue50Test extends TestBase {
 
     private final Runner runner = new Runner();
+
+    @Rule
+    public TemporaryFolder tmpDir = new TemporaryFolder();
 
     /**
      * assumption firefox.
@@ -31,6 +36,7 @@ public class Issue50Test extends TestBase {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         runner.setDriver(manager.get());
+        runner.setScreenshotAllDir(tmpDir.getRoot().getPath());
 
         String html = TestUtils.getScriptFile(getClass());
         Result result = runner.run(html);
