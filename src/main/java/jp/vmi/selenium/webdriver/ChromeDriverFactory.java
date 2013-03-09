@@ -2,10 +2,13 @@ package jp.vmi.selenium.webdriver;
 
 import java.io.File;
 
+import org.apache.commons.exec.OS;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -21,18 +24,12 @@ public class ChromeDriverFactory extends WebDriverFactory {
         ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
         if (driverOptions.has(CHROMEDRIVER)) {
             builder = builder.usingDriverExecutable(new File(driverOptions.get(CHROMEDRIVER)));
-            //        } else if (StringUtils.isBlank(System.getProperty(CHROME_DRIVER_EXE_PROPERTY))) {
-            //            String[] classPaths = System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator));
-            //            for (String classPath : classPaths) {
-            //                File dir = new File(classPath);
-            //                if (dir.isFile())
-            //                    dir = dir.getAbsoluteFile().getParentFile();
-            //                File file = new File(dir, "");
-            //                if (file.isFile() && file.canExecute()) {
-            //                    path = file.getPath();
-            //                    break;
-            //                }
-            //            }
+        } else {
+            if (OS.isFamilyWindows()) {
+                builder = builder.usingDriverExecutable(PathUtils.searchExecutableFile("chromedriver.exe").get(0));
+            } else {
+                builder = builder.usingDriverExecutable(PathUtils.searchExecutableFile("chromedriver").get(0));
+            }
         }
         builder = builder.usingAnyFreePort().withEnvironment(getEnvironmentVariables());
         ChromeDriverService service = builder.build();
