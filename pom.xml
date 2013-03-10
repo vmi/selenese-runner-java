@@ -215,9 +215,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <version>2.12.4</version>
         <configuration>
           <skipTests>${skipTests}</skipTests>
-          <parallel>classes</parallel>
-          <forkMode>perthread</forkMode>
-          <threadCount>1</threadCount>
         </configuration>
       </plugin>
       <plugin>
