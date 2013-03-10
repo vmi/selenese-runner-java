@@ -5,21 +5,15 @@ import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -33,6 +27,12 @@ public class RunnerTest {
      */
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
+
+    /**
+     * check firefox
+     */
+    @Rule
+    public AssumptionFirefox assumptionFirefox = new AssumptionFirefox();
 
     /**
      * Test of --proxy option.
@@ -81,26 +81,6 @@ public class RunnerTest {
      */
     @Test
     public void ignoreScreenshotCommand() throws IOException {
-        // assumption installed firefox
-        // TODO merge duplicated codes.
-        try {
-            new FirefoxBinary();
-        } catch (SeleniumException e) {
-            Assume.assumeNoException(e);
-        } catch (WebDriverException e) {
-            Assume.assumeNoException(e);
-        }
-        WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.FIREFOX);
-        manager.setDriverOptions(new DriverOptions());
-        try {
-            WebDriverManager.getInstance().get();
-        } catch (WebDriverException e) {
-            if (e.getMessage().contains("no display specified")) {
-                Assume.assumeNoException(e);
-            }
-        }
-
         Runner runner = new Runner();
         runner.setDriver(new FirefoxDriver());
         runner.setIgnoreScreenshotCommand(true);
