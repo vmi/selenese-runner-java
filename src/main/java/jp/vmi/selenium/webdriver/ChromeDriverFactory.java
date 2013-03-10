@@ -1,6 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.WebDriver;
@@ -25,11 +26,18 @@ public class ChromeDriverFactory extends WebDriverFactory {
         if (driverOptions.has(CHROMEDRIVER)) {
             builder = builder.usingDriverExecutable(new File(driverOptions.get(CHROMEDRIVER)));
         } else {
+            List<File> drivers;
             if (OS.isFamilyWindows()) {
-                builder = builder.usingDriverExecutable(PathUtils.searchExecutableFile("chromedriver.exe").get(0));
+                drivers = PathUtils.searchExecutableFile("chromedriver.exe");
             } else {
-                builder = builder.usingDriverExecutable(PathUtils.searchExecutableFile("chromedriver").get(0));
+                drivers = PathUtils.searchExecutableFile("chromedriver");
             }
+
+            if (drivers.isEmpty()) {
+                throw new IllegalStateException("No chromedriver");
+            }
+
+            builder = builder.usingDriverExecutable(drivers.get(0));
         }
         builder = builder.usingAnyFreePort().withEnvironment(getEnvironmentVariables());
         ChromeDriverService service = builder.build();
