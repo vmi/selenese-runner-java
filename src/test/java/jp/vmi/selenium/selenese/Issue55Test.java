@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -29,6 +30,7 @@ public class Issue55Test extends TestBase {
     public void test() {
         String html = TestUtils.getScriptFile(getClass());
         runner.setBaseURL(ws.getUrl());
+        runner.setDriver(new FirefoxDriver());
         Result result = runner.run(html);
         assertThat(result, is(instanceOf(Success.class)));
     }
