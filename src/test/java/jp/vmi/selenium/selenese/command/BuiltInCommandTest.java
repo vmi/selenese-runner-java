@@ -28,7 +28,7 @@ public class BuiltInCommandTest extends TestBase {
     @Test
     public void userFriendlyErrorMessage() throws IOException {
         Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, "click", false);
-        Command open = new Open(1, "open", new String[] { "http://localhost/" }, "open", false);
+        Command open = new Open(1, "open", new String[] { "/index.html" }, "open", false);
 
         File selenesefile = File.createTempFile("selenese", ".html");
 
