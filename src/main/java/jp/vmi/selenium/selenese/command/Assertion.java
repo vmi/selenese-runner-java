@@ -82,8 +82,9 @@ public class Assertion extends Command {
         boolean found = true;
         String message = null;
         int timeout = testCase.getRunner().getTimeout();
+        long breakAfter = System.currentTimeMillis() + timeout;
         int retryCount = timeout / RETRY_INTERVAL;
-        for (int i = 0; i < retryCount; i++) {
+        for (int i = 0; i < retryCount && System.currentTimeMillis() < breakAfter; i++) {
             found = true;
             if (i != 0) {
                 // don't wait before first test and after last test.

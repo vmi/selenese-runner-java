@@ -34,9 +34,9 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param baseUrl base URL.
      * @param driver WebDriver instance.
      */
-    public CustomCommandProcessor(String baseUrl, WebDriver driver) {
+    public CustomCommandProcessor(String baseUrl, WebDriver driver, Map<String, Object> varsMap) {
         super(baseUrl, driver);
-        this.varsMap = new HashMap<String, Object>();
+        this.varsMap = varsMap;
         this.eval = new Eval(baseUrl, varsMap);
         addMethod("getEval", new GetEval(eval));
         addMethod("openWindow", new OpenWindow(eval));
