@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
+import java.util.HashMap;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -24,7 +26,7 @@ public class CustomCommandProcessorTest extends TestBase {
     public void test() {
         HtmlUnitDriver driver = new HtmlUnitDriver(true);
         String baseUrl = ws.getUrl();
-        CustomCommandProcessor proc = new CustomCommandProcessor(baseUrl, driver);
+        CustomCommandProcessor proc = new CustomCommandProcessor(baseUrl, driver, new HashMap<String, Object>());
         proc.doCommand("open", new String[] { "/" });
         String script = "storedVars['logoutpresent'] ? storedVars['link_logout'] : storedVars['body']";
         proc.setVar("result-1", "link_logout");
