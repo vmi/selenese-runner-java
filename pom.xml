@@ -54,7 +54,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <skipTests>true</skipTests>
     <selenium.version>2.31.0</selenium.version>
-    <slf4j.version>1.7.2</slf4j.version>
+    <slf4j.version>1.7.4</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
   </properties>
 
@@ -318,7 +318,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.github.detro.ghostdriver</groupId>
       <artifactId>phantomjsdriver</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.3</version>
       <exclusions>
         <exclusion>
           <artifactId>selenium-server</artifactId>
@@ -359,7 +359,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.9</version>
+      <version>1.0.10</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
