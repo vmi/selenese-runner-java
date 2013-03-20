@@ -42,6 +42,14 @@ public class WebDriverManager implements Supplier<WebDriver> {
      */
     public static final String SAFARI = "safari";
 
+    /**
+     *  RemoteWebDriver
+     */
+    public static final String REMOTE = "remote";
+
+    /**
+     * PhantomJS
+     */
     public static final String PHANTOMJS = "phantomjs";
 
     /**
@@ -132,6 +140,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new SafariDriverFactory();
         else if (HTMLUNIT.equals(factoryName))
             factory = new HtmlUnitDriverFactory();
+        else if (REMOTE.equals(factoryName)) {
+            factory = new RemoteWebDriverFactory();
+        }
         else if (PHANTOMJS.equals(factoryName)) {
             factory = new PhantomJSDriverFactory();
         }

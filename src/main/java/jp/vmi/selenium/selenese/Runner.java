@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +37,7 @@ public class Runner {
     private boolean ignoreScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
+    private Map<String, Object> varsMap = new HashMap<String, Object>();
 
     private final int countForDefault = 0;
 
@@ -243,6 +246,24 @@ public class Runner {
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    /**
+     * Get timeout for waiting. (ms)
+     *
+     * @return the evaluated variables (state) for the current context.
+     */
+    public Map<String, Object> getVarsMap() {
+        return this.varsMap;
+    }
+
+    /**
+     * Set variables map used for this session
+     *
+     * @param varsMap the evaluated variables (state) for the current context.
+     */
+    public void setVarsMap(Map<String, Object> varsMap) {
+        this.varsMap = varsMap;
     }
 
     /**

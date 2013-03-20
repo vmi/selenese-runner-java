@@ -80,7 +80,7 @@ public class Main {
     public Main() {
         options.addOption(OptionBuilder.withLongOpt("driver")
             .hasArg().withArgName("driver")
-            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | phantomjs | FQCN-of-WebDriverFactory")
+            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | FQCN-of-WebDriverFactory")
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
@@ -105,6 +105,22 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("no-proxy")
             .hasArg().withArgName("no-proxy")
             .withDescription("no-proxy hosts")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("remote-url")
+            .hasArg().withArgName("url")
+            .withDescription("Remote test runner URL (Remote only)")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("remote-platform")
+            .hasArg().withArgName("platform")
+            .withDescription("Desired remote platform (Remote only)")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("remote-browser")
+            .hasArg().withArgName("browser")
+            .withDescription("Desired remote browser (Remote only)")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("remote-version")
+            .hasArg().withArgName("browser-version")
+            .withDescription("Desired remote browser version (Remote only)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("highlight")
             .withDescription("highlight locator always.")

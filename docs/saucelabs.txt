@@ -1,0 +1,8 @@
+To run a test or suite on Saucelabs, use the "remote" driver like so:
+
+java -jar target/selenese-runner.jar \
+  --driver remote \
+  --remote-browser firefox \
+  --remote-platform XP \
+  --remote-url 'http://[sauceuser]:[saucekey]@ondemand.saucelabs.com/wd/hub/' \
+  sometest.html

@@ -29,6 +29,14 @@ public class DriverOptions {
         CHROMEDRIVER,
         /** --iedriver */
         IEDRIVER,
+        /** --remote-platform */
+        REMOTE_PLATFORM,
+        /** --remote-browser */
+        REMOTE_BROWSER,
+        /** --remote-version */
+        REMOTE_VERSION,
+        /** --remote-url */
+        REMOTE_URL,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = new IdentityHashMap<DriverOptions.DriverOption, String>();

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class CommandList {
 
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            CustomCommandProcessor proc = new CustomCommandProcessor("", new DummyDriver());
+            CustomCommandProcessor proc = new CustomCommandProcessor("", new DummyDriver(), new HashMap<String, Object>());
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
             @SuppressWarnings("unchecked")
