@@ -33,6 +33,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      *
      * @param baseUrl base URL.
      * @param driver WebDriver instance.
+     * @param varsMap variable map.
      */
     public CustomCommandProcessor(String baseUrl, WebDriver driver, Map<String, Object> varsMap) {
         super(baseUrl, driver);

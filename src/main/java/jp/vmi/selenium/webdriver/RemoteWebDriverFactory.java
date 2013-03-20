@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
+/**
+ * Factory of {@link RemoteWebDriver}.
+ */
 public class RemoteWebDriverFactory extends WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(RemoteWebDriverFactory.class);
