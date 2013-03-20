@@ -83,18 +83,8 @@ public class Assertion extends Command {
         String message = null;
         int timeout = testCase.getRunner().getTimeout();
         long breakAfter = System.currentTimeMillis() + timeout;
-        int retryCount = timeout / RETRY_INTERVAL;
-        for (int i = 0; i < retryCount && System.currentTimeMillis() < breakAfter; i++) {
+        while (true) {
             found = true;
-            if (i != 0) {
-                // don't wait before first test and after last test.
-                try {
-                    Thread.sleep(RETRY_INTERVAL);
-                } catch (InterruptedException e) {
-                    log.warn(e.getMessage());
-                    break;
-                }
-            }
             if (this.expected != null) {
                 try {
                     Object result = proc.execute(getter, getterArgs);
@@ -125,8 +115,14 @@ public class Assertion extends Command {
                     found = false;
                 }
             }
-            if (type != Type.WAIT_FOR)
+            if (type != Type.WAIT_FOR || System.currentTimeMillis() > breakAfter)
                 break;
+            try {
+                Thread.sleep(RETRY_INTERVAL);
+            } catch (InterruptedException e) {
+                log.warn(e.getMessage());
+                break;
+            }
         }
         switch (type) {
         case ASSERT:
