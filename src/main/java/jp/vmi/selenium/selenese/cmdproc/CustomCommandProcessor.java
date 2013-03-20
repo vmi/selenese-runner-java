@@ -61,6 +61,16 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         this.finder = finder;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param baseUrl base URL.
+     * @param driver WebDriver instance.
+     */
+    public CustomCommandProcessor(String baseUrl, WebDriver driver) {
+        this(baseUrl, driver, new HashMap<String, Object>());
+    }
+
     @Override
     public String doCommand(String commandName, String[] args) {
         Object val = execute(commandName, args);
