@@ -1,10 +1,7 @@
 package jp.vmi.selenium.testutil;
 
-import java.util.HashMap;
-
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.littleshoot.proxy.DefaultHttpProxyServer;
-import org.littleshoot.proxy.HttpFilter;
 import org.littleshoot.proxy.HttpProxyServer;
 import org.littleshoot.proxy.HttpRequestFilter;
 import org.openqa.selenium.net.PortProber;
@@ -36,7 +33,7 @@ public class WebProxy {
             public void filter(HttpRequest httpRequest) {
                 count++;
             }
-        }, new HashMap<String, HttpFilter>());
+        });
         server.start();
     }
 
