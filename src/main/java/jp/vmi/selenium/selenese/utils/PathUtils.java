@@ -9,8 +9,17 @@ import java.util.regex.Pattern;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
+/**
+ * Path utilities.
+ */
 public class PathUtils {
 
+    /**
+     * Search executable files.
+     *
+     * @param filename filename of executable.
+     * @return list of File objects of executable.
+     */
     public static List<File> searchExecutableFile(final String filename) {
         List<File> result = new LinkedList<File>();
         for (String path : System.getenv("PATH").split(Pattern.quote(File.pathSeparator))) {

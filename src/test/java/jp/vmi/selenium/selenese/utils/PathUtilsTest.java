@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.utils;
 
 import org.junit.Test;
 
+@SuppressWarnings("javadoc")
 public class PathUtilsTest {
 
     @Test
