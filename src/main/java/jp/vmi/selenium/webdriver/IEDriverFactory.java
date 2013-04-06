@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
+import static org.openqa.selenium.Platform.*;
 
 /**
  * Factory of {@link InternetExplorerDriver}.
@@ -32,14 +33,8 @@ public class IEDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         Platform platform = Platform.getCurrent();
         log.info("Platform: {}", platform);
-        switch (platform) {
-        case WINDOWS:
-        case XP:
-        case VISTA:
-            break;
-        default:
+        if (!platform.is(WINDOWS))
             throw new UnsupportedOperationException("Unsupported platform: " + platform);
-        }
 
         // DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
         // return new InternetExplorerDriver(capabilities);
