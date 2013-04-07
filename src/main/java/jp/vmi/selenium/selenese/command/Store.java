@@ -17,6 +17,7 @@ public class Store extends Command {
     private final String getter;
     private final String[] getterArgs;
     private final String varName;
+    private final String[] cssLocator;
 
     Store(int index, String name, String[] args, String getter) {
         super(index, name, args, getArgumentCount(getter) + 1, getLocatorIndexes(getter));
@@ -32,11 +33,20 @@ public class Store extends Command {
             if (at >= 0)
                 locators[0] = locators[0].substring(0, at);
         }
+        if (getter.equalsIgnoreCase("getCssCount"))
+            cssLocator = new String[] { "css=" + args[0] };
+        else
+            cssLocator = null;
     }
 
     @Override
     public boolean canUpdate() {
         return false;
+    }
+
+    @Override
+    public String[] getLocators() {
+        return cssLocator != null ? cssLocator : super.getLocators();
     }
 
     @Override

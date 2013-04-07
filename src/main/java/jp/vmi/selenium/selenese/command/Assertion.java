@@ -52,6 +52,7 @@ public class Assertion extends Command {
     private final String[] getterArgs;
     private final String expected;
     private final boolean isInverse;
+    private final String[] cssLocator;
 
     Assertion(int index, String name, String[] args, String assertion, String getter, boolean isBoolean, boolean isInverse) {
         super(index, name, args, getArgumentCount(getter) + (isBoolean ? 0 : 1), getLocatorIndexes(getter));
@@ -74,6 +75,15 @@ public class Assertion extends Command {
             if (at >= 0)
                 locators[0] = locators[0].substring(0, at);
         }
+        if (getter.equalsIgnoreCase("getCssCount"))
+            cssLocator = new String[] { "css=" + args[0] };
+        else
+            cssLocator = null;
+    }
+
+    @Override
+    public String[] getLocators() {
+        return cssLocator != null ? cssLocator : super.getLocators();
     }
 
     @Override
