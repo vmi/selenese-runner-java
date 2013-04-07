@@ -26,7 +26,8 @@ public class AssertionTest extends TestBase {
      */
     @Test
     public void userFriendlyAssertionMessage() throws IOException {
-        Assertion assertion = new Assertion(1, "assertTitle", new String[] { "title", "title" }, "assert", "getTitle", false, false);
+        Command cmd01 = new Open(1, "open", new String[] { "/assertion.html" }, "open", false);
+        Command cmd02 = new Assertion(2, "assertTitle", new String[] { "title", "title" }, "assert", "getTitle", false, false);
 
         File selenesefile = File.createTempFile("selenese", ".html");
 
@@ -37,8 +38,10 @@ public class AssertionTest extends TestBase {
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile, "test", runner, ws.getUrl());
 
-        Result result = assertion.doCommand(testcase);
+        Result result;
+        result = cmd01.doCommand(testcase);
+        result = cmd02.doCommand(testcase);
 
-        assertThat(result.getMessage(), is("Failure: Assertion failed (Result: [] / Expected: [title])"));
+        assertThat(result.getMessage(), is("Failure: Assertion failed (Result: [assertion test] / Expected: [title])"));
     }
 }
