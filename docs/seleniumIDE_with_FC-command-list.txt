@@ -27,6 +27,7 @@ assertCookie
 assertCookieByName
 assertCookieNotPresent
 assertCookiePresent
+assertCssCount
 assertCursorPosition
 assertEditable
 assertElementHeight
@@ -57,6 +58,7 @@ assertNotChecked
 assertNotConfirmation
 assertNotCookie
 assertNotCookieByName
+assertNotCssCount
 assertNotCursorPosition
 assertNotEditable
 assertNotElementHeight
@@ -209,6 +211,7 @@ storeConfirmationPresent
 storeCookie
 storeCookieByName
 storeCookiePresent
+storeCssCount
 storeCursorPosition
 storeEditable
 storeElementHeight
@@ -217,8 +220,10 @@ storeElementPositionLeft
 storeElementPositionTop
 storeElementPresent
 storeElementWidth
+storeErrorOnNext
 storeEval
 storeExpression
+storeFailureOnNext
 storeFor
 storeHtmlSource
 storeLocation
@@ -226,6 +231,7 @@ storeMouseSpeed
 storeOrdered
 storePrompt
 storePromptPresent
+storeSelected
 storeSelectedId
 storeSelectedIds
 storeSelectedIndex
@@ -271,6 +277,7 @@ verifyCookie
 verifyCookieByName
 verifyCookieNotPresent
 verifyCookiePresent
+verifyCssCount
 verifyCursorPosition
 verifyEditable
 verifyElementHeight
@@ -301,6 +308,7 @@ verifyNotChecked
 verifyNotConfirmation
 verifyNotCookie
 verifyNotCookieByName
+verifyNotCssCount
 verifyNotCursorPosition
 verifyNotEditable
 verifyNotElementHeight
@@ -384,6 +392,7 @@ waitForCookie
 waitForCookieByName
 waitForCookieNotPresent
 waitForCookiePresent
+waitForCssCount
 waitForCursorPosition
 waitForEditable
 waitForElementHeight
@@ -415,6 +424,7 @@ waitForNotChecked
 waitForNotConfirmation
 waitForNotCookie
 waitForNotCookieByName
+waitForNotCssCount
 waitForNotCursorPosition
 waitForNotEditable
 waitForNotElementHeight
