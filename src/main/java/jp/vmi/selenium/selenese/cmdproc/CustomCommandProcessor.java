@@ -241,6 +241,9 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         m.put("altKeyDown", 0);
         m.put("altKeyUp", 0);
         m.put("answerOnNextPrompt", 1);
+        m.put("assertErrorOnNext", 1);
+        m.put("assertFailureOnNext", 1);
+        m.put("assertSelected", 2, 0, 1);
         m.put("assignId", 2, 0);
         m.put("break", 0);
         m.put("captureEntirePageScreenshot", 2);
@@ -279,6 +282,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         m.put("getConfirmation", 0);
         m.put("getCookie", 0);
         m.put("getCookieByName", 1);
+        m.put("getCssCount", 1);
         m.put("getCursorPosition", 1, 0);
         m.put("getElementHeight", 1, 0);
         m.put("getElementIndex", 1, 0);
@@ -291,6 +295,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         m.put("getLocation", 0);
         m.put("getMouseSpeed", 0);
         m.put("getPrompt", 0);
+        m.put("getSelectOptions", 1, 0);
         m.put("getSelectedId", 1, 0);
         m.put("getSelectedIds", 1, 0);
         m.put("getSelectedIndex", 1, 0);
@@ -299,7 +304,6 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         m.put("getSelectedLabels", 1, 0);
         m.put("getSelectedValue", 1, 0);
         m.put("getSelectedValues", 1, 0);
-        m.put("getSelectOptions", 1, 0);
         m.put("getSpeed", 0);
         m.put("getTable", 1);
         m.put("getText", 1, 0);
