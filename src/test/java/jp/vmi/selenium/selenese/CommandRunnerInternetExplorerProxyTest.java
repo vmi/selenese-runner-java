@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.Verifier;
 
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 /**
  * Test for Internet Explorer with proxy.
  */
+@Ignore("InternetExplorerDriver does not support proxy configuration.")
 public class CommandRunnerInternetExplorerProxyTest extends CommandRunnerInternetExplorerTest {
 
     /**
