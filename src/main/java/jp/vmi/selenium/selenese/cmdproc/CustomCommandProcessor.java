@@ -43,6 +43,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         addMethod("openWindow", new OpenWindow(eval));
         addMethod("runScript", new RunScript(eval));
         addMethod("waitForCondition", new WaitForCondition(eval));
+        addMethod("sendKeys", getMethod("typeKeys"));
         // hack. FIXME
         JavascriptLibrary library = null;
         ElementFinder finder = null;
