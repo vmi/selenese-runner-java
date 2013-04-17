@@ -38,7 +38,7 @@ public class AssertionStringMatchTest extends TestBase {
 
     /**
      * Construct testcase by parameters.
-     * 
+     *
      * @param commandName command name
      * @param argument selenese command argument
      * @param assertionType assertion type (assert, verify)
@@ -95,7 +95,7 @@ public class AssertionStringMatchTest extends TestBase {
      */
     @Test
     public void stringMatchPattern() throws IOException {
-        Command open = new BuiltInCommand(1, "open", new String[] { "file://"
+        Command open = new Open(1, "open", new String[] { "file://"
             + TestUtils.getScriptFile(AssertionStringMatchTest.class, "") },
             "open", true);
         Assertion assertionDefaultGlob = new Assertion(1, commandName, argument, assertionType, getter, isBoolean,
