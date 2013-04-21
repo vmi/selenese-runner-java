@@ -82,7 +82,7 @@ public final class JUnitResult {
     public static void endTestSuite(ITestSuite testSuite) {
         TestSuiteResult suiteResult = (TestSuiteResult) map.remove(testSuite);
         suiteResult.endTestSuite();
-        if (resultDir == null)
+        if (resultDir == null || suiteResult.getTests() == 0)
             return;
         try {
             Marshaller marshaller = context.createMarshaller();
