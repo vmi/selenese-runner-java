@@ -158,14 +158,14 @@ public abstract class CommandRunnerTest extends TestBase {
         runner.setScreenshotAllDir(tmpPath);
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
 
-        JUnitResult.setResultDir(tmpPath);
+        JUnitResult.setXmlResultDir(tmpPath);
         try {
             runner.run(scriptName);
             return FileUtils.readFileToString(new File(tmpPath, "TEST-default-00.xml"), "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            JUnitResult.setResultDir(null);
+            JUnitResult.setXmlResultDir(null);
         }
     }
 

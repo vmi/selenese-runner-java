@@ -29,7 +29,7 @@ public class JUnitResultTest {
      */
     @Before
     public void init() throws IOException {
-        setResultDir(tmp.getRoot().getPath());
+        setXmlResultDir(tmp.getRoot().getPath());
     }
 
     /**
@@ -37,7 +37,7 @@ public class JUnitResultTest {
      */
     @After
     public void finish() {
-        setResultDir(null);
+        setXmlResultDir(null);
     }
 
     /**

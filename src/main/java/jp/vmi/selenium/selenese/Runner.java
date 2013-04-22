@@ -284,7 +284,7 @@ public class Runner {
      * @param dir directory path
      */
     public void setResultDir(String dir) {
-        JUnitResult.setResultDir(dir);
+        JUnitResult.setXmlResultDir(dir);
     }
 
     /**

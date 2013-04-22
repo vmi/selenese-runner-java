@@ -35,7 +35,7 @@ public final class JUnitResult {
 
     private static final Map<Object, TestResult> map = new ConcurrentHashMap<Object, TestResult>();
 
-    private static String resultDir = null;
+    private static String xmlResultDir = null;
 
     private static PrintStream ps = null;
 
@@ -48,12 +48,12 @@ public final class JUnitResult {
     }
 
     /**
-     * Set directory for storing results.
+     * Set directory for storing xml results.
      *
      * @param dir directory.
      */
-    public static void setResultDir(String dir) {
-        resultDir = dir;
+    public static void setXmlResultDir(String dir) {
+        xmlResultDir = dir;
     }
 
     /**
@@ -82,14 +82,14 @@ public final class JUnitResult {
     public static void endTestSuite(ITestSuite testSuite) {
         TestSuiteResult suiteResult = (TestSuiteResult) map.remove(testSuite);
         suiteResult.endTestSuite();
-        if (resultDir == null || suiteResult.getTests() == 0)
+        if (xmlResultDir == null || suiteResult.getTests() == 0)
             return;
         try {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            File file = new File(resultDir, "TEST-" + suiteResult.getName() + ".xml");
+            File file = new File(xmlResultDir, "TEST-" + suiteResult.getName() + ".xml");
             marshaller.marshal(suiteResult, file);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
