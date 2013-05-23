@@ -1,0 +1,9 @@
+language: java
+jdk:
+  - oraclejdk6
+  - oraclejdk7
+  - openjdk6
+  - openjdk7
+install: /bin/true
+script: mvn clean install -U -DskipTests=false -Ppackage -Ptest
+
