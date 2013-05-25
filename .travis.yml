@@ -4,6 +4,8 @@ jdk:
   - oraclejdk7
   - openjdk6
   - openjdk7
+before_script:
+  - "phantomjs --version"
 install: /bin/true
 script: mvn clean install -U -DskipTests=false -Ppackage -Ptest
 
