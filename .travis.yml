@@ -8,7 +8,7 @@ before_install:
   - echo "installing PhantomJS 1.9.0"
   - wget http://phantomjs.googlecode.com/files/phantomjs-1.9.0-linux-x86_64.tar.bz2
   - tar xvf phantomjs-1.9.0-linux-x86_64.tar.bz2
-  - sudo cp phantomjs-1.9.0-linux-x86_64/bin/phantomjs bin/phantomjs
+  - sudo mv phantomjs-1.9.0-linux-x86_64/bin/phantomjs bin/phantomjs
   - bin/phantomjs --version
   - export PATH="bin:$PATH"
   - ls -la bin/phantomjs
