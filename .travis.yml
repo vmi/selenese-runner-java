@@ -5,9 +5,6 @@ jdk:
   - openjdk6
   - openjdk7
 before_install:
-  - echo "start xvfb"
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   - echo "installing PhantomJS 1.9.0"
   - wget http://phantomjs.googlecode.com/files/phantomjs-1.9.0-linux-x86_64.tar.bz2
   - tar xvf phantomjs-1.9.0-linux-x86_64.tar.bz2
