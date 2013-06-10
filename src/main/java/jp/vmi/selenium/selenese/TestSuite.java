@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,34 +21,30 @@ public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
-    private File file;
+    private String filename;
     private String parentDir = null;
     private String name;
     private Runner runner;
-    private final List<File> files = new ArrayList<File>();
+    private final List<String> filenames = new ArrayList<String>();
 
     /**
      * Initialize after constructed.
      *
-     * @param file Selenese script file.
+     * @param filename Selenese script file.
      * @param name test-case name.
      * @param runner Runner instance.
      * @return this.
      */
-    public TestSuite initialize(File file, String name, Runner runner) {
-        try {
-            this.file = file;
-            if (file != null)
-                this.parentDir = file.getCanonicalFile().getParent();
-            if (name != null)
-                this.name = name;
-            else if (file != null)
-                this.name = FilenameUtils.getBaseName(file.getName());
-            this.runner = runner;
-            return this;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public TestSuite initialize(String filename, String name, Runner runner) {
+        this.filename = filename;
+        if (filename != null)
+            this.parentDir = FilenameUtils.getFullPathNoEndSeparator(filename);
+        if (name != null)
+            this.name = name;
+        else if (filename != null)
+            this.name = FilenameUtils.getBaseName(filename);
+        this.runner = runner;
+        return this;
     }
 
     @Override
@@ -74,18 +68,17 @@ public class TestSuite implements Selenese, ITestSuite {
      * @param filename test-case filename.
      */
     public void addTestCase(String filename) {
-        File tcFile = new File(filename);
-        if (!tcFile.isAbsolute())
-            tcFile = new File(parentDir, filename);
-        files.add(tcFile);
+        if (FilenameUtils.getPrefixLength(filename) == 0)
+            filename = FilenameUtils.concat(parentDir, filename);
+        filenames.add(filename);
     }
 
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent) {
         Result totalResult = SUCCESS;
-        for (File file : files) {
-            Selenese selenese = Parser.parse(file, runner);
+        for (String filename : filenames) {
+            Selenese selenese = Parser.parse(filename, runner);
             Result result;
             try {
                 result = selenese.execute(this);
@@ -103,8 +96,8 @@ public class TestSuite implements Selenese, ITestSuite {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("TestSuite[").append(name).append("]");
-        if (file != null)
-            s.append(" (").append(file).append(")");
+        if (filename != null)
+            s.append(" (").append(filename).append(")");
         return s.toString();
     }
 }

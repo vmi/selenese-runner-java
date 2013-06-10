@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -21,7 +20,7 @@ public class TestCaseParserTest {
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver(true));
         String scriptFile = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
-        TestCase testCase = (TestCase) Parser.parse(new File(scriptFile), runner);
+        TestCase testCase = (TestCase) Parser.parse(scriptFile, runner);
         testCase.execute(null);
     }
 }

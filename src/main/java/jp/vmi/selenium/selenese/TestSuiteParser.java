@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
-
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FilenameUtils;
@@ -17,14 +15,14 @@ import jp.vmi.selenium.selenese.inject.Binder;
  */
 public class TestSuiteParser extends Parser {
 
-    protected TestSuiteParser(File file, Document document) {
-        super(file, document);
+    protected TestSuiteParser(String filename, Document document) {
+        super(filename, document);
     }
 
     @Override
     protected Selenese parse(Runner runner) {
         try {
-            TestSuite testSuite = Binder.newTestSuite(file, null, runner);
+            TestSuite testSuite = Binder.newTestSuite(filename, null, runner);
             NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
             for (Node node : each(nodeList)) {
                 String tcFilename = node.getNodeValue();
@@ -32,7 +30,7 @@ public class TestSuiteParser extends Parser {
             }
             return testSuite;
         } catch (TransformerException e) {
-            return Binder.newErrorTestSuite(FilenameUtils.getBaseName(file.getName()), new InvalidSeleneseException(e));
+            return Binder.newErrorTestSuite(FilenameUtils.getBaseName(filename), new InvalidSeleneseException(e));
         }
     }
 }

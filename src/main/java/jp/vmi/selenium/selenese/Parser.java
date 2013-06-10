@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -63,12 +62,12 @@ public abstract class Parser {
     /**
      * Parse file.
      *
-     * @param file selenese script file. (test-case or test-suite)
+     * @param filename selenese script file. (test-case or test-suite)
      * @param runner Runner object.
      * @return TestCase or TestSuite.
      */
-    public static Selenese parse(File file, Runner runner) {
-        String name = FilenameUtils.getBaseName(file.getName());
+    public static Selenese parse(String filename, Runner runner) {
+        String name = FilenameUtils.getBaseName(filename);
         InputStream is = null;
         Parser p;
         try {
@@ -76,16 +75,16 @@ public abstract class Parser {
             dp.setEntityResolver(null);
             dp.setFeature("http://xml.org/sax/features/namespaces", false);
             dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
-            is = new FileInputStream(file);
+            is = new FileInputStream(filename);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
             try {
                 String baseURL = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
-                p = new TestCaseParser(file, document, baseURL);
+                p = new TestCaseParser(filename, document, baseURL);
             } catch (NullPointerException e) {
                 try {
                     XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
-                    p = new TestSuiteParser(file, document);
+                    p = new TestSuiteParser(filename, document);
                 } catch (NullPointerException e2) {
                     return Binder.newErrorTestCase(name, new InvalidSeleneseException(
                         "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
@@ -101,11 +100,11 @@ public abstract class Parser {
         return p.parse(runner);
     }
 
-    protected final File file;
+    protected final String filename;
     protected final Document docucment;
 
-    protected Parser(File file, Document document) {
-        this.file = file;
+    protected Parser(String filename, Document document) {
+        this.filename = filename;
         this.docucment = document;
     }
 

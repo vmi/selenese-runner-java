@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -28,8 +27,8 @@ public class TestCaseParser extends Parser {
 
     private final String baseURL;
 
-    protected TestCaseParser(File file, Document document, String baseURL) throws InvalidSeleneseException {
-        super(file, document);
+    protected TestCaseParser(String filename, Document document, String baseURL) throws InvalidSeleneseException {
+        super(filename, document);
         this.baseURL = baseURL;
     }
 
@@ -39,7 +38,7 @@ public class TestCaseParser extends Parser {
         try {
             String baseURL = runner.getEffectiveBaseURL(this.baseURL);
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-            TestCase testCase = Binder.newTestCase(file, name, runner, baseURL);
+            TestCase testCase = Binder.newTestCase(filename, name, runner, baseURL);
             CommandFactory commandFactory = new CommandFactory(testCase.getProc());
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
@@ -81,7 +80,7 @@ public class TestCaseParser extends Parser {
             return testCase;
         } catch (TransformerException e) {
             if (name == null)
-                name = FilenameUtils.getBaseName(file.getName());
+                name = FilenameUtils.getBaseName(filename);
             return Binder.newErrorTestCase(name, new InvalidSeleneseException(e));
         }
     }

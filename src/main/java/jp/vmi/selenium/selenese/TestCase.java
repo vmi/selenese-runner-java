@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -29,8 +28,8 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public class TestCase implements Selenese, ITestCase {
 
-    private File file = null;
-    private String baseName = null;
+    private String filename = null;
+    private String baseName = "nofile";
     private String name = null;
     private Runner runner = null;
     private String baseURL = null;
@@ -47,15 +46,16 @@ public class TestCase implements Selenese, ITestCase {
     /**
      * Initialize after constructed.
      *
-     * @param file selenese script file.
+     * @param filename selenese script filename. (This base name is used for generating screenshot file)
      * @param name test-case name.
      * @param runner Runner instance.
      * @param baseURL effective base URL.
      * @return this.
      */
-    public TestCase initialize(File file, String name, Runner runner, String baseURL) {
-        this.file = file;
-        this.baseName = (file != null) ? FilenameUtils.getBaseName(file.getName()) : "nofile";
+    public TestCase initialize(String filename, String name, Runner runner, String baseURL) {
+        this.filename = filename;
+        if (filename != null)
+            this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
         this.runner = runner;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
@@ -226,8 +226,8 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("TestCase[").append(name).append("]");
-        if (file != null)
-            s.append(" (").append(file).append(")");
+        if (filename != null)
+            s.append(" (").append(filename).append(")");
         return s.toString();
     }
 }

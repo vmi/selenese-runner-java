@@ -108,7 +108,7 @@ public class AssertionStringMatchTest extends TestBase {
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile, "test", runner, ws.getUrl());
+        testcase.initialize(selenesefile.getPath(), "test", runner, ws.getUrl());
 
         assertTrue(open.doCommand(testcase).isSuccess());
 

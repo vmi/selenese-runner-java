@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese.inject;
 
-import java.io.File;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -50,28 +48,28 @@ public class Binder {
     /**
      * Constructs TestCase applied aspect.
      *
-     * @param file selenese script file.
+     * @param filename selenese script file.
      * @param name test-case name.
      * @param runner Runner instance.
      * @param baseURL effective base URL.
      * @return TestCase instance.
      */
-    public static TestCase newTestCase(File file, String name, Runner runner, String baseURL) {
+    public static TestCase newTestCase(String filename, String name, Runner runner, String baseURL) {
         TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(file, name, runner, baseURL);
+        return testCase.initialize(filename, name, runner, baseURL);
     }
 
     /**
      * Constructs TestSuite applied aspect.
      *
-     * @param file Selenese script file.
+     * @param filename Selenese script file.
      * @param name test-case name.
      * @param runner Runner instance.
      * @return TestSuite instance.
      */
-    public static TestSuite newTestSuite(File file, String name, Runner runner) {
+    public static TestSuite newTestSuite(String filename, String name, Runner runner) {
         TestSuite testSuite = injector.getInstance(TestSuite.class);
-        return testSuite.initialize(file, name, runner);
+        return testSuite.initialize(filename, name, runner);
     }
 
     /**
