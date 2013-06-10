@@ -21,11 +21,41 @@ public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
+    private static interface Child {
+        Selenese getSelenese(Runner runner);
+    }
+
+    private static class ChildFilename implements Child {
+        private final String filename;
+
+        public ChildFilename(String filename) {
+            this.filename = filename;
+        }
+
+        @Override
+        public Selenese getSelenese(Runner runner) {
+            return Parser.parse(filename, runner);
+        }
+    }
+
+    private static class ChildTestCase implements Child {
+        public final TestCase testCase;
+
+        public ChildTestCase(TestCase testCase) {
+            this.testCase = testCase;
+        }
+
+        @Override
+        public Selenese getSelenese(Runner runner) {
+            return testCase;
+        }
+    }
+
     private String filename;
     private String parentDir = null;
     private String name;
     private Runner runner;
-    private final List<String> filenames = new ArrayList<String>();
+    private final List<Child> children = new ArrayList<Child>();
 
     /**
      * Initialize after constructed.
@@ -70,15 +100,24 @@ public class TestSuite implements Selenese, ITestSuite {
     public void addTestCase(String filename) {
         if (FilenameUtils.getPrefixLength(filename) == 0)
             filename = FilenameUtils.concat(parentDir, filename);
-        filenames.add(filename);
+        children.add(new ChildFilename(filename));
+    }
+
+    /**
+     * Add test-case instance.
+     *
+     * @param testCase test-case instance.
+     */
+    public void addTestCase(TestCase testCase) {
+        children.add(new ChildTestCase(testCase));
     }
 
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent) {
         Result totalResult = SUCCESS;
-        for (String filename : filenames) {
-            Selenese selenese = Parser.parse(filename, runner);
+        for (Child child : children) {
+            Selenese selenese = child.getSelenese(runner);
             Result result;
             try {
                 result = selenese.execute(this);

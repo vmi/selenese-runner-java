@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.xpath.XPathAPI;
 import org.cyberneko.html.parsers.DOMParser;
@@ -60,22 +59,20 @@ public abstract class Parser {
     }
 
     /**
-     * Parse file.
+     * Parse input stream.
      *
-     * @param filename selenese script file. (test-case or test-suite)
+     * @param filename selenese script file. (not open. used for label or generating output filename)
+     * @param is input stream of script file. (test-case or test-suite)
      * @param runner Runner object.
      * @return TestCase or TestSuite.
      */
-    public static Selenese parse(String filename, Runner runner) {
-        String name = FilenameUtils.getBaseName(filename);
-        InputStream is = null;
+    public static Selenese parse(String filename, InputStream is, Runner runner) {
         Parser p;
         try {
             DOMParser dp = new DOMParser();
             dp.setEntityResolver(null);
             dp.setFeature("http://xml.org/sax/features/namespaces", false);
             dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
-            is = new FileInputStream(filename);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
             try {
@@ -86,18 +83,31 @@ public abstract class Parser {
                     XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
                     p = new TestSuiteParser(filename, document);
                 } catch (NullPointerException e2) {
-                    return Binder.newErrorTestCase(name, new InvalidSeleneseException(
+                    return Binder.newErrorTestCase(filename, new InvalidSeleneseException(
                         "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
                 }
             }
-        } catch (FileNotFoundException e) {
-            return Binder.newErrorTestCase(name, new InvalidSeleneseException(e.getMessage()));
         } catch (Exception e) {
-            return Binder.newErrorTestCase(name, new InvalidSeleneseException(e));
+            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e));
         } finally {
             IOUtils.closeQuietly(is);
         }
         return p.parse(runner);
+    }
+
+    /**
+     * Parse file.
+     *
+     * @param filename selenese script file. (test-case or test-suite)
+     * @param runner Runner object.
+     * @return TestCase or TestSuite.
+     */
+    public static Selenese parse(String filename, Runner runner) {
+        try {
+            return parse(filename, new FileInputStream(filename), runner);
+        } catch (FileNotFoundException e) {
+            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e.getMessage()));
+        }
     }
 
     protected final String filename;

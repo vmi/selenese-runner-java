@@ -75,24 +75,24 @@ public class Binder {
     /**
      * Constructs ErrorTestCase applied aspect.
      *
-     * @param name test-case name.
+     * @param filename Selenese script file.
      * @param e InvalidSeleneseException instance.
      * @return ErrorTestCase instance.
      */
-    public static ErrorTestCase newErrorTestCase(String name, InvalidSeleneseException e) {
+    public static ErrorTestCase newErrorTestCase(String filename, InvalidSeleneseException e) {
         ErrorTestCase errorTestCase = injector.getInstance(ErrorTestCase.class);
-        return errorTestCase.initialize(name, e);
+        return errorTestCase.initialize(filename, e);
     }
 
     /**
      * Constructs ErrorTestSuite applied aspect.
      *
-     * @param name test-suite name.
+     * @param filename Selenese script file.
      * @param e InvalidSeleneseException instance.
      * @return ErrorSuiteCase instance.
      */
-    public static ErrorTestSuite newErrorTestSuite(String name, InvalidSeleneseException e) {
+    public static ErrorTestSuite newErrorTestSuite(String filename, InvalidSeleneseException e) {
         ErrorTestSuite errorTestSuite = injector.getInstance(ErrorTestSuite.class);
-        return errorTestSuite.initialize(name, e);
+        return errorTestSuite.initialize(filename, e);
     }
 }

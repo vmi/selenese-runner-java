@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import org.apache.commons.io.FilenameUtils;
+
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
@@ -9,18 +11,18 @@ import jp.vmi.selenium.selenese.result.Result;
  */
 public class ErrorTestCase implements Selenese, ITestCase {
 
-    private String name;
+    private String filename;
     private InvalidSeleneseException e;
 
     /**
      * Initialize.
      *
-     * @param name test-case name.
+     * @param filename Selenese script file.
      * @param e InvalidSeleneseException or null.
      * @return this.
      */
-    public ErrorTestCase initialize(String name, InvalidSeleneseException e) {
-        this.name = name;
+    public ErrorTestCase initialize(String filename, InvalidSeleneseException e) {
+        this.filename = filename;
         this.e = e;
         return this;
     }
@@ -32,7 +34,7 @@ public class ErrorTestCase implements Selenese, ITestCase {
 
     @Override
     public String getName() {
-        return name;
+        return FilenameUtils.getBaseName(filename);
     }
 
     @Override

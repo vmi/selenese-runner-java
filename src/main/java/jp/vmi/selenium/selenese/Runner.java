@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -276,6 +277,25 @@ public class Runner {
         TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault), this);
         for (String filename : filenames)
             testSuite.addTestCase(filename);
+        return testSuite.execute(null);
+    }
+
+    /**
+     * Run Selenese script from input stream.
+     *
+     * @param filename selenese script file. (not open. used for label or generating output filename)
+     * @param is input stream of script file. (test-case or test-suite)
+     * @return result.
+     */
+    public Result run(String filename, InputStream is) {
+        TestSuite testSuite;
+        Selenese selenese = Parser.parse(filename, is, this);
+        if (selenese instanceof TestCase) {
+            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault), this);
+            testSuite.addTestCase((TestCase) selenese);
+        } else {
+            testSuite = (TestSuite) selenese;
+        }
         return testSuite.execute(null);
     }
 
