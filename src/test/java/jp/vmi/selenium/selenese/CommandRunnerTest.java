@@ -287,7 +287,7 @@ public abstract class CommandRunnerTest extends TestBase {
         sw.start();
         testCase.execute(null);
         sw.stop();
-        assertThat(sw.getTime(), is(greaterThanOrEqualTo(5000L)));
+        assertThat(sw.getTime(), is(greaterThanOrEqualTo(4900L)));
     }
 
     /**

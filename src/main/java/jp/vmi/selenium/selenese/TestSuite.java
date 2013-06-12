@@ -98,7 +98,7 @@ public class TestSuite implements Selenese, ITestSuite {
      * @param filename test-case filename.
      */
     public void addTestCase(String filename) {
-        if (FilenameUtils.getPrefixLength(filename) == 0)
+        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
             filename = FilenameUtils.concat(parentDir, filename);
         children.add(new ChildFilename(filename));
     }
