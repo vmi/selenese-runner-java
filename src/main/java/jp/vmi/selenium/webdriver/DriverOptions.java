@@ -37,6 +37,10 @@ public class DriverOptions {
         REMOTE_VERSION,
         /** --remote-url */
         REMOTE_URL,
+        /** --width */
+        WIDTH,
+        /** --height */
+        HEIGHT,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = new IdentityHashMap<DriverOptions.DriverOption, String>();
