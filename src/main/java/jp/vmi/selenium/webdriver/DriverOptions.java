@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.util.IdentityHashMap;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.ObjectUtils;
 
 /**
  * Options for WebDriver.
@@ -109,5 +110,16 @@ public class DriverOptions {
                 result.append(opt.name()).append('=').append(map.get(opt)).append("|");
         result.setCharAt(result.length() - 1, ']');
         return result.toString();
+    }
+
+    /**
+     * Get option value.
+     *
+     * @param opt option key.
+     * @param defaultValue return this if option is null
+     * @return option value.
+     */
+    public String get(DriverOption opt, String defaultValue) {
+        return ObjectUtils.defaultIfNull(get(opt), defaultValue);
     }
 }
