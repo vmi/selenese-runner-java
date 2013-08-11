@@ -163,6 +163,15 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
+        options.addOption(OptionBuilder.withLongOpt("height")
+            .hasArg().withArgName("height")
+            .withDescription("browser height (only phantomjs)")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("width")
+            .hasArg().withArgName("width")
+            .withDescription("browser width (only phantomjs)")
+            .create());
+
     }
 
     /**
