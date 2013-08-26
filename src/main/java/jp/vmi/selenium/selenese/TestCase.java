@@ -41,7 +41,6 @@ public class TestCase implements Selenese, ITestCase {
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
     private final CommandList commandList = new CommandList();
-    private Command prev = commandList;
 
     /**
      * Initialize after constructed.
@@ -103,6 +102,15 @@ public class TestCase implements Selenese, ITestCase {
      */
     public String getBaseURL() {
         return baseURL;
+    }
+
+    /**
+     * Get command list.
+     * 
+     * @return command list.
+     */
+    public CommandList getCommandList() {
+        return commandList;
     }
 
     /**
@@ -189,7 +197,7 @@ public class TestCase implements Selenese, ITestCase {
      * @param command command.
      */
     public void addCommand(Command command) {
-        prev = prev.setNext(command);
+        commandList.add(command);
     }
 
     @DoCommand
