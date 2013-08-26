@@ -19,6 +19,8 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.html.result.HtmlResult;
+import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
@@ -29,7 +31,7 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 /**
  * Provide Java API to run Selenese script.
  */
-public class Runner {
+public class Runner implements HtmlResultHolder {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
@@ -46,6 +48,8 @@ public class Runner {
     private Map<String, Object> varsMap = new HashMap<String, Object>();
 
     private int countForDefault = 0;
+
+    private HtmlResult htmlResult = null;
 
     private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -334,11 +338,31 @@ public class Runner {
     }
 
     /**
-     * set directory path for JUnit result xml file.
-     * @param dir directory path
+     * Set directory for JUnit result xml files.
+     *
+     * @param dir result directory.
      */
     public void setResultDir(String dir) {
         JUnitResult.setXmlResultDir(dir);
+    }
+
+    /**
+     * Set directory for HTML result files.
+     * 
+     * @param dir result directory.
+     */
+    public void setHtmlResultDir(String dir) {
+        htmlResult = new HtmlResult(dir);
+    }
+
+    /**
+     * Get HTML result instance.
+     *
+     * @return HTML result instance.
+     */
+    @Override
+    public HtmlResult getHtmlResult() {
+        return htmlResult;
     }
 
     /**

@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.html.result.HtmlResult;
-import jp.vmi.html.result.HtmlResultHolder;
-import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.junit.result.JUnitResult.*;
@@ -22,9 +22,9 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        Object o = invocation.getThis();
-        ITestSuite testSuite = (ITestSuite) o;
-        HtmlResult htmlResult = ((HtmlResultHolder) o).getHtmlResult();
+        TestSuite testSuite = (TestSuite) invocation.getThis();
+        Runner runner = (Runner) invocation.getArguments()[1];
+        HtmlResult htmlResult = runner.getHtmlResult();
         long stime = System.nanoTime();
         if (!testSuite.isError()) {
             log.info("Start: {}", testSuite);
@@ -40,13 +40,13 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             throw t;
         } finally {
             JUnitResult.endTestSuite(testSuite);
-            if (htmlResult != null)
-                htmlResult.generate(null);
             if (!testSuite.isError()) {
                 String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testSuite;
                 log.info(msg);
                 sysOutLog(null, INFO, msg);
             }
+            if (htmlResult != null)
+                htmlResult.generate(testSuite);
         }
     }
 }

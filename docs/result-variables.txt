@@ -1,0 +1,26 @@
+Variables in HTML result template:
+----------------------------------------------------------------------
+title
+testSuite
+  name
+  result
+  totalTime
+  numTestTotal
+  numTestFailures
+  numCommandPasses
+  numCommandFailures
+  numCommandErrors
+testCaseList
+  testCase
+    name
+    filename
+    result
+    index
+    log
+    commandList
+      command
+        result
+        source
+selenium
+  version
+----------------------------------------------------------------------
