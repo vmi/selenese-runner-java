@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
-import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -21,41 +20,10 @@ public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
-    private static interface Child {
-        Selenese getSelenese(Runner runner);
-    }
-
-    private static class ChildFilename implements Child {
-        private final String filename;
-
-        public ChildFilename(String filename) {
-            this.filename = filename;
-        }
-
-        @Override
-        public Selenese getSelenese(Runner runner) {
-            return Parser.parse(filename, runner);
-        }
-    }
-
-    private static class ChildTestCase implements Child {
-        public final TestCase testCase;
-
-        public ChildTestCase(TestCase testCase) {
-            this.testCase = testCase;
-        }
-
-        @Override
-        public Selenese getSelenese(Runner runner) {
-            return testCase;
-        }
-    }
-
     private String filename;
     private String parentDir = null;
     private String name;
-    private Runner runner;
-    private final List<Child> children = new ArrayList<Child>();
+    private final List<TestCase> testCaseList = new ArrayList<TestCase>();
 
     /**
      * Initialize after constructed.
@@ -73,7 +41,6 @@ public class TestSuite implements Selenese, ITestSuite {
             this.name = name;
         else if (filename != null)
             this.name = FilenameUtils.getBaseName(filename);
-        this.runner = runner;
         return this;
     }
 
@@ -87,45 +54,47 @@ public class TestSuite implements Selenese, ITestSuite {
         return name;
     }
 
-    @Override
-    public Runner getRunner() {
-        return runner;
-    }
-
-    /**
-     * Add test-case filename.
-     *
-     * @param filename test-case filename.
-     */
-    public void addTestCase(String filename) {
-        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
-            filename = FilenameUtils.concat(parentDir, filename);
-        children.add(new ChildFilename(filename));
-    }
-
     /**
      * Add test-case instance.
      *
      * @param testCase test-case instance.
      */
     public void addTestCase(TestCase testCase) {
-        children.add(new ChildTestCase(testCase));
+        testCaseList.add(testCase);
+    }
+
+    /**
+     * Add test-case filename.
+     *
+     * @param filename test-case filename.
+     * @param runner Runner object.
+     */
+    public void addTestCase(String filename, Runner runner) {
+        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
+            filename = FilenameUtils.concat(parentDir, filename);
+        addTestCase((TestCase) Parser.parse(filename, runner));
+    }
+
+    /**
+     * Get list of test-case instances. 
+     * 
+     * @return list of test-case instances.
+     */
+    public List<TestCase> getTestCaseList() {
+        return testCaseList;
     }
 
     @ExecuteTestSuite
     @Override
-    public Result execute(Selenese parent) {
+    public Result execute(Selenese parent, Runner runner) {
         Result totalResult = SUCCESS;
-        for (Child child : children) {
-            Selenese selenese = child.getSelenese(runner);
+        for (TestCase testCase : testCaseList) {
             Result result;
             try {
-                result = selenese.execute(this);
+                result = testCase.execute(this, runner);
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
                 throw e;
-            } catch (InvalidSeleneseException e) {
-                result = new Error(e);
             }
             totalResult = totalResult.update(result);
         }

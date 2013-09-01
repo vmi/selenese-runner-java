@@ -2,10 +2,11 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.selenese.Runner;
+
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
-
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -25,7 +26,7 @@ public class SetSpeed extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         String speed = args[SPEED];
         if (StringUtils.isBlank(speed))
             return new Warning("the argument of setSpeed is ignored: empty.");

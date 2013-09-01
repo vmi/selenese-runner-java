@@ -4,11 +4,13 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Abstract class for implementing selenese command.
@@ -22,6 +24,7 @@ public abstract class Command {
     protected final String[] args;
     protected final String[] locators;
     protected Command next = null;
+    private Result result = UNEXECUTED;
 
     /**
      * Constructor.
@@ -93,13 +96,58 @@ public abstract class Command {
     }
 
     /**
+     * Get result of this command.
+     * 
+     * @return result of this command.
+     */
+    public Result getResult() {
+        return result;
+    }
+
+    /**
+     * Set result of this command.
+     *
+     * @param result result of this command.
+     * @return result itself.
+     */
+    protected Result setResult(Result result) {
+        return this.result = result;
+    }
+
+    /**
+     * Get source elements.
+     *
+     * @return array of source elements. (always 3 elements)
+     */
+    public String[] getSource() {
+        String[] source = new String[3];
+        source[0] = name;
+        switch (args.length) {
+        case 3:
+        case 2:
+            source[2] = args[1];
+            // fall through
+        case 1:
+            source[1] = args[0];
+        default:
+            break;
+        }
+        return source;
+    }
+
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
+        return setResult(SUCCESS);
+    }
+
+    /**
      * Execute selenese command.
      *
      * @param testCase test-case instatnce.
+     * @param runner TODO
      * @return true if command terminated normally.
      */
-    public Result doCommand(TestCase testCase) {
-        return SUCCESS;
+    public final Result doCommand(TestCase testCase, Runner runner) {
+        return doCommandImpl(testCase, runner);
     }
 
     /**

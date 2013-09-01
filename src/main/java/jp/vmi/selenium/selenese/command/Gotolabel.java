@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.result.Error;
 
 /**
  * Command "gotolabel".
@@ -23,8 +24,11 @@ public class Gotolabel extends Command {
     @Override
     public Command next(TestCase testCase) {
         Label labelCommand = testCase.getLabelCommand(args[LABEL]);
-        if (labelCommand == null)
-            throw new SeleniumException("label \"" + args[LABEL] + "\" is not found.");
+        if (labelCommand == null) {
+            String msg = "label \"" + args[LABEL] + "\" is not found.";
+            setResult(new Error(msg));
+            throw new SeleniumException(msg);
+        }
         return labelCommand.next;
     }
 }

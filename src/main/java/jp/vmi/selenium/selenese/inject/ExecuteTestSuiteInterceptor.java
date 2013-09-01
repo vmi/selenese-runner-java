@@ -5,6 +5,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.html.result.HtmlResult;
+import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
@@ -20,15 +22,9 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        ITestSuite testSuite;
-        try {
-            testSuite = (ITestSuite) invocation.getThis();
-        } catch (Exception e) {
-            String msg = "receiver is not ITestSuite: " + e;
-            log.error(msg);
-            sysErrLog(null, ERROR, msg);
-            throw new RuntimeException(e);
-        }
+        Object o = invocation.getThis();
+        ITestSuite testSuite = (ITestSuite) o;
+        HtmlResult htmlResult = ((HtmlResultHolder) o).getHtmlResult();
         long stime = System.nanoTime();
         if (!testSuite.isError()) {
             log.info("Start: {}", testSuite);
@@ -44,6 +40,8 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             throw t;
         } finally {
             JUnitResult.endTestSuite(testSuite);
+            if (htmlResult != null)
+                htmlResult.generate(null);
             if (!testSuite.isError()) {
                 String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testSuite;
                 log.info(msg);

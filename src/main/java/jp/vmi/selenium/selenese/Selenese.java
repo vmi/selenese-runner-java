@@ -15,18 +15,11 @@ public interface Selenese {
     String getName();
 
     /**
-     * Get Runner instance.
-     * 
-     * @return Runner instance.
-     */
-    Runner getRunner();
-
-    /**
      * Execute script.
-     *
      * @param parent parent selenese instance or null.
+     * @param runner Runner object.
      * @exception InvalidSeleneseException failed in parsing or executing selenese.
      * @return result.
      */
-    Result execute(Selenese parent) throws InvalidSeleneseException;
+    Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException;
 }

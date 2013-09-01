@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -87,11 +88,11 @@ public class Assertion extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         CustomCommandProcessor proc = testCase.getProc();
         boolean found = true;
         String message = null;
-        int timeout = testCase.getRunner().getTimeout();
+        int timeout = runner.getTimeout();
         long breakAfter = System.currentTimeMillis() + timeout;
         while (true) {
             found = true;

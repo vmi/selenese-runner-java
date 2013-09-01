@@ -39,8 +39,8 @@ public class AssertionTest extends TestBase {
         testcase.initialize(selenesefile.getPath(), "test", runner, ws.getUrl());
 
         Result result;
-        result = cmd01.doCommand(testcase);
-        result = cmd02.doCommand(testcase);
+        result = cmd01.doCommand(testcase, runner);
+        result = cmd02.doCommand(testcase, runner);
 
         assertThat(result.getMessage(), is("Failure: Assertion failed (Result: [assertion test] / Expected: [title])"));
     }

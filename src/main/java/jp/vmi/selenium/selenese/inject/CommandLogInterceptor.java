@@ -19,6 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.result.Result;
@@ -54,8 +55,8 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(String cmdStr, Result result, TestCase testCase) {
-        List<String> messages = getPageInformation(testCase);
+    private void log(String cmdStr, Result result, TestCase testCase, Runner runner) {
+        List<String> messages = getPageInformation(testCase, runner);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result;
@@ -92,9 +93,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private List<String> getPageInformation(TestCase testCase) {
+    private List<String> getPageInformation(TestCase testCase, Runner runner) {
         List<String> messages = new ArrayList<String>();
-        WebDriver driver = testCase.getRunner().getDriver();
+        WebDriver driver = runner.getDriver();
         try {
             String url = driver.getCurrentUrl();
             String title = driver.getTitle();
@@ -116,14 +117,16 @@ public class CommandLogInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestCase testCase = (TestCase) invocation.getThis();
-        Command command = (Command) invocation.getArguments()[0];
+        Object[] args = invocation.getArguments();
+        Command command = (Command) args[0];
+        Runner runner = (Runner) args[1];
         String cmdStr = command.toString();
         log.info(cmdStr);
         sysOutLog(testCase, INFO, cmdStr);
         try {
             Result result = (Result) invocation.proceed();
             if (command.hasResult())
-                log(cmdStr, result, testCase);
+                log(cmdStr, result, testCase, runner);
             return result;
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();

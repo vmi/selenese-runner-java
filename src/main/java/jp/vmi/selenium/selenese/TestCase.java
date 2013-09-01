@@ -31,7 +31,6 @@ public class TestCase implements Selenese, ITestCase {
     private String filename = null;
     private String baseName = "nofile";
     private String name = null;
-    private Runner runner = null;
     private String baseURL = null;
     private long speed = 0;
 
@@ -56,7 +55,6 @@ public class TestCase implements Selenese, ITestCase {
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
-        this.runner = runner;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
         this.proc = new CustomCommandProcessor(baseURL, runner.getDriver(), runner.getVarsMap());
         return this;
@@ -79,11 +77,6 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Runner getRunner() {
-        return runner;
     }
 
     /**
@@ -201,9 +194,9 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     @DoCommand
-    protected Result doCommand(Command command) {
+    protected Result doCommand(Command command, Runner runner) {
         try {
-            return command.doCommand(this);
+            return command.doCommand(this, runner);
         } catch (Exception e) {
             return new Error(e);
         }
@@ -211,11 +204,11 @@ public class TestCase implements Selenese, ITestCase {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Selenese parent) {
+    public Result execute(Selenese parent, Runner runner) {
         Command command = commandList.first();
         Result totalResult = SUCCESS;
         while (command != null) {
-            Result result = doCommand(command);
+            Result result = doCommand(command, runner);
             totalResult = totalResult.update(result);
             if (totalResult.isAborted())
                 break;

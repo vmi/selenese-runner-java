@@ -41,8 +41,8 @@ public class BuiltInCommandTest extends TestBase {
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile.getPath(), "test", runner, ws.getUrl());
 
-        assertTrue(open.doCommand(testcase).isSuccess());
-        Result result = click.doCommand(testcase);
+        assertTrue(open.doCommand(testcase, runner).isSuccess());
+        Result result = click.doCommand(testcase, runner);
 
         assertThat(result.getMessage(), is("Failure: Element link=linktext not found"));
     }

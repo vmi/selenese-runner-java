@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -26,14 +27,14 @@ public class CaptureEntirePageScreenshot extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         String filename = args[FILENAME];
-        if (testCase.getRunner().isIgnoreScreenshotCommand())
+        if (runner.isIgnoreScreenshotCommand())
             return new Success("captureEntirePageScreenshot is ignored");
         if (StringUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
         try {
-            testCase.getRunner().takeScreenshot(filename, testCase);
+            runner.takeScreenshot(filename, testCase);
             return SUCCESS;
         } catch (UnsupportedOperationException e) {
             return new Warning(e.getMessage());

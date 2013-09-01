@@ -1,8 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Runner;
+
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
-
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -22,7 +23,7 @@ public class AddCollection extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         testCase.addCollection(args[COLLECTION_NAME]);
         return SUCCESS;
     }

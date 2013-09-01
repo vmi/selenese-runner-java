@@ -226,7 +226,7 @@ public abstract class CommandRunnerTest extends TestBase {
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
         testCase.addCommand(invalidCommand);
-        testCase.execute(null);
+        testCase.execute(null, runner);
     }
 
     /**
@@ -264,7 +264,7 @@ public abstract class CommandRunnerTest extends TestBase {
         CommandFactory commandFactory = new CommandFactory(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
         testCase.addCommand(captureCommand);
-        testCase.execute(null);
+        testCase.execute(null, runner);
         if (driver instanceof TakesScreenshot)
             assertTrue(pngFile.exists());
     }
@@ -285,7 +285,7 @@ public abstract class CommandRunnerTest extends TestBase {
         testCase.addCommand(pause);
         StopWatch sw = new StopWatch();
         sw.start();
-        testCase.execute(null);
+        testCase.execute(null, runner);
         sw.stop();
         assertThat(sw.getTime(), is(greaterThanOrEqualTo(4900L)));
     }

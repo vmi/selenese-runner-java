@@ -21,6 +21,6 @@ public class TestCaseParserTest {
         runner.setDriver(new HtmlUnitDriver(true));
         String scriptFile = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
         TestCase testCase = (TestCase) Parser.parse(scriptFile, runner);
-        testCase.execute(null);
+        testCase.execute(null, runner);
     }
 }
