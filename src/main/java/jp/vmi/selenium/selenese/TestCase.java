@@ -16,6 +16,8 @@ import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -40,6 +42,9 @@ public class TestCase implements Selenese, ITestCase {
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
     private final CommandList commandList = new CommandList();
+
+    private final StopWatch stopWatch = new StopWatch();
+    private final LogRecorder logRecorder = new LogRecorder();
 
     /**
      * Initialize after constructed.
@@ -104,6 +109,26 @@ public class TestCase implements Selenese, ITestCase {
      */
     public CommandList getCommandList() {
         return commandList;
+    }
+
+    /**
+     * Get stop watch.
+     *
+     * @return stop watch.
+     */
+    @Override
+    public StopWatch getStopWatch() {
+        return stopWatch;
+    }
+
+    /**
+     * Get log recorder.
+     *
+     * @return log recorder.
+     */
+    @Override
+    public LogRecorder getLogRecorder() {
+        return logRecorder;
     }
 
     /**

@@ -1,6 +1,5 @@
 package jp.vmi.junit.result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang3.StringUtils;
+
+import jp.vmi.selenium.selenese.utils.LogRecorder.LogMessage;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
 
@@ -26,15 +27,9 @@ import static jp.vmi.junit.result.ObjectFactory.*;
     "systemOut",
     "systemErr"
 })
-public class TestCaseResult extends TestResult {
+public class TestCaseResult extends TestResult<ITestCase> {
 
     private static final String NL = System.getProperty("line.separator");
-
-    @XmlTransient
-    private final List<String> systemOuts = new ArrayList<String>();
-
-    @XmlTransient
-    private final List<String> systemErrs = new ArrayList<String>();
 
     @XmlTransient
     private boolean success = false;
@@ -44,28 +39,6 @@ public class TestCaseResult extends TestResult {
 
     @XmlElement
     private Failure failure = null;
-
-    /**
-     * Add system-out message.
-     *
-     * @param message system-out message.
-     */
-    public void addSystemOut(String message) {
-        synchronized (systemOuts) {
-            systemOuts.add(message);
-        }
-    }
-
-    /**
-     * Add system-err message.
-     *
-     * @param message system-err message.
-     */
-    public void addSystemErr(String message) {
-        synchronized (systemErrs) {
-            systemErrs.add(message);
-        }
-    }
 
     /**
      * Set success result.
@@ -92,13 +65,6 @@ public class TestCaseResult extends TestResult {
      */
     public void setFailure(String message, String value) {
         failure = factory.createFailure(message, value);
-    }
-
-    /**
-     * End test-case.
-     */
-    public void endTestCase() {
-        endTest();
     }
 
     /**
@@ -137,7 +103,8 @@ public class TestCaseResult extends TestResult {
      */
     @XmlElement(name = "system-out")
     public String getSystemOut() {
-        return (systemOuts.size() != 0) ? StringUtils.join(systemOuts, NL) : null;
+        List<LogMessage> msgs = testTarget.getLogRecorder().getMessages();
+        return (msgs.size() != 0) ? StringUtils.join(msgs, NL) : null;
     }
 
     /**
@@ -147,6 +114,7 @@ public class TestCaseResult extends TestResult {
      */
     @XmlElement(name = "system-err")
     public String getSystemErr() {
-        return (systemErrs.size() != 0) ? StringUtils.join(systemErrs, NL) : null;
+        List<LogMessage> msgs = testTarget.getLogRecorder().getErrorMessages();
+        return (msgs.size() != 0) ? StringUtils.join(msgs, NL) : null;
     }
 }

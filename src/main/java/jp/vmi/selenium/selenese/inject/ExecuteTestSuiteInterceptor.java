@@ -9,9 +9,8 @@ import jp.vmi.html.result.HtmlResult;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestSuite;
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
-
-import static jp.vmi.junit.result.JUnitResult.*;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
 /**
  * Interceptor for logging and recoding test-suite result.
@@ -25,10 +24,13 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         TestSuite testSuite = (TestSuite) invocation.getThis();
         Runner runner = (Runner) invocation.getArguments()[1];
         HtmlResult htmlResult = runner.getHtmlResult();
-        long stime = System.nanoTime();
+        StopWatch sw = testSuite.getStopWatch();
+        LogRecorder slr = new LogRecorder();
+        sw.start();
         if (!testSuite.isError()) {
-            log.info("Start: {}", testSuite);
-            sysOutLog(null, INFO, "Start: " + testSuite);
+            String msg = "Start: " + testSuite;
+            log.info(msg);
+            slr.info(msg);
         }
         JUnitResult.startTestSuite(testSuite);
         try {
@@ -36,14 +38,15 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);
-            sysErrLog(null, ERROR, msg);
+            slr.error(msg);
             throw t;
         } finally {
+            sw.end();
             JUnitResult.endTestSuite(testSuite);
             if (!testSuite.isError()) {
-                String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testSuite;
+                String msg = "End(" + sw.getDurationString() + "): " + testSuite;
                 log.info(msg);
-                sysOutLog(null, INFO, msg);
+                slr.info(msg);
             }
             if (htmlResult != null)
                 htmlResult.generate(testSuite);

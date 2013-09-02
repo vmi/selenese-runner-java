@@ -12,44 +12,26 @@ public class ObjectFactory {
 
     /**
      * Create TestCaseResult instance.
-     *
+     * 
+     * @param testCase test-case intance.
      * @return TestCaseResult instance.
      */
-    public TestCaseResult createTestCaseResult() {
-        return new TestCaseResult();
-    }
-
-    /**
-     * Create TestCaseResult instance.
-     *
-     * @param name test-case name.
-     * @return TestCaseResult instance.
-     */
-    public TestCaseResult createTestCaseResult(String name) {
-        TestCaseResult tcr = createTestCaseResult();
-        tcr.setName(name);
+    public TestCaseResult createTestCaseResult(ITestCase testCase) {
+        TestCaseResult tcr = new TestCaseResult();
+        tcr.setTestTarget(testCase);
         return tcr;
     }
 
     /**
      * Create TestSuiteResult instance.
      *
+     * @param testSuite test-suite intance.
      * @return TestSuiteResult instance.
      */
-    public TestSuiteResult createTestSuiteResult() {
-        return new TestSuiteResult();
-    }
-
-    /**
-     * Create TestSuiteResult.
-     *
-     * @param name test-suite name.
-     * @return TestSuiteResult.
-     */
-    public TestSuiteResult createTestSuiteResult(String name) {
-        TestSuiteResult tsr = createTestSuiteResult();
-        tsr.setName(name);
-        return tsr;
+    public TestSuiteResult createTestSuiteResult(ITestSuite testSuite) {
+        TestSuiteResult tcs = new TestSuiteResult();
+        tcs.setTestTarget(testSuite);
+        return tcs;
     }
 
     /**

@@ -23,6 +23,7 @@ import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 import static jp.vmi.junit.result.JUnitResult.*;
 
@@ -56,16 +57,17 @@ public class CommandLogInterceptor implements MethodInterceptor {
     }
 
     private void log(String cmdStr, Result result, TestCase testCase, Runner runner) {
+        LogRecorder clr = testCase.getLogRecorder();
         List<String> messages = getPageInformation(testCase, runner);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result;
                 log.error(resStr);
-                sysErrLog(testCase, ERROR, resStr);
+                clr.error(resStr);
             } else {
                 String resStr = "- " + result;
                 log.info(resStr);
-                sysOutLog(testCase, INFO, resStr);
+                clr.info(resStr);
             }
         } else {
             Iterator<String> iter = messages.iterator();
@@ -73,20 +75,20 @@ public class CommandLogInterceptor implements MethodInterceptor {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result + " " + message;
                 log.error(resStr);
-                sysErrLog(testCase, ERROR, resStr);
+                clr.error(resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.error(message);
-                    sysErrLog(testCase, ERROR, message);
+                    clr.error(message);
                 }
             } else {
                 String resStr = "- " + result + " " + message;
                 log.info(resStr);
-                sysOutLog(testCase, INFO, resStr);
+                clr.info(resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.info(message);
-                    sysOutLog(testCase, INFO, message);
+                    clr.info(message);
                 }
             }
             prevMessages = messages;
@@ -121,8 +123,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         Command command = (Command) args[0];
         Runner runner = (Runner) args[1];
         String cmdStr = command.toString();
+        LogRecorder clr = testCase.getLogRecorder();
         log.info(cmdStr);
-        sysOutLog(testCase, INFO, cmdStr);
+        clr.info(cmdStr);
         try {
             Result result = (Result) invocation.proceed();
             if (command.hasResult())
@@ -131,7 +134,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();
             log.error(msg);
-            sysErrLog(testCase, ERROR, msg);
+            clr.error(msg);
             if (testCase != null)
                 setError(testCase, e.getMessage(), e.toString());
             throw e;

@@ -2,12 +2,14 @@ package jp.vmi.selenium.selenese;
 
 import org.apache.commons.io.FilenameUtils;
 
+import jp.vmi.junit.result.ITestTarget;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
 /**
  *
  */
-public abstract class ErrorSource implements Selenese {
+public abstract class ErrorSource implements Selenese, ITestTarget {
 
     private String filename;
     private InvalidSeleneseException e;
@@ -30,6 +32,7 @@ public abstract class ErrorSource implements Selenese {
      * 
      * @return true.
      */
+    @Override
     public boolean isError() {
         return true;
     }
@@ -37,6 +40,11 @@ public abstract class ErrorSource implements Selenese {
     @Override
     public String getName() {
         return FilenameUtils.getBaseName(filename);
+    }
+
+    @Override
+    public StopWatch getStopWatch() {
+        return null;
     }
 
     @Override

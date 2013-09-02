@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -24,6 +25,8 @@ public class TestSuite implements Selenese, ITestSuite {
     private String parentDir = null;
     private String name;
     private final List<TestCase> testCaseList = new ArrayList<TestCase>();
+
+    private final StopWatch stopWatch = new StopWatch();
 
     /**
      * Initialize after constructed.
@@ -82,6 +85,16 @@ public class TestSuite implements Selenese, ITestSuite {
      */
     public List<TestCase> getTestCaseList() {
         return testCaseList;
+    }
+
+    /**
+     * Get stop watch.
+     * 
+     * @return stop watch.
+     */
+    @Override
+    public StopWatch getStopWatch() {
+        return stopWatch;
     }
 
     @ExecuteTestSuite

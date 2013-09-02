@@ -25,6 +25,7 @@ import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
@@ -59,7 +60,7 @@ public class Runner implements HtmlResultHolder {
             throw new RuntimeException("failed to rename captured screenshot image: " + file, e);
         }
         log.info("- captured screenshot: {}", file);
-        JUnitResult.addSystemOut(testcase, "[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
+        testcase.getLogRecorder().info("[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
     }
 
     /**
@@ -370,6 +371,6 @@ public class Runner implements HtmlResultHolder {
      * @param out PrintStream for logging.
      */
     public void setPrintStream(PrintStream out) {
-        JUnitResult.setPrintStream(out);
+        LogRecorder.setPrintStream(out);
     }
 }

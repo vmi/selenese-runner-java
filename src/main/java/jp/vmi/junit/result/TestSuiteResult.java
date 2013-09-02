@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
 
@@ -22,13 +21,10 @@ import static jp.vmi.junit.result.ObjectFactory.*;
     "error",
     "testCaseResults"
 })
-public class TestSuiteResult extends TestResult {
+public class TestSuiteResult extends TestResult<ITestSuite> {
 
     @XmlAttribute
     private Integer id;
-
-    @XmlAttribute
-    private XMLGregorianCalendar timestamp;
 
     @XmlAttribute
     private BigDecimal time;
@@ -74,13 +70,6 @@ public class TestSuiteResult extends TestResult {
         synchronized (testCaseResults) {
             testCaseResults.add(caseResult);
         }
-    }
-
-    /**
-     * End test-suite.
-     */
-    public void endTestSuite() {
-        endTest();
     }
 
     /**

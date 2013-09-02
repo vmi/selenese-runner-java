@@ -6,37 +6,20 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * Test result interface. (for TestResult map in JUnitResult)
+ * 
+ * @param <T> test target type. 
  */
-public abstract class TestResult {
+public abstract class TestResult<T extends ITestTarget> {
 
-    private String name;
-
-    private long startTimeOfUTC;
-
-    private long startTime;
-
-    private long endTime;
-
-    protected TestResult() {
-        startTest();
-    }
-
-    private void startTest() {
-        this.endTime = this.startTime = System.nanoTime();
-        this.startTimeOfUTC = System.currentTimeMillis();
-    }
-
-    protected void endTest() {
-        this.endTime = System.nanoTime();
-    }
+    protected T testTarget;
 
     /**
-     * Set test name.
-     *
-     * @param name test name.
+     * Set test target.
+     * 
+     * @param testTarget test target.
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setTestTarget(T testTarget) {
+        this.testTarget = testTarget;
     }
 
     /**
@@ -46,7 +29,7 @@ public abstract class TestResult {
      */
     @XmlAttribute
     public String getName() {
-        return name;
+        return testTarget.getName();
     }
 
     /**
@@ -56,7 +39,7 @@ public abstract class TestResult {
      */
     @XmlAttribute
     public String getTimestamp() {
-        return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(startTimeOfUTC);
+        return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTimeOfUTC());
     }
 
     /**
@@ -66,6 +49,6 @@ public abstract class TestResult {
      */
     @XmlAttribute
     public String getTime() {
-        return String.format("%.3f", (endTime - startTime) / 1000000000.0 /* ns -> sec */);
+        return String.format("%.3f", testTarget.getStopWatch().getDurationNanoSec() / 1000000000.0 /* ns -> sec */);
     }
 }

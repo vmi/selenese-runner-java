@@ -9,7 +9,8 @@ import jp.vmi.junit.result.ITestCase;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.junit.result.JUnitResult.*;
 
@@ -22,27 +23,20 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        ITestSuite testSuite;
-        ITestCase testCase;
-        try {
-            testCase = (ITestCase) invocation.getThis();
-            testSuite = (ITestSuite) invocation.getArguments()[0];
-        } catch (Exception e) {
-            String msg = "receiver is not ITestCase, or 1st argument is not ITestSuite: " + e;
-            log.error(msg);
-            sysErrLog(null, ERROR, msg);
-            throw new RuntimeException(e);
-        }
-        long stime = System.nanoTime();
+        ITestCase testCase = (ITestCase) invocation.getThis();
+        ITestSuite testSuite = (ITestSuite) invocation.getArguments()[0];
+        StopWatch sw = testCase.getStopWatch();
+        LogRecorder clr = testCase.getLogRecorder();
+        sw.start();
         startTestCase(testSuite, testCase);
         if (!testCase.isError()) {
             log.info("Start: {}", testCase);
-            sysOutLog(testCase, INFO, "Start: " + testCase);
+            clr.info("Start: " + testCase);
         }
         if (testCase instanceof TestCase) {
             String baseURL = ((TestCase) testCase).getBaseURL();
             log.info("baseURL: {}", baseURL);
-            sysOutLog(testCase, INFO, "baseURL: " + baseURL);
+            clr.info("baseURL: " + baseURL);
         }
         try {
             Result result = (Result) invocation.proceed();
@@ -54,14 +48,15 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);
-            sysErrLog(testCase, ERROR, msg);
+            clr.error(msg);
             setError(testCase, msg, t.toString());
             throw t;
         } finally {
+            sw.end();
             if (!testCase.isError()) {
-                String msg = "End(" + LoggerUtils.durationToString(stime, System.nanoTime()) + "): " + testCase;
+                String msg = "End(" + sw.getDurationString() + "): " + testCase;
                 log.info(msg);
-                sysOutLog(testCase, INFO, msg);
+                clr.info(msg);
             }
             endTestCase(testCase);
         }
