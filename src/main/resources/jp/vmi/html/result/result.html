@@ -6,7 +6,7 @@
     <style type='text/css'>
       body, table {
         font-family: Verdana, Arial, sans-serif;
-        font-size: 12;
+        font-size: 12px;
       }
 
       table {
@@ -19,6 +19,10 @@
         padding-right: 0.3em;
       }
 
+      th {
+        text-align: right;
+      }
+
       a {
         text-decoration: none;
       }
@@ -29,6 +33,14 @@
 
       .selected {
         background-color: #ffffcc;
+      }
+
+      .indexh {
+        text-align: center;
+      }
+
+      .index {
+        text-align: right;
       }
 
       .status_unexecuted .cmd_status_unexecuted {
@@ -64,22 +76,22 @@
     <h1>${title;h}</h1>
 
     <table>
-      <tr><td>result:</td><td>${testSuite.result;h}</td></tr>
-      <tr><td>totalTime:</td><td>${testSuite.totalTime;h}</td></tr>
-      <tr><td>numTestTotal:</td><td>${testSuite.numTestTotal;h}</td></tr>
-      <tr><td>numTestPasses:</td><td>${testSuite.numTestPasses;h}</td></tr>
-      <tr><td>numTestFailures:</td><td>${testSuite.numTestFailures;h}</td></tr>
-      <tr><td>numCommandPasses:</td><td>${testSuite.numCommandPasses;h}</td></tr>
-      <tr><td>numCommandFailures:</td><td>${testSuite.numCommandFailures;h}</td></tr>
-      <tr><td>numCommandErrors:</td><td>${testSuite.numCommandErrors;h}</td></tr>
-      <tr><td>Selenium Version:</td><td>${selenium.version;h}</td></tr>
-      <tr><td>Selenium Revision:</td><td>${selenium.revision;h}</td></tr>
+      <tr><th>Result:</th><td>${testSuite.result}</td></tr>
+      <tr><th>Total Time:</th><td>${testSuite.stopWatch.durationString;h}</td></tr>
+      <tr><th>Number of Test Total:</th><td>${numTestTotal}</td></tr>
+      <tr><th>Number of Test Passes:</th><td>${numTestPasses}</td></tr>
+      <tr><th>Number of Test Failures:</th><td>${numTestFailures}</td></tr>
+      <tr><th>Number of Command Passes:</th><td>${numCommandPasses}</td></tr>
+      <tr><th>Number of Command Failures:</th><td>${numCommandFailures}</td></tr>
+      <tr><th>Number of Command Errors:</th><td>${numCommandErrors}</td></tr>
+      <tr><th>Selenium Version:</th><td>${seleniumVersion}</td></tr>
       <tr><td>
+          <br>
           <table id="suiteTable" class="selenium" cellpadding="1" cellspacing="1" border="1">
             <tbody>
-              <tr class="title status_${testSuite.result;h}"><td><b>${testSuite.name}</b></td></tr>
+              <tr class="title status_${testSuite.result}"><td><b>${testSuite.name}</b></td></tr>
 ${foreach testCaseList testCase}
-              <tr class="status_${testCase.result;h}"><td><a href="#testCase${testCase.index}">${testCase.name;h}</a></td></tr>
+              <tr class="status_${testCase.object.result}"><td><a href="#testCase${testCase.index}">${testCase.object.name;h}</a></td></tr>
 ${end}
           </tbody>
           </table>
@@ -89,17 +101,19 @@ ${end}
     </table>
 
 ${foreach testCaseList testCase}
+    <br>
     <table>
       <tr>
-        <td><a name="testCase${testCase.index}">${testCase.filename;h}</a><br/>
+        <td><a name="testCase${testCase.index}">${testCase.object.filename;h}</a><br>
           <div>
             <table cellpadding="1" cellspacing="1" border="1">
               <thead>
-                <tr class="title status_${testCase.result;h}"><td rowspan="1" colspan="3">${testCase.name;h}</td></tr>
+                <tr class="title status_${testCase.object.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${testCase.object.name;h}</td></tr>
               </thead>
               <tbody>
-  ${foreach testCase.commandList command}
+  ${foreach testCase.object.commandList command}
                 <tr class="cmd_status_${command.result}" style="cursor: pointer;">
+                  <td class="index">${command.index;i}</td>
     ${foreach command.source item}
                   <td>${item;h}</td>
     ${end}
@@ -113,7 +127,8 @@ ${foreach testCaseList testCase}
     </tr>
     </table>
 
-    <pre>${testCase.log;h}</pre>
+    <pre>${foreach testCase.object.logRecorder.messages msg}${msg}
+${end}</pre>
 ${end}
   </body>
 </html>

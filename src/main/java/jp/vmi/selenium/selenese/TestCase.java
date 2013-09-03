@@ -19,7 +19,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
-import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * test-case object for execution.
@@ -45,6 +45,7 @@ public class TestCase implements Selenese, ITestCase {
 
     private final StopWatch stopWatch = new StopWatch();
     private final LogRecorder logRecorder = new LogRecorder();
+    private Result result = UNEXECUTED;
 
     /**
      * Initialize after constructed.
@@ -68,6 +69,15 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public boolean isError() {
         return false;
+    }
+
+    /**
+     * Get filename of test-case.
+     *
+     * @return filename.
+     */
+    public String getFilename() {
+        return filename;
     }
 
     /**
@@ -129,6 +139,15 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public LogRecorder getLogRecorder() {
         return logRecorder;
+    }
+
+    /**
+     * Get test-case result.
+     *
+     * @return test-case result.
+     */
+    public Result getResult() {
+        return result;
     }
 
     /**
@@ -231,11 +250,10 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public Result execute(Selenese parent, Runner runner) {
         Command command = commandList.first();
-        Result totalResult = SUCCESS;
         while (command != null) {
-            Result result = doCommand(command, runner);
-            totalResult = totalResult.update(result);
-            if (totalResult.isAborted())
+            Result r = doCommand(command, runner);
+            result = result.update(r);
+            if (result.isAborted())
                 break;
             command = command.next(this);
             if (speed > 0) {
@@ -246,7 +264,7 @@ public class TestCase implements Selenese, ITestCase {
                 }
             }
         }
-        return totalResult;
+        return result;
     }
 
     @Override

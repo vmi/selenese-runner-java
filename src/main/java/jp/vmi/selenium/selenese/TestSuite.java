@@ -9,10 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
-import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * test-suite object for execution.
@@ -27,6 +28,7 @@ public class TestSuite implements Selenese, ITestSuite {
     private final List<TestCase> testCaseList = new ArrayList<TestCase>();
 
     private final StopWatch stopWatch = new StopWatch();
+    private Result result = UNEXECUTED;
 
     /**
      * Initialize after constructed.
@@ -97,21 +99,31 @@ public class TestSuite implements Selenese, ITestSuite {
         return stopWatch;
     }
 
+    /**
+     * Get test-suite result.
+     *
+     * @return test-suite result.
+     */
+    public Result getResult() {
+        return result;
+    }
+
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Runner runner) {
-        Result totalResult = SUCCESS;
         for (TestCase testCase : testCaseList) {
-            Result result;
+            Result r;
             try {
-                result = testCase.execute(this, runner);
+                r = testCase.execute(this, runner);
             } catch (RuntimeException e) {
-                log.error(e.getMessage());
+                String msg = e.getMessage();
+                result = new Error(msg);
+                log.error(msg);
                 throw e;
             }
-            totalResult = totalResult.update(result);
+            result = result.update(r);
         }
-        return totalResult;
+        return result;
     }
 
     @Override
