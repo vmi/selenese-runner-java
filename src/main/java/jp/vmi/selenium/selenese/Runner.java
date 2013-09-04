@@ -40,7 +40,7 @@ public class Runner {
     private int timeout = 30 * 1000; /* ms */
     private Map<String, Object> varsMap = new HashMap<String, Object>();
 
-    private final int countForDefault = 0;
+    private int countForDefault = 0;
 
     private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -274,7 +274,7 @@ public class Runner {
      * @return result.
      */
     public Result run(String... filenames) {
-        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault), this);
+        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
         for (String filename : filenames)
             testSuite.addTestCase(filename);
         return testSuite.execute(null);
@@ -291,7 +291,7 @@ public class Runner {
         TestSuite testSuite;
         Selenese selenese = Parser.parse(filename, is, this);
         if (selenese instanceof TestCase) {
-            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault), this);
+            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
             testSuite.addTestCase((TestCase) selenese);
         } else {
             testSuite = (TestSuite) selenese;
