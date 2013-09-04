@@ -295,7 +295,7 @@ public class Main {
             if (timeout <= 0)
                 throw new IllegalArgumentException("Invalid timeout value. (" + cli.getOptionValue("timeout") + ")");
             runner.setTimeout(timeout);
-            runner.setPrintStream(System.out);
+            Runner.setPrintStream(System.out);
             Result totalResult = runner.run(filenames);
             exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {

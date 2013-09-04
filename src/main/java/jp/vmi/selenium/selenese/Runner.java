@@ -370,7 +370,7 @@ public class Runner implements HtmlResultHolder {
      * set PrintStream for logging.
      * @param out PrintStream for logging.
      */
-    public void setPrintStream(PrintStream out) {
+    public static void setPrintStream(PrintStream out) {
         LogRecorder.setPrintStream(out);
     }
 }
