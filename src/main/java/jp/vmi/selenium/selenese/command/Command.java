@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
@@ -136,18 +137,23 @@ public abstract class Command {
     }
 
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        return setResult(SUCCESS);
+        return SUCCESS;
     }
 
     /**
      * Execute selenese command.
      *
      * @param testCase test-case instatnce.
-     * @param runner TODO
+     * @param runner Runner object.
      * @return true if command terminated normally.
      */
     public final Result doCommand(TestCase testCase, Runner runner) {
-        return doCommandImpl(testCase, runner);
+        try {
+            return setResult(doCommandImpl(testCase, runner));
+        } catch (RuntimeException e) {
+            setResult(new Error(e));
+            throw e;
+        }
     }
 
     /**
