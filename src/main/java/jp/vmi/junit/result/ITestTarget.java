@@ -3,7 +3,7 @@ package jp.vmi.junit.result;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
 /**
- * test target interface.
+ * Test target interface.
  */
 public interface ITestTarget {
 

@@ -25,8 +25,6 @@ import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
-import static jp.vmi.junit.result.JUnitResult.*;
-
 /**
  * Interceptor for logging each command execution.
  */
@@ -136,7 +134,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
             log.error(msg);
             clr.error(msg);
             if (testCase != null)
-                setError(testCase, e.getMessage(), e.toString());
+                runner.getJUnitResult().setError(testCase, e.getMessage(), e.toString());
             throw e;
         }
     }

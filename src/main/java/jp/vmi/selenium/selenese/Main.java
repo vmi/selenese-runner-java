@@ -289,7 +289,7 @@ public class Main {
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setIgnoreScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
-            runner.setResultDir(cli.getOptionValue("xml-result"));
+            runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
             runner.setHtmlResultDir(cli.getOptionValue("html-result"));
             int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));
             if (timeout <= 0)
@@ -297,6 +297,7 @@ public class Main {
             runner.setTimeout(timeout);
             Runner.setPrintStream(System.out);
             Result totalResult = runner.run(filenames);
+            runner.finish();
             exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());

@@ -19,7 +19,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -157,15 +156,14 @@ public abstract class CommandRunnerTest extends TestBase {
         runner.setScreenshotDir(tmpPath);
         runner.setScreenshotAllDir(tmpPath);
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
-
-        JUnitResult.setXmlResultDir(tmpPath);
+        runner.setJUnitResultDir(tmpPath);
         try {
             runner.run(scriptName);
             return FileUtils.readFileToString(new File(tmpPath, "TEST-default-00.xml"), "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            JUnitResult.setXmlResultDir(null);
+            runner.setJUnitResultDir(null);
         }
     }
 

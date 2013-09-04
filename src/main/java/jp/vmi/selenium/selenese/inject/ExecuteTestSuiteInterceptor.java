@@ -23,6 +23,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestSuite testSuite = (TestSuite) invocation.getThis();
         Runner runner = (Runner) invocation.getArguments()[1];
+        JUnitResult jUnitResult = runner.getJUnitResult();
         HtmlResult htmlResult = runner.getHtmlResult();
         StopWatch sw = testSuite.getStopWatch();
         LogRecorder slr = new LogRecorder();
@@ -32,7 +33,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             log.info(msg);
             slr.info(msg);
         }
-        JUnitResult.startTestSuite(testSuite);
+        jUnitResult.startTestSuite(testSuite);
         try {
             return invocation.proceed();
         } catch (Throwable t) {
@@ -41,15 +42,14 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             slr.error(msg);
             throw t;
         } finally {
-            sw.end();
-            JUnitResult.endTestSuite(testSuite);
             if (!testSuite.isError()) {
                 String msg = "End(" + sw.getDurationString() + "): " + testSuite;
                 log.info(msg);
                 slr.info(msg);
             }
-            if (htmlResult != null)
-                htmlResult.generate(testSuite);
+            sw.end();
+            jUnitResult.endTestSuite(testSuite);
+            htmlResult.generate(testSuite);
         }
     }
 }

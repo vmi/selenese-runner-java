@@ -20,13 +20,13 @@ import static jp.vmi.junit.result.ObjectFactory.*;
  */
 public final class JUnitResult {
 
-    private static JAXBContext context = initContext();
+    private String xmlResultDir = null;
 
-    private static final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
+    private final JAXBContext context = initContext();
 
-    private static String xmlResultDir = null;
+    private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
 
-    private static JAXBContext initContext() {
+    private JAXBContext initContext() {
         try {
             return JAXBContext.newInstance(ObjectFactory.class);
         } catch (JAXBException e) {
@@ -35,12 +35,12 @@ public final class JUnitResult {
     }
 
     /**
-     * Set directory for storing xml results.
+     * Set XML result directory.
      *
-     * @param dir directory.
+     * @param dir XML result directory.
      */
-    public static void setXmlResultDir(String dir) {
-        xmlResultDir = dir;
+    public void setDir(String dir) {
+        this.xmlResultDir = dir;
     }
 
     /**
@@ -48,7 +48,7 @@ public final class JUnitResult {
      *
      * @param testSuite test-suite instance.
      */
-    public static void startTestSuite(ITestSuite testSuite) {
+    public void startTestSuite(ITestSuite testSuite) {
         map.put(testSuite, factory.createTestSuiteResult(testSuite));
     }
 
@@ -57,7 +57,7 @@ public final class JUnitResult {
      *
      * @param testSuite test-suite instatnce.
      */
-    public static void endTestSuite(ITestSuite testSuite) {
+    public void endTestSuite(ITestSuite testSuite) {
         TestSuiteResult suiteResult = (TestSuiteResult) map.remove(testSuite);
         if (xmlResultDir == null || suiteResult.getTests() == 0)
             return;
@@ -80,7 +80,7 @@ public final class JUnitResult {
      * @param name property name.
      * @param value property value.
      */
-    public static void addProperty(ITestSuite testSuite, String name, String value) {
+    public void addProperty(ITestSuite testSuite, String name, String value) {
         TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);
         suiteResult.addProperty(name, value);
     }
@@ -90,7 +90,7 @@ public final class JUnitResult {
      * @param testSuite test-suite instance.
      * @param testCase test-case instance.
      */
-    public static void startTestCase(ITestSuite testSuite, ITestCase testCase) {
+    public void startTestCase(ITestSuite testSuite, ITestCase testCase) {
         TestCaseResult caseResult = factory.createTestCaseResult(testCase);
         map.put(testCase, caseResult);
         if (testSuite != null) {
@@ -104,7 +104,7 @@ public final class JUnitResult {
      *
      * @param testCase test-case instance.
      */
-    public static void endTestCase(ITestCase testCase) {
+    public void endTestCase(ITestCase testCase) {
         map.remove(testCase);
     }
 
@@ -113,7 +113,7 @@ public final class JUnitResult {
      *
      * @param testCase test-case instance.
      */
-    public static void setSuccess(ITestCase testCase) {
+    public void setSuccess(ITestCase testCase) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setSuccess();
     }
@@ -125,7 +125,7 @@ public final class JUnitResult {
      * @param message error message.
      * @param trace error trace.
      */
-    public static void setError(ITestCase testCase, String message, String trace) {
+    public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
     }
@@ -137,7 +137,7 @@ public final class JUnitResult {
      * @param message error message.
      * @param trace error trace.
      */
-    public static void setFailure(ITestCase testCase, String message, String trace) {
+    public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
     }

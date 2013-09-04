@@ -24,18 +24,18 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
  */
 public class HtmlResult {
 
-    private final String htmlResultDir;
+    private String htmlResultDir = null;
     private String template = null;
     private Engine engine = null;
 
     private final List<String> testSuiteNameList = new ArrayList<String>();
 
     /**
-     * Constructor.
+     * Set HTML result directory.
      *
-     * @param dir output html result directory.
+     * @param dir HTML result directory.
      */
-    public HtmlResult(String dir) {
+    public void setDir(String dir) {
         this.htmlResultDir = dir;
     }
 
@@ -70,6 +70,8 @@ public class HtmlResult {
      * @param testSuite test-suite instance.
      */
     public void generate(TestSuite testSuite) {
+        if (htmlResultDir == null)
+            return;
         List<TestCase> testCaseList = testSuite.getTestCaseList();
         int numTestPasses = 0;
         int numTestFailures = 0;
@@ -133,6 +135,8 @@ public class HtmlResult {
      * Generate index for HTML result.
      */
     public void generateIndex() {
+        if (htmlResultDir == null)
+            return;
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("nameList", testSuiteNameList);
         String html = getEngine().transform(getTemplate("index.html"), model);

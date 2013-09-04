@@ -7,12 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.junit.result.ITestSuite;
+import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
-
-import static jp.vmi.junit.result.JUnitResult.*;
 
 /**
  * Interceptor for logging and recoding test-case result.
@@ -24,11 +24,13 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         ITestCase testCase = (ITestCase) invocation.getThis();
-        ITestSuite testSuite = (ITestSuite) invocation.getArguments()[0];
+        Object[] args = invocation.getArguments();
+        ITestSuite testSuite = (ITestSuite) args[0];
+        JUnitResult jUnitResult = ((Runner) args[1]).getJUnitResult();
         StopWatch sw = testCase.getStopWatch();
         LogRecorder clr = testCase.getLogRecorder();
+        jUnitResult.startTestCase(testSuite, testCase);
         sw.start();
-        startTestCase(testSuite, testCase);
         if (!testCase.isError()) {
             log.info("Start: {}", testCase);
             clr.info("Start: " + testCase);
@@ -41,15 +43,15 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         try {
             Result result = (Result) invocation.proceed();
             if (result.isSuccess())
-                setSuccess(testCase);
+                jUnitResult.setSuccess(testCase);
             else
-                setFailure(testCase, result.getMessage(), null);
+                jUnitResult.setFailure(testCase, result.getMessage(), null);
             return result;
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);
             clr.error(msg);
-            setError(testCase, msg, t.toString());
+            jUnitResult.setError(testCase, msg, t.toString());
             throw t;
         } finally {
             sw.end();
@@ -58,7 +60,7 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
                 log.info(msg);
                 clr.info(msg);
             }
-            endTestCase(testCase);
+            jUnitResult.endTestCase(testCase);
         }
     }
 }

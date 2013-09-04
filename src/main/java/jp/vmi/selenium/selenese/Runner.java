@@ -50,7 +50,17 @@ public class Runner implements HtmlResultHolder {
 
     private int countForDefault = 0;
 
-    private HtmlResult htmlResult = null;
+    private final JUnitResult jUnitResult = new JUnitResult();
+    private final HtmlResult htmlResult = new HtmlResult();
+
+    /**
+     * Set PrintStream for logging.
+     *
+     * @param out PrintStream for logging.
+     */
+    public static void setPrintStream(PrintStream out) {
+        LogRecorder.setPrintStream(out);
+    }
 
     private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -339,21 +349,30 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
-     * Set directory for JUnit result xml files.
+     * Initialize JUnitResult.
      *
-     * @param dir result directory.
+     * @param dir JUnit result directory.
      */
-    public void setResultDir(String dir) {
-        JUnitResult.setXmlResultDir(dir);
+    public void setJUnitResultDir(String dir) {
+        jUnitResult.setDir(dir);
     }
 
     /**
-     * Set directory for HTML result files.
+     * Get JUnit result instance.
+     *
+     * @return JUnit result instance.
+     */
+    public JUnitResult getJUnitResult() {
+        return jUnitResult;
+    }
+
+    /**
+     * Initialize HTMLResult.
      * 
-     * @param dir result directory.
+     * @param dir HTML result directory.
      */
     public void setHtmlResultDir(String dir) {
-        htmlResult = new HtmlResult(dir);
+        htmlResult.setDir(dir);
     }
 
     /**
@@ -367,10 +386,11 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
-     * set PrintStream for logging.
-     * @param out PrintStream for logging.
+     * Finish test.
+     * 
+     * generate index.html for HTML result.
      */
-    public static void setPrintStream(PrintStream out) {
-        LogRecorder.setPrintStream(out);
+    public void finish() {
+        htmlResult.generateIndex();
     }
 }

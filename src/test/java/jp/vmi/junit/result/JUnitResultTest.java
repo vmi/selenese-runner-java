@@ -14,8 +14,6 @@ import org.junit.rules.TemporaryFolder;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
-import static jp.vmi.junit.result.JUnitResult.*;
-
 /**
  * Test of {@link JUnitResult}.
  */
@@ -25,6 +23,9 @@ public class JUnitResultTest {
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
 
+    /** JUnit result instance. */
+    public JUnitResult jur;
+
     /**
      * initialize for test.
      *
@@ -32,7 +33,8 @@ public class JUnitResultTest {
      */
     @Before
     public void init() throws IOException {
-        setXmlResultDir(tmp.getRoot().getPath());
+        jur = new JUnitResult();
+        jur.setDir(tmp.getRoot().getPath());
     }
 
     /**
@@ -40,7 +42,7 @@ public class JUnitResultTest {
      */
     @After
     public void finish() {
-        setXmlResultDir(null);
+        jur = null;
     }
 
     /**
@@ -98,20 +100,20 @@ public class JUnitResultTest {
                 }
             };
         }
-        startTestSuite(testSuite);
-        addProperty(testSuite, "prop-name1", "prop-value1");
-        addProperty(testSuite, "prop-name2", "prop-value2");
-        addProperty(testSuite, "prop-name3", "prop-value3");
+        jur.startTestSuite(testSuite);
+        jur.addProperty(testSuite, "prop-name1", "prop-value1");
+        jur.addProperty(testSuite, "prop-name2", "prop-value2");
+        jur.addProperty(testSuite, "prop-name3", "prop-value3");
         ITestCase tc;
         StopWatch sw;
         LogRecorder clr;
         tc = testCases[0];
         sw = tc.getStopWatch();
         clr = tc.getLogRecorder();
-        startTestCase(testSuite, tc);
+        jur.startTestCase(testSuite, tc);
         testSuite.getStopWatch().start();
         sw.start();
-        setSuccess(tc);
+        jur.setSuccess(tc);
         clr.info("systemOut00");
         clr.error("systemErr00");
         clr.info("systemOut01");
@@ -120,37 +122,37 @@ public class JUnitResultTest {
         clr.error("systemErr02");
         Thread.sleep(100);
         sw.end();
-        endTestCase(tc);
+        jur.endTestCase(tc);
         tc = testCases[1];
         sw = tc.getStopWatch();
         clr = tc.getLogRecorder();
-        startTestCase(testSuite, tc);
+        jur.startTestCase(testSuite, tc);
         sw.start();
-        setError(tc, "detail1", "trace1");
+        jur.setError(tc, "detail1", "trace1");
         clr.info("systemOut1");
         clr.error("systemErr1");
         Thread.sleep(50);
         sw.end();
-        endTestCase(tc);
+        jur.endTestCase(tc);
         tc = testCases[2];
         sw = tc.getStopWatch();
         clr = tc.getLogRecorder();
-        startTestCase(testSuite, tc);
+        jur.startTestCase(testSuite, tc);
         sw.start();
-        setFailure(tc, "detail2", "trace2");
+        jur.setFailure(tc, "detail2", "trace2");
         clr.info("systemOut2");
         clr.error("systemErr2");
         Thread.sleep(10);
         sw.end();
-        endTestCase(tc);
+        jur.endTestCase(tc);
         tc = testCases[3];
         sw = tc.getStopWatch();
-        startTestCase(testSuite, tc);
+        jur.startTestCase(testSuite, tc);
         sw.start();
         sw.end();
-        endTestCase(tc);
+        jur.endTestCase(tc);
         testSuite.getStopWatch().end();
-        endTestSuite(testSuite);
+        jur.endTestSuite(testSuite);
         for (File file : tmp.getRoot().listFiles()) {
             try {
                 System.out.printf("[%s]%n", file);
