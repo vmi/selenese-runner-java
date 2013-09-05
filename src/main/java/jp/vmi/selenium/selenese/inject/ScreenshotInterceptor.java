@@ -16,11 +16,12 @@ public class ScreenshotInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        TestCase testCase = (TestCase) invocation.getThis();
+        Object[] args = invocation.getArguments();
+        Command command = (Command) args[0];
+        Runner runner = (Runner) args[1];
         Result result = (Result) invocation.proceed();
-        Command command = (Command) invocation.getArguments()[0];
         if (command.canUpdate()) {
-            TestCase testCase = (TestCase) invocation.getThis();
-            Runner runner = testCase.getRunner();
             String baseName = testCase.getBaseName();
             try {
                 runner.takeScreenshotAll(baseName, command.getIndex(), testCase);

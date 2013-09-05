@@ -10,6 +10,7 @@ public abstract class Result {
      */
     @SuppressWarnings("javadoc")
     public static enum Level {
+        UNEXECUTED(-1, 0),
         SUCCESS(0, 0),
         WARNING(1, 0),
         FAILURE(2, 3),

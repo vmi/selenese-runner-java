@@ -1,21 +1,16 @@
 package jp.vmi.junit.result;
 
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+
 /**
  * test-case interface.
  */
-public interface ITestCase {
+public interface ITestCase extends ITestTarget {
 
     /**
-     * Get test-case name.
+     * Get log recorder.
      *
-     * @return test-case name.
+     * @return log recorder.
      */
-    String getName();
-
-    /**
-     * Is error instance?
-     *
-     * @return true if this is error instance.
-     */
-    boolean isError();
+    LogRecorder getLogRecorder();
 }

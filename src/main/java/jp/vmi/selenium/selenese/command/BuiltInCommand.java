@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -45,13 +46,13 @@ public class BuiltInCommand extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         CustomCommandProcessor proc = testCase.getProc();
         try {
             Object result = proc.execute(realName, args);
             String resultString = (result != null) ? result.toString() : "";
             if (andWait) {
-                int timeout = testCase.getRunner().getTimeout();
+                int timeout = runner.getTimeout();
                 proc.execute(WAIT_FOR_PAGE_TO_LOAD, new String[] { Integer.toString(timeout) });
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;

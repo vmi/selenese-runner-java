@@ -19,11 +19,11 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.result.Result;
-
-import static jp.vmi.junit.result.JUnitResult.*;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 /**
  * Interceptor for logging each command execution.
@@ -54,17 +54,18 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(String cmdStr, Result result, TestCase testCase) {
-        List<String> messages = getPageInformation(testCase);
+    private void log(String cmdStr, Result result, TestCase testCase, Runner runner) {
+        LogRecorder clr = testCase.getLogRecorder();
+        List<String> messages = getPageInformation(testCase, runner);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result;
                 log.error(resStr);
-                sysErrLog(testCase, ERROR, resStr);
+                clr.error(resStr);
             } else {
                 String resStr = "- " + result;
                 log.info(resStr);
-                sysOutLog(testCase, INFO, resStr);
+                clr.info(resStr);
             }
         } else {
             Iterator<String> iter = messages.iterator();
@@ -72,29 +73,29 @@ public class CommandLogInterceptor implements MethodInterceptor {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result + " " + message;
                 log.error(resStr);
-                sysErrLog(testCase, ERROR, resStr);
+                clr.error(resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.error(message);
-                    sysErrLog(testCase, ERROR, message);
+                    clr.error(message);
                 }
             } else {
                 String resStr = "- " + result + " " + message;
                 log.info(resStr);
-                sysOutLog(testCase, INFO, resStr);
+                clr.info(resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
                     log.info(message);
-                    sysOutLog(testCase, INFO, message);
+                    clr.info(message);
                 }
             }
             prevMessages = messages;
         }
     }
 
-    private List<String> getPageInformation(TestCase testCase) {
+    private List<String> getPageInformation(TestCase testCase, Runner runner) {
         List<String> messages = new ArrayList<String>();
-        WebDriver driver = testCase.getRunner().getDriver();
+        WebDriver driver = runner.getDriver();
         try {
             String url = driver.getCurrentUrl();
             String title = driver.getTitle();
@@ -116,21 +117,24 @@ public class CommandLogInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestCase testCase = (TestCase) invocation.getThis();
-        Command command = (Command) invocation.getArguments()[0];
+        Object[] args = invocation.getArguments();
+        Command command = (Command) args[0];
+        Runner runner = (Runner) args[1];
         String cmdStr = command.toString();
+        LogRecorder clr = testCase.getLogRecorder();
         log.info(cmdStr);
-        sysOutLog(testCase, INFO, cmdStr);
+        clr.info(cmdStr);
         try {
             Result result = (Result) invocation.proceed();
             if (command.hasResult())
-                log(cmdStr, result, testCase);
+                log(cmdStr, result, testCase, runner);
             return result;
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();
             log.error(msg);
-            sysErrLog(testCase, ERROR, msg);
+            clr.error(msg);
             if (testCase != null)
-                setError(testCase, e.getMessage(), e.toString());
+                runner.getJUnitResult().setError(testCase, e.getMessage(), e.toString());
             throw e;
         }
     }

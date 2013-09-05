@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>${title;h}</title>
+    <style type='text/css'>
+      body, table {
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 12px;
+      }
+
+      table {
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+      }
+
+      th, td {
+        padding-left: 0.3em;
+        padding-right: 0.3em;
+      }
+
+      th {
+        text-align: right;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .title {
+        font-style: italic;
+      }
+
+      .selected {
+        background-color: #ffffcc;
+      }
+
+      .indexh {
+        text-align: center;
+      }
+
+      .index {
+        text-align: right;
+      }
+
+      .status_unexecuted .cmd_status_unexecuted {
+      }
+
+      .status_success {
+        background-color: #ccffcc;
+      }
+
+      .cmd_status_success {
+        background-color: #eeffee;
+      }
+
+      .status_warning, .cmd_status_warning {
+        background-color: #ffcccc;
+      }
+
+      .status_failure, .cmd_status_failure {
+        background-color: #ffcccc;
+      }
+
+      .status_error, .cmd_status_error {
+        background-color: #ffcccc;
+      }
+
+      .breakpoint {
+        background-color: #cccccc;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>${title;h}</h1>
+
+    <table>
+      <tr><th>Result:</th><td>${testSuite.result}</td></tr>
+      <tr><th>Total Time:</th><td>${testSuite.stopWatch.durationString;h}</td></tr>
+      <tr><th>Number of Test Total:</th><td>${numTestTotal}</td></tr>
+      <tr><th>Number of Test Passes:</th><td>${numTestPasses}</td></tr>
+      <tr><th>Number of Test Failures:</th><td>${numTestFailures}</td></tr>
+      <tr><th>Number of Command Passes:</th><td>${numCommandPasses}</td></tr>
+      <tr><th>Number of Command Failures:</th><td>${numCommandFailures}</td></tr>
+      <tr><th>Number of Command Errors:</th><td>${numCommandErrors}</td></tr>
+      <tr><th>Selenium Version:</th><td>${seleniumVersion}</td></tr>
+      <tr><td>
+          <br>
+          <table id="suiteTable" class="selenium" cellpadding="1" cellspacing="1" border="1">
+            <tbody>
+              <tr class="title status_${testSuite.result}"><td><b>${testSuite.name}</b></td></tr>
+${foreach testCaseList testCase}
+              <tr class="status_${testCase.object.result}"><td><a href="#testCase${testCase.index}">${testCase.object.name;h}</a></td></tr>
+${end}
+          </tbody>
+          </table>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+
+${foreach testCaseList testCase}
+    <br>
+    <table>
+      <tr>
+        <td><a name="testCase${testCase.index}">${testCase.object.filename;h}</a><br>
+          <div>
+            <table cellpadding="1" cellspacing="1" border="1">
+              <thead>
+                <tr class="title status_${testCase.object.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${testCase.object.name;h}</td></tr>
+              </thead>
+              <tbody>
+  ${foreach testCase.object.commandList command}
+                <tr class="cmd_status_${command.result}" style="cursor: pointer;">
+                  <td class="index">${command.index;i}</td>
+    ${foreach command.source item}
+                  <td>${item;h}</td>
+    ${end}
+                </tr>
+  ${end}
+              </tbody>
+            </table>
+          </div>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    </table>
+
+    <pre>${foreach testCase.object.logRecorder.messages msg}${msg}
+${end}</pre>
+${end}
+  </body>
+</html>

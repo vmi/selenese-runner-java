@@ -110,9 +110,9 @@ public class AssertionStringMatchTest extends TestBase {
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile.getPath(), "test", runner, ws.getUrl());
 
-        assertTrue(open.doCommand(testcase).isSuccess());
+        assertTrue(open.doCommand(testcase, runner).isSuccess());
 
-        assertThat(assertionDefaultGlob.doCommand(testcase).getMessage(), assertionDefaultGlob.doCommand(testcase),
+        assertThat(assertionDefaultGlob.doCommand(testcase, runner).getMessage(), assertionDefaultGlob.doCommand(testcase, runner),
             is(instanceOf(resultClass)));
     }
 

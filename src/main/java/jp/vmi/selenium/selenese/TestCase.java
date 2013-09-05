@@ -16,8 +16,10 @@ import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+import jp.vmi.selenium.selenese.utils.StopWatch;
 
-import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * test-case object for execution.
@@ -31,7 +33,6 @@ public class TestCase implements Selenese, ITestCase {
     private String filename = null;
     private String baseName = "nofile";
     private String name = null;
-    private Runner runner = null;
     private String baseURL = null;
     private long speed = 0;
 
@@ -41,7 +42,10 @@ public class TestCase implements Selenese, ITestCase {
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
     private final CommandList commandList = new CommandList();
-    private Command prev = commandList;
+
+    private final StopWatch stopWatch = new StopWatch();
+    private final LogRecorder logRecorder = new LogRecorder();
+    private Result result = UNEXECUTED;
 
     /**
      * Initialize after constructed.
@@ -57,7 +61,6 @@ public class TestCase implements Selenese, ITestCase {
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
-        this.runner = runner;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
         this.proc = new CustomCommandProcessor(baseURL, runner.getDriver(), runner.getVarsMap());
         return this;
@@ -66,6 +69,15 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public boolean isError() {
         return false;
+    }
+
+    /**
+     * Get filename of test-case.
+     *
+     * @return filename.
+     */
+    public String getFilename() {
+        return filename;
     }
 
     /**
@@ -80,11 +92,6 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public Runner getRunner() {
-        return runner;
     }
 
     /**
@@ -103,6 +110,44 @@ public class TestCase implements Selenese, ITestCase {
      */
     public String getBaseURL() {
         return baseURL;
+    }
+
+    /**
+     * Get command list.
+     * 
+     * @return command list.
+     */
+    public CommandList getCommandList() {
+        return commandList;
+    }
+
+    /**
+     * Get stop watch.
+     *
+     * @return stop watch.
+     */
+    @Override
+    public StopWatch getStopWatch() {
+        return stopWatch;
+    }
+
+    /**
+     * Get log recorder.
+     *
+     * @return log recorder.
+     */
+    @Override
+    public LogRecorder getLogRecorder() {
+        return logRecorder;
+    }
+
+    /**
+     * Get test-case result.
+     *
+     * @return test-case result.
+     */
+    public Result getResult() {
+        return result;
     }
 
     /**
@@ -189,13 +234,13 @@ public class TestCase implements Selenese, ITestCase {
      * @param command command.
      */
     public void addCommand(Command command) {
-        prev = prev.setNext(command);
+        commandList.add(command);
     }
 
     @DoCommand
-    protected Result doCommand(Command command) {
+    protected Result doCommand(Command command, Runner runner) {
         try {
-            return command.doCommand(this);
+            return command.doCommand(this, runner);
         } catch (Exception e) {
             return new Error(e);
         }
@@ -203,13 +248,12 @@ public class TestCase implements Selenese, ITestCase {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Selenese parent) {
+    public Result execute(Selenese parent, Runner runner) {
         Command command = commandList.first();
-        Result totalResult = SUCCESS;
         while (command != null) {
-            Result result = doCommand(command);
-            totalResult = totalResult.update(result);
-            if (totalResult.isAborted())
+            Result r = doCommand(command, runner);
+            result = result.update(r);
+            if (result.isAborted())
                 break;
             command = command.next(this);
             if (speed > 0) {
@@ -220,7 +264,7 @@ public class TestCase implements Selenese, ITestCase {
                 }
             }
         }
-        return totalResult;
+        return result;
     }
 
     @Override

@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -17,14 +19,20 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.html.result.HtmlResult;
+import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LogRecorder;
+
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Provide Java API to run Selenese script.
  */
-public class Runner {
+public class Runner implements HtmlResultHolder {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
@@ -42,6 +50,18 @@ public class Runner {
 
     private int countForDefault = 0;
 
+    private final JUnitResult jUnitResult = new JUnitResult();
+    private final HtmlResult htmlResult = new HtmlResult();
+
+    /**
+     * Set PrintStream for logging.
+     *
+     * @param out PrintStream for logging.
+     */
+    public static void setPrintStream(PrintStream out) {
+        LogRecorder.setPrintStream(out);
+    }
+
     private void takeScreenshot(File file, TestCase testcase) {
         File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
@@ -50,7 +70,7 @@ public class Runner {
             throw new RuntimeException("failed to rename captured screenshot image: " + file, e);
         }
         log.info("- captured screenshot: {}", file);
-        JUnitResult.addSystemOut(testcase, "[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
+        testcase.getLogRecorder().info("[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
     }
 
     /**
@@ -274,10 +294,39 @@ public class Runner {
      * @return result.
      */
     public Result run(String... filenames) {
-        TestSuite testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
-        for (String filename : filenames)
-            testSuite.addTestCase(filename);
-        return testSuite.execute(null);
+        Result totalResult = UNEXECUTED;
+        TestSuite defaultTestSuite = null;
+        List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
+        for (String filename : filenames) {
+            Selenese selenese = Parser.parse(filename, this);
+            if (selenese instanceof TestSuite) {
+                testSuiteList.add((TestSuite) selenese);
+            } else if (selenese instanceof TestCase) {
+                if (defaultTestSuite == null) {
+                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
+                    testSuiteList.add(defaultTestSuite);
+                }
+                defaultTestSuite.addTestCase((TestCase) selenese);
+            } else if (selenese instanceof ErrorSource) {
+                log.error(selenese.toString());
+                totalResult = new Error("Invalid parameter");
+            } else {
+                throw new RuntimeException("Unknown Selenese object: " + selenese);
+            }
+        }
+        if (totalResult != UNEXECUTED)
+            return totalResult;
+        for (TestSuite testSuite : testSuiteList) {
+            Result result;
+            try {
+                result = testSuite.execute(null, this);
+            } catch (RuntimeException e) {
+                log.error(e.getMessage());
+                throw e;
+            }
+            totalResult = totalResult.update(result);
+        }
+        return totalResult;
     }
 
     /**
@@ -296,22 +345,52 @@ public class Runner {
         } else {
             testSuite = (TestSuite) selenese;
         }
-        return testSuite.execute(null);
+        return testSuite.execute(null, this);
     }
 
     /**
-     * set directory path for JUnit result xml file.
-     * @param dir directory path
+     * Initialize JUnitResult.
+     *
+     * @param dir JUnit result directory.
      */
-    public void setResultDir(String dir) {
-        JUnitResult.setXmlResultDir(dir);
+    public void setJUnitResultDir(String dir) {
+        jUnitResult.setDir(dir);
     }
 
     /**
-     * set PrintStream for logging.
-     * @param out PrintStream for logging.
+     * Get JUnit result instance.
+     *
+     * @return JUnit result instance.
      */
-    public void setPrintStream(PrintStream out) {
-        JUnitResult.setPrintStream(out);
+    public JUnitResult getJUnitResult() {
+        return jUnitResult;
+    }
+
+    /**
+     * Initialize HTMLResult.
+     * 
+     * @param dir HTML result directory.
+     */
+    public void setHtmlResultDir(String dir) {
+        htmlResult.setDir(dir);
+    }
+
+    /**
+     * Get HTML result instance.
+     *
+     * @return HTML result instance.
+     */
+    @Override
+    public HtmlResult getHtmlResult() {
+        return htmlResult;
+    }
+
+    /**
+     * Finish test.
+     * 
+     * generate index.html for HTML result.
+     */
+    public void finish() {
+        htmlResult.generateIndex();
     }
 }

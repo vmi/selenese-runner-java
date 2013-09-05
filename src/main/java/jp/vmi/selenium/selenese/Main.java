@@ -156,6 +156,10 @@ public class Main {
             .hasArg().withArgName("dir")
             .withDescription("output XML JUnit results to specified directory.")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("html-result")
+            .hasArg().withArgName("dir")
+            .withDescription("output HTML results to specified directory.")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("timeout")
             .hasArg().withArgName("timeout")
             .withDescription("set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC + " ms)")
@@ -285,13 +289,15 @@ public class Main {
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setBaseURL(cli.getOptionValue("baseurl"));
             runner.setIgnoreScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
-            runner.setResultDir(cli.getOptionValue("xml-result"));
+            runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
+            runner.setHtmlResultDir(cli.getOptionValue("html-result"));
             int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));
             if (timeout <= 0)
                 throw new IllegalArgumentException("Invalid timeout value. (" + cli.getOptionValue("timeout") + ")");
             runner.setTimeout(timeout);
-            runner.setPrintStream(System.out);
+            Runner.setPrintStream(System.out);
             Result totalResult = runner.run(filenames);
+            runner.finish();
             exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());

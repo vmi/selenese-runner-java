@@ -18,10 +18,11 @@ public class HighlightInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestCase testCase = (TestCase) invocation.getThis();
-        Runner runner = testCase.getRunner();
+        Object[] args = invocation.getArguments();
+        Command command = (Command) args[0];
+        Runner runner = (Runner) args[1];
         CustomCommandProcessor proc = testCase.getProc();
         proc.unhighlight();
-        Command command = (Command) invocation.getArguments()[0];
         if (runner.isHighlight()) {
             int i = 0;
             for (String locator : command.getLocators())

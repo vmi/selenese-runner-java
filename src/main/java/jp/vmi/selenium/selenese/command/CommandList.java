@@ -1,21 +1,19 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.ArrayList;
+
 /**
- * Command list holder.
- *
- * This holds the first element of Command list.
- *
- * This is pseudo command, not real one.
+ * Command list.
  */
-public class CommandList extends Command {
+public class CommandList extends ArrayList<Command> {
 
-    private static final String[] EMPTY_ARGS = new String[0];
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     */
-    public CommandList() {
-        super(0, "COMMAND_LIST", EMPTY_ARGS, 0);
+    @Override
+    public boolean add(Command command) {
+        if (!isEmpty())
+            get(size() - 1).setNext(command);
+        return super.add(command);
     }
 
     /**
@@ -24,6 +22,6 @@ public class CommandList extends Command {
      * @return command.
      */
     public Command first() {
-        return next(null);
+        return isEmpty() ? null : get(0);
     }
 }

@@ -1,10 +1,11 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Runner;
+
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
-
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -19,7 +20,7 @@ public class Pause extends Command {
     }
 
     @Override
-    public Result doCommand(TestCase testCase) {
+    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         String pausemsec = args[PAUSE_MSEC];
         if (pausemsec.isEmpty()) {
             return new Warning("pause is ignored: empty time.");
