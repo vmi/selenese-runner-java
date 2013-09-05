@@ -25,10 +25,9 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 public class HtmlResult {
 
     private String htmlResultDir = null;
-    private String template = null;
     private Engine engine = null;
 
-    private final List<String> testSuiteNameList = new ArrayList<String>();
+    private final List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
 
     /**
      * Set HTML result directory.
@@ -40,18 +39,15 @@ public class HtmlResult {
     }
 
     private String getTemplate(String filename) {
-        if (template == null) {
-            InputStream is = null;
-            try {
-                is = getClass().getResourceAsStream(filename);
-                template = IOUtils.toString(is);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } finally {
-                IOUtils.closeQuietly(is);
-            }
+        InputStream is = null;
+        try {
+            is = getClass().getResourceAsStream(filename);
+            return IOUtils.toString(is);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(is);
         }
-        return template;
     }
 
     private Engine getEngine() {
@@ -128,7 +124,7 @@ public class HtmlResult {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        testSuiteNameList.add(testSuite.getName());
+        testSuiteList.add(testSuite);
     }
 
     /**
@@ -138,7 +134,8 @@ public class HtmlResult {
         if (htmlResultDir == null)
             return;
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("nameList", testSuiteNameList);
+        model.put("title", "Index of test-suite results.");
+        model.put("list", testSuiteList);
         String html = getEngine().transform(getTemplate("index.html"), model);
         File file = new File(htmlResultDir, "index.html");
         try {
