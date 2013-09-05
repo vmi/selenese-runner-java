@@ -15,36 +15,55 @@ Features
 * Take screenshots at all commands. (optional)
 * Override base URL.
 * Override directory of screenshot path.
+* Generate JUnit XML result.
+* Generate HTML result.
 
 Usage
 -----
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
-     -d,--driver <driver>             firefox (default) | chrome | ie | safari | htmlunit | phantomjs | FQCN-of-WebDriverFactory
-     -p,--profile <name>              profile name (Firefox only)
-     -P,--profile-dir <dir>           profile directory (Firefox only)
-        --proxy <proxy>               proxy host and port (HOST:PORT) (excepting IE)
-        --proxy-user <user>           proxy username (HtmlUnit only *)
-        --proxy-password <password>   proxy password (HtmlUnit only *)
-        --no-proxy <no-proxy>         no-proxy hosts
-     -H,--highlight                   highlight locator always.
-     -s,--screenshot-dir <dir>        override captureEntirePageScreenshot directory.
-     -S,--screenshot-all <dir>        take screenshot at all commands to specified directory.
-        --screenshot-on-fail <dir>    take screenshot on fail commands to specified directory.
-        --ignore-screenshot-command   ignore captureEntirePageScreenshot command.
-     -b,--baseurl <baseURL>           override base URL set in selenese.
-        --chromedriver <path>         path to 'chromedriver' binary. (implies '--driver chrome')
-        --iedriver <path>             path to 'IEDriverServer' binary. (implies '--driver ie')
-        --xml-result <dir>            output XML JUnit results to specified directory.
-     -t,--timeout <timeout>           set timeout (ms) for waiting. (default: 30000 ms)
-     -h,--help                        show this message.
+     -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | FQCN-of-WebDriverFactory
+     -p,--profile <name>                     profile name (Firefox only)
+     -P,--profile-dir <dir>                  profile directory (Firefox only)
+        --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
+        --proxy-user <user>                  proxy username (HtmlUnit only *)
+        --proxy-password <password>          proxy password (HtmlUnit only *)
+        --no-proxy <no-proxy>                no-proxy hosts
+        --remote-url <url>                   Remote test runner URL (Remote only)
+        --remote-platform <platform>         Desired remote platform (Remote only)
+        --remote-browser <browser>           Desired remote browser (Remote only)
+        --remote-version <browser-version>   Desired remote browser version (Remote only)
+     -H,--highlight                          highlight locator always.
+     -s,--screenshot-dir <dir>               override captureEntirePageScreenshot directory.
+     -S,--screenshot-all <dir>               take screenshot at all commands to specified directory.
+        --screenshot-on-fail <dir>           take screenshot on fail commands to specified directory.
+        --ignore-screenshot-command          ignore captureEntirePageScreenshot command.
+     -b,--baseurl <baseURL>                  override base URL set in selenese.
+        --chromedriver <path>                path to 'chromedriver' binary. (implies '--driver chrome')
+        --iedriver <path>                    path to 'IEDriverServer' binary. (implies '--driver ie')
+        --xml-result <dir>                   output XML JUnit results to specified directory.
+        --html-result <dir>                  output HTML results to specified directory.
+     -t,--timeout <timeout>                  set timeout (ms) for waiting. (default: 30000 ms)
+     -h,--help                               show this message.
 
 Requirements
 ------------
 
 * Java 6 or later.
 * Apache Maven 2.x or later.
+
+Relase Note
+-----------
+
+### 1.2.0
+
+* Add HTML result generator.
+* Too many internal changes.
+
+### 1.0.0 - 1.1.5
+
+* Sorry, I was not recording changes...
 
 Building the Application
 ------------------------
