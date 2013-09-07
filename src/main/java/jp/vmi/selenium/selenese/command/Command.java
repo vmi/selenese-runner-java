@@ -18,7 +18,10 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
  */
 public abstract class Command {
 
-    private static final int[] NO_LOCATOR_INDEX = new int[0];
+    /**
+     * Path to constructor if the command arguments have no locator. 
+     */
+    public static final int[] NO_LOCATOR_INDEX = new int[0];
 
     private final int index;
     protected final String name;
@@ -30,13 +33,13 @@ public abstract class Command {
     /**
      * Constructor.
      *
-     * @param index index number of Command (1 origin).
+     * @param index index number of Command. (1 origin)
      * @param name selenese command name.
      * @param args command arguments.
-     * @param argCnt argument count.
-     * @param locatorIndexes locator indexes.
+     * @param argCnt argument count. (<= args.length)
+     * @param locatorIndexes locator indexes. (0 origin. use NO_LOCATOR_INDEX if no locator)
      */
-    Command(int index, String name, String[] args, int argCnt, int[] locatorIndexes) {
+    public Command(int index, String name, String[] args, int argCnt, int[] locatorIndexes) {
         this.index = index;
         this.name = name;
         this.args = (args.length == argCnt) ? args : Arrays.copyOf(args, argCnt);
@@ -47,14 +50,14 @@ public abstract class Command {
     }
 
     /**
-     * Constructor.
+     * Constructor. (for command with no locator)
      *
-     * @param index index number of Command (1 origin).
+     * @param index index number of Command. (1 origin)
      * @param name selenese command name.
      * @param args command arguments.
-     * @param argCnt argument count.
+     * @param argCnt argument count. (<= args.length)
      */
-    Command(int index, String name, String[] args, int argCnt) {
+    public Command(int index, String name, String[] args, int argCnt) {
         this(index, name, args, argCnt, NO_LOCATOR_INDEX);
     }
 
@@ -83,7 +86,7 @@ public abstract class Command {
      *
      * @return index.
      */
-    public int getIndex() {
+    public final int getIndex() {
         return index;
     }
 
@@ -101,7 +104,7 @@ public abstract class Command {
      * 
      * @return result of this command.
      */
-    public Result getResult() {
+    public final Result getResult() {
         return result;
     }
 
@@ -111,7 +114,7 @@ public abstract class Command {
      * @param result result of this command.
      * @return result itself.
      */
-    protected Result setResult(Result result) {
+    protected final Result setResult(Result result) {
         return this.result = result;
     }
 
@@ -120,7 +123,7 @@ public abstract class Command {
      *
      * @return array of source elements. (always 3 elements)
      */
-    public String[] getSource() {
+    public final String[] getSource() {
         String[] source = new String[3];
         source[0] = name;
         switch (args.length) {
@@ -136,6 +139,14 @@ public abstract class Command {
         return source;
     }
 
+    /**
+     * Implementation of command.
+     * You can override this method.
+     *
+     * @param testCase test-case instance.
+     * @param runner Runner object.
+     * @return result.
+     */
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
         return SUCCESS;
     }

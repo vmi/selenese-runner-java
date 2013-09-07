@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import com.thoughtworks.selenium.SeleniumException;
  * Factory of selenese command.
  */
 public class CommandFactory {
+
+    private static final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
 
@@ -73,6 +76,15 @@ public class CommandFactory {
     private final WebDriverCommandProcessor proc;
 
     /**
+     * Register user defined command factory.
+     *
+     * @param factory user defined command factory.
+     */
+    public static void registerUserDefinedCommandFactory(UserDefinedCommandFactory factory) {
+        userDefinedCommandFactories.add(factory);
+    }
+
+    /**
      * Constructor.
      *
      * @param proc WebDriverCommandProcessor instance.
@@ -102,6 +114,13 @@ public class CommandFactory {
      * @return Command instance.
      */
     public Command newCommand(int index, String name, String... args) {
+        // user defined command.
+        for (UserDefinedCommandFactory factory : userDefinedCommandFactories) {
+            Command command = factory.newCommand(index, name, args);
+            if (command != null)
+                return command;
+        }
+
         boolean andWait = name.endsWith(AND_WAIT);
         String realName = andWait ? name.substring(0, name.length() - AND_WAIT.length()) : name;
 
