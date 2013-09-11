@@ -270,7 +270,7 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
-     * Get timeout for waiting. (ms)
+     * Get variables map used for this session.
      *
      * @return the evaluated variables (state) for the current context.
      */
@@ -279,7 +279,7 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
-     * Set variables map used for this session
+     * Set variables map used for this session.
      *
      * @param varsMap the evaluated variables (state) for the current context.
      */
