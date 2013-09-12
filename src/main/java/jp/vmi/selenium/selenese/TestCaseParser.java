@@ -39,7 +39,8 @@ public class TestCaseParser extends Parser {
             String baseURL = runner.getEffectiveBaseURL(this.baseURL);
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(filename, name, runner, baseURL);
-            CommandFactory commandFactory = new CommandFactory(testCase.getProc());
+            CommandFactory commandFactory = runner.getCommandFactory();
+            commandFactory.setProc(testCase.getProc());
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();

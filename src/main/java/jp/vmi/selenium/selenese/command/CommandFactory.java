@@ -10,16 +10,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
+
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 
 /**
  * Factory of selenese command.
  */
 public class CommandFactory {
-
-    private static final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
 
@@ -73,23 +72,25 @@ public class CommandFactory {
     private static final int IS_PRESENT_INVERSE = 4;
     private static final int PRESENT = 5;
 
-    private final WebDriverCommandProcessor proc;
+    private final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
+
+    private CustomCommandProcessor proc = null;
 
     /**
      * Register user defined command factory.
      *
      * @param factory user defined command factory.
      */
-    public static void registerUserDefinedCommandFactory(UserDefinedCommandFactory factory) {
+    public void registerUserDefinedCommandFactory(UserDefinedCommandFactory factory) {
         userDefinedCommandFactories.add(factory);
     }
 
     /**
-     * Constructor.
+     * Set CustomCommandProcessor instance.
      *
-     * @param proc WebDriverCommandProcessor instance.
+     * @param proc CustomCommandProcessor instance.
      */
-    public CommandFactory(WebDriverCommandProcessor proc) {
+    public void setProc(CustomCommandProcessor proc) {
         this.proc = proc;
     }
 

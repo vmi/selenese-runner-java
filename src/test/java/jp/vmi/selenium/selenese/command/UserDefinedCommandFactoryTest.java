@@ -1,8 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.junit.Test;
-import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
+import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -22,8 +24,11 @@ public class UserDefinedCommandFactoryTest {
 
     @Test
     public void test() {
-
-        CommandFactory.registerUserDefinedCommandFactory(new UserDefinedCommandFactory() {
+        Runner runner = new Runner();
+        // runner.setBaseURL("http://localhost/");
+        // runner.setDriver(new HtmlUnitDriver(true));
+        CommandFactory cf = runner.getCommandFactory();
+        cf.registerUserDefinedCommandFactory(new UserDefinedCommandFactory() {
             @Override
             public Command newCommand(int index, String name, String... args) {
                 if ("test".equals(name)) {
@@ -33,7 +38,10 @@ public class UserDefinedCommandFactoryTest {
                 }
             }
         });
-        CommandFactory cf = new CommandFactory(new WebDriverCommandProcessor("http://localhost/", new HtmlUnitDriver(true)));
+        // runner.run(...);
+
+        // only for test.
+        cf.setProc(new CustomCommandProcessor("http://localhost/", new HtmlUnitDriver(true)));
         assertThat(cf.newCommand(1, "test"), is(instanceOf(TestCommand.class)));
         assertThat(cf.newCommand(2, "echo", "test"), is(instanceOf(Echo.class)));
     }

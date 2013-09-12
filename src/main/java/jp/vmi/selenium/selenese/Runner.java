@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
@@ -46,6 +47,8 @@ public class Runner implements HtmlResultHolder {
     private boolean ignoreScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
+    private final CommandFactory commandFactory = new CommandFactory();
+
     private Map<String, Object> varsMap = new HashMap<String, Object>();
 
     private int countForDefault = 0;
@@ -267,6 +270,15 @@ public class Runner implements HtmlResultHolder {
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    /**
+     * Get CommandFactory instance.
+     * 
+     * @return CommandFactory instance.
+     */
+    public CommandFactory getCommandFactory() {
+        return commandFactory;
     }
 
     /**

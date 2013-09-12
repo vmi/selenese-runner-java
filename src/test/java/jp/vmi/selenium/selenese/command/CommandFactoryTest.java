@@ -2,8 +2,8 @@ package jp.vmi.selenium.selenese.command;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriverCommandProcessor;
 
+import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
@@ -30,8 +30,9 @@ public class CommandFactoryTest {
      */
     @Test
     public void captureEntirePageScreenshot() throws IllegalArgumentException {
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
-        CommandFactory factory = new CommandFactory(proc);
+        CustomCommandProcessor proc = new CustomCommandProcessor("http://localhost/", manager.get());
+        CommandFactory factory = new CommandFactory();
+        factory.setProc(proc);
         factory.newCommand(1, "captureEntirePageScreenshot");
     }
 
@@ -42,8 +43,9 @@ public class CommandFactoryTest {
      */
     @Test
     public void deleteAllVisibleCookies() throws IllegalArgumentException {
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
-        CommandFactory factory = new CommandFactory(proc);
+        CustomCommandProcessor proc = new CustomCommandProcessor("http://localhost/", manager.get());
+        CommandFactory factory = new CommandFactory();
+        factory.setProc(proc);
         factory.newCommand(1, "deleteAllVisibleCookies");
     }
 
@@ -54,8 +56,9 @@ public class CommandFactoryTest {
      */
     @Test
     public void runScript() throws IllegalArgumentException {
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
-        CommandFactory factory = new CommandFactory(proc);
+        CustomCommandProcessor proc = new CustomCommandProcessor("http://localhost/", manager.get());
+        CommandFactory factory = new CommandFactory();
+        factory.setProc(proc);
         factory.newCommand(1, "runScript", "alert('test')");
     }
 
@@ -66,8 +69,9 @@ public class CommandFactoryTest {
      */
     @Test
     public void type() throws IllegalArgumentException {
-        WebDriverCommandProcessor proc = new WebDriverCommandProcessor("http://localhost/", manager.get());
-        CommandFactory factory = new CommandFactory(proc);
+        CustomCommandProcessor proc = new CustomCommandProcessor("http://localhost/", manager.get());
+        CommandFactory factory = new CommandFactory();
+        factory.setProc(proc);
         factory.newCommand(1, "type", "aaa", "");
     }
 }
