@@ -1,5 +1,11 @@
 See https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
 
+### Prerequirement
+- add "servers" entry to "~/.m2/settings.xml".
+  See https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7a.1.POMandsettingsconfig
+- register PGP key.
+  PGP uid needs to be the same as "developers" entry in "pom.xml".
+
 ### Update
 $ git pull
 
