@@ -26,6 +26,7 @@ public class TestSuite implements Selenese, ITestSuite {
     private String parentDir = null;
     private String name;
     private final List<TestCase> testCaseList = new ArrayList<TestCase>();
+    private final List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
 
     private final StopWatch stopWatch = new StopWatch();
     private Result result = UNEXECUTED;
@@ -90,6 +91,57 @@ public class TestSuite implements Selenese, ITestSuite {
     }
 
     /**
+     * Add test filename (suite or case).
+     *
+     * @param filename test filename.
+     * @param runner Runner object.
+     */
+    public void addTestFile(String filename, Runner runner) {
+        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
+            filename = FilenameUtils.concat(parentDir, filename);
+
+        Selenese selenese = Parser.parse(filename, runner);
+
+        if (selenese instanceof TestCase) {
+            addTestCase((TestCase) selenese);
+        } else if (selenese instanceof TestSuite) {
+            addTestSuite((TestSuite) selenese);
+        } else {
+            throw new RuntimeException("Unknown Selenese object: " + selenese);
+        }
+    }
+
+    /**
+     * Add test-suite instance.
+     *
+     * @param testSuite test-suite instance.
+     */
+    public void addTestSuite(TestSuite testSuite) {
+        testSuiteList.add(testSuite);
+    }
+
+    /**
+     * Add test-suite filename.
+     *
+     * @param filename test-suite filename.
+     * @param runner Runner object.
+     */
+    public void addTestSuite(String filename, Runner runner) {
+        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
+            filename = FilenameUtils.concat(parentDir, filename);
+        addTestSuite((TestSuite) Parser.parse(filename, runner));
+    }
+
+    /**
+     * Get list of test-suite instances.
+     *
+     * @return list of test-suite instances.
+     */
+    public List<TestSuite> getTestSuiteList() {
+        return testSuiteList;
+    }
+
+    /**
      * Get stop watch.
      * 
      * @return stop watch.
@@ -111,6 +163,18 @@ public class TestSuite implements Selenese, ITestSuite {
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Runner runner) {
+        for (TestSuite testSuite : testSuiteList) {
+            Result r;
+            try {
+                r = testSuite.execute(this, runner);
+            } catch (RuntimeException e) {
+                String msg = e.getMessage();
+                result = new Error(msg);
+                log.error(msg);
+                throw e;
+            }
+            result = result.update(r);
+        }
         for (TestCase testCase : testCaseList) {
             Result r;
             try {
