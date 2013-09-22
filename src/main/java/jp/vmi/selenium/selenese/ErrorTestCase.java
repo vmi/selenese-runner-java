@@ -20,6 +20,11 @@ public class ErrorTestCase extends ErrorSource implements ITestCase {
         return (ErrorTestCase) super.initialize(filename, e);
     }
 
+    @Override
+    public Type getType() {
+        return Type.TEST_CASE;
+    }
+
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {

@@ -311,19 +311,21 @@ public class Runner implements HtmlResultHolder {
         List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
         for (String filename : filenames) {
             Selenese selenese = Parser.parse(filename, this);
-            if (selenese instanceof TestSuite) {
+            if (selenese.isError()) {
+                log.error(selenese.toString());
+                totalResult = new Error("Invalid parameter");
+                continue;
+            }
+            switch (selenese.getType()) {
+            case TEST_SUITE:
                 testSuiteList.add((TestSuite) selenese);
-            } else if (selenese instanceof TestCase) {
+                break;
+            case TEST_CASE:
                 if (defaultTestSuite == null) {
                     defaultTestSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
                     testSuiteList.add(defaultTestSuite);
                 }
-                defaultTestSuite.addTestCase((TestCase) selenese);
-            } else if (selenese instanceof ErrorSource) {
-                log.error(selenese.toString());
-                totalResult = new Error("Invalid parameter");
-            } else {
-                throw new RuntimeException("Unknown Selenese object: " + selenese);
+                defaultTestSuite.addSelenese(selenese);
             }
         }
         if (totalResult != UNEXECUTED)
@@ -351,11 +353,17 @@ public class Runner implements HtmlResultHolder {
     public Result run(String filename, InputStream is) {
         TestSuite testSuite;
         Selenese selenese = Parser.parse(filename, is, this);
-        if (selenese instanceof TestCase) {
+        switch (selenese.getType()) {
+        case TEST_CASE:
             testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
-            testSuite.addTestCase((TestCase) selenese);
-        } else {
+            testSuite.addSelenese(selenese);
+            break;
+        case TEST_SUITE:
             testSuite = (TestSuite) selenese;
+            break;
+        default:
+            // don't reach here.
+            throw new RuntimeException("Unknown Selenese object: " + selenese);
         }
         return testSuite.execute(null, this);
     }

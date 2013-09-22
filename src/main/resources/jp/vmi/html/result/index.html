@@ -13,8 +13,8 @@
   <body>
     <h1>${title;h}</h1>
 	<ol>
-	${foreach list item}
-	  <li><a href="TEST-${item.name;h}.html">${item.name;h}</a></li>
+	${foreach tree.rootNodeList node}
+	  ${node}
 	${end}
 	</ol>
   </body>

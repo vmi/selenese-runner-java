@@ -1,0 +1,7 @@
+<li><a href="TEST-${node.testSuite.name;h}.html">${node.testSuite.name;h}</a> (${node.testSuite.result})
+<ul>
+${foreach node.children child}
+  ${child}
+${end}
+</ul>
+</li>

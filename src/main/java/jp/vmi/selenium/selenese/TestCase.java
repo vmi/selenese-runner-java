@@ -67,6 +67,11 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     @Override
+    public Type getType() {
+        return Type.TEST_CASE;
+    }
+
+    @Override
     public boolean isError() {
         return false;
     }

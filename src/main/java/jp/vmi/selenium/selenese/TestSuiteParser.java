@@ -26,7 +26,7 @@ public class TestSuiteParser extends Parser {
             NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
             for (Node node : each(nodeList)) {
                 String tcFilename = node.getNodeValue();
-                testSuite.addTestFile(tcFilename, runner);
+                testSuite.addSeleneseFile(tcFilename, runner);
             }
             return testSuite;
         } catch (TransformerException e) {

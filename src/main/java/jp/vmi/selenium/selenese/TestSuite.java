@@ -25,8 +25,7 @@ public class TestSuite implements Selenese, ITestSuite {
     private String filename;
     private String parentDir = null;
     private String name;
-    private final List<TestCase> testCaseList = new ArrayList<TestCase>();
-    private final List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
+    private final List<Selenese> seleneseList = new ArrayList<Selenese>();
 
     private final StopWatch stopWatch = new StopWatch();
     private Result result = UNEXECUTED;
@@ -51,6 +50,11 @@ public class TestSuite implements Selenese, ITestSuite {
     }
 
     @Override
+    public Type getType() {
+        return Type.TEST_SUITE;
+    }
+
+    @Override
     public boolean isError() {
         return false;
     }
@@ -61,84 +65,33 @@ public class TestSuite implements Selenese, ITestSuite {
     }
 
     /**
-     * Add test-case instance.
+     * Add Selenese (test-suite/test-case) instance.
      *
-     * @param testCase test-case instance.
+     * @param selenese Selenese instance.
      */
-    public void addTestCase(TestCase testCase) {
-        testCaseList.add(testCase);
+    public void addSelenese(Selenese selenese) {
+        seleneseList.add(selenese);
     }
 
     /**
-     * Add test-case filename.
+     * Add Selenese file. (test-suite or test-case)
      *
-     * @param filename test-case filename.
+     * @param filename Selenese file name.
      * @param runner Runner object.
      */
-    public void addTestCase(String filename, Runner runner) {
+    public void addSeleneseFile(String filename, Runner runner) {
         if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
             filename = FilenameUtils.concat(parentDir, filename);
-        addTestCase((TestCase) Parser.parse(filename, runner));
+        addSelenese(Parser.parse(filename, runner));
     }
 
     /**
-     * Get list of test-case instances. 
-     * 
-     * @return list of test-case instances.
-     */
-    public List<TestCase> getTestCaseList() {
-        return testCaseList;
-    }
-
-    /**
-     * Add test filename (suite or case).
+     * Get Selenese list.
      *
-     * @param filename test filename.
-     * @param runner Runner object.
+     * @return Selenese list.
      */
-    public void addTestFile(String filename, Runner runner) {
-        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
-            filename = FilenameUtils.concat(parentDir, filename);
-
-        Selenese selenese = Parser.parse(filename, runner);
-
-        if (selenese instanceof TestCase) {
-            addTestCase((TestCase) selenese);
-        } else if (selenese instanceof TestSuite) {
-            addTestSuite((TestSuite) selenese);
-        } else {
-            throw new RuntimeException("Unknown Selenese object: " + selenese);
-        }
-    }
-
-    /**
-     * Add test-suite instance.
-     *
-     * @param testSuite test-suite instance.
-     */
-    public void addTestSuite(TestSuite testSuite) {
-        testSuiteList.add(testSuite);
-    }
-
-    /**
-     * Add test-suite filename.
-     *
-     * @param filename test-suite filename.
-     * @param runner Runner object.
-     */
-    public void addTestSuite(String filename, Runner runner) {
-        if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
-            filename = FilenameUtils.concat(parentDir, filename);
-        addTestSuite((TestSuite) Parser.parse(filename, runner));
-    }
-
-    /**
-     * Get list of test-suite instances.
-     *
-     * @return list of test-suite instances.
-     */
-    public List<TestSuite> getTestSuiteList() {
-        return testSuiteList;
+    public List<Selenese> getSeleneseList() {
+        return seleneseList;
     }
 
     /**
@@ -163,27 +116,17 @@ public class TestSuite implements Selenese, ITestSuite {
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Runner runner) {
-        for (TestSuite testSuite : testSuiteList) {
+        for (Selenese selenese : seleneseList) {
             Result r;
             try {
-                r = testSuite.execute(this, runner);
+                r = selenese.execute(this, runner);
             } catch (RuntimeException e) {
                 String msg = e.getMessage();
                 result = new Error(msg);
                 log.error(msg);
                 throw e;
-            }
-            result = result.update(r);
-        }
-        for (TestCase testCase : testCaseList) {
-            Result r;
-            try {
-                r = testCase.execute(this, runner);
-            } catch (RuntimeException e) {
-                String msg = e.getMessage();
-                result = new Error(msg);
-                log.error(msg);
-                throw e;
+            } catch (InvalidSeleneseException e) {
+                r = new Error(e);
             }
             result = result.update(r);
         }

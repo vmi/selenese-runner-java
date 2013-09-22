@@ -90,8 +90,15 @@
           <table id="suiteTable" class="selenium" cellpadding="1" cellspacing="1" border="1">
             <tbody>
               <tr class="title status_${testSuite.result}"><td><b>${testSuite.name}</b></td></tr>
-${foreach testCaseList testCase}
-              <tr class="status_${testCase.object.result}"><td><a href="#testCase${testCase.index}">${testCase.object.name;h}</a></td></tr>
+${@set index 0}
+${foreach seleneseList selenese}
+  ${if selenese.type="TEST_SUITE"}
+              <tr class="status_${selenese.result}"><td><a href="TEST-${selenese.name}.html">${selenese.name;h}</a> (test-suite)</td></tr>
+  ${end}
+  ${if selenese.type="TEST_CASE"}
+              <tr class="status_${selenese.result}"><td><a href="#testCase${index}">${selenese.name;h}</a></td></tr>
+  ${end}
+  ${@inc index}
 ${end}
           </tbody>
           </table>
@@ -100,25 +107,27 @@ ${end}
       </tr>
     </table>
 
-${foreach testCaseList testCase}
+${@set index 0}
+${foreach seleneseList selenese}
+  ${if selenese.type="TEST_CASE"}
     <br>
     <table>
       <tr>
-        <td><a name="testCase${testCase.index}">${testCase.object.filename;h}</a><br>
+        <td><a name="testCase${index}">${selenese.filename;h}</a><br>
           <div>
             <table cellpadding="1" cellspacing="1" border="1">
               <thead>
-                <tr class="title status_${testCase.object.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${testCase.object.name;h}</td></tr>
+                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td></tr>
               </thead>
               <tbody>
-  ${foreach testCase.object.commandList command}
+    ${foreach selenese.commandList command}
                 <tr class="cmd_status_${command.result}" style="cursor: pointer;">
                   <td class="index">${command.index;i}</td>
-    ${foreach command.source item}
+      ${foreach command.source item}
                   <td>${item;h}</td>
-    ${end}
+      ${end}
                 </tr>
-  ${end}
+    ${end}
               </tbody>
             </table>
           </div>
@@ -127,8 +136,10 @@ ${foreach testCaseList testCase}
     </tr>
     </table>
 
-    <pre>${foreach testCase.object.logRecorder.messages msg}${msg}
+    <pre>${foreach selenese.logRecorder.messages msg}${msg}
 ${end}</pre>
+  ${end}
+  ${@inc index}
 ${end}
   </body>
 </html>

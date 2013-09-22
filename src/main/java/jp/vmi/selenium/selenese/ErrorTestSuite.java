@@ -14,6 +14,11 @@ public class ErrorTestSuite extends ErrorSource implements ITestSuite {
         return (ErrorTestSuite) super.initialize(filename, e);
     }
 
+    @Override
+    public Type getType() {
+        return Type.TEST_SUITE;
+    }
+
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {

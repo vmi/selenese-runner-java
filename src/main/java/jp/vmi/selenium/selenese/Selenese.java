@@ -8,11 +8,33 @@ import jp.vmi.selenium.selenese.result.Result;
 public interface Selenese {
 
     /**
+     * Selenese script types.
+     */
+    @SuppressWarnings("javadoc")
+    public enum Type {
+        TEST_SUITE, TEST_CASE
+    }
+
+    /**
+     * Get script type.
+     *
+     * @return script type.
+     */
+    Type getType();
+
+    /**
      * Get script name.
      *
      * @return script name.
      */
     String getName();
+
+    /**
+     * Is error instance?
+     *
+     * @return true if this is error instance.
+     */
+    boolean isError();
 
     /**
      * Execute script.
