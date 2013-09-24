@@ -56,6 +56,11 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.0
+
+* Revive test-suites in test-suites.
+* Update HTML result generator for the above feature.
+
 ### 1.2.0
 
 * Add HTML result generator.
