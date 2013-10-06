@@ -56,6 +56,10 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.1
+
+* Fix issue #75.
+
 ### 1.3.0
 
 * Revive test-suites in test-suites.
