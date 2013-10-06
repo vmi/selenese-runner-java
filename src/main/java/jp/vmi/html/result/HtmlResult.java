@@ -116,10 +116,16 @@ public class HtmlResult {
         for (Selenese selenese : seleneseList) {
             switch (selenese.getType()) {
             case TEST_SUITE:
+                if (selenese.isError())
+                    break;
                 summary.merge(generate((TestSuite) selenese));
                 break;
             case TEST_CASE:
                 summary.numTestTotal++;
+                if (selenese.isError()) {
+                    summary.numTestFailures++;
+                    break;
+                }
                 TestCase testCase = (TestCase) selenese;
                 switch (testCase.getResult().getLevel()) {
                 case UNEXECUTED:
