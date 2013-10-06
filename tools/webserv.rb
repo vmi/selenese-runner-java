@@ -5,7 +5,7 @@ include WEBrick
 
 # src/test/resources/jp/vmi/selenium/selenese/htdocs
 
-htdocs = File.dirname($0) + "/../src/test/resources/jp/vmi/selenium/testutil/htdocs"
+htdocs = File.dirname($0) + "/../src/test/resources/htdocs"
 
 Dir.chdir(htdocs)
 serv = HTTPServer.new(:Port => 80, :DocumentRoot => '.')

@@ -3,6 +3,7 @@ package jp.vmi.selenium.testutil;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.net.PortProber;
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
@@ -17,28 +18,21 @@ import jp.vmi.selenium.selenese.RedirectHandler;
  */
 public class WebServer {
 
-    int port;
+    private static final int STOP_RETRY_COUNT = 3;
 
-    org.webbitserver.WebServer server;
+    private int port;
 
-    /**
-     * constructor.
-     */
-    public WebServer() {
-        super();
-    }
+    private org.webbitserver.WebServer server;
 
     /**
      * start web server.
      */
     public void start() {
         port = PortProber.findFreePort();
-
-        File classpath = new File(this.getClass().getResource("").getPath());
-        File documentroot = new File(classpath, "htdocs");
+        File htdocs = FileUtils.toFile(getClass().getResource("/htdocs"));
         server = WebServers.createWebServer(port)
+            .add(new StaticFileHandler(htdocs))
             .add("/basic", new BasicAuthenticationHandler(new InMemoryPasswords().add("user", "pass")))
-            .add(new StaticFileHandler(documentroot))
             .add("/redirect", new RedirectHandler("http://" + getServerNameString() + "/index.html"))
             .add("/basic/redirect", new RedirectHandler("http://" + getServerNameString() + "/basic/index.html"));
         try {
@@ -55,20 +49,17 @@ public class WebServer {
      */
     public void stop() {
         try {
-            int count = 0;
+            int retry = STOP_RETRY_COUNT;
             while (true) {
                 try {
                     server.stop().get();
-                    return;
+                    break;
                 } catch (AssertionError e) {
                     // WebServer.stop() throw AssertionError frequently, and retry stopping.
-                    if (count > 3) {
+                    if (--retry > 0)
                         throw e;
-                    }
-                    count++;
-                    Thread.sleep(1000);
-                    continue;
                 }
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -78,7 +69,8 @@ public class WebServer {
     }
 
     /**
-     * get server name
+     * Get server name.
+     *
      * @return server name
      */
     public String getServerNameString() {
