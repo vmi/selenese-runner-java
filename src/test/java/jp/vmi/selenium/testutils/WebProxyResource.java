@@ -3,16 +3,18 @@ package jp.vmi.selenium.testutils;
 import org.junit.rules.ExternalResource;
 
 /**
- * Web proxy resource class for test
+ * Web proxy resource class for test.
  *
  * @author hayato
  */
 public class WebProxyResource extends ExternalResource {
+
     private WebProxy proxy;
 
     /**
-     * get proxy instance
-     * @return proxy server
+     * Get proxy server.
+     *
+     * @return proxy server.
      */
     public WebProxy getProxy() {
         return proxy;
@@ -26,7 +28,7 @@ public class WebProxyResource extends ExternalResource {
 
     @Override
     protected void after() {
-        proxy.kill();
+        proxy.stop();
     }
 
 }

@@ -19,7 +19,7 @@ public class WebProxyTest {
         for (int i = 0; i < 20; i++) {
             WebProxy proxy = new WebProxy();
             proxy.start();
-            proxy.kill();
+            proxy.stop();
         }
     }
 
@@ -27,10 +27,10 @@ public class WebProxyTest {
      * Test of start() and kill().
      */
     @Test(timeout = 30000)
-    public void startAndKill() {
+    public void startAndStop() {
         WebProxy proxy = new WebProxy();
         proxy.start();
-        proxy.kill();
+        proxy.stop();
         assertThat(PortProber.pollPort(proxy.getPort()), is(true));
     }
 }

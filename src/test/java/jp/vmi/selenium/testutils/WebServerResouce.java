@@ -10,16 +10,18 @@ public class WebServerResouce extends ExternalResource {
     private WebServer server;
 
     /**
-     * get webserver instance
-     * @return webserver
+     * Get webserver.
+     *
+     * @return webserver.
      */
     public WebServer getServer() {
         return server;
     }
 
     /**
-     * get webcome page URL
-     * @return URL
+     * Get webcome page URL.
+     * 
+     * @return URL.
      */
     public String getUrl() {
         return "http://" + server.getServerNameString() + "/";
@@ -35,5 +37,4 @@ public class WebServerResouce extends ExternalResource {
     protected void after() {
         server.stop();
     }
-
 }

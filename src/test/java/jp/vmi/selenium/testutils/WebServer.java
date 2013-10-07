@@ -14,7 +14,6 @@ import jp.vmi.selenium.selenese.RedirectHandler;
 
 /**
  * Webserver for unit test.
- * TODO: merge to Proxy.java
  */
 public class WebServer {
 
@@ -25,7 +24,7 @@ public class WebServer {
     private org.webbitserver.WebServer server;
 
     /**
-     * start web server.
+     * Start web server.
      */
     public void start() {
         port = PortProber.findFreePort();
@@ -45,7 +44,7 @@ public class WebServer {
     }
 
     /**
-     * stop web server.
+     * Stop web server.
      */
     public void stop() {
         try {
@@ -71,7 +70,7 @@ public class WebServer {
     /**
      * Get server name.
      *
-     * @return server name
+     * @return server name.
      */
     public String getServerNameString() {
         return "localhost:" + port;

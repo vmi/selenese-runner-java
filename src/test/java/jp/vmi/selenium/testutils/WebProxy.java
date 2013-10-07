@@ -11,20 +11,14 @@ import org.openqa.selenium.net.PortProber;
  */
 public class WebProxy {
 
+    private int port;
+
+    private HttpProxyServer server;
+
     private int count = 0;
 
-    HttpProxyServer server = null;
-
-    int port = 0;
-
     /**
-     * Constructor.
-     */
-    public WebProxy() {
-    }
-
-    /**
-     * start proxy.
+     * Start proxy server.
      */
     public void start() {
         port = PortProber.findFreePort();
@@ -38,22 +32,15 @@ public class WebProxy {
     }
 
     /**
-     * kill proxy.
+     * Stop proxy server.
      */
-    public void kill() {
+    public void stop() {
         server.stop();
     }
 
     /**
-     * get port number
-     * @return port number
-     */
-    public int getPort() {
-        return port;
-    }
-
-    /**
-     * get request count
+     * Get request count.
+     *
      * @return request count.
      */
     public int getCount() {
@@ -61,11 +48,20 @@ public class WebProxy {
     }
 
     /**
-     * get server name (ex. localhost)
-     * @return server name
+     * Get port number.
+     *
+     * @return port number.
      */
-    public String getServerNameString() {
-        return "localhost:" + getPort();
+    public int getPort() {
+        return port;
     }
 
+    /**
+     * Get server name.
+     *
+     * @return server name.
+     */
+    public String getServerNameString() {
+        return "localhost:" + port;
+    }
 }
