@@ -7,7 +7,8 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.testutil.PreCondition;
+import jp.vmi.selenium.testutils.PreCondition;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 

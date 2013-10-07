@@ -1,4 +1,4 @@
-package jp.vmi.selenium.testutil;
+package jp.vmi.selenium.testutils;
 
 import org.junit.rules.ExternalResource;
 

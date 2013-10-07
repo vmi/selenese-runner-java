@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.*;
