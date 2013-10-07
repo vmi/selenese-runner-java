@@ -1,45 +1,46 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="UTF-8">
-<title>highlight test</title>
-<script>
-var clickCount = 0;
-function clickButton() {
-  clickCount++;
-  document.getElementById("button").value = "click count=" + clickCount;
-  return null;
-}
-</script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Highlight Test</title>
+  <script type="text/javascript">
+    var clickCount = 0;
+    function clickButton() {
+      clickCount++;
+      document.getElementById("button").value = "click count=" + clickCount;
+      return null;
+    }
+  </script>
 </head>
 <body>
-<h1>highlight test</h1>
-<hr>
-<form id="form" action="highlight2.html" method="GET">
-<ul>
-<li>
-<input type="checkbox" id="checkbox">Do check and uncheck.
-</li>
-<li><span id="span"><span id="child1">This</span> is <span id="child2">text in span tag</span>.</li>
-<li><input type="text" id="text" value="This is value of text field."></li>
-<li><input type="radio" id="radioOn" checked>Checked.</li>
-<li><input type="radio" id="radioOff">Not checked.</li>
-<li><input type="button" id="button" onclick="clickButton()" value="click count=0"></li>
-<li>
-<select id="select1">
-<option id="opt11">opt1-1</option>
-<option id="opt12">opt1-2</option>
-<option id="opt13">opt1-3</option>
-</select>
-</li>
-<li>
-<select id="select2" multiple>
-<option id="opt21">opt2-1</option>
-<option id="opt22">opt2-2</option>
-<option id="opt23">opt2-3</option>
-</select>
-</li>
-</ul>
-</form>
+  <h1>Highlight Test</h1>
+  <hr>
+  <form id="form" action="highlight_posted.html" method="GET">
+    <ul>
+      <li>
+        <input type="checkbox" name="checkbox" id="checkbox">Do check and uncheck.
+      </li>
+      <li><span id="span"><span id="child1">This</span> is <span id="child2">text in span tag</span>.</li>
+      <li><input type="text" name="text" id="text" value="This is value of text field."></li>
+      <li><input type="radio" name="radioOn" id="radioOn" checked>Checked.</li>
+      <li><input type="radio" name="radioOff" id="radioOff">Not checked.</li>
+      <li><input type="button" name="button" id="button" onclick="clickButton()" value="click count=0"></li>
+      <li>
+        <select name="select1" id="select1">
+          <option id="opt11">opt1-1</option>
+          <option id="opt12">opt1-2</option>
+          <option id="opt13">opt1-3</option>
+        </select>
+      </li>
+      <li>
+        <select name="select2" id="select2" multiple>
+          <option id="opt21">opt2-1</option>
+          <option id="opt22">opt2-2</option>
+          <option id="opt23">opt2-3</option>
+        </select>
+      </li>
+    </ul>
+    <input type="submit">
+  </form>
 </body>
 </html>
