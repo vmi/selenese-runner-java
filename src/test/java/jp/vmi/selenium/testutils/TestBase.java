@@ -1,8 +1,6 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutils;
 
 import org.junit.Rule;
-
-import jp.vmi.selenium.testutils.WebServerResouce;
 
 /**
  * Base class for test.

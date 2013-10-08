@@ -2,6 +2,8 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Test;
 
+import jp.vmi.selenium.testutils.TestUtils;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 

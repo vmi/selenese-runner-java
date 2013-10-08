@@ -3,8 +3,9 @@ package jp.vmi.selenium.selenese;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 
-import jp.vmi.selenium.webdriver.WebDriverManager;
+import jp.vmi.selenium.testutils.TestUtils;
 
+import jp.vmi.selenium.webdriver.WebDriverManager;
 import static org.hamcrest.number.OrderingComparison.*;
 import static org.junit.Assert.*;
 

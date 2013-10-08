@@ -19,12 +19,14 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.testutils.TestBase;
+
+import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

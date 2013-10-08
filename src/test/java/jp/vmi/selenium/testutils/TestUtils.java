@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

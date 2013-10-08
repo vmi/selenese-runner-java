@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.testutils;
 
 import org.junit.Assume;
 import org.junit.internal.AssumptionViolatedException;
@@ -6,8 +6,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
 import com.thoughtworks.selenium.SeleniumException;
-
-import jp.vmi.selenium.testutils.PreCondition;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;

@@ -2,6 +2,8 @@ package jp.vmi.selenium.selenese;
 
 import org.junit.Rule;
 
+import jp.vmi.selenium.testutils.AssumptionFirefox;
+
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 

@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.testutils.TestUtils;
+
 /**
  * Test for {@link TestCaseParser}.
  */

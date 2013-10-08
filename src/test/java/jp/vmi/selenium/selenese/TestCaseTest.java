@@ -3,9 +3,10 @@ package jp.vmi.selenium.selenese;
 import org.junit.Before;
 import org.junit.Test;
 
+import jp.vmi.selenium.testutils.TestBase;
+
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-
 import static org.junit.Assert.*;
 
 /**

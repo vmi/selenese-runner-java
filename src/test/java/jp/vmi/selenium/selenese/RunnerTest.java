@@ -11,10 +11,11 @@ import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.testutils.AssumptionFirefox;
+
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

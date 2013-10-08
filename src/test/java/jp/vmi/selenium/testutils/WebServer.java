@@ -10,8 +10,6 @@ import org.webbitserver.handler.StaticFileHandler;
 import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
 import org.webbitserver.handler.authentication.InMemoryPasswords;
 
-import jp.vmi.selenium.selenese.RedirectHandler;
-
 /**
  * Webserver for unit test.
  */

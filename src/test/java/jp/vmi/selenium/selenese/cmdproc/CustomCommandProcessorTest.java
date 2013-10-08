@@ -4,7 +4,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import jp.vmi.selenium.selenese.TestBase;
+import jp.vmi.selenium.testutils.TestBase;
 
 import static org.junit.Assert.*;
 
