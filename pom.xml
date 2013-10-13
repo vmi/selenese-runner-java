@@ -372,6 +372,46 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>3.0</version>
     </dependency>
     <dependency>
+      <groupId>org.webbitserver</groupId>
+      <artifactId>webbit</artifactId>
+      <version>0.4.15</version>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>org.jenkins-ci.main</groupId>
+      <artifactId>jenkins-core</artifactId>
+      <version>1.478</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty</artifactId>
+      <version>3.7.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.floreysoft</groupId>
+      <artifactId>jmte</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -404,46 +444,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <groupId>log4j</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.webbitserver</groupId>
-      <artifactId>webbit</artifactId>
-      <version>0.4.15</version>
-    </dependency>
-    <!--
-    <dependency>
-      <groupId>org.jenkins-ci.main</groupId>
-      <artifactId>jenkins-core</artifactId>
-      <version>1.478</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
-      <scope>test</scope>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty</artifactId>
-      <version>3.6.6.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jul-to-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.floreysoft</groupId>
-      <artifactId>jmte</artifactId>
-      <version>3.0</version>
     </dependency>
   </dependencies>
   <reporting>
