@@ -1,9 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
-import java.util.List;
 
-import org.apache.commons.exec.OS;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -22,27 +20,19 @@ public class ChromeDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
+        File driver;
         if (driverOptions.has(CHROMEDRIVER)) {
-            builder = builder.usingDriverExecutable(new File(driverOptions.get(CHROMEDRIVER)));
+            driver = new File(driverOptions.get(CHROMEDRIVER));
         } else {
-            List<File> drivers;
-            if (OS.isFamilyWindows()) {
-                drivers = PathUtils.searchExecutableFile("chromedriver.exe");
-            } else {
-                drivers = PathUtils.searchExecutableFile("chromedriver");
-            }
-
-            if (drivers.isEmpty()) {
+            driver = PathUtils.searchExecutableFile("chromedriver");
+            if (driver == null)
                 throw new IllegalStateException("No chromedriver");
-            }
-
-            builder = builder.usingDriverExecutable(drivers.get(0));
         }
-        builder = builder.usingAnyFreePort().withEnvironment(getEnvironmentVariables());
-        ChromeDriverService service = builder.build();
-
-        // new ChromeDriver(Capabilities) is deprecated...
+        ChromeDriverService service = new ChromeDriverService.Builder()
+            .usingDriverExecutable(driver)
+            .usingAnyFreePort()
+            .withEnvironment(getEnvironmentVariables())
+            .build();
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));

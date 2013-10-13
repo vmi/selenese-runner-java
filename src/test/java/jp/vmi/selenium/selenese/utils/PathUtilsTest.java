@@ -1,13 +1,20 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.io.File;
+
+import org.apache.commons.exec.OS;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class PathUtilsTest {
 
     @Test
     public void testSearchExecutableFiles() {
-        // following testcode for limited environment
-        //assertThat(PathUtils.searchExecutableFile("chromedriver").size(), is(1));
+        String exeName = OS.isFamilyWindows() ? "cmd" : "ls";
+        File file = PathUtils.searchExecutableFile(exeName);
+        assertThat(file, is(notNullValue()));
     }
 }
