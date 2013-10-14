@@ -81,7 +81,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
     /**
      * Constructor.
      */
-    public WebDriverManager() {
+    private WebDriverManager() {
         String factoryName = System.getProperty(WEBDRIVER_FACTORY, FIREFOX);
         setWebDriverFactory(factoryName);
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -142,11 +142,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new HtmlUnitDriverFactory();
         else if (REMOTE.equals(factoryName)) {
             factory = new RemoteWebDriverFactory();
-        }
-        else if (PHANTOMJS.equals(factoryName)) {
+        } else if (PHANTOMJS.equals(factoryName)) {
             factory = new PhantomJSDriverFactory();
-        }
-        else {
+        } else {
             try {
                 factory = (WebDriverFactory) Class.forName(factoryName).newInstance();
             } catch (Exception e) {

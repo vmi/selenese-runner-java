@@ -30,6 +30,8 @@ public class DriverOptions {
         CHROMEDRIVER,
         /** --iedriver */
         IEDRIVER,
+        /** --phantomjs */
+        PHANTOMJS,
         /** --remote-platform */
         REMOTE_PLATFORM,
         /** --remote-browser */

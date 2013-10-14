@@ -73,4 +73,13 @@ public class WebServer {
     public String getServerNameString() {
         return "localhost:" + port;
     }
+
+    /**
+     * Get base URL.
+     *
+     * @return base URL.
+     */
+    public String getBaseURL() {
+        return "http://" + getServerNameString() + "/";
+    }
 }

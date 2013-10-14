@@ -23,10 +23,12 @@ public class ChromeDriverFactory extends WebDriverFactory {
         File driver;
         if (driverOptions.has(CHROMEDRIVER)) {
             driver = new File(driverOptions.get(CHROMEDRIVER));
+            if (!driver.canExecute())
+                throw new IllegalArgumentException("Missing ChromeDriver: " + driver);
         } else {
             driver = PathUtils.searchExecutableFile("chromedriver");
             if (driver == null)
-                throw new IllegalStateException("No chromedriver");
+                throw new IllegalStateException("Missing ChromeDriver in PATH");
         }
         ChromeDriverService service = new ChromeDriverService.Builder()
             .usingDriverExecutable(driver)
