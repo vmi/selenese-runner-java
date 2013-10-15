@@ -21,7 +21,7 @@ public class TestCaseParserTest {
     public void emptyFile() throws IOException {
         Runner runner = new Runner();
         runner.setDriver(new HtmlUnitDriver(true));
-        String scriptFile = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
+        String scriptFile = TestUtils.getScriptFile(DriverDependentTest.class, "Simple");
         TestCase testCase = (TestCase) Parser.parse(scriptFile, runner);
         testCase.execute(null, runner);
     }

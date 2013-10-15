@@ -73,4 +73,9 @@ public abstract class WebDriverFactory {
      * @return WebDriver instance.
      */
     public abstract WebDriver newInstance(DriverOptions driverOptions);
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

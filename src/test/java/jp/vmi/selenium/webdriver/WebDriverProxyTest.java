@@ -9,13 +9,15 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.testutils.WebProxyResource;
 import jp.vmi.selenium.testutils.WebServerResouce;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
@@ -26,7 +28,9 @@ import static org.junit.Assume.*;
 @SuppressWarnings("javadoc")
 public class WebDriverProxyTest {
 
-    @Parameters
+    private static final Logger log = LoggerFactory.getLogger(WebDriverProxyTest.class);
+
+    @Parameters(name = "{index}: {0}")
     public static List<Object[]> getWebDriverFactories() {
         return TestUtils.getWebDriverFactories();
     }
@@ -58,7 +62,15 @@ public class WebDriverProxyTest {
             assumeNoException("Unsupported platform.", e);
             return;
         }
+        wpr.getProxy().resetCount();
         driver.get(wsr.getServer().getBaseURL());
-        assertThat(wpr.getProxy().getCount(), is(1));
+        String actualTitle = driver.getTitle();
+        int actualCount = wpr.getProxy().getCount();
+        log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, factory);
+        assertThat(actualTitle, is("Index for Unit Test"));
+        assumeThat("proxy option does not work on PhantomJS 1.9.2 for Mac OS X",
+            driver.getClass().getSimpleName() + "/" + actualCount,
+            is(not("PhantomJSDriver/0")));
+        assertThat(actualCount, greaterThanOrEqualTo(1));
     }
 }

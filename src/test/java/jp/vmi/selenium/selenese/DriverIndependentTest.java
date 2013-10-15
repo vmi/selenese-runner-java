@@ -3,14 +3,20 @@ package jp.vmi.selenium.selenese;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,33 +25,45 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.testutils.TestBase;
-
-import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.testutils.TestUtils;
+import jp.vmi.selenium.testutils.WebServerResouce;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.WebDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverManager;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Super class of test classes for running commands.
+ * test for running commands.
  */
-public abstract class CommandRunnerTest extends TestBase {
+@RunWith(Parameterized.class)
+@SuppressWarnings("javadoc")
+public class DriverIndependentTest extends TestBase {
 
-    /**
-     * Temprary directory.
-     */
-    @Rule
-    public TemporaryFolder screenshotDir = new TemporaryFolder();
+    @Parameters(name = "{index}: {0}")
+    public static List<Object[]> getWebDriverFactories() {
+        return TestUtils.getWebDriverFactories();
+    }
 
-    /**
-     * Screenshot on fail directory.
-     */
     @Rule
-    public TemporaryFolder screenshotOnFailDir = new TemporaryFolder();
+    public final WebServerResouce wsr = new WebServerResouce();
+
+    @Rule
+    public final TemporaryFolder screenshotDir = new TemporaryFolder();
+
+    @Rule
+    public final TemporaryFolder screenshotOnFailDir = new TemporaryFolder();
+
+    @Parameter
+    public WebDriverFactory factory;
+
+    public WebDriver driver;
 
     protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
@@ -54,14 +72,24 @@ public abstract class CommandRunnerTest extends TestBase {
         }
     };
 
-    protected abstract void setupWebDriverManager();
-
     /**
      * Setup WebDriverManager.
      */
     @Before
-    public void initBefore() {
-        setupWebDriverManager();
+    public void initialize() {
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory(factory);
+        manager.setDriverOptions(new DriverOptions());
+        driver = manager.get();
+    }
+
+    private Runner newRunner() {
+        Runner runner = new Runner();
+        runner.setDriver(driver);
+        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
+        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
+        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
+        return runner;
     }
 
     /**
@@ -72,14 +100,9 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void testSimple() throws IllegalArgumentException, IOException {
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Simple");
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "Simple");
+        Runner runner = newRunner();
         runner.run(script);
-
         assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         if (runner.getDriver() instanceof TakesScreenshot)
             assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
@@ -92,14 +115,9 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void testFailSubmit() throws IllegalArgumentException {
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Error");
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "Error");
+        Runner runner = newRunner();
         runner.run(script);
-
         if (runner.getDriver() instanceof TakesScreenshot) {
             assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
             assertEquals(3, screenshotDir.getRoot().listFiles(pngFilter).length);
@@ -113,14 +131,9 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void testAssertFail() throws IllegalArgumentException {
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "AssertFail");
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
-        runner.setScreenshotDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "AssertFail");
+        Runner runner = newRunner();
         runner.run(script);
-
         if (runner.getDriver() instanceof TakesScreenshot) {
             assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
             assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
@@ -134,7 +147,7 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void testFlowControl() throws IllegalArgumentException {
-        String result = execute(TestUtils.getScriptFile(CommandRunnerTest.class, "FlowControl"));
+        String result = execute(TestUtils.getScriptFile(DriverIndependentTest.class, "FlowControl"));
         assertThat(result, containsString("[Finished with x = 15 and y = 14]"));
     }
 
@@ -145,15 +158,14 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void testForEach() throws IllegalArgumentException {
-        String result = execute(TestUtils.getScriptFile(CommandRunnerTest.class, "ForEach"));
+        String result = execute(TestUtils.getScriptFile(DriverIndependentTest.class, "ForEach"));
         assertThat(result, containsString("[chedder]"));
         assertThat(result, containsString("[edam]"));
         assertThat(result, containsString("[swiss]"));
     }
 
     protected String execute(String scriptName) {
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
+        Runner runner = newRunner();
         String tmpPath = screenshotDir.getRoot().getPath();
         runner.setScreenshotDir(tmpPath);
         runner.setScreenshotAllDir(tmpPath);
@@ -176,7 +188,7 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void noCommandSelenese() throws IllegalArgumentException {
-        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "NoCommand"));
+        execute(TestUtils.getScriptFile(DriverIndependentTest.class, "NoCommand"));
 
         assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(0, screenshotDir.getRoot().listFiles(pngFilter).length);
@@ -189,7 +201,7 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void verifyNotText() throws IllegalArgumentException {
-        execute(TestUtils.getScriptFile(CommandRunnerTest.class, "VerifyNotText"));
+        execute(TestUtils.getScriptFile(DriverIndependentTest.class, "VerifyNotText"));
 
         assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
         assertEquals(3, screenshotDir.getRoot().listFiles(pngFilter).length);
@@ -202,9 +214,8 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test(expected = SeleniumException.class)
     public void invalidCommandInHtml() throws IllegalArgumentException {
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "InvalidCommand");
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "InvalidCommand");
+        Runner runner = newRunner();
         try {
             runner.run(script);
         } finally {
@@ -219,9 +230,7 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test(expected = SeleniumException.class)
     public void invalidCommand() throws IllegalArgumentException {
-        WebDriver driver = WebDriverManager.getInstance().get();
-        Runner runner = new Runner();
-        runner.setDriver(driver);
+        Runner runner = newRunner();
         TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
@@ -238,9 +247,8 @@ public abstract class CommandRunnerTest extends TestBase {
     @Test
     public void issue48() throws IllegalArgumentException {
         Assume.assumeThat(WebDriverManager.getInstance().get(), instanceOf(FirefoxDriver.class));
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "Issue48");
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "Issue48");
+        Runner runner = newRunner();
         Result result = runner.run(script);
         assertThat(result.isAborted(), is(false));
         assertThat(result.isFailed(), is(false));
@@ -258,9 +266,7 @@ public abstract class CommandRunnerTest extends TestBase {
         File pngFile = new File(screenshotDir.getRoot(), filename);
         if (pngFile.exists())
             pngFile.delete();
-        WebDriver driver = WebDriverManager.getInstance().get();
-        Runner runner = new Runner();
-        runner.setDriver(driver);
+        Runner runner = newRunner();
         TestCase testCase = Binder.newTestCase(null, "capture", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
@@ -278,9 +284,7 @@ public abstract class CommandRunnerTest extends TestBase {
      */
     @Test
     public void pauseCommand() throws IllegalArgumentException {
-        WebDriver driver = WebDriverManager.getInstance().get();
-        Runner runner = new Runner();
-        runner.setDriver(driver);
+        Runner runner = newRunner();
         TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, ws.getUrl());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
@@ -296,6 +300,7 @@ public abstract class CommandRunnerTest extends TestBase {
     /**
      * Test of "basic auth access"
      */
+    @Ignore
     @Test
     public void basicauth() {
         Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(InternetExplorerDriver.class)));
@@ -303,10 +308,9 @@ public abstract class CommandRunnerTest extends TestBase {
         //TODO test fail htmlunit caused by error on getTitle
         Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(HtmlUnitDriver.class)));
 
-        String script = TestUtils.getScriptFile(CommandRunnerTest.class, "BasicAuth");
+        String script = TestUtils.getScriptFile(DriverIndependentTest.class, "BasicAuth");
 
-        Runner runner = new Runner();
-        runner.setDriver(WebDriverManager.getInstance().get());
+        Runner runner = newRunner();
         runner.setBaseURL("http://user:pass@" + ws.getServer().getServerNameString() + "/");
         Result result = runner.run(script);
         assertThat(result.isSuccess(), is(true));

@@ -39,6 +39,13 @@ public class WebProxy {
     }
 
     /**
+     * Reset request count.
+     */
+    public void resetCount() {
+        count = 0;
+    }
+
+    /**
      * Get request count.
      *
      * @return request count.
