@@ -10,3 +10,5 @@ pom.xml.releaseBackup
 release.properties
 /htdocs
 *.exe
+/chromedriver
+/phantomjs
