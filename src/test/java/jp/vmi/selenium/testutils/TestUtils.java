@@ -35,7 +35,7 @@ public final class TestUtils {
      */
     public static String getScriptFile(Class<?> clazz, String... suffixes) {
         String suffix = StringUtils.join(suffixes);
-        String html = "/" + clazz.getCanonicalName().replace('.', '/') + suffix + ".html";
+        String html = "/selenese/" + clazz.getSimpleName() + suffix + ".html";
         URL resource = clazz.getResource(html);
         if (resource == null)
             throw new RuntimeException(new FileNotFoundException(html));
