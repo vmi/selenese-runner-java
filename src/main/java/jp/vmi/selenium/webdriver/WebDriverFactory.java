@@ -8,6 +8,10 @@ import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -15,6 +19,13 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  * Abstract class of factory for {@link WebDriver}s.
  */
 public abstract class WebDriverFactory {
+
+    static {
+        LoggerUtils.initLogger();
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(WebDriverFactory.class);
+
     Map<String, String> environmentVariables = new HashMap<String, String>();
 
     protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {

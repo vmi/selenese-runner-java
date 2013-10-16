@@ -1,11 +1,21 @@
 package jp.vmi.selenium.selenese.utils;
 
+import org.slf4j.bridge.SLF4JBridgeHandler;
+
 /**
  * Utilities for logging.
  */
 public final class LoggerUtils {
 
     private LoggerUtils() {
+    }
+
+    /**
+     * switch java.util.logging handler to slf4j.
+     */
+    public static void initLogger() {
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
     }
 
     /**
