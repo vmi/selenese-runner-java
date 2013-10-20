@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -69,6 +70,9 @@ public class HighlightStyle {
             return result instanceof Map ? (Map<String, String>) result : null;
         } catch (StaleElementReferenceException e) {
             // target element disappeared.
+            return null;
+        } catch (NotFoundException e) {
+            // target window/frame disappeared.
             return null;
         }
     }
