@@ -11,9 +11,10 @@ import java.util.Set;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -93,6 +94,23 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
+    private String getMessage(Exception e) {
+        String msg = e.getMessage();
+        if (msg != null) {
+            return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
+        } else {
+            List<String> msgs = new ArrayList<String>();
+            msgs.add(e.toString());
+            String pkgName = getClass().getPackage().getName() + ".";
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().startsWith(pkgName))
+                    break;
+                msgs.add(ste.toString().trim());
+            }
+            return StringUtils.join(msgs, " / at ");
+        }
+    }
+
     private List<String> getPageInformation(TestCase testCase, Runner runner) {
         List<String> messages = new ArrayList<String>();
         WebDriver driver = runner.getDriver();
@@ -102,14 +120,12 @@ public class CommandLogInterceptor implements MethodInterceptor {
             Set<Cookie> cookies = driver.manage().getCookies();
             messages.add(String.format("URL: [%s] / Title: [%s]", url, title));
             cookieToMessage(messages, cookies);
-        } catch (NoSuchWindowException e) {
-            messages.add("No focused window.");
+        } catch (NotFoundException e) {
+            messages.add("No focused window/frame.");
         } catch (UnhandledAlertException e) {
-            String msg = e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "");
-            messages.add(String.format("No page information: [%s]", msg));
+            messages.add(String.format("No page information: [%s]", getMessage(e)));
         } catch (Exception e) {
-            String msg = e.getMessage().replaceFirst("(?s)\r?\nBuild info:.*", "");
-            messages.add(String.format("Failed to get page information: [%s]", msg));
+            messages.add(String.format("Failed to get page information: [%s]", getMessage(e)));
         }
         return messages;
     }
