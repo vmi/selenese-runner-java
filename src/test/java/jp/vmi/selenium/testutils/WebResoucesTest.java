@@ -26,7 +26,7 @@ public class WebResoucesTest {
 
     @Test
     public void testWebResources() throws IOException {
-        String baseURL = wsr.getServer().getBaseURL();
+        String baseURL = wsr.getBaseURL();
         // direct access.
         URL url = new URL(baseURL);
         Object content = url.getContent();
@@ -34,13 +34,13 @@ public class WebResoucesTest {
         String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"));
         assertThat(actualDirect, is(expect));
         // proxy access.
-        int proxyPort = wpr.getProxy().getPort();
+        int proxyPort = wpr.getPort();
         Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(proxyPort));
         url = new URL(baseURL);
         URLConnection conn = url.openConnection(proxy);
         content = conn.getContent();
         String actualProxy = IOUtils.toString((InputStream) content);
         assertThat(actualProxy, is(expect));
-        assertThat(wpr.getProxy().getCount(), is(1));
+        assertThat(wpr.getCount(), is(1));
     }
 }

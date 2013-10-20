@@ -11,5 +11,5 @@ public class TestBase {
      * Webserver for test
      */
     @Rule
-    public final WebServerResouce ws = new WebServerResouce();
+    public final WebServerResouce wsr = new WebServerResouce();
 }

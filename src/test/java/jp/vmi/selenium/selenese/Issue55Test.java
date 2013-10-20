@@ -32,7 +32,7 @@ public class Issue55Test extends TestBase {
     @Test
     public void test() {
         String html = TestUtils.getScriptFile(getClass());
-        runner.setBaseURL(ws.getUrl());
+        runner.setBaseURL(wsr.getBaseURL());
         runner.setDriver(new FirefoxDriver());
         Result result = runner.run(html);
         assertThat(result, is(instanceOf(Success.class)));

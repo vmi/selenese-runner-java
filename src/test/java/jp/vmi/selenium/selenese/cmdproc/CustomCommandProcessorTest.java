@@ -23,7 +23,7 @@ public class CustomCommandProcessorTest extends TestBase {
     //TODO: ignore caused by fail.
     public void test() {
         HtmlUnitDriver driver = new HtmlUnitDriver(true);
-        String baseUrl = ws.getUrl();
+        String baseUrl = wsr.getBaseURL();
         CustomCommandProcessor proc = new CustomCommandProcessor(baseUrl, driver);
         proc.doCommand("open", new String[] { "/" });
         String script = "storedVars['logoutpresent'] ? storedVars['link_logout'] : storedVars['body']";

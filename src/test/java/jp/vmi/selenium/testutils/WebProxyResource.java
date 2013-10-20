@@ -11,15 +11,6 @@ public class WebProxyResource extends ExternalResource {
 
     private WebProxy proxy;
 
-    /**
-     * Get proxy server.
-     *
-     * @return proxy server.
-     */
-    public WebProxy getProxy() {
-        return proxy;
-    }
-
     @Override
     protected void before() throws Throwable {
         proxy = new WebProxy();
@@ -31,4 +22,37 @@ public class WebProxyResource extends ExternalResource {
         proxy.stop();
     }
 
+    /**
+     * Reset request count.
+     */
+    public void resetCount() {
+        proxy.resetCount();
+    }
+
+    /**
+     * Get request count.
+     *
+     * @return request count.
+     */
+    public int getCount() {
+        return proxy.getCount();
+    }
+
+    /**
+     * Get port number.
+     *
+     * @return port number.
+     */
+    public int getPort() {
+        return proxy.getPort();
+    }
+
+    /**
+     * Get server name.
+     * 
+     * @return server name.
+     */
+    public String getServerNameString() {
+        return proxy.getServerNameString();
+    }
 }

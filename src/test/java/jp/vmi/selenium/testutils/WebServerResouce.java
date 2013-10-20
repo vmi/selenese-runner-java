@@ -9,24 +9,6 @@ public class WebServerResouce extends ExternalResource {
 
     private WebServer server;
 
-    /**
-     * Get webserver.
-     *
-     * @return webserver.
-     */
-    public WebServer getServer() {
-        return server;
-    }
-
-    /**
-     * Get webcome page URL.
-     * 
-     * @return URL.
-     */
-    public String getUrl() {
-        return "http://" + server.getServerNameString() + "/";
-    }
-
     @Override
     protected void before() throws Throwable {
         server = new WebServer();
@@ -37,4 +19,23 @@ public class WebServerResouce extends ExternalResource {
     protected void after() {
         server.stop();
     }
+
+    /**
+     * Get server name.
+     * 
+     * @return server name.
+     */
+    public String getServerNameString() {
+        return server.getServerNameString();
+    }
+
+    /**
+     * Get base URL.
+     * 
+     * @return URL.
+     */
+    public String getBaseURL() {
+        return server.getBaseURL();
+    }
+
 }

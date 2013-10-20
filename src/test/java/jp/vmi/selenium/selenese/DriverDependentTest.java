@@ -31,7 +31,6 @@ import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.testutils.TestUtils;
-import jp.vmi.selenium.testutils.WebServerResouce;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -50,9 +49,6 @@ public class DriverDependentTest extends TestBase {
     public static List<Object[]> getWebDriverFactories() {
         return TestUtils.getWebDriverFactories();
     }
-
-    @Rule
-    public final WebServerResouce wsr = new WebServerResouce();
 
     @Rule
     public final TemporaryFolder screenshotDir = new TemporaryFolder();
@@ -231,7 +227,7 @@ public class DriverDependentTest extends TestBase {
     @Test(expected = SeleniumException.class)
     public void invalidCommand() throws IllegalArgumentException {
         Runner runner = newRunner();
-        TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, ws.getUrl());
+        TestCase testCase = Binder.newTestCase(null, "invalidCommand", runner, wsr.getBaseURL());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
         Command invalidCommand = commandFactory.newCommand(1, "invalidCommand");
@@ -267,7 +263,7 @@ public class DriverDependentTest extends TestBase {
         if (pngFile.exists())
             pngFile.delete();
         Runner runner = newRunner();
-        TestCase testCase = Binder.newTestCase(null, "capture", runner, ws.getUrl());
+        TestCase testCase = Binder.newTestCase(null, "capture", runner, wsr.getBaseURL());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
         Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
@@ -285,7 +281,7 @@ public class DriverDependentTest extends TestBase {
     @Test
     public void pauseCommand() throws IllegalArgumentException {
         Runner runner = newRunner();
-        TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, ws.getUrl());
+        TestCase testCase = Binder.newTestCase(null, "pauseCommand", runner, wsr.getBaseURL());
         CommandFactory commandFactory = new CommandFactory();
         commandFactory.setProc(testCase.getProc());
         Command pause = commandFactory.newCommand(1, "pause", "5000");
@@ -311,7 +307,7 @@ public class DriverDependentTest extends TestBase {
         String script = TestUtils.getScriptFile(DriverDependentTest.class, "BasicAuth");
 
         Runner runner = newRunner();
-        runner.setBaseURL("http://user:pass@" + ws.getServer().getServerNameString() + "/");
+        runner.setBaseURL("http://user:pass@" + wsr.getServerNameString() + "/");
         Result result = runner.run(script);
         assertThat(result.isSuccess(), is(true));
     }

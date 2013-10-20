@@ -35,7 +35,7 @@ public class HighlightTest extends TestBase {
         manager.setWebDriverFactory(WebDriverManager.FIREFOX);
         runner.setDriver(manager.get());
         runner.setHighlight(true);
-        runner.setBaseURL(ws.getUrl());
+        runner.setBaseURL(wsr.getBaseURL());
         String html = TestUtils.getScriptFile(getClass());
         Result result = runner.run(html);
         assertThat(result, is(instanceOf(Success.class)));
