@@ -56,6 +56,11 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.2
+
+* Fix issue #76.
+* Update Selenium version to 2.37.0.
+
 ### 1.3.1
 
 * Fix issue #75.
