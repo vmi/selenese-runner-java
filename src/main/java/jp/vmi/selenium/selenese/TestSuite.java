@@ -116,6 +116,7 @@ public class TestSuite implements Selenese, ITestSuite {
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Runner runner) {
+        runner.resetSpeed();
         for (Selenese selenese : seleneseList) {
             Result r;
             try {

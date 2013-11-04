@@ -34,7 +34,6 @@ public class TestCase implements Selenese, ITestCase {
     private String baseName = "nofile";
     private String name = null;
     private String baseURL = null;
-    private long speed = 0;
 
     private CustomCommandProcessor proc = null;
 
@@ -156,24 +155,6 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Set speed of command execution (= wait time per each command).
-     *
-     * @param speed wait time (ms).
-     */
-    public void setSpeed(long speed) {
-        this.speed = speed;
-    }
-
-    /**
-     * Get speed of command execution.
-     *
-     * @return wait time (ms).
-     */
-    public long getSpeed() {
-        return speed;
-    }
-
-    /**
      * Evaluate expression and return boolean result.
      *
      * @param expr expression string.
@@ -261,13 +242,7 @@ public class TestCase implements Selenese, ITestCase {
             if (result.isAborted())
                 break;
             command = command.next(this);
-            if (speed > 0) {
-                try {
-                    Thread.sleep(speed);
-                } catch (InterruptedException e) {
-                    // ignore it.
-                }
-            }
+            runner.waitSpeed();
         }
         return result;
     }

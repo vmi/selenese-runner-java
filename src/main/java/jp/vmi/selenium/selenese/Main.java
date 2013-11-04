@@ -164,9 +164,10 @@ public class Main {
             .hasArg().withArgName("timeout")
             .withDescription("set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC + " ms)")
             .create('t'));
-        options.addOption(OptionBuilder.withLongOpt("help")
-            .withDescription("show this message.")
-            .create('h'));
+        options.addOption(OptionBuilder.withLongOpt("set-speed")
+            .hasArg().withArgName("speed")
+            .withDescription("same as executing setSpeed(ms) command first.")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("height")
             .hasArg().withArgName("height")
             .withDescription("browser height (only phantomjs)")
@@ -175,6 +176,9 @@ public class Main {
             .hasArg().withArgName("width")
             .withDescription("browser width (only phantomjs)")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("help")
+            .withDescription("show this message.")
+            .create('h'));
 
     }
 
@@ -295,7 +299,12 @@ public class Main {
             if (timeout <= 0)
                 throw new IllegalArgumentException("Invalid timeout value. (" + cli.getOptionValue("timeout") + ")");
             runner.setTimeout(timeout);
+            int speed = NumberUtils.toInt(cli.getOptionValue("set-speed", "0"));
+            if (speed < 0)
+                throw new IllegalArgumentException("Invalid speed value. (" + cli.getOptionValue("set-speed") + ")");
+            runner.setInitialSpeed(speed);
             Runner.setPrintStream(System.out);
+            System.err.println("FileNames=" + StringUtils.join(filenames, ", "));
             Result totalResult = runner.run(filenames);
             runner.finish();
             exitCode = totalResult.getLevel().exitCode;

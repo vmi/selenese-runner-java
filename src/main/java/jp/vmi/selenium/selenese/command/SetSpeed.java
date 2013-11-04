@@ -3,10 +3,10 @@ package jp.vmi.selenium.selenese.command;
 import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Runner;
-
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -31,7 +31,7 @@ public class SetSpeed extends Command {
         if (StringUtils.isBlank(speed))
             return new Warning("the argument of setSpeed is ignored: empty.");
         try {
-            testCase.setSpeed(Long.parseLong(speed));
+            runner.setSpeed(Long.parseLong(speed));
         } catch (NumberFormatException e) {
             return new Warning("the argument of setSpeed is ignored: invalid number format: " + speed);
         }

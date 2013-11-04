@@ -47,6 +47,8 @@ public class Runner implements HtmlResultHolder {
     private boolean ignoreScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
+    private long initialSpeed = 0; /* ms */
+    private long speed = 0; /* ms */
     private final CommandFactory commandFactory = new CommandFactory();
 
     private Map<String, Object> varsMap = new HashMap<String, Object>();
@@ -270,6 +272,62 @@ public class Runner implements HtmlResultHolder {
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    /**
+     * Get initial speed at starting test-suite. (ms)
+     * 
+     * @return initial speed.
+     */
+    public long getInitialSpeed() {
+        return initialSpeed;
+    }
+
+    /**
+     * Set initial speed at starting test-suite. (ms)
+     * 
+     * @param initialSpeed initial speed.
+     */
+    public void setInitialSpeed(long initialSpeed) {
+        this.initialSpeed = initialSpeed;
+    }
+
+    /**
+     * Get speed for setSpeed command.
+     *
+     * @return speed.
+     */
+    public long getSpeed() {
+        return speed;
+    }
+
+    /**
+     * Set speed for setSpeed command.
+     *
+     * @param speed speed.
+     */
+    public void setSpeed(long speed) {
+        this.speed = speed;
+    }
+
+    /**
+     * Reset speed as initial speed.
+     */
+    public void resetSpeed() {
+        speed = initialSpeed;
+    }
+
+    /**
+     * Wait according to speed setting. 
+     */
+    public void waitSpeed() {
+        if (speed > 0) {
+            try {
+                Thread.sleep(speed);
+            } catch (InterruptedException e) {
+                // ignore it.
+            }
+        }
     }
 
     /**
