@@ -45,6 +45,9 @@ Usage
         --xml-result <dir>                   output XML JUnit results to specified directory.
         --html-result <dir>                  output HTML results to specified directory.
      -t,--timeout <timeout>                  set timeout (ms) for waiting. (default: 30000 ms)
+        --set-speed <speed>                  same as executing setSpeed(ms) command first.
+        --height <height>                    browser height (only phantomjs)
+        --width <width>                      browser width (only phantomjs)
      -h,--help                               show this message.
 
 Requirements
@@ -58,8 +61,9 @@ Relase Note
 
 ### 1.3.2
 
+* Add --set-spped option. It is same as setSpeed(ms) command first.
 * Fix issue #76.
-* Update Selenium version to 2.37.0.
+* Update Selenium version to 2.37.1.
 
 ### 1.3.1
 
