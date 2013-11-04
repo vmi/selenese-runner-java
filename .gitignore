@@ -11,4 +11,6 @@ release.properties
 /htdocs
 *.exe
 /chromedriver
+/chromedriver-original
 /phantomjs
+/phantomjs-original
