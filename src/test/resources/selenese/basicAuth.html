@@ -3,32 +3,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost" />
-<title>MinimalTest</title>
+<link rel="selenium.base" href="http://localhost/" />
+<title>Basic auth</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">MinimalTest</td></tr>
+<tr><td rowspan="1" colspan="3">Basic auth</td></tr>
 </thead><tbody>
 <tr>
-  <td>setSpeed</td>
-  <td>1000</td>
+	<td>open</td>
+	<td>/basic/redirect</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+  <td>assertTitle</td>
+  <td>welcome page</td>
   <td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/issue55test.html</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>link=link</td>
+	<td></td>
 </tr>
 <tr>
-  <td>verifyVisible</td>
-  <td>id=text</td>
-  <td></td>
-</tr>
-<tr>
-  <td>highlight</td>
-  <td>id=text</td>
+  <td>assertTitle</td>
+  <td>next page</td>
   <td></td>
 </tr>
 </tbody></table>

@@ -8,8 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.webdriver.ChromeDriverFactory;
 import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
 import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
@@ -29,14 +27,12 @@ public final class TestUtils {
     /**
      * Get script file.
      *
-     * @param clazz target class.
-     * @param suffixes target suffixes.
-     * @return script file.
+     * @param name script name. (without extension)
+     * @return script file path.
      */
-    public static String getScriptFile(Class<?> clazz, String... suffixes) {
-        String suffix = StringUtils.join(suffixes);
-        String html = "/selenese/" + clazz.getSimpleName() + suffix + ".html";
-        URL resource = clazz.getResource(html);
+    public static String getScriptFile(String name) {
+        String html = "/selenese/" + name + ".html";
+        URL resource = TestUtils.class.getResource(html);
         if (resource == null)
             throw new RuntimeException(new FileNotFoundException(html));
         try {

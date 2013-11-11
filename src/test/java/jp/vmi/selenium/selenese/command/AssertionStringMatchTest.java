@@ -10,15 +10,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import jp.vmi.selenium.testutils.TestBase;
-
-import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.WebDriverManager;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -97,7 +97,7 @@ public class AssertionStringMatchTest extends TestBase {
     @Test
     public void stringMatchPattern() throws IOException {
         Command open = new Open(1, "open", new String[] { "file://"
-            + TestUtils.getScriptFile(AssertionStringMatchTest.class, "") },
+            + TestUtils.getScriptFile("assertionStringMatchTest") },
             "open", true);
         Assertion assertionDefaultGlob = new Assertion(1, commandName, argument, assertionType, getter, isBoolean,
             isInverse);
