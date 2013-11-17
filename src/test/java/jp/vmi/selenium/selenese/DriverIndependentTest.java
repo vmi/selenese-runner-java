@@ -91,7 +91,8 @@ public class DriverIndependentTest extends TestCaseTestBase {
     @Test
     public void emptyFile() throws IOException {
         execute("empty");
-        assertThat(result, is(instanceOf(Success.class)));
+        assertThat(result, is(instanceOf(Error.class)));
+        assertThat(result.getMessage(), containsString("Not selenese script."));
     }
 
     /**

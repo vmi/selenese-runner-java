@@ -19,6 +19,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
+import static jp.vmi.selenium.selenese.result.Success.*;
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
@@ -235,6 +236,8 @@ public class TestCase implements Selenese, ITestCase {
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent, Runner runner) {
+        if (commandList.isEmpty())
+            return result = SUCCESS;
         Command command = commandList.first();
         while (command != null) {
             Result r = doCommand(command, runner);

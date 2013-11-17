@@ -67,7 +67,6 @@ public abstract class Parser {
      * @return TestCase or TestSuite.
      */
     public static Selenese parse(String filename, InputStream is, Runner runner) {
-        Parser p;
         try {
             DOMParser dp = new DOMParser();
             dp.setEntityResolver(null);
@@ -75,24 +74,23 @@ public abstract class Parser {
             dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
-            try {
-                String baseURL = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href").getNodeValue();
-                p = new TestCaseParser(filename, document, baseURL);
-            } catch (NullPointerException e) {
-                try {
-                    XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
-                    p = new TestSuiteParser(filename, document);
-                } catch (NullPointerException e2) {
-                    return Binder.newErrorTestCase(filename, new InvalidSeleneseException(
-                        "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
-                }
+            Node seleniumBase = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href");
+            if (seleniumBase != null) {
+                String baseURL = seleniumBase.getNodeValue();
+                return new TestCaseParser(filename, document, baseURL).parse(runner);
             }
+            Node suiteTable = XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
+            if (suiteTable != null) {
+                return new TestSuiteParser(filename, document).parse(runner);
+            }
+            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(
+                "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
+
         } catch (Exception e) {
             return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e));
         } finally {
             IOUtils.closeQuietly(is);
         }
-        return p.parse(runner);
     }
 
     /**

@@ -61,8 +61,12 @@ public class TestCaseTestBase extends TestBase {
         try {
             String scriptFile = TestUtils.getScriptFile(scriptName);
             result = runner.run(scriptFile);
-            String xmlFile = String.format("TEST-%s.xml", testSuites.get(0).getName());
-            xmlResult = FileUtils.readFileToString(new File(xmlResultDir.getRoot(), xmlFile), "UTF-8");
+            if (testSuites.isEmpty()) {
+                xmlResult = null;
+            } else {
+                String xmlFile = String.format("TEST-%s.xml", testSuites.get(0).getName());
+                xmlResult = FileUtils.readFileToString(new File(xmlResultDir.getRoot(), xmlFile), "UTF-8");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
