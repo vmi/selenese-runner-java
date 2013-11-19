@@ -10,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
@@ -63,9 +61,11 @@ public class DriverIndependentTest extends TestCaseTestBase {
         assertThat(result, is(instanceOf(Success.class)));
     }
 
-    @Test(expected = SeleniumException.class)
+    @Test
     public void invalidCommandInHtml() throws IllegalArgumentException {
         execute("invalidCommand");
+        assertThat(result, is(instanceOf(Error.class)));
+        assertThat(result.getMessage(), containsString("No such command"));
     }
 
     @Test
