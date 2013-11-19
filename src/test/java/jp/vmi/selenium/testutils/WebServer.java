@@ -1,10 +1,21 @@
 package jp.vmi.selenium.testutils;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.jboss.netty.util.CharsetUtil;
 import org.openqa.selenium.net.PortProber;
+import org.webbitserver.HttpControl;
+import org.webbitserver.HttpHandler;
+import org.webbitserver.HttpRequest;
+import org.webbitserver.HttpResponse;
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
 import org.webbitserver.handler.authentication.BasicAuthenticationHandler;
@@ -21,6 +32,25 @@ public class WebServer {
 
     private org.webbitserver.WebServer server;
 
+    private static class FormPosted implements HttpHandler {
+        @Override
+        public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
+            String uri = request.uri();
+            String path = uri.replaceAll("\\?.*$", "");
+            InputStream is = getClass().getResourceAsStream("/htdocs" + path);
+            String html = IOUtils.toString(is, CharsetUtil.UTF_8)
+                .replaceFirst("(?s)<script[^>]*>.*?</script>", "") // remove script tag.
+                .replaceFirst("<body.*?>", "<body>"); // remove "onload" handler.
+            List<String> keys = new ArrayList<String>(request.queryParamKeys());
+            Collections.sort(keys);
+            for (String key : keys) {
+                String value = request.queryParam(key);
+                html = html.replaceFirst("(<span\\s+id=\"" + key + "\">)(</span>)", "$1" + StringEscapeUtils.escapeHtml4(value) + "$2");
+            }
+            response.charset(CharsetUtil.UTF_8).content(html).end();
+        }
+    }
+
     /**
      * Start web server.
      */
@@ -28,6 +58,7 @@ public class WebServer {
         port = PortProber.findFreePort();
         File htdocs = FileUtils.toFile(getClass().getResource("/htdocs"));
         server = WebServers.createWebServer(port)
+            .add("/form_posted\\.html", new FormPosted())
             .add(new StaticFileHandler(htdocs))
             .add("/basic", new BasicAuthenticationHandler(new InMemoryPasswords().add("user", "pass")))
             .add("/redirect", new RedirectHandler("http://" + getServerNameString() + "/index.html"))

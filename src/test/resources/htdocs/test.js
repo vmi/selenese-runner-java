@@ -5,18 +5,14 @@ function decodeForm() {
     var value = decodeURIComponent(pair[1]);
     var elem = document.getElementById(pair[0]);
     if (elem) {
-      var key = "textContent";
-      var text = elem[key];
-      if (typeof text != "string") {
-        key = "innerText";
-        text = elem[key];
-        alert("Error?: " + text);
+      var text = elem.textContent;
+      if (typeof text === "string") {
+        if (text)
+          text += ", " + value;
+        else
+          text = value;
+        elem.textContent = text;
       }
-      if (text)
-        text += ", " + value;
-      else
-        text = value;
-      elem[key] = text;
     }
   });
 }
