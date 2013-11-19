@@ -2,11 +2,9 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,12 +12,12 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
-import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.CommandFactory;
-import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.testutils.TestUtils;
@@ -29,6 +27,7 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
 /**
  * Driver dependent test.
@@ -52,87 +51,59 @@ public class DriverDependentTest extends TestCaseTestBase {
         }
     };
 
-    /**
-     * Setup WebDriverManager.
-     */
-    @Before
-    public void initialize() {
+    @Override
+    protected void initDriver() {
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(factory);
         manager.setDriverOptions(new DriverOptions());
-        driver = manager.get();
+        try {
+            driver = manager.get();
+        } catch (UnsupportedOperationException e) {
+            Assume.assumeNoException(e);
+        }
     }
 
-    /**
-     * Test of "CommandRunnerTestSimple.html".
-     *
-     * @throws IllegalArgumentException exception
-     * @throws IOException exception
-     */
+    public void assumeNot(Class<? extends WebDriver> driverClass) {
+        assumeThat(driver, is(not(instanceOf(driverClass))));
+    }
+
     @Test
-    public void testSimple() throws IllegalArgumentException, IOException {
+    public void testSimple() {
+        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
         execute("simple");
-        assertEquals(0, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-        if (runner.getDriver() instanceof TakesScreenshot)
-            assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
+        assertThat(result, is(instanceOf(Success.class)));
+        assertThat(xmlResult, containsString("Command#4"));
     }
 
-    /**
-     * Test of "CommandRunnerTestError.html".
-     *
-     * @throws IllegalArgumentException exception
-     */
     @Test
-    public void testFailSubmit() throws IllegalArgumentException {
+    public void testLocatorFail() {
         execute("error");
-        if (runner.getDriver() instanceof TakesScreenshot) {
-            assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-            assertEquals(3, screenshotDir.getRoot().listFiles(pngFilter).length);
-        }
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), containsString("Element name=no_such_name not found"));
     }
 
-    /**
-     * Test of "CommandRunnerTestAssertFail.html".
-     *
-     * @throws IllegalArgumentException exception
-     */
     @Test
-    public void testAssertFail() throws IllegalArgumentException {
+    public void testAssertFail() {
+        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
         execute("assertFail");
-        if (runner.getDriver() instanceof TakesScreenshot) {
-            assertEquals(1, screenshotOnFailDir.getRoot().listFiles(pngFilter).length);
-            assertEquals(5, screenshotDir.getRoot().listFiles(pngFilter).length);
-        }
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), containsString("Result: [selenium] / Expected: [no such text]"));
     }
 
-    /**
-     * Test of capture screenshot.
-     *
-     * @throws IllegalArgumentException exception
-     */
     @Test
-    public void capture() throws IllegalArgumentException {
-        final String filename = "test.png";
-        File pngFile = new File(screenshotDir.getRoot(), filename);
+    public void capture() {
+        assumeThat(driver, is(instanceOf(TakesScreenshot.class)));
+        File pngFile = new File(screenshotDir.getRoot(), "test.png");
         if (pngFile.exists())
             pngFile.delete();
-        initRunner();
-        CommandFactory commandFactory = runner.getCommandFactory();
-        TestCase testCase = Binder.newTestCase(null, "capture", runner, wsr.getBaseURL());
-        commandFactory.setProc(testCase.getProc());
-        Command captureCommand = commandFactory.newCommand(1, "captureEntirePageScreenshot", pngFile.getAbsolutePath());
-        testCase.addCommand(captureCommand);
-        testCase.execute(null, runner);
-        if (driver instanceof TakesScreenshot)
-            assertTrue(pngFile.exists());
+        execute("capture");
+        assertThat(result, is(instanceOf(Success.class)));
+        assertThat("Captured File: " + pngFile, pngFile.exists(), is(true));
     }
 
-    /**
-     * Test of "basic auth access"
-     */
     @Ignore
     @Test
-    public void basicauth() {
+    public void basicAuth() {
         Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(InternetExplorerDriver.class)));
 
         //TODO test fail htmlunit caused by error on getTitle
@@ -145,6 +116,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void highlight() {
+        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
         runner.setHighlight(true);
         runner.setBaseURL(wsr.getBaseURL());
         execute("highlight");
@@ -152,11 +124,10 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Test
-    public void issue48() throws IllegalArgumentException {
+    public void issue48() {
+        assumeNot(SafariDriver.class); // FIXME don't work this test on SafariDriver.
         execute("issue48");
-        assertThat(result.isAborted(), is(false));
-        assertThat(result.isFailed(), is(false));
-        assertThat(result.isSuccess(), is(true));
+        assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
@@ -167,12 +138,14 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void issue55() {
+        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
         execute("issue55");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void issue76() {
+        assumeNot(SafariDriver.class); // FIXME don't work this test on SafariDriver.
         execute("issue76");
         assertThat(result, is(instanceOf(Success.class)));
     }

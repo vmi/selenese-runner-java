@@ -1,12 +1,9 @@
 package jp.vmi.selenium.selenese;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -23,15 +20,8 @@ import static org.junit.Assert.*;
 @SuppressWarnings("javadoc")
 public class DriverIndependentTest extends TestCaseTestBase {
 
-    protected final FilenameFilter pngFilter = new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith(".png");
-        }
-    };
-
-    @Before
-    public void initialize() {
+    @Override
+    protected void initDriver() {
         driver = new HtmlUnitDriver(true);
     }
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +17,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
 
 @SuppressWarnings("javadoc")
-public class TestCaseTestBase extends TestBase {
+public abstract class TestCaseTestBase extends TestBase {
 
     @Rule
     public final TemporaryFolder screenshotDir = new TemporaryFolder();
@@ -37,7 +38,11 @@ public class TestCaseTestBase extends TestBase {
 
     public String xmlResult;
 
-    protected void initRunner() {
+    protected abstract void initDriver();
+
+    @Before
+    public void initialize() {
+        initDriver();
         testSuites = new ArrayList<TestSuite>();
         runner = new Runner() {
             @Override
@@ -49,13 +54,11 @@ public class TestCaseTestBase extends TestBase {
         runner.setDriver(driver);
         runner.setBaseURL(wsr.getBaseURL());
         runner.setScreenshotDir(screenshotDir.getRoot().getPath());
-        runner.setScreenshotAllDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.setJUnitResultDir(xmlResultDir.getRoot().getPath());
     }
 
     protected void execute(String scriptName) {
-        initRunner();
         result = Unexecuted.UNEXECUTED;
         xmlResult = null;
         try {
