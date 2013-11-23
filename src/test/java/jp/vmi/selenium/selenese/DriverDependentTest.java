@@ -23,7 +23,6 @@ import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.WebDriverFactory;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
@@ -43,7 +42,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Parameter
-    public WebDriverFactory factory;
+    public String factoryName;
 
     protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
@@ -55,7 +54,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Override
     protected void initDriver() {
         WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(factory);
+        manager.setWebDriverFactory(factoryName);
         manager.setDriverOptions(new DriverOptions());
         try {
             driver = manager.get();

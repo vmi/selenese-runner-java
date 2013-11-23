@@ -42,12 +42,13 @@ public class WebDriverProxyTest {
     public final WebProxyResource wpr = new WebProxyResource();
 
     @Parameter
-    public WebDriverFactory factory;
+    public String factoryName;
 
     @Test
     public void testProxy() {
-        assumeTrue("Proxy is not supported.", factory.isProxySupported());
         WebDriverManager manager = WebDriverManager.getInstance();
+        WebDriverFactory factory = manager.lookupWebDriverFactory(factoryName);
+        assumeTrue("Proxy is not supported.", factory.isProxySupported());
         manager.setWebDriverFactory(factory);
         DriverOptions options = new DriverOptions();
         options.set(DriverOption.PROXY, wpr.getServerNameString());
@@ -66,7 +67,7 @@ public class WebDriverProxyTest {
         driver.get(wsr.getBaseURL());
         String actualTitle = driver.getTitle();
         int actualCount = wpr.getCount();
-        log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, factory);
+        log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, factoryName);
         assertThat(actualTitle, is("Index for Unit Test"));
         assumeThat("proxy option does not work on PhantomJS 1.9.2 for Mac OS X",
             driver.getClass().getSimpleName() + "/" + actualCount,

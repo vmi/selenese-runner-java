@@ -8,12 +8,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.vmi.selenium.webdriver.ChromeDriverFactory;
-import jp.vmi.selenium.webdriver.FirefoxDriverFactory;
-import jp.vmi.selenium.webdriver.HtmlUnitDriverFactory;
-import jp.vmi.selenium.webdriver.IEDriverFactory;
-import jp.vmi.selenium.webdriver.PhantomJSDriverFactory;
-import jp.vmi.selenium.webdriver.SafariDriverFactory;
+import org.apache.commons.lang3.StringUtils;
+
+import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 
 /**
  * Utility for Test.
@@ -63,12 +60,20 @@ public final class TestUtils {
      * @return list of single element array of WebDriverFactory.
      */
     public static List<Object[]> getWebDriverFactories() {
-        return toParamList(
-            new HtmlUnitDriverFactory()
-            , new FirefoxDriverFactory()
-            , new ChromeDriverFactory()
-            , new PhantomJSDriverFactory()
-            , new IEDriverFactory()
-            , new SafariDriverFactory());
+        String[] drivers;
+        String prop = System.getProperty("test.drivers");
+        if (StringUtils.isBlank(prop)) {
+            drivers = new String[] {
+                HTMLUNIT,
+                FIREFOX,
+                CHROME,
+                PHANTOMJS,
+                IE,
+                SAFARI
+            };
+        } else {
+            drivers = prop.split("\\s*,\\s*");
+        }
+        return toParamList(drivers);
     }
 }

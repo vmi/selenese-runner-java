@@ -16,7 +16,7 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
 /**
- * Abstract class of factory for {@link WebDriver}s.
+ * Abstract class of factoryName for {@link WebDriver}s.
  */
 public abstract class WebDriverFactory {
 

@@ -127,6 +127,18 @@ public class WebDriverManager implements Supplier<WebDriver> {
      * @param factoryName WebDriverFactory name.
      */
     public void setWebDriverFactory(String factoryName) {
+        WebDriverFactory factory = lookupWebDriverFactory(factoryName);
+        setWebDriverFactory(factory);
+    }
+
+    /**
+     * Lookup WebDriverFactory by name.
+     *
+     * @param factoryName WebDriverFactory name.
+     *
+     * @return WebDriverFactory instance.
+     */
+    public WebDriverFactory lookupWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;
         else
@@ -153,7 +165,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
                 throw new IllegalArgumentException("Invalid WebDriverFactory class name: " + factoryName, e);
             }
         }
-        setWebDriverFactory(factory);
+        return factory;
     }
 
     /**

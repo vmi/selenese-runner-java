@@ -77,7 +77,7 @@ public class CommandFactory {
     private CustomCommandProcessor proc = null;
 
     /**
-     * Register user defined command factory.
+     * Register user defined command factoryName.
      *
      * @param factory user defined command factory.
      */

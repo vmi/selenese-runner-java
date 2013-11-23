@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * User defined command factory test.
+ * User defined command factoryName test.
  */
 @SuppressWarnings("javadoc")
 public class UserDefinedCommandFactoryTest {
