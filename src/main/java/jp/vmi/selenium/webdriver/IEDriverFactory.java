@@ -1,74 +1,51 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
 
+import org.apache.commons.exec.OS;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
-import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
-import static org.openqa.selenium.Platform.*;
 
 /**
  * Factory of {@link InternetExplorerDriver}.
  */
 public class IEDriverFactory extends WebDriverFactory {
 
-    private static Logger log = LoggerFactory.getLogger(IEDriverFactory.class);
+    // see: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
 
     private static final String IE_DRIVER_SERVER_EXE = "IEDriverServer.exe";
 
-    // see: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
+    @Override
+    public boolean isProxySupported() {
+        return false;
+    }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        Platform platform = Platform.getCurrent();
-        log.info("Platform: {}", platform);
-        if (!platform.is(WINDOWS))
-            throw new UnsupportedOperationException("Unsupported platform: " + platform);
-
-        // DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
-        // return new InternetExplorerDriver(capabilities);
-        if (driverOptions.has(DriverOption.PROXY))
-            log.warn("No support proxy with InternetExprolerDriver. Please set proxy to IE in advance.");
-
-        File ieds;
+        if (!OS.isFamilyWindows())
+            throw new UnsupportedOperationException("Unsupported platform: " + Platform.getCurrent());
+        DesiredCapabilities caps = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
+        File driver;
         if (driverOptions.has(IEDRIVER)) {
-            ieds = new File(driverOptions.get(IEDRIVER));
-            if (!ieds.canExecute())
-                throw new IllegalArgumentException("Missing " + IE_DRIVER_SERVER_EXE + ": " + ieds);
+            driver = new File(driverOptions.get(IEDRIVER));
+            if (!driver.canExecute())
+                throw new IllegalArgumentException("Missing " + IE_DRIVER_SERVER_EXE + ": " + driver);
         } else {
-            ieds = searchIEDriverServer();
+            driver = PathUtils.searchExecutableFile(IE_DRIVER_SERVER_EXE);
+            if (driver == null)
+                throw new IllegalStateException("Missing " + IE_DRIVER_SERVER_EXE + " in PATH");
         }
-        InternetExplorerDriverService is = new InternetExplorerDriverService.Builder()
+        InternetExplorerDriverService service = new InternetExplorerDriverService.Builder()
             .usingAnyFreePort()
-            .usingDriverExecutable(ieds)
+            .usingDriverExecutable(driver)
             .build();
-        return new InternetExplorerDriver(is);
-    }
-
-    private File searchIEDriverServer() {
-        List<String> pathList = new ArrayList<String>();
-        pathList.add(System.getProperty("user.dir"));
-        String envVarPath = System.getenv("PATH");
-        if (envVarPath != null) {
-            String[] paths = envVarPath.split(Pattern.quote(File.pathSeparator));
-            Collections.addAll(pathList, paths);
-        }
-        for (String path : pathList) {
-            File ieds = new File(path, IE_DRIVER_SERVER_EXE);
-            if (ieds.canExecute())
-                return ieds;
-        }
-        throw new IllegalArgumentException(IE_DRIVER_SERVER_EXE + " is not found.");
+        return new InternetExplorerDriver(service, caps);
     }
 }

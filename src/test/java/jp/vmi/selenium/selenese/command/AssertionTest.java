@@ -6,9 +6,10 @@ import java.io.IOException;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestBase;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -34,9 +35,10 @@ public class AssertionTest extends TestBase {
         TestCase testcase = new TestCase();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
+        wdm.setDriverOptions(new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile.getPath(), "test", runner, ws.getUrl());
+        testcase.initialize(selenesefile.getPath(), "test", runner, wsr.getBaseURL());
 
         Result result;
         result = cmd01.doCommand(testcase, runner);

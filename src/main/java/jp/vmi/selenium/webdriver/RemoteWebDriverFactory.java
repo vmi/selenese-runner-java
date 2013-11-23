@@ -21,16 +21,13 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.htmlUnit(), driverOptions);
-        if (driverOptions.has(REMOTE_BROWSER)) {
-            capabilities.setBrowserName(driverOptions.get(REMOTE_BROWSER));
-        }
-        if (driverOptions.has(REMOTE_PLATFORM)) {
-            capabilities.setCapability(CapabilityType.PLATFORM, driverOptions.get(REMOTE_PLATFORM));
-        }
-        if (driverOptions.has(REMOTE_VERSION)) {
-            capabilities.setCapability(CapabilityType.VERSION, driverOptions.get(REMOTE_VERSION));
-        }
+        DesiredCapabilities caps = setupProxy(DesiredCapabilities.htmlUnit(), driverOptions);
+        if (driverOptions.has(REMOTE_BROWSER))
+            caps.setBrowserName(driverOptions.get(REMOTE_BROWSER));
+        if (driverOptions.has(REMOTE_PLATFORM))
+            caps.setCapability(CapabilityType.PLATFORM, driverOptions.get(REMOTE_PLATFORM));
+        if (driverOptions.has(REMOTE_VERSION))
+            caps.setCapability(CapabilityType.VERSION, driverOptions.get(REMOTE_VERSION));
         URL url;
         if (driverOptions.has(REMOTE_URL)) {
             try {
@@ -38,12 +35,10 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Invalid --remote-url: " + e.getMessage());
             }
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Require --remote-url to know where to connect to");
         }
-
-        RemoteWebDriver driver = new RemoteWebDriver(url, capabilities);
+        RemoteWebDriver driver = new RemoteWebDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
         return driver;
     }

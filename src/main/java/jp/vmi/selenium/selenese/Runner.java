@@ -24,7 +24,6 @@ import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
-import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
@@ -358,6 +357,16 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
+     * Execute test-suite.
+     *
+     * @param testSuite test-suite.
+     * @return result.
+     */
+    public Result execute(TestSuite testSuite) {
+        return testSuite.execute(null, this);
+    }
+
+    /**
      * Run Selenese script files.
      *
      * @param filenames Selenese script filenames.
@@ -371,7 +380,7 @@ public class Runner implements HtmlResultHolder {
             Selenese selenese = Parser.parse(filename, this);
             if (selenese.isError()) {
                 log.error(selenese.toString());
-                totalResult = new Error("Invalid parameter");
+                totalResult = ((ErrorSource) selenese).getResult();
                 continue;
             }
             switch (selenese.getType()) {
@@ -391,7 +400,7 @@ public class Runner implements HtmlResultHolder {
         for (TestSuite testSuite : testSuiteList) {
             Result result;
             try {
-                result = testSuite.execute(null, this);
+                result = execute(testSuite);
             } catch (RuntimeException e) {
                 log.error(e.getMessage());
                 throw e;

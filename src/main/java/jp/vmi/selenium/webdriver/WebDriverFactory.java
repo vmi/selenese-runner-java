@@ -28,8 +28,22 @@ public abstract class WebDriverFactory {
 
     Map<String, String> environmentVariables = new HashMap<String, String>();
 
+    /**
+     * Is proxy supported?
+     *
+     * @return true if proxy is supported by driver.
+     */
+    public boolean isProxySupported() {
+        return true;
+    }
+
     protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {
         if (driverOptions.has(PROXY)) {
+            if (!isProxySupported()) {
+                log.warn("No support proxy with {}. Please set proxy to browser configuration in advance.",
+                    getClass().getSimpleName().replaceFirst("Factory$", ""));
+                return capabilities;
+            }
             Proxy proxy = new Proxy();
             proxy.setProxyType(ProxyType.MANUAL);
             String ps = driverOptions.get(PROXY);
@@ -59,4 +73,9 @@ public abstract class WebDriverFactory {
      * @return WebDriver instance.
      */
     public abstract WebDriver newInstance(DriverOptions driverOptions);
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

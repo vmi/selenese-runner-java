@@ -152,6 +152,10 @@ public class Main {
             .hasArg().withArgName("path")
             .withDescription("path to 'IEDriverServer' binary. (implies '--driver ie')")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("phantomjs")
+            .hasArg().withArgName("path")
+            .withDescription("path to 'phantomjs' binary. (implies '--driver phantomjs')")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("xml-result")
             .hasArg().withArgName("dir")
             .withDescription("output XML JUnit results to specified directory.")
@@ -281,6 +285,8 @@ public class Main {
                     driverName = WebDriverManager.CHROME;
                 else if (driverOptions.has(DriverOption.IEDRIVER))
                     driverName = WebDriverManager.IE;
+                else if (driverOptions.has(DriverOption.PHANTOMJS))
+                    driverName = WebDriverManager.PHANTOMJS;
             }
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
