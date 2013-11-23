@@ -10,6 +10,7 @@ import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -36,6 +37,7 @@ public class BuiltInCommandTest extends TestBase {
         TestCase testcase = new TestCase();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
+        wdm.setDriverOptions(new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile.getPath(), "test", runner, wsr.getBaseURL());

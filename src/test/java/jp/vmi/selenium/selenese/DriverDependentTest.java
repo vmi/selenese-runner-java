@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -99,6 +100,15 @@ public class DriverDependentTest extends TestCaseTestBase {
         execute("capture");
         assertThat(result, is(instanceOf(Success.class)));
         assertThat("Captured File: " + pngFile, pngFile.exists(), is(true));
+    }
+
+    @Test
+    public void ignoreScreenshotCommand() {
+        assumeThat(driver, is(instanceOf(TakesScreenshot.class)));
+        runner.setIgnoreScreenshotCommand(true);
+        execute("capture");
+        assertThat(result, is(instanceOf(Success.class)));
+        assertThat(FileUtils.listFiles(screenshotDir.getRoot(), new String[] { "png" }, true), is(empty()));
     }
 
     @Ignore
