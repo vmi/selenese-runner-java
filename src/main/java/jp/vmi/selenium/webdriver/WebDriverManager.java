@@ -212,7 +212,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
                     } catch (Throwable e2) {
                         // no operation
                     } finally {
-                        driverMap.remove(driver);
+                        driverMap.remove(key);
                         driver = null;
                     }
                 } else {
