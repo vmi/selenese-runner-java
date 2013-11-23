@@ -2,8 +2,10 @@ package jp.vmi.selenium.webdriver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -196,6 +198,29 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
         String key = factory.getClass().getCanonicalName() + driverOptions.toString();
         WebDriver driver = driverMap.get(key);
+        if (driver != null) {
+            try {
+                log.info("Existing driver found.");
+                driver.getWindowHandle();
+            } catch (NoSuchWindowException e) {
+                log.info("No focused window.");
+                Set<String> handles = driver.getWindowHandles();
+                if (handles.isEmpty()) {
+                    log.warn("No window exists.");
+                    try {
+                        driver.quit();
+                    } catch (Throwable e2) {
+                        // no operation
+                    } finally {
+                        driverMap.remove(driver);
+                        driver = null;
+                    }
+                } else {
+                    log.info("Activate a window.");
+                    driver.switchTo().window(handles.iterator().next());
+                }
+            }
+        }
         if (driver == null) {
             if (isSingleInstance)
                 quitAllDrivers();
