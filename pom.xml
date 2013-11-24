@@ -70,11 +70,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   <profiles>
     <profile>
       <id>test</id>
-      <activation>
-        <property>
-          <name>env.BUILD_NUMBER</name>
-        </property>
-      </activation>
       <properties>
         <skipTests>false</skipTests>
       </properties>
@@ -90,8 +85,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         </property>
       </activation>
       <properties>
+        <skipTests>false</skipTests>
         <test.drivers>htmlunit</test.drivers>
       </properties>
+      <build>
+        <defaultGoal>test</defaultGoal>
+      </build>
     </profile>
     <profile>
       <id>package</id>
