@@ -47,7 +47,7 @@ public class DriverIndependentTest extends TestCaseTestBase {
 
     @Test
     public void verifyNotText() throws IllegalArgumentException {
-        execute("VerifyNotText");
+        execute("verifyNotText");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
