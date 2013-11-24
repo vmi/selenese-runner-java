@@ -72,6 +72,7 @@ public final class TestUtils {
                 SAFARI
             };
         } else {
+            System.err.println("### Test Drivers: " + prop);
             drivers = prop.split("\\s*,\\s*");
         }
         return toParamList(drivers);
