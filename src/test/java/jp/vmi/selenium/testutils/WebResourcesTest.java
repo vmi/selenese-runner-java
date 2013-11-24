@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
-public class WebResoucesTest {
+public class WebResourcesTest {
 
     @Rule
     public final WebServerResouce wsr = new WebServerResouce();
@@ -27,11 +27,11 @@ public class WebResoucesTest {
     @Test
     public void testWebResources() throws IOException {
         String baseURL = wsr.getBaseURL();
+        String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"));
         // direct access.
         URL url = new URL(baseURL);
         Object content = url.getContent();
         String actualDirect = IOUtils.toString((InputStream) content);
-        String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"));
         assertThat(actualDirect, is(expect));
         // proxy access.
         int proxyPort = wpr.getPort();
