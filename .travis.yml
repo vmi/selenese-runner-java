@@ -14,10 +14,6 @@ before_install:
   - export PATH="bin:$PATH"
   - ls -la bin/phantomjs
 before_script:
-  - date +"[%Y-%m-%d %H:%M:%S] before_script"
   - "phantomjs --version"
-install:
-  - /bin/true
-script:
-  - date +"[%Y-%m-%d %H:%M:%S] script"
-  - mvn clean install -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs -Ptest
+install: /bin/true
+script: mvn clean install -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs -Ptest
