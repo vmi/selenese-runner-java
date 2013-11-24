@@ -16,4 +16,4 @@ before_install:
 before_script:
   - "phantomjs --version"
 install: /bin/true
-script: mvn clean install -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs -Ptest
+script: mvn -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs clean test

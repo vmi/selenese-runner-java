@@ -83,6 +83,17 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       </build>
     </profile>
     <profile>
+      <id>jenkins</id>
+      <activation>
+        <property>
+          <name>env.BUILD_NUMBER</name>
+        </property>
+      </activation>
+      <properties>
+        <test.drivers>htmlunit</test.drivers>
+      </properties>
+    </profile>
+    <profile>
       <id>package</id>
       <build>
         <defaultGoal>package</defaultGoal>
