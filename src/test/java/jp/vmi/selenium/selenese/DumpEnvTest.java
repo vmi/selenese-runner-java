@@ -23,7 +23,7 @@ public class DumpEnvTest {
                 @SuppressWarnings("unchecked")
                 Entry<String, String> e1 = (Entry<String, String>) o1;
                 @SuppressWarnings("unchecked")
-                Entry<String, String> e2 = (Entry<String, String>) o1;
+                Entry<String, String> e2 = (Entry<String, String>) o2;
                 return e1.getKey().compareTo(e2.getKey());
             }
         });
