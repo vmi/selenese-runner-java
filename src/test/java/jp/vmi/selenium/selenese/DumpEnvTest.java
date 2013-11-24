@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,11 +12,35 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Test;
 
+import static java.lang.System.*;
+
 @SuppressWarnings("javadoc")
 public class DumpEnvTest {
 
+    private void indent(int n) {
+        for (int i = 0; i < n; i++)
+            out.print(' ');
+    }
+
+    private void printEntry(String key, String value, int indent) {
+        indent(indent);
+        out.printf("%s=[", key);
+        if (key.endsWith(".class.path")) {
+            for (String path : value.split(File.pathSeparator)) {
+                out.print('\n');
+                indent(indent + 2);
+                out.print(path);
+            }
+            out.print('\n');
+            indent(indent);
+            out.print("]\n");
+        } else {
+            out.printf("[%s]\n", StringEscapeUtils.escapeJava(value));
+        }
+    }
+
     private void dumpEntries(String title, Map<?, ?> map) {
-        System.out.printf("###[%s]\n", title);
+        out.printf("###[%s]\n", title);
         List<Object> list = new ArrayList<Object>(map.entrySet());
         Collections.sort(list, new Comparator<Object>() {
             @Override
@@ -30,14 +55,14 @@ public class DumpEnvTest {
         for (Object o : list) {
             @SuppressWarnings("unchecked")
             Entry<String, String> e = (Entry<String, String>) o;
-            System.out.printf("   %s=[%s]\n", e.getKey(), StringEscapeUtils.escapeJava(e.getValue()));
+            printEntry(e.getKey(), e.getValue(), 3);
         }
     }
 
     @Test
     public void dumpEnv() {
-        Properties props = System.getProperties();
-        Map<String, String> env = System.getenv();
+        Properties props = getProperties();
+        Map<String, String> env = getenv();
         dumpEntries("Properties", props);
         dumpEntries("EnvironmentVariables", env);
     }
