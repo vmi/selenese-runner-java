@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.android.AndroidDriver;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestSuite;
@@ -43,6 +44,12 @@ public abstract class TestCaseTestBase extends TestBase {
     @Before
     public void initialize() {
         initDriver();
+
+        if (driver instanceof AndroidDriver) {
+            //for AndroidEmulator
+            wsr.setFqdn("10.0.2.2");
+        }
+
         testSuites = new ArrayList<TestSuite>();
         runner = new Runner() {
             @Override

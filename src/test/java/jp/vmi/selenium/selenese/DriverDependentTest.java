@@ -16,6 +16,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.safari.SafariDriver;
 
 import jp.vmi.selenium.selenese.result.Failure;
@@ -58,6 +59,8 @@ public class DriverDependentTest extends TestCaseTestBase {
         manager.setDriverOptions(new DriverOptions());
         try {
             driver = manager.get();
+        } catch (UnreachableBrowserException e) {
+            Assume.assumeNoException(e);
         } catch (UnsupportedOperationException e) {
             Assume.assumeNoException(e);
         }

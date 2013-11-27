@@ -30,6 +30,8 @@ public class WebServer {
 
     private int port;
 
+    private String fqdn = "localhost";
+
     private org.webbitserver.WebServer server;
 
     private static class FormPosted implements HttpHandler {
@@ -102,7 +104,7 @@ public class WebServer {
      * @return server name.
      */
     public String getServerNameString() {
-        return "localhost:" + port;
+        return fqdn + ":" + port;
     }
 
     /**
@@ -112,5 +114,9 @@ public class WebServer {
      */
     public String getBaseURL() {
         return "http://" + getServerNameString() + "/";
+    }
+
+    public void setFqdn(String fqdn) {
+        this.fqdn = fqdn;
     }
 }

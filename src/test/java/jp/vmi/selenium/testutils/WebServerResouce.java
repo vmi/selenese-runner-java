@@ -38,4 +38,7 @@ public class WebServerResouce extends ExternalResource {
         return server.getBaseURL();
     }
 
+    public void setFqdn(String fqdn) {
+        server.setFqdn(fqdn);
+    }
 }

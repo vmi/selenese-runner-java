@@ -55,6 +55,11 @@ public class WebDriverManager implements Supplier<WebDriver> {
     public static final String PHANTOMJS = "phantomjs";
 
     /**
+     * PhantomJS
+     */
+    public static final String ANDROID = "android";
+
+    /**
      * System property name for user defined {@link WebDriverFactory}.
      */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
@@ -158,6 +163,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new RemoteWebDriverFactory();
         } else if (PHANTOMJS.equals(factoryName)) {
             factory = new PhantomJSDriverFactory();
+        } else if (ANDROID.equals(factoryName)) {
+            factory = new AndroidDriverFactory();
+
         } else {
             try {
                 factory = (WebDriverFactory) Class.forName(factoryName).newInstance();
