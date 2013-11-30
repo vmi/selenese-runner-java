@@ -38,6 +38,11 @@ public class WebServerResouce extends ExternalResource {
         return server.getBaseURL();
     }
 
+    /**
+     * Set FQQN of base URL for android test.
+     *
+     * @param fqdn FQDN
+     */
     public void setFqdn(String fqdn) {
         server.setFqdn(fqdn);
     }

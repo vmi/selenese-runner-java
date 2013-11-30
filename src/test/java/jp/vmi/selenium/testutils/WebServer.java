@@ -116,6 +116,11 @@ public class WebServer {
         return "http://" + getServerNameString() + "/";
     }
 
+    /**
+     * Set FQDN of base URL for android test.
+     * 
+     * @param fqdn FQDN.
+     */
     public void setFqdn(String fqdn) {
         this.fqdn = fqdn;
     }
