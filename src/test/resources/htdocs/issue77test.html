@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Issue #77 test</title>
+</head>
+<body>
+<h1>Issue #77 test</h1>
+<hr>
+<ul>
+<li>
+  <form>
+    <select name="report1" multiple onchange="javascript:alert(this.value)">
+      <option value="select1:week1">Week 1</option>
+      <option value="select1:week2">Week 2</option>
+      <option value="select1:week3">Week 3</option>
+    </select>
+  </form>
+</li>
+<li>
+  <form name="report_form" action="javascript:alert(this.value)">
+    <select name="report2">
+      <option value="select2:week1">Week 1</option>
+      <option value="select2:week2">Week 2</option>
+      <option value="select2:week3">Week 3</option>
+    </select>
+    <input type="submit" value="Go!"/>
+  </form>
+</li>
+</ul>
+</body>
+</html>

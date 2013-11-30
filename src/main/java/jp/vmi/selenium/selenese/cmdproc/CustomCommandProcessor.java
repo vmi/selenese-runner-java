@@ -60,6 +60,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         }
         //this.library = library;
         this.finder = finder;
+        addMethod("isSomethingSelected", new IsSomethingSelected(finder));
     }
 
     /**
