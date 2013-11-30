@@ -116,10 +116,8 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Ignore
     @Test
     public void basicAuth() {
-        Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(InternetExplorerDriver.class)));
-
-        //TODO test fail htmlunit caused by error on getTitle
-        Assume.assumeThat(WebDriverManager.getInstance().get(), not(instanceOf(HtmlUnitDriver.class)));
+        assumeNot(InternetExplorerDriver.class);
+        assumeNot(HtmlUnitDriver.class);
 
         execute("basicAuth");
         runner.setBaseURL("http://user:pass@" + wsr.getServerNameString() + "/");
@@ -132,6 +130,24 @@ public class DriverDependentTest extends TestCaseTestBase {
         runner.setHighlight(true);
         runner.setBaseURL(wsr.getBaseURL());
         execute("highlight");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void locator() {
+        // don't work this test-case on SafariDriver and HtmlUnitDriver.
+        assumeNot(HtmlUnitDriver.class);
+        assumeNot(SafariDriver.class);
+        execute("locator");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void iframe() {
+        // don't work this test-case on SafariDriver and HtmlUnitDriver.
+        assumeNot(HtmlUnitDriver.class);
+        assumeNot(SafariDriver.class);
+        execute("iframe");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
