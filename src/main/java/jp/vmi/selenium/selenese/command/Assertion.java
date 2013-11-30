@@ -1,10 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +13,7 @@ import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -101,7 +99,7 @@ public class Assertion extends Command {
                     Object result = proc.execute(getter, getterArgs);
                     String resultString = (result != null) ? result.toString() : "";
                     String expected = testCase.getProc().replaceVars(this.expected);
-                    if (matches(resultString, expected) ^ isInverse)
+                    if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
                         resultString, isInverse ? "Not " : "", expected);
@@ -143,33 +141,5 @@ public class Assertion extends Command {
         default: // == WAIT_FOR
             return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
         }
-    }
-
-    private boolean matches(String resultString, String expected) {
-        String[] pattern = expected.split(":", 2);
-        if (pattern.length == 2) {
-            if ("regexp".equals(pattern[0]))
-                return regexpMatches(resultString, pattern[1], 0);
-            else if ("regexpi".equals(pattern[0]))
-                return regexpMatches(resultString, pattern[1], Pattern.CASE_INSENSITIVE);
-            else if ("exact".equals(pattern[0]))
-                return StringUtils.equals(resultString, pattern[1]);
-            else if ("glob".equals(pattern[0]))
-                expected = pattern[1];
-        }
-        return globMatches(resultString, expected);
-    }
-
-    private boolean regexpMatches(String resultString, String expected, int flags) {
-        Pattern p = Pattern.compile(expected, flags);
-        Matcher m = p.matcher(resultString);
-        return m.find();
-    }
-
-    private boolean globMatches(String resultString, String expected) {
-        // see http://stackoverflow.com/a/3619098
-        Pattern p = Pattern.compile("\\Q" + expected.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"), Pattern.DOTALL);
-        Matcher m = p.matcher(resultString);
-        return m.matches();
     }
 }
