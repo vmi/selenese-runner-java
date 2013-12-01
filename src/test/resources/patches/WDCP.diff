@@ -1,0 +1,252 @@
+--- WebDriverCommandProcessor.java	2013-12-01 16:57:31.000000000 +0900
++++ ../../../main/java/org/openqa/selenium/WebDriverCommandProcessor.java	2013-12-01 14:34:22.000000000 +0900
+@@ -1,4 +1,10 @@
+ /*
++@formatter:off
++
++Patched by Motonori IWAMURO <vmi@nifty.com>
++
++---
++
+ Copyright 2007-2009 Selenium committers
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+@@ -16,32 +22,39 @@
+ 
+ package org.openqa.selenium;
+ 
++import java.util.Map;
++
++import org.openqa.selenium.internal.WrapsDriver;
++import org.openqa.selenium.internal.seleniumemulation.*;
++
+ import com.google.common.annotations.VisibleForTesting;
+ import com.google.common.base.Supplier;
+ import com.google.common.collect.Maps;
+-
+ import com.thoughtworks.selenium.CommandProcessor;
+ import com.thoughtworks.selenium.SeleniumException;
+ 
+-import org.openqa.selenium.internal.WrapsDriver;
+-import org.openqa.selenium.internal.seleniumemulation.*;
+-
+-import java.util.Map;
+-
+ 
+ /**
+  * A CommandProcessor which delegates commands down to an underlying webdriver instance.
+  */
++@SuppressWarnings("javadoc")
+ public class WebDriverCommandProcessor implements CommandProcessor, WrapsDriver {
+ 
+   private final Map<String, SeleneseCommand<?>> seleneseMethods = Maps.newHashMap();
+   private final String baseUrl;
+-  private final Timer timer;
+   private final CompoundMutator scriptMutator;
+   private boolean enableAlertOverrides = true;
+-  private Supplier<WebDriver> maker;
++  private final Supplier<WebDriver> maker;
+   private WebDriver driver;
+ 
++  // Don't change following variables after calling {@link #start()}.
++  private Timer timer = null;
++  private JavascriptLibrary javascriptLibrary = null;
++  private ElementFinder elementFinder = null;
++  private KeyState keyState = null;
++  private AlertOverride alertOverride = null;
++  private Windows windows = null;
++
+   public WebDriverCommandProcessor(String baseUrl, WebDriver driver) {
+     this(baseUrl, new ExplodingSupplier());
+     this.driver = driver;
+@@ -54,18 +67,20 @@
+   public WebDriverCommandProcessor(String baseUrl, Supplier<WebDriver> maker) {
+     this.maker = maker;
+     this.baseUrl = baseUrl;
+-    this.timer = new Timer(30000);
+     this.scriptMutator = new CompoundMutator(baseUrl);
+   }
+ 
++  @Override
+   public WebDriver getWrappedDriver() {
+     return driver;
+   }
+ 
++  @Override
+   public String getRemoteControlServerLocation() {
+     throw new UnsupportedOperationException();
+   }
+ 
++  @Override
+   public String doCommand(String commandName, String[] args) {
+     Object val = execute(commandName, args);
+     if (val == null) {
+@@ -75,18 +90,22 @@
+     return val.toString();
+   }
+ 
++  @Override
+   public void setExtensionJs(String s) {
+     throw new UnsupportedOperationException();
+   }
+ 
++  @Override
+   public void start() {
+     start((Object) null);
+   }
+ 
++  @Override
+   public void start(String s) {
+     throw new UnsupportedOperationException("Unsure how to process: " + s);
+   }
+ 
++  @Override
+   public void start(Object o) {
+     if (driver != null) {
+       throw new SeleniumException("You may not start more than one session at a time");
+@@ -99,6 +118,7 @@
+     setUpMethodMap();
+   }
+ 
++  @Override
+   public void stop() {
+     timer.stop();
+     if (driver != null) {
+@@ -107,31 +127,37 @@
+     driver = null;
+   }
+ 
++  @Override
+   public String getString(String commandName, String[] args) {
+     return (String) execute(commandName, args);
+   }
+ 
++  @Override
+   public String[] getStringArray(String commandName, String[] args) {
+     return (String[]) execute(commandName, args);
+   }
+ 
++  @Override
+   public Number getNumber(String commandName, String[] args) {
+     return (Number) execute(commandName, args);
+   }
+ 
++  @Override
+   public Number[] getNumberArray(String s, String[] strings) {
+     throw new UnsupportedOperationException();
+   }
+ 
++  @Override
+   public boolean getBoolean(String commandName, String[] args) {
+     return (Boolean) execute(commandName, args);
+   }
+ 
++  @Override
+   public boolean[] getBooleanArray(String s, String[] strings) {
+     throw new UnsupportedOperationException();
+   }
+ 
+-  private Object execute(String commandName, final String[] args) {
++  public Object execute(String commandName, final String[] args) {
+     final SeleneseCommand<?> command = seleneseMethods.get(commandName);
+     if (command == null) {
+       throw new UnsupportedOperationException(commandName);
+@@ -181,13 +207,84 @@
+     this.enableAlertOverrides = enableAlertOverrides;
+   }
+ 
++  /**
++   * This has no affect after calling {@link #start()}.
++   */
++  public void setTimer(Timer timer) {
++    this.timer = timer;
++  }
++
++  /**
++   * This has no affect after calling {@link #start()}.
++   */
++  public void setJavascriptLibrary(JavascriptLibrary javascriptLibrary) {
++    this.javascriptLibrary = javascriptLibrary;
++  }
++
++  /**
++   * This has no affect after calling {@link #start()}.
++   */
++  public void setElementFinder(ElementFinder elementFinder) {
++    this.elementFinder = elementFinder;
++  }
++
++  /**
++   * This has no affect after calling {@link #start()}.
++   */
++  public void setKeyState(KeyState keyState) {
++    this.keyState = keyState;
++  }
++
++  /**
++   * This has no affect after calling {@link #start()}.
++   */
++  public void setWindows(Windows windows) {
++    this.windows = windows;
++  }
++
++  public Timer getTimer() {
++    if (timer == null)
++      timer = new Timer(30000);
++    return timer;
++  }
++
++  public JavascriptLibrary getJavascriptLibrary() {
++    if (javascriptLibrary == null)
++      javascriptLibrary = new JavascriptLibrary();
++    return javascriptLibrary;
++  }
++
++  public ElementFinder getElementFinder() {
++    if (elementFinder == null)
++      elementFinder = new ElementFinder(getJavascriptLibrary());
++    return elementFinder;
++  }
++
++  public KeyState getKeyState() {
++    if (keyState == null)
++      keyState = new KeyState();
++    return keyState;
++  }
++
++  public AlertOverride getAlertOverride() {
++    if (alertOverride == null)
++      alertOverride = new AlertOverride(enableAlertOverrides);
++    return alertOverride;
++  }
++
++  public Windows getWindows() {
++    if (windows == null)
++      windows = new Windows(driver);
++    return windows;
++  }
++
+   private void setUpMethodMap() {
+-    JavascriptLibrary javascriptLibrary = new JavascriptLibrary();
+-    ElementFinder elementFinder = new ElementFinder(javascriptLibrary);
+-    KeyState keyState = new KeyState();
++    JavascriptLibrary javascriptLibrary = getJavascriptLibrary();
++    ElementFinder elementFinder = getElementFinder();
++    KeyState keyState = getKeyState();
+ 
+-    AlertOverride alertOverride = new AlertOverride(enableAlertOverrides);
+-    Windows windows = new Windows(driver);
++    AlertOverride alertOverride = getAlertOverride();
++    Windows windows = getWindows();
+ 
+     // Note the we use the names used by the CommandProcessor
+     seleneseMethods.put("addLocationStrategy", new AddLocationStrategy(elementFinder));
+@@ -305,7 +402,7 @@
+     seleneseMethods.put("setBrowserLogLevel", new NoOp(null));
+     seleneseMethods.put("setContext", new NoOp(null));
+     seleneseMethods.put("setSpeed", new NoOp(null));
+-    seleneseMethods.put("setTimeout", new SetTimeout(timer));
++    seleneseMethods.put("setTimeout", new SetTimeout(getTimer()));
+     seleneseMethods.put("shiftKeyDown", new ShiftKeyDown(keyState));
+     seleneseMethods.put("shiftKeyUp", new ShiftKeyUp(keyState));
+     seleneseMethods.put("submit", new Submit(alertOverride, elementFinder));

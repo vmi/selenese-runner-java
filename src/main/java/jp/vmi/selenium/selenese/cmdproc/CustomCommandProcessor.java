@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +9,13 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.seleniumemulation.ElementFinder;
-import org.openqa.selenium.internal.seleniumemulation.GetText;
 import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import com.google.common.base.Supplier;
 import com.thoughtworks.selenium.SeleniumException;
+
+import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
 /**
  * WebDriverCommandProcessor no timeout version.
@@ -25,8 +25,8 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     private final Map<String, Object> varsMap;
     private final Eval eval;
 
-    //private final JavascriptLibrary library;
-    private final ElementFinder finder;
+    private final JavascriptLibrary library;
+    private final WebDriverElementFinder finder;
 
     /**
      * Constructor.
@@ -35,31 +35,26 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param driver WebDriver instance.
      * @param varsMap variable map.
      */
-    public CustomCommandProcessor(String baseUrl, WebDriver driver, Map<String, Object> varsMap) {
-        super(baseUrl, driver);
+    public CustomCommandProcessor(String baseUrl, final WebDriver driver, Map<String, Object> varsMap) {
+        super(baseUrl, new Supplier<WebDriver>() {
+            @Override
+            public WebDriver get() {
+                return driver;
+            }
+        });
+        this.library = new JavascriptLibrary();
+        this.finder = new WebDriverElementFinder();
         this.varsMap = varsMap;
+        setJavascriptLibrary(library);
+        setElementFinder(finder);
+        start();
+        // following code need to execute after start().
         this.eval = new Eval(baseUrl, varsMap);
         addMethod("getEval", new GetEval(eval));
         addMethod("openWindow", new OpenWindow(eval));
         addMethod("runScript", new RunScript(eval));
         addMethod("waitForCondition", new WaitForCondition(eval));
         addMethod("sendKeys", getMethod("typeKeys"));
-        // hack. FIXME
-        JavascriptLibrary library = null;
-        ElementFinder finder = null;
-        GetText getText = (GetText) getMethod("getText");
-        try {
-            Class<GetText> c = GetText.class;
-            //Field fieldLibrary = c.getDeclaredField("library");
-            Field fieldFinder = c.getDeclaredField("finder");
-            //library = (JavascriptLibrary) fieldLibrary.get(getText);
-            finder = (ElementFinder) fieldFinder.get(getText);
-        } catch (Exception e) {
-            library = new JavascriptLibrary();
-            finder = new ElementFinder(library);
-        }
-        //this.library = library;
-        this.finder = finder;
         addMethod("isSomethingSelected", new IsSomethingSelected(finder));
     }
 
@@ -106,6 +101,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param args arguments.
      * @return command result.
      */
+    @Override
     public Object execute(String commandName, String[] args) {
         SeleneseCommand<?> command = getMethod(commandName);
         if (command == null)
