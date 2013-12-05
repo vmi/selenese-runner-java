@@ -17,6 +17,8 @@ import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
 
+import static java.util.concurrent.TimeUnit.*;
+
 @SuppressWarnings("javadoc")
 public abstract class TestCaseTestBase extends TestBase {
 
@@ -58,6 +60,7 @@ public abstract class TestCaseTestBase extends TestBase {
                 return super.execute(testSuite);
             }
         };
+        driver.manage().timeouts().implicitlyWait(1, MINUTES);
         runner.setDriver(driver);
         runner.setBaseURL(wsr.getBaseURL());
         runner.setScreenshotDir(screenshotDir.getRoot().getPath());
