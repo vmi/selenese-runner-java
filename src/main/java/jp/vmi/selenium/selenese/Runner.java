@@ -13,9 +13,12 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
+import static org.openqa.selenium.remote.CapabilityType.*;
 
 /**
  * Provide Java API to run Selenese script.
@@ -66,8 +70,20 @@ public class Runner implements HtmlResultHolder {
         LogRecorder.setPrintStream(out);
     }
 
-    private void takeScreenshot(File file, TestCase testcase) {
-        File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    private TakesScreenshot getTakesScreenshot() {
+        if (driver instanceof TakesScreenshot) {
+            return (TakesScreenshot) driver;
+        } else if (driver instanceof RemoteWebDriver && ((HasCapabilities) driver).getCapabilities().is(TAKES_SCREENSHOT)) {
+            return (TakesScreenshot) new Augmenter().augment(driver);
+        } else {
+            return null;
+        }
+    }
+
+    private void takeScreenshot(TakesScreenshot tss, File file, TestCase testcase) {
+        // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
+        driver.switchTo().defaultContent();
+        File tmp = tss.getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.moveFile(tmp, file);
         } catch (IOException e) {
@@ -87,14 +103,15 @@ public class Runner implements HtmlResultHolder {
      * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
      */
     public void takeScreenshot(String filename, TestCase testcase) throws UnsupportedOperationException {
-        if (!(driver instanceof TakesScreenshot))
+        TakesScreenshot tss = getTakesScreenshot();
+        if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         if (File.separatorChar != '\\' && filename.contains("\\"))
             filename = filename.replace('\\', File.separatorChar);
         File file = new File(filename).getAbsoluteFile();
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName()).getAbsoluteFile();
-        takeScreenshot(file, testcase);
+        takeScreenshot(tss, file, testcase);
     }
 
     /**
@@ -107,10 +124,13 @@ public class Runner implements HtmlResultHolder {
      * @param testcase test-case instance.
      */
     public void takeScreenshotAll(String prefix, int index, TestCase testcase) {
-        if (screenshotAllDir == null || !(driver instanceof TakesScreenshot))
+        if (screenshotAllDir == null)
+            return;
+        TakesScreenshot tss = getTakesScreenshot();
+        if (tss == null)
             return;
         String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(new File(screenshotAllDir, filename), testcase);
+        takeScreenshot(tss, new File(screenshotAllDir, filename), testcase);
     }
 
     /**
@@ -123,10 +143,13 @@ public class Runner implements HtmlResultHolder {
      * @param testcase test-case instance.
      */
     public void takeScreenshotOnFail(String prefix, int index, TestCase testcase) {
-        if (screenshotOnFailDir == null || !(driver instanceof TakesScreenshot))
+        if (screenshotOnFailDir == null)
+            return;
+        TakesScreenshot tss = getTakesScreenshot();
+        if (tss == null)
             return;
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(new File(screenshotOnFailDir, filename), testcase);
+        takeScreenshot(tss, new File(screenshotOnFailDir, filename), testcase);
     }
 
     /**
