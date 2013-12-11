@@ -72,26 +72,25 @@ public class WebDriverElementFinder extends ElementFinder {
         return (Boolean) ((JavascriptExecutor) driver).executeScript("return window.frames.length > 0");
     }
 
-    private WebElement findElementImpl(LocatorHandler handler, WebDriver driver, String arg, String locator) {
+    private List<WebElement> findElementsImpl(LocatorHandler handler, WebDriver driver, String arg, String locator) {
         TargetLocator switchTo = driver.switchTo();
         switchTo.defaultContent();
         List<WebElement> result = handler.handle(driver, arg);
         if (!result.isEmpty())
-            return result.get(0);
+            return result;
         if (hasFrames(driver)) {
             List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
             for (WebElement iframe : iframes) {
                 switchTo.frame(iframe);
                 result = handler.handle(driver, arg);
                 if (!result.isEmpty())
-                    return result.get(0);
+                    return result;
             }
         }
         throw new SeleniumException("Element " + locator + " not found");
     }
 
-    @Override
-    public WebElement findElement(WebDriver driver, String locator) {
+    public List<WebElement> findElements(WebDriver driver, String locator) {
         Matcher matcher = LOCATORS_RE.matcher(locator);
         String type;
         String arg;
@@ -119,6 +118,11 @@ public class WebDriverElementFinder extends ElementFinder {
         LocatorHandler handler = handlerMap.get(type);
         if (handler == null)
             throw new UnsupportedOperationException("Unknown locator type: " + locator);
-        return findElementImpl(handler, driver, arg, locator);
+        return findElementsImpl(handler, driver, arg, locator);
+    }
+
+    @Override
+    public WebElement findElement(WebDriver driver, String locator) {
+        return findElements(driver, locator).get(0);
     }
 }

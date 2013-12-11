@@ -184,4 +184,10 @@ public class DriverDependentTest extends TestCaseTestBase {
         assertThat(result, is(instanceOf(Failure.class)));
         assertThat(result.getMessage(), containsString("Element css=select[name='not_found'] not found"));
     }
+
+    @Test
+    public void issue87() {
+        execute("verifyCssCount");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

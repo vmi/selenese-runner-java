@@ -56,6 +56,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         addMethod("waitForCondition", new WaitForCondition(eval));
         addMethod("sendKeys", getMethod("typeKeys"));
         addMethod("isSomethingSelected", new IsSomethingSelected(finder));
+        addMethod("getCssCount", new GetCssCount(finder));
     }
 
     /**
