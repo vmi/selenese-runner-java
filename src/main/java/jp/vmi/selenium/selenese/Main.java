@@ -78,9 +78,12 @@ public class Main {
      */
     @SuppressWarnings("static-access")
     public Main() {
-        options.addOption(OptionBuilder.withLongOpt("driver")
-            .hasArg().withArgName("driver")
-            .withDescription("firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | FQCN-of-WebDriverFactory")
+        options.addOption(OptionBuilder
+            .withLongOpt("driver")
+            .hasArg()
+            .withArgName("driver")
+            .withDescription(
+                "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
