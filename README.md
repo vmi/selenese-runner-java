@@ -23,7 +23,7 @@ Usage
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
-     -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | FQCN-of-WebDriverFactory
+     -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
      -p,--profile <name>                     profile name (Firefox only)
      -P,--profile-dir <dir>                  profile directory (Firefox only)
         --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
