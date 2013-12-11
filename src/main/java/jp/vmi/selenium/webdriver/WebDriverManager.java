@@ -50,6 +50,11 @@ public class WebDriverManager implements Supplier<WebDriver> {
     public static final String REMOTE = "remote";
 
     /**
+     *  AppiumWebDriver
+     */
+    public static final String APPIUM = "appium";
+
+    /**
      * PhantomJS
      */
     public static final String PHANTOMJS = "phantomjs";
@@ -161,6 +166,8 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new HtmlUnitDriverFactory();
         else if (REMOTE.equals(factoryName)) {
             factory = new RemoteWebDriverFactory();
+        } else if (APPIUM.equals(factoryName)) {
+            factory = new AppiumWebDriverFactory();
         } else if (PHANTOMJS.equals(factoryName)) {
             factory = new PhantomJSDriverFactory();
         } else if (ANDROID.equals(factoryName)) {
