@@ -62,7 +62,8 @@ Relase Note
 ### 1.3.2
 
 * Add --set-spped option. It is same as setSpeed(ms) command first.
-* Fix issues #76, #77, #82, #85.
+* Add Appium support. (by yec)
+* Fix issues #76, #77, #78, #82, #85.
 * Update Selenium version to 2.38.0.
 
 ### 1.3.1
