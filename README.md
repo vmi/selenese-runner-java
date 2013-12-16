@@ -59,6 +59,10 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.3
+
+* Update Selenium version to 2.39.0.
+
 ### 1.3.2
 
 * Add --set-spped option. It is same as setSpeed(ms) command first.
