@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -31,6 +32,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
+import static org.openqa.selenium.Keys.*;
 import static org.openqa.selenium.remote.CapabilityType.*;
 
 /**
@@ -60,6 +62,45 @@ public class Runner implements HtmlResultHolder {
 
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
+
+    // initialize varsMap.
+    // see: ide/main/src/content/selenium-runner.js on Selenium repos.
+    {
+        varsMap.put("space", " ");
+        varsMap.put("nbsp", "\u00A0");
+
+        for (Keys key : Keys.values())
+            varsMap.put("KEY_" + key.name(), key.toString());
+
+        sendKeysAliases(BACK_SPACE, "BACKSPACE", "BKSP");
+        sendKeysAliases(CONTROL, "CTRL");
+        sendKeysAliases(ESCAPE, "ESC");
+        sendKeysAliases(PAGE_UP, "PGUP");
+        sendKeysAliases(PAGE_DOWN, "PGDN");
+        sendKeysAliases(INSERT, "INS");
+        sendKeysAliases(DELETE, "DEL");
+        sendKeysAliases(NUMPAD0, "N0"); // number pad keys
+        sendKeysAliases(NUMPAD1, "N1");
+        sendKeysAliases(NUMPAD2, "N2");
+        sendKeysAliases(NUMPAD3, "N3");
+        sendKeysAliases(NUMPAD4, "N4");
+        sendKeysAliases(NUMPAD5, "N5");
+        sendKeysAliases(NUMPAD6, "N6");
+        sendKeysAliases(NUMPAD7, "N7");
+        sendKeysAliases(NUMPAD8, "N8");
+        sendKeysAliases(NUMPAD9, "N9");
+        sendKeysAliases(MULTIPLY, "MUL");
+        sendKeysAliases(ADD, "PLUS");
+        sendKeysAliases(SEPARATOR, "SEP");
+        sendKeysAliases(SUBTRACT, "MINUS");
+        sendKeysAliases(DECIMAL, "PERIOD");
+        sendKeysAliases(DIVIDE, "DIV");
+    }
+
+    private void sendKeysAliases(Keys keys, String... aliases) {
+        for (String alias : aliases)
+            varsMap.put("KEY_" + alias, keys.toString());
+    }
 
     /**
      * Set PrintStream for logging.

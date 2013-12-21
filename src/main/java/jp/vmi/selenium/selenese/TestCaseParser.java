@@ -32,6 +32,17 @@ public class TestCaseParser extends Parser {
         this.baseURL = baseURL;
     }
 
+    private String getTdString(Node td) {
+        StringBuilder value = new StringBuilder();
+        for (Node node : each(td.getChildNodes())) {
+            if ("BR".equals(node.getNodeName()))
+                value.append('\n');
+            else
+                value.append(node.getTextContent());
+        }
+        return value.toString();
+    }
+
     @Override
     public Selenese parse(Runner runner) {
         String name = null;
@@ -52,10 +63,8 @@ public class TestCaseParser extends Parser {
                     tri++;
                     cmdWithArgs = new ArrayList<String>(3);
                     for (Node td : each(tr.getChildNodes())) {
-                        if ("TD".equals(td.getNodeName())) {
-                            String value = td.getTextContent();
-                            cmdWithArgs.add(value);
-                        }
+                        if ("TD".equals(td.getNodeName()))
+                            cmdWithArgs.add(getTdString(td));
                     }
                     break;
                 case Node.COMMENT_NODE:

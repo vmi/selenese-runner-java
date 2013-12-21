@@ -61,6 +61,7 @@ Relase Note
 
 ### 1.3.3
 
+* Add ${KEY\_\*} variables. (see: http://blog.reallysimplethoughts.com/2013/09/25/using-special-keys-in-selenium-ide-part-2/ )
 * Update Selenium version to 2.39.0.
 
 ### 1.3.2

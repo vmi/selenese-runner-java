@@ -14,6 +14,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
@@ -148,6 +149,14 @@ public class DriverDependentTest extends TestCaseTestBase {
         assumeNot(HtmlUnitDriver.class);
         assumeNot(SafariDriver.class);
         execute("iframe");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void test() {
+        assumeNot(HtmlUnitDriver.class);
+        assumeNot(FirefoxDriver.class);
+        execute("sendkeys");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
