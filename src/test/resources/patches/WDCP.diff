@@ -1,5 +1,5 @@
---- WebDriverCommandProcessor.java	2013-12-01 16:57:31.000000000 +0900
-+++ ../../../main/java/org/openqa/selenium/WebDriverCommandProcessor.java	2013-12-01 14:34:22.000000000 +0900
+--- WebDriverCommandProcessor.java	2013-12-22 10:54:32.000000000 +0900
++++ ../../../main/java/org/openqa/selenium/WebDriverCommandProcessor.java	2013-12-22 11:02:18.000000000 +0900
 @@ -1,4 +1,10 @@
  /*
 +@formatter:off
@@ -241,7 +241,24 @@
  
      // Note the we use the names used by the CommandProcessor
      seleneseMethods.put("addLocationStrategy", new AddLocationStrategy(elementFinder));
-@@ -305,7 +402,7 @@
+@@ -276,12 +373,13 @@
+     seleneseMethods.put("isVisible", new IsVisible(elementFinder));
+     seleneseMethods.put("keyDown", new KeyEvent(elementFinder, javascriptLibrary, keyState,
+         "doKeyDown"));
+-    seleneseMethods.put("keyDownNative", new KeyDownNative());
++    // FIXME if Selenium version is 2.40?
++    // seleneseMethods.put("keyDownNative", new KeyDownNative());
+     seleneseMethods.put("keyPress", new TypeKeys(alertOverride, elementFinder));
+-    seleneseMethods.put("keyPressNative", new KeyPressNative());
++    // seleneseMethods.put("keyPressNative", new KeyPressNative());
+     seleneseMethods.put("keyUp",
+         new KeyEvent(elementFinder, javascriptLibrary, keyState, "doKeyUp"));
+-    seleneseMethods.put("keyUpNative", new KeyUpNative());
++    // seleneseMethods.put("keyUpNative", new KeyUpNative());
+     seleneseMethods.put("metaKeyDown", new MetaKeyDown(keyState));
+     seleneseMethods.put("metaKeyUp", new MetaKeyUp(keyState));
+     seleneseMethods.put("mouseOver", new MouseEvent(elementFinder, javascriptLibrary, "mouseover"));
+@@ -308,7 +406,7 @@
      seleneseMethods.put("setBrowserLogLevel", new NoOp(null));
      seleneseMethods.put("setContext", new NoOp(null));
      seleneseMethods.put("setSpeed", new NoOp(null));
