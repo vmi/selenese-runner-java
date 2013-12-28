@@ -90,6 +90,13 @@ public class WebDriverElementFinder extends ElementFinder {
         throw new SeleniumException("Element " + locator + " not found");
     }
 
+    /**
+     * Find elements of specified locator.
+     *
+     * @param driver WebDriver.
+     * @param locator locator.
+     * @return list of found elements. (empty if no element)
+     */
     public List<WebElement> findElements(WebDriver driver, String locator) {
         Matcher matcher = LOCATORS_RE.matcher(locator);
         String type;
