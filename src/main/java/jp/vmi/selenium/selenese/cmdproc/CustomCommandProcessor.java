@@ -7,9 +7,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import jp.vmi.selenium.selenese.Context;
+
 /**
  * WebDriverCommandProcessor no timeout version.
  */
+@Deprecated
 public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     private final SeleneseRunnerCommandProcessor proc;
@@ -21,9 +24,14 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param driver WebDriver instance.
      * @param varsMap variable map.
      */
-    public CustomCommandProcessor(String baseUrl, final WebDriver driver, Map<String, Object> varsMap) {
+    public CustomCommandProcessor(final String baseUrl, final WebDriver driver, Map<String, Object> varsMap) {
         super(baseUrl, driver); // dummy
-        this.proc = new SeleneseRunnerCommandProcessor(baseUrl, driver, varsMap);
+        this.proc = new SeleneseRunnerCommandProcessor(new Context() {
+            @Override
+            public String getCurrentBaseURL() {
+                return baseUrl;
+            }
+        }, driver, varsMap);
     }
 
     /**

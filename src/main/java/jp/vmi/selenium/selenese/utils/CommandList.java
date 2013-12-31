@@ -109,7 +109,7 @@ public class CommandList {
 
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor("", new DummyDriver(),
+            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(null, new DummyDriver(),
                 new HashMap<String, Object>());
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);

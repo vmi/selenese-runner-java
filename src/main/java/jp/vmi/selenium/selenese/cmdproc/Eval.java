@@ -8,26 +8,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.CompoundMutator;
 
 import com.thoughtworks.selenium.SeleniumException;
+
+import jp.vmi.selenium.selenese.Context;
 
 /**
  * Evaluator of script including "storedVars" variable.
  */
 public class Eval {
 
-    private final CompoundMutator mutator;
+    private final SeleneseRunnerMutator mutator;
     private final Map<String, Object> varsMap;
 
     /**
      * Constructor.
      *
-     * @param baseUrl base URL.
+     * @param context Selenese Runner context.
      * @param varsMap variable map.
      */
-    public Eval(String baseUrl, Map<String, Object> varsMap) {
-        this.mutator = new CompoundMutator(baseUrl);
+    public Eval(Context context, Map<String, Object> varsMap) {
+        this.mutator = new SeleneseRunnerMutator(context);
         this.varsMap = varsMap;
     }
 

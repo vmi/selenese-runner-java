@@ -91,6 +91,7 @@ public class CommandFactory {
      *
      * @param proc CustomCommandProcessor instance.
      */
+    @Deprecated
     public void setProc(CustomCommandProcessor proc) {
         this.proc = proc.getProc();
     }

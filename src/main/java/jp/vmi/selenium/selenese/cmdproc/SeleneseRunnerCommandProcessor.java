@@ -15,6 +15,7 @@ import org.openqa.selenium.internal.seleniumemulation.*;
 import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
 /**
@@ -23,7 +24,6 @@ import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 public class SeleneseRunnerCommandProcessor implements WrapsDriver {
 
     private final Map<String, SeleneseCommand<?>> seleneseMethods = Maps.newHashMap();
-    private final String baseUrl;
     private final boolean enableAlertOverrides = true;
     private final WebDriver driver;
 
@@ -42,15 +42,14 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
     /**
      * Constructor.
      *
-     * @param baseUrl base URL.
+     * @param context Selenese Runner context.
      * @param driver WebDriver instance.
      * @param varsMap variable map.
      */
-    public SeleneseRunnerCommandProcessor(String baseUrl, WebDriver driver, Map<String, Object> varsMap) {
-        this.baseUrl = baseUrl;
+    public SeleneseRunnerCommandProcessor(Context context, WebDriver driver, Map<String, Object> varsMap) {
         this.driver = driver;
         this.varsMap = varsMap;
-        this.eval = new Eval(baseUrl, varsMap);
+        this.eval = new Eval(context, varsMap);
 
         this.javascriptLibrary = new JavascriptLibrary();
         this.elementFinder = new WebDriverElementFinder();
@@ -166,7 +165,7 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
             "mousemove"));
         seleneseMethods.put("mouseUp", new MouseEvent(elementFinder, javascriptLibrary, "mouseup"));
         seleneseMethods.put("mouseUpAt", new MouseEventAt(elementFinder, javascriptLibrary, "mouseup"));
-        seleneseMethods.put("open", new Open(baseUrl));
+        // seleneseMethods.put("open", new Open(baseUrl));
         // seleneseMethods.put("openWindow", new OpenWindow(baseUrl, new GetEval(scriptMutator)));
         seleneseMethods.put("refresh", new Refresh());
         seleneseMethods.put("removeAllSelections", new RemoveAllSelections(elementFinder));
