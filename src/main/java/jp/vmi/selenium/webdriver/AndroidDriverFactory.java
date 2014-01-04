@@ -3,11 +3,11 @@ package jp.vmi.selenium.webdriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.safari.SafariDriver;
 
 /**
- * Factory of {@link SafariDriver}.
+ * Factory of {@link AndroidDriver}.
  */
+@Deprecated
 public class AndroidDriverFactory extends WebDriverFactory {
 
     @Override

@@ -60,8 +60,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
     public static final String PHANTOMJS = "phantomjs";
 
     /**
-     * PhantomJS
+     * AndroidDriver
      */
+    @Deprecated
     public static final String ANDROID = "android";
 
     /**
