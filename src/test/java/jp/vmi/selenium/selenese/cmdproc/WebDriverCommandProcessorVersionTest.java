@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 @SuppressWarnings("javadoc")
 public class WebDriverCommandProcessorVersionTest {
 
-    private static final String ORIG_WDCP_URL = "https://selenium.googlecode.com/git/java/client/src/org/openqa/selenium/WebDriverCommandProcessor.java";
+    private static final String ORIG_WDCP_URL = "https://selenium.googlecode.com/git/java/client/src/com/thoughtworks/selenium/webdriven/WebDriverCommandProcessor.java";
     private static final String COPY_WDCP_PATH = "/patches/WebDriverCommandProcessor.java";
 
     private List<String> split(String s) {

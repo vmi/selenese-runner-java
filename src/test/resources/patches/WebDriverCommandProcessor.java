@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package org.openqa.selenium;
+package com.thoughtworks.selenium.webdriven;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
@@ -22,9 +22,12 @@ import com.google.common.collect.Maps;
 
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.webdriven.commands.*;
 
+import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
-import org.openqa.selenium.internal.seleniumemulation.*;
 
 import java.util.Map;
 
