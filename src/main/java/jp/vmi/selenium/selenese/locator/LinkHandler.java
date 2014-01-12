@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -21,7 +22,12 @@ class LinkHandler implements LocatorHandler {
         List<WebElement> result = new ArrayList<WebElement>();
         List<WebElement> as = driver.findElements(By.tagName("a"));
         for (WebElement a : as) {
-            String text = a.getText().trim();
+            String text;
+            try {
+                text = a.getText().trim();
+            } catch (StaleElementReferenceException e) {
+                continue;
+            }
             if (SeleniumUtils.patternMatches(arg, text))
                 result.add(a);
         }

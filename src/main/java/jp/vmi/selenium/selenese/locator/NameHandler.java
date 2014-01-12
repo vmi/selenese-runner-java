@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -42,7 +43,12 @@ class NameHandler implements LocatorHandler {
             // use value
             String pattern = matcher.group(2);
             for (WebElement element : result) {
-                String value = element.getAttribute("value");
+                String value;
+                try {
+                    value = element.getAttribute("value");
+                } catch (StaleElementReferenceException e) {
+                    continue;
+                }
                 if (SeleniumUtils.patternMatches(pattern, value))
                     filtered.add(element);
             }
