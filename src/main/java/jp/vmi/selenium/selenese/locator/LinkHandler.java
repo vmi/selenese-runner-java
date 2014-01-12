@@ -22,14 +22,13 @@ class LinkHandler implements LocatorHandler {
         List<WebElement> result = new ArrayList<WebElement>();
         List<WebElement> as = driver.findElements(By.tagName("a"));
         for (WebElement a : as) {
-            String text;
             try {
-                text = a.getText().trim();
+                String text = a.getText();
+                if (text != null && SeleniumUtils.patternMatches(arg, text.trim()))
+                    result.add(a);
             } catch (StaleElementReferenceException e) {
                 continue;
             }
-            if (SeleniumUtils.patternMatches(arg, text))
-                result.add(a);
         }
         return result;
     }

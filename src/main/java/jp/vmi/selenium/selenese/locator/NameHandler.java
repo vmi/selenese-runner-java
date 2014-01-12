@@ -43,14 +43,13 @@ class NameHandler implements LocatorHandler {
             // use value
             String pattern = matcher.group(2);
             for (WebElement element : result) {
-                String value;
                 try {
-                    value = element.getAttribute("value");
+                    String value = element.getAttribute("value");
+                    if (value != null && SeleniumUtils.patternMatches(pattern, value))
+                        filtered.add(element);
                 } catch (StaleElementReferenceException e) {
                     continue;
                 }
-                if (SeleniumUtils.patternMatches(pattern, value))
-                    filtered.add(element);
             }
         }
         return filtered;
