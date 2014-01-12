@@ -6,16 +6,13 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.HasCapabilities;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -32,7 +29,6 @@ import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
-import static org.openqa.selenium.Keys.*;
 import static org.openqa.selenium.remote.CapabilityType.*;
 
 /**
@@ -69,7 +65,7 @@ public class Runner implements Context, HtmlResultHolder {
     private long speed = 0; /* ms */
     private final CommandFactory commandFactory = new CommandFactory();
 
-    private Map<String, Object> varsMap = new HashMap<String, Object>();
+    private VarsMap varsMap = new VarsMap();
 
     private int countForDefault = 0;
 
@@ -81,45 +77,6 @@ public class Runner implements Context, HtmlResultHolder {
      */
     public Runner() {
         this.ps = defaultPrintStream;
-        initializeVarsMap();
-    }
-
-    private void initializeVarsMap() {
-        // see: ide/main/src/content/selenium-runner.js on Selenium repos.
-        varsMap.put("space", " ");
-        varsMap.put("nbsp", "\u00A0");
-
-        for (Keys key : Keys.values())
-            varsMap.put("KEY_" + key.name(), key.toString());
-
-        sendKeysAliases(BACK_SPACE, "BACKSPACE", "BKSP");
-        sendKeysAliases(CONTROL, "CTRL");
-        sendKeysAliases(ESCAPE, "ESC");
-        sendKeysAliases(PAGE_UP, "PGUP");
-        sendKeysAliases(PAGE_DOWN, "PGDN");
-        sendKeysAliases(INSERT, "INS");
-        sendKeysAliases(DELETE, "DEL");
-        sendKeysAliases(NUMPAD0, "N0"); // number pad keys
-        sendKeysAliases(NUMPAD1, "N1");
-        sendKeysAliases(NUMPAD2, "N2");
-        sendKeysAliases(NUMPAD3, "N3");
-        sendKeysAliases(NUMPAD4, "N4");
-        sendKeysAliases(NUMPAD5, "N5");
-        sendKeysAliases(NUMPAD6, "N6");
-        sendKeysAliases(NUMPAD7, "N7");
-        sendKeysAliases(NUMPAD8, "N8");
-        sendKeysAliases(NUMPAD9, "N9");
-        sendKeysAliases(MULTIPLY, "MUL");
-        sendKeysAliases(ADD, "PLUS");
-        sendKeysAliases(SEPARATOR, "SEP");
-        sendKeysAliases(SUBTRACT, "MINUS");
-        sendKeysAliases(DECIMAL, "PERIOD");
-        sendKeysAliases(DIVIDE, "DIV");
-    }
-
-    private void sendKeysAliases(Keys keys, String... aliases) {
-        for (String alias : aliases)
-            varsMap.put("KEY_" + alias, keys.toString());
     }
 
     /**
@@ -453,7 +410,7 @@ public class Runner implements Context, HtmlResultHolder {
      *
      * @return the evaluated variables (state) for the current context.
      */
-    public Map<String, Object> getVarsMap() {
+    public VarsMap getVarsMap() {
         return this.varsMap;
     }
 
@@ -462,7 +419,7 @@ public class Runner implements Context, HtmlResultHolder {
      *
      * @param varsMap the evaluated variables (state) for the current context.
      */
-    public void setVarsMap(Map<String, Object> varsMap) {
+    public void setVarsMap(VarsMap varsMap) {
         this.varsMap = varsMap;
     }
 

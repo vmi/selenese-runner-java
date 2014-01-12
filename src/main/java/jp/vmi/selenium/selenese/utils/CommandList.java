@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.seleniumemulation.NoOp;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 
@@ -109,8 +109,7 @@ public class CommandList {
 
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(null, new DummyDriver(),
-                new HashMap<String, Object>());
+            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(null, new DummyDriver(), new VarsMap());
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
             @SuppressWarnings("unchecked")

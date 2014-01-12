@@ -1,13 +1,11 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.VarsMap;
 
 /**
  * WebDriverCommandProcessor no timeout version.
@@ -24,7 +22,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param driver WebDriver instance.
      * @param varsMap variable map.
      */
-    public CustomCommandProcessor(final String baseUrl, final WebDriver driver, Map<String, Object> varsMap) {
+    public CustomCommandProcessor(final String baseUrl, final WebDriver driver, VarsMap varsMap) {
         super(baseUrl, driver); // dummy
         this.proc = new SeleneseRunnerCommandProcessor(new Context() {
             @Override
@@ -41,7 +39,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param driver WebDriver instance.
      */
     public CustomCommandProcessor(String baseUrl, WebDriver driver) {
-        this(baseUrl, driver, new HashMap<String, Object>());
+        this(baseUrl, driver, new VarsMap());
     }
 
     /**
