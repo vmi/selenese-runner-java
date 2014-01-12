@@ -17,7 +17,7 @@ import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({ "javadoc", "deprecation" })
 public abstract class TestCaseTestBase extends TestBase {
 
     @Rule

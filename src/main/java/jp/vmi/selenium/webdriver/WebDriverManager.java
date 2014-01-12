@@ -149,6 +149,7 @@ public class WebDriverManager implements Supplier<WebDriver> {
      *
      * @return WebDriverFactory instance.
      */
+    @SuppressWarnings("deprecation")
     public WebDriverFactory lookupWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;

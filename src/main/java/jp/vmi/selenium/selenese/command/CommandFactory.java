@@ -18,6 +18,7 @@ import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 /**
  * Factory of selenese command.
  */
+@SuppressWarnings("deprecation")
 public class CommandFactory {
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
