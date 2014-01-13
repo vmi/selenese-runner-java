@@ -24,7 +24,7 @@ public class Open extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        String url = testCase.getProc().replaceVars(args[URL]);
+        String url = runner.getVarsMap().replaceVars(args[URL]);
         if (!url.contains("://")) {
             try {
                 url = new URI(runner.getCurrentBaseURL()).resolve(url).toASCIIString();

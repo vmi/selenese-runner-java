@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Error;
 
@@ -22,7 +23,7 @@ public class Gotolabel extends Command {
     }
 
     @Override
-    public Command next(TestCase testCase) {
+    public Command next(TestCase testCase, Runner runner) {
         Label labelCommand = testCase.getLabelCommand(args[LABEL]);
         if (labelCommand == null) {
             String msg = "label \"" + args[LABEL] + "\" is not found.";

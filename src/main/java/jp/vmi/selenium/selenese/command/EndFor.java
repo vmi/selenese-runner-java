@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 
 /**
@@ -24,7 +25,7 @@ public class EndFor extends Command implements EndLoop {
     }
 
     @Override
-    public Command next(TestCase testCase) {
+    public Command next(TestCase testCase, Runner runner) {
         return startLoop;
     }
 }

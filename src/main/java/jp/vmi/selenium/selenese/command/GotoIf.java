@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Error;
 
@@ -23,7 +24,7 @@ public class GotoIf extends Command {
     }
 
     @Override
-    public Command next(TestCase testCase) {
+    public Command next(TestCase testCase, Runner runner) {
         if (!testCase.isTrue(args[EXPRESSION]))
             return next;
         Label labelCommand = testCase.getLabelCommand(args[LABEL]);

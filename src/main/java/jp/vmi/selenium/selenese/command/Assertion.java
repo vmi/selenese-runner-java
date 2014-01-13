@@ -97,7 +97,7 @@ public class Assertion extends Command {
             if (this.expected != null) {
                 try {
                     String resultString = proc.convertToString(proc.execute(getter, getterArgs));
-                    String expected = testCase.getProc().replaceVars(this.expected);
+                    String expected = runner.getVarsMap().replaceVars(this.expected);
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",

@@ -54,7 +54,7 @@ public class Store extends Command {
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
         SeleneseRunnerCommandProcessor proc = testCase.getProc();
         Object result = proc.execute(getter, getterArgs);
-        proc.setVar(result, varName);
+        runner.getVarsMap().put(varName, result);
         return new Success(proc.convertToString(result));
     }
 }

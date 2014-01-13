@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 
 /**
@@ -27,11 +28,11 @@ public class StoreFor extends Command implements StartLoop {
     }
 
     @Override
-    public Command next(TestCase testCase) {
+    public Command next(TestCase testCase, Runner runner) {
         String value = testCase.pollFromCollection(args[COLLECTION_NAME]);
         if (value == null)
             return endLoop.next;
-        testCase.getProc().setVar(value, args[VAR_NAME]);
+        runner.getVarsMap().put(args[VAR_NAME], value);
         return next;
     }
 }

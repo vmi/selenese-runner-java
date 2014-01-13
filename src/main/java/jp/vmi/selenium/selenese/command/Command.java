@@ -178,12 +178,26 @@ public abstract class Command {
 
     /**
      * Get next command.
+     * 
+     * Please replace {@link #next(TestCase, Runner)}.
      *
      * @param testCase test-case instance.
      * @return next command.
      */
+    @Deprecated
     public Command next(TestCase testCase) {
         return next;
+    }
+
+    /**
+     * Get next command.
+     *
+     * @param testCase test-case instance.
+     * @param runner Runner object.
+     * @return next command.
+     */
+    public Command next(TestCase testCase, Runner runner) {
+        return next(testCase);
     }
 
     @Override

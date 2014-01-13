@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 
 /**
@@ -26,7 +27,7 @@ public class While extends Command implements StartLoop {
     }
 
     @Override
-    public Command next(TestCase testCase) {
+    public Command next(TestCase testCase, Runner runner) {
         if (testCase.isTrue(args[CONDITION]))
             return next;
         else

@@ -251,7 +251,7 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
      * @param result the result of execute().
      * @return converted string.
      */
-    public String convertToString(Object result) {
+    public <T> String convertToString(T result) {
         if (result == null)
             return "";
         if (result instanceof Object[])
