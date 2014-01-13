@@ -22,14 +22,25 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param driver WebDriver instance.
      * @param varsMap variable map.
      */
-    public CustomCommandProcessor(final String baseUrl, final WebDriver driver, VarsMap varsMap) {
+    public CustomCommandProcessor(final String baseUrl, final WebDriver driver, final VarsMap varsMap) {
         super(baseUrl, driver); // dummy
         this.proc = new SeleneseRunnerCommandProcessor(new Context() {
+
             @Override
             public String getCurrentBaseURL() {
                 return baseUrl;
             }
-        }, driver, varsMap);
+
+            @Override
+            public WebDriver getWrappedDriver() {
+                return driver;
+            }
+
+            @Override
+            public VarsMap getVarsMap() {
+                return varsMap;
+            }
+        });
     }
 
     /**

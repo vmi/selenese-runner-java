@@ -48,7 +48,7 @@ public class TestCaseParser extends Parser {
         String name = null;
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-            TestCase testCase = Binder.newTestCase(filename, name, runner, baseURL);
+            TestCase testCase = Binder.newTestCase(filename, name, baseURL, runner);
             CommandFactory commandFactory = runner.getCommandFactory();
             commandFactory.setProc(testCase.getProc());
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");

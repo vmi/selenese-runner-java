@@ -32,7 +32,7 @@ public class Open extends Command {
                 throw new SeleniumException(e);
             }
         }
-        runner.getDriver().get(url);
+        runner.getWrappedDriver().get(url);
         return SUCCESS;
     }
 }

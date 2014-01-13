@@ -186,7 +186,13 @@ public class Runner implements Context, HtmlResultHolder {
      * </p>
      * @return WebDriver.
      */
+    @Deprecated
     public WebDriver getDriver() {
+        return getWrappedDriver();
+    }
+
+    @Override
+    public WebDriver getWrappedDriver() {
         return driver;
     }
 
@@ -410,6 +416,7 @@ public class Runner implements Context, HtmlResultHolder {
      *
      * @return the evaluated variables (state) for the current context.
      */
+    @Override
     public VarsMap getVarsMap() {
         return this.varsMap;
     }

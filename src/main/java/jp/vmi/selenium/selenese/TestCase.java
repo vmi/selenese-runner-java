@@ -56,13 +56,27 @@ public class TestCase implements Selenese, ITestCase {
      * @param baseURL effective base URL.
      * @return this.
      */
+    @Deprecated
     public TestCase initialize(String filename, String name, Runner runner, String baseURL) {
+        return initialize(filename, name, baseURL, runner);
+    }
+
+    /**
+     * Initialize after constructed.
+     *
+     * @param filename selenese script filename. (This base name is used for generating screenshot file)
+     * @param name test-case name.
+     * @param baseURL effective base URL.
+     * @param context Selenese Runner context.
+     * @return this.
+     */
+    public TestCase initialize(String filename, String name, String baseURL, Context context) {
         this.filename = filename;
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
-        this.proc = new SeleneseRunnerCommandProcessor(runner, runner.getDriver(), runner.getVarsMap());
+        this.proc = new SeleneseRunnerCommandProcessor(context);
         return this;
     }
 

@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.VarsMap;
 
 /**
  * Evaluator of script including "storedVars" variable.
@@ -19,17 +20,16 @@ import jp.vmi.selenium.selenese.Context;
 public class Eval {
 
     private final SeleneseRunnerMutator mutator;
-    private final Map<String, Object> varsMap;
+    private final Context context;
 
     /**
      * Constructor.
      *
      * @param context Selenese Runner context.
-     * @param varsMap variable map.
      */
-    public Eval(Context context, Map<String, Object> varsMap) {
+    public Eval(Context context) {
         this.mutator = new SeleneseRunnerMutator(context);
-        this.varsMap = varsMap;
+        this.context = context;
     }
 
     /**
@@ -40,6 +40,7 @@ public class Eval {
      * @return result of evaluating script.
      */
     public Object eval(WebDriver driver, String script) {
+        VarsMap varsMap = context.getVarsMap();
         boolean hasStoredVars = script.matches(".*\\bstoredVars\\b.*");
         StringBuilderWriter writer = new StringBuilderWriter();
         if (hasStoredVars) {
@@ -76,5 +77,4 @@ public class Eval {
             return list.get(0);
         }
     }
-
 }

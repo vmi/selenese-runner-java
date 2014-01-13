@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
@@ -54,9 +55,23 @@ public class Binder {
      * @param baseURL effective base URL.
      * @return TestCase instance.
      */
+    @Deprecated
     public static TestCase newTestCase(String filename, String name, Runner runner, String baseURL) {
+        return newTestCase(filename, name, baseURL, runner);
+    }
+
+    /**
+     * Constructs TestCase applied aspect.
+     *
+     * @param filename selenese script file.
+     * @param name test-case name.
+     * @param baseURL effective base URL.
+     * @param context Selenese Runner context.
+     * @return TestCase instance.
+     */
+    public static TestCase newTestCase(String filename, String name, String baseURL, Context context) {
         TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(filename, name, runner, baseURL);
+        return testCase.initialize(filename, name, baseURL, context);
     }
 
     /**

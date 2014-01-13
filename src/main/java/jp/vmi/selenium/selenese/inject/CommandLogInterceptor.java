@@ -113,7 +113,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     private List<String> getPageInformation(TestCase testCase, Runner runner) {
         List<String> messages = new ArrayList<String>();
-        WebDriver driver = runner.getDriver();
+        WebDriver driver = runner.getWrappedDriver();
         try {
             String handle = driver.getWindowHandle();
             if (StringUtils.isEmpty(handle))

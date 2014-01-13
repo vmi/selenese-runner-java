@@ -1,10 +1,11 @@
 package jp.vmi.selenium.selenese;
 
+import org.openqa.selenium.internal.WrapsDriver;
 
 /**
  * Selenese Runner Context.
  */
-public interface Context {
+public interface Context extends WrapsDriver {
 
     /**
      * Get current base URL.
@@ -12,4 +13,11 @@ public interface Context {
      * @return base URL.
      */
     String getCurrentBaseURL();
+
+    /**
+     * Get variables map.
+     *
+     * @return varsMap.
+     */
+    VarsMap getVarsMap();
 }

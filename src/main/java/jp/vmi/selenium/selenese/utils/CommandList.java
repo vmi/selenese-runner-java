@@ -11,14 +11,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.seleniumemulation.NoOp;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
@@ -30,86 +28,25 @@ public class CommandList {
 
     private static final Pattern GETTER = Pattern.compile("(get|is)([A-Z].*)");
 
-    private static class DummyDriver implements WebDriver, JavascriptExecutor {
-
-        @Override
-        public void get(String url) {
-        }
-
-        @Override
-        public String getCurrentUrl() {
-            return null;
-        }
-
-        @Override
-        public String getTitle() {
-            return null;
-        }
-
-        @Override
-        public List<WebElement> findElements(By by) {
-            return null;
-        }
-
-        @Override
-        public WebElement findElement(By by) {
-            return null;
-        }
-
-        @Override
-        public String getPageSource() {
-            return null;
-        }
-
-        @Override
-        public void close() {
-
-        }
-
-        @Override
-        public void quit() {
-
-        }
-
-        @Override
-        public Set<String> getWindowHandles() {
-            return null;
-        }
-
-        @Override
-        public String getWindowHandle() {
-            return null;
-        }
-
-        @Override
-        public TargetLocator switchTo() {
-            return null;
-        }
-
-        @Override
-        public Navigation navigate() {
-            return null;
-        }
-
-        @Override
-        public Options manage() {
-            return null;
-        }
-
-        @Override
-        public Object executeScript(String script, Object... args) {
-            return null;
-        }
-
-        @Override
-        public Object executeAsyncScript(String script, Object... args) {
-            return null;
-        }
-    }
-
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(null, new DummyDriver(), new VarsMap());
+            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(new Context() {
+
+                @Override
+                public String getCurrentBaseURL() {
+                    return null;
+                }
+
+                @Override
+                public WebDriver getWrappedDriver() {
+                    return null;
+                }
+
+                @Override
+                public VarsMap getVarsMap() {
+                    return null;
+                }
+            });
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
             @SuppressWarnings("unchecked")
@@ -164,5 +101,4 @@ public class CommandList {
         for (String name : result)
             System.out.println(name);
     }
-
 }
