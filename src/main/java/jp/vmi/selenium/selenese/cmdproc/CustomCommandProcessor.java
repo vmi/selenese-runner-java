@@ -37,6 +37,11 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
             }
 
             @Override
+            public String getInitialWindowHandle() {
+                return null;
+            }
+
+            @Override
             public VarsMap getVarsMap() {
                 return varsMap;
             }

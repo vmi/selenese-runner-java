@@ -30,7 +30,7 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
     private WebDriverElementFinder elementFinder = null;
     private KeyState keyState = null;
     private AlertOverride alertOverride = null;
-    private Windows windows = null;
+    private SeleneseRunnerWindows windows = null;
 
     private final Context context;
     private final Eval eval;
@@ -50,7 +50,7 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
         this.elementFinder = new WebDriverElementFinder();
         this.keyState = new KeyState();
         this.alertOverride = new AlertOverride(enableAlertOverrides);
-        this.windows = new Windows(context.getWrappedDriver()); // FIXME
+        this.windows = new SeleneseRunnerWindows(context);
         setUpMethodMap();
     }
 

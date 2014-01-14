@@ -20,4 +20,11 @@ public interface Context extends WrapsDriver {
      * @return varsMap.
      */
     VarsMap getVarsMap();
+
+    /**
+     * Get initial window handle.
+     *
+     * @return window handle.
+     */
+    String getInitialWindowHandle();
 }

@@ -43,6 +43,11 @@ public class CommandList {
                 }
 
                 @Override
+                public String getInitialWindowHandle() {
+                    return null;
+                }
+
+                @Override
                 public VarsMap getVarsMap() {
                     return null;
                 }
