@@ -87,7 +87,7 @@ public class Assertion extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        SeleneseRunnerCommandProcessor proc = testCase.getProc();
+        SeleneseRunnerCommandProcessor proc = runner.getProc();
         boolean found = true;
         String message = null;
         int timeout = runner.getTimeout();

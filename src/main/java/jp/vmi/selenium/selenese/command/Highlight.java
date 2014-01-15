@@ -1,10 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Runner;
-
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.HighlightStyle;
 import jp.vmi.selenium.selenese.result.Result;
+
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -25,7 +25,7 @@ public class Highlight extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        testCase.getProc().highlight(args[LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
+        runner.getProc().highlight(args[LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
         return SUCCESS;
     }
 }

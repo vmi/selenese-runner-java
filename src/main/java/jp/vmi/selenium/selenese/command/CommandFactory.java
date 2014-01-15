@@ -13,12 +13,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 
 /**
  * Factory of selenese command.
  */
+@SuppressWarnings("deprecation")
 public class CommandFactory {
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
@@ -75,7 +77,23 @@ public class CommandFactory {
 
     private final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
 
-    private SeleneseRunnerCommandProcessor proc = null;
+    private Context context = null;
+
+    /**
+     * Constructor.
+     */
+    @Deprecated
+    public CommandFactory() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param context Selenese Runner context.
+     */
+    public CommandFactory(Context context) {
+        this.context = context;
+    }
 
     /**
      * Register user defined command factoryName.
@@ -93,7 +111,7 @@ public class CommandFactory {
      */
     @Deprecated
     public void setProc(CustomCommandProcessor proc) {
-        this.proc = proc.getProc();
+        this.context = proc.getProc().getContext();
     }
 
     /**
@@ -101,8 +119,9 @@ public class CommandFactory {
      *
      * @param proc SeleneseRunnerCommandProcessor instance.
      */
+    @Deprecated
     public void setProc(SeleneseRunnerCommandProcessor proc) {
-        this.proc = proc;
+        this.context = proc.getContext();
     }
 
     /**
@@ -147,6 +166,7 @@ public class CommandFactory {
         }
 
         // command supported by WebDriverCommandProcessor
+        SeleneseRunnerCommandProcessor proc = context.getProc();
         if (proc.isMethodAvailable(realName))
             return new BuiltInCommand(index, name, args, realName, andWait);
 

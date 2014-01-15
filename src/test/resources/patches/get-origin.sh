@@ -8,18 +8,22 @@ fi
 
 ### Selenium
 
-pkg=com.thoughtworks.selenium.webdriven
-java=WebDriverCommandProcessor.java
+javas=(
+  com/thoughtworks/selenium/webdriven/WebDriverCommandProcessor.java
+  com/thoughtworks/selenium/webdriven/commands/Windows.java
+)
 
-if [ ! -f "$java" ]; then
-  wget https://selenium.googlecode.com/git/java/client/src/${pkg//./\/}/$java
-fi
+for java in "${javas[@]}"; do
+  f=${java##*/}
+  if [ ! -f "$f" ]; then
+    wget https://selenium.googlecode.com/git/java/client/src/$java
+  fi
+done
 
 ### GhostDriver
 
-pkg=org.openqa.selenium.phantomjs
-java=PhantomJSDriverService.java
+java=org/openqa/selenium/phantomjs/PhantomJSDriverService.java
 
 if [ ! -f "$java" ]; then
-  wget https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/${pkg//./\/}/$java
+  wget https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/$java
 fi

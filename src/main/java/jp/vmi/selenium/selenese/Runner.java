@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
@@ -64,7 +65,8 @@ public class Runner implements Context, HtmlResultHolder {
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
-    private final CommandFactory commandFactory = new CommandFactory();
+    private final SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(this);
+    private final CommandFactory commandFactory = new CommandFactory(this);
 
     private VarsMap varsMap = new VarsMap();
 
@@ -407,6 +409,16 @@ public class Runner implements Context, HtmlResultHolder {
                 // ignore it.
             }
         }
+    }
+
+    /**
+     * Get SeleneseRunnerCommandProcessor instance.
+     * 
+     * @return SeleneseRunnerCommandProcessor instance.
+     */
+    @Override
+    public SeleneseRunnerCommandProcessor getProc() {
+        return proc;
     }
 
     /**

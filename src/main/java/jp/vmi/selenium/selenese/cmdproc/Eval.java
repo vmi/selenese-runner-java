@@ -40,6 +40,18 @@ public class Eval {
      * @return result of evaluating script.
      */
     public Object eval(WebDriver driver, String script) {
+        return eval(driver, script, null);
+    }
+
+    /**
+     * Evaluate script including "storedVars" variable.
+     *
+     * @param driver WebDriver instance.
+     * @param script JavaScript code.
+     * @param cast cast type.
+     * @return result of evaluating script.
+     */
+    public Object eval(WebDriver driver, String script, String cast) {
         VarsMap varsMap = context.getVarsMap();
         boolean hasStoredVars = script.matches(".*\\bstoredVars\\b.*");
         StringBuilderWriter writer = new StringBuilderWriter();
@@ -52,14 +64,16 @@ public class Eval {
             }
             writer.append(";\n");
         }
-        writer.append("return [(function(){");
+        writer.append("return [");
+        if (cast != null)
+            writer.append(cast);
+        writer.append("((function(){");
         mutator.mutate(script, writer.getBuilder());
-        writer.append("})()");
+        writer.append("})())");
         if (hasStoredVars)
-            writer.append(", storedVars");
-        writer.append("];");
-        if (hasStoredVars)
-            writer.append("})();");
+            writer.append(", storedVars];})();");
+        else
+            writer.append("];");
         Object result = ((JavascriptExecutor) driver).executeScript(writer.toString());
         if (!(result instanceof List))
             throw new SeleniumException(result.toString());

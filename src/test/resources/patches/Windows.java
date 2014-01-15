@@ -1,10 +1,4 @@
 /*
-@formatter:off
-
-Patched for Selenese Runner by Motonori IWAMURO.
-
-Original:
----
 Copyright 2007-2009 Selenium committers
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,38 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package jp.vmi.selenium.selenese.cmdproc;
+package com.thoughtworks.selenium.webdriven.commands;
+
+import com.google.common.collect.Maps;
+
+import com.thoughtworks.selenium.SeleniumException;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.Windows;
-
-import com.google.common.collect.Maps;
-import com.thoughtworks.selenium.SeleniumException;
-
-import jp.vmi.selenium.selenese.Context;
-
-@SuppressWarnings("javadoc")
-public class SeleneseRunnerWindows extends Windows {
+public class Windows {
   private final Map<String, String> lastFrame = Maps.newHashMap();
-  private final Context context;
+  private final String originalWindowHandle;
 
-  public SeleneseRunnerWindows(Context context) {
-    super(new NullDriver());
-    this.context = context;
+  public Windows(WebDriver driver) {
+    originalWindowHandle = driver.getWindowHandle();
   }
 
-  @Override
   public void selectWindow(WebDriver driver, String windowID) {
     if (null == windowID || "null".equals(windowID) || "".equals(windowID)) {
-      driver.switchTo().window(context.getInitialWindowHandle());
+      driver.switchTo().window(originalWindowHandle);
     } else if ("_blank".equals(windowID)) {
       selectBlankWindow(driver);
     } else {
@@ -81,11 +70,10 @@ public class SeleneseRunnerWindows extends Windows {
     }
   }
 
-  @Override
   public void selectPopUp(WebDriver driver, String windowID) {
     if ("null".equals(windowID) || "".equals(windowID)) {
       Set<String> windowHandles = driver.getWindowHandles();
-      windowHandles.remove(context.getInitialWindowHandle());
+      windowHandles.remove(originalWindowHandle);
       if (windowHandles.size() > 0) {
         driver.switchTo().window(windowHandles.iterator().next());
       } else {
@@ -96,7 +84,6 @@ public class SeleneseRunnerWindows extends Windows {
     }
   }
 
-  @Override
   public void selectFrame(WebDriver driver, String locator) {
     if ("relative=top".equals(locator)) {
       driver.switchTo().defaultContent();
@@ -160,7 +147,6 @@ public class SeleneseRunnerWindows extends Windows {
    * 
    * @throws NoSuchWindowException if no window with <code>window.name = null</code> is found.
    */
-  @Override
   public void selectBlankWindow(WebDriver driver) {
     String current = driver.getWindowHandle();
     // Find the first window without a "name" attribute
@@ -169,7 +155,7 @@ public class SeleneseRunnerWindows extends Windows {
       // the original window will never be a _blank window, so don't even look at it
       // this is also important to skip, because the original/root window won't have
       // a name either, so if we didn't know better we might think it's a _blank popup!
-      if (handle.equals(context.getInitialWindowHandle())) {
+      if (handle.equals(originalWindowHandle)) {
         continue;
       }
       driver.switchTo().window(handle);

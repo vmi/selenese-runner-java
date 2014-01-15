@@ -25,7 +25,7 @@ public class GotoIf extends Command {
 
     @Override
     public Command next(TestCase testCase, Runner runner) {
-        if (!testCase.isTrue(args[EXPRESSION]))
+        if (!runner.getProc().isTrue(args[EXPRESSION]))
             return next;
         Label labelCommand = testCase.getLabelCommand(args[LABEL]);
         if (labelCommand == null) {

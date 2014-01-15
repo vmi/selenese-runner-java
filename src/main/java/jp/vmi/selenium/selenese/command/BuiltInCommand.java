@@ -47,7 +47,7 @@ public class BuiltInCommand extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        SeleneseRunnerCommandProcessor proc = testCase.getProc();
+        SeleneseRunnerCommandProcessor proc = runner.getProc();
         try {
             String resultString = proc.convertToString(proc.execute(realName, args));
             if (andWait) {

@@ -21,8 +21,9 @@ import static org.junit.Assert.*;
 @SuppressWarnings("javadoc")
 public class WebDriverCommandProcessorVersionTest {
 
-    private static final String ORIG_WDCP_URL = "https://selenium.googlecode.com/git/java/client/src/com/thoughtworks/selenium/webdriven/WebDriverCommandProcessor.java";
-    private static final String COPY_WDCP_PATH = "/patches/WebDriverCommandProcessor.java";
+    private static final String ORIG_PKG_URL = "https://selenium.googlecode.com/git/java/client/src/com/thoughtworks/selenium/webdriven/";
+    private static final String[] ORIG_JAVA_FILES = { "WebDriverCommandProcessor.java", "commands/Windows.java" };
+    private static final String COPIED_PATH = "/patches/";
 
     private List<String> split(String s) {
         return Arrays.asList(s.split("\r?\n"));
@@ -30,9 +31,13 @@ public class WebDriverCommandProcessorVersionTest {
 
     @Test
     public void wdcpVersionTest() throws Exception {
-        List<String> orig = split(IOUtils.toString(URI.create(ORIG_WDCP_URL)));
-        List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(COPY_WDCP_PATH)));
-        Patch<String> patch = DiffUtils.diff(copy, orig);
-        assertThat(patch.getDeltas(), is(empty()));
+        for (String javaFile : ORIG_JAVA_FILES) {
+            List<String> orig = split(IOUtils.toString(URI.create(ORIG_PKG_URL + javaFile)));
+            String[] splitted = javaFile.split("/");
+            String resName = COPIED_PATH + splitted[splitted.length - 1];
+            List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(resName)));
+            Patch<String> patch = DiffUtils.diff(copy, orig);
+            assertThat(patch.getDeltas(), is(empty()));
+        }
     }
 }

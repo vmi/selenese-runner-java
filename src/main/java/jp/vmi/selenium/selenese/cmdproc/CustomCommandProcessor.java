@@ -45,6 +45,11 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
             public VarsMap getVarsMap() {
                 return varsMap;
             }
+
+            @Override
+            public SeleneseRunnerCommandProcessor getProc() {
+                return proc;
+            }
         });
     }
 

@@ -52,7 +52,7 @@ public class Store extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        SeleneseRunnerCommandProcessor proc = testCase.getProc();
+        SeleneseRunnerCommandProcessor proc = runner.getProc();
         Object result = proc.execute(getter, getterArgs);
         runner.getVarsMap().put(varName, result);
         return new Success(proc.convertToString(result));

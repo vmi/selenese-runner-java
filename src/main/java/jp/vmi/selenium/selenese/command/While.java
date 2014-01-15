@@ -28,7 +28,7 @@ public class While extends Command implements StartLoop {
 
     @Override
     public Command next(TestCase testCase, Runner runner) {
-        if (testCase.isTrue(args[CONDITION]))
+        if (runner.getProc().isTrue(args[CONDITION]))
             return next;
         else
             return endLoop.next;

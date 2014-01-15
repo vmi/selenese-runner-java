@@ -51,6 +51,11 @@ public class CommandList {
                 public VarsMap getVarsMap() {
                     return null;
                 }
+
+                @Override
+                public SeleneseRunnerCommandProcessor getProc() {
+                    return null;
+                }
             });
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
