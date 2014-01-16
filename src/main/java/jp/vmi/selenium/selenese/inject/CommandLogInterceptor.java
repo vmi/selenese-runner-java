@@ -115,6 +115,10 @@ public class CommandLogInterceptor implements MethodInterceptor {
         List<String> messages = new ArrayList<String>();
         WebDriver driver = runner.getDriver();
         try {
+            String handle = driver.getWindowHandle();
+            if (StringUtils.isEmpty(handle))
+                throw new NotFoundException();
+            driver.switchTo().window(handle);
             String url = driver.getCurrentUrl();
             String title = driver.getTitle();
             Set<Cookie> cookies = driver.manage().getCookies();
