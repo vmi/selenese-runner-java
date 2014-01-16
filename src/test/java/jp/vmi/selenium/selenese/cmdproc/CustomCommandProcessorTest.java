@@ -18,7 +18,6 @@ public class CustomCommandProcessorTest extends TestBase {
     /**
      * Test of getEval with "storedVars".
      */
-    @SuppressWarnings("deprecation")
     @Test
     @Ignore("htmlunit bug?")
     //TODO: ignore caused by fail.
