@@ -35,9 +35,7 @@ public class TestCase implements Selenese, ITestCase {
     private String baseName = "nofile";
     private String name = null;
     private String baseURL = null;
-
-    @Deprecated
-    private SeleneseRunnerCommandProcessor proc = null;
+    private Context context = null;
 
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
@@ -59,8 +57,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     @Deprecated
     public TestCase initialize(String filename, String name, Runner runner, String baseURL) {
-        setProc(runner.getProc());
-        return initialize(filename, name, baseURL);
+        return initialize(filename, name, baseURL, runner);
     }
 
     /**
@@ -69,14 +66,16 @@ public class TestCase implements Selenese, ITestCase {
      * @param filename selenese script filename. (This base name is used for generating screenshot file)
      * @param name test-case name.
      * @param baseURL effective base URL.
+     * @param context Selenese Runner context.
      * @return this.
      */
-    public TestCase initialize(String filename, String name, String baseURL) {
+    public TestCase initialize(String filename, String name, String baseURL, Context context) {
         this.filename = filename;
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
+        this.context = context;
         return this;
     }
 
@@ -120,7 +119,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     @Deprecated
     public void setProc(SeleneseRunnerCommandProcessor proc) {
-        this.proc = proc;
+        this.context = proc.getContext();
     }
 
     /**
@@ -130,7 +129,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     @Deprecated
     public SeleneseRunnerCommandProcessor getProc() {
-        return proc;
+        return context.getProc();
     }
 
     /**

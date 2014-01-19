@@ -43,14 +43,12 @@ public class TestCaseParser extends Parser {
         return value.toString();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Selenese parse(Runner runner) {
         String name = null;
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-            TestCase testCase = Binder.newTestCase(filename, name, baseURL);
-            testCase.setProc(runner.getProc()); // TODO Remove setProc method from TestCase at next minor release.
+            TestCase testCase = Binder.newTestCase(filename, name, baseURL, runner);
             CommandFactory commandFactory = runner.getCommandFactory();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
