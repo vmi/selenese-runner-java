@@ -111,7 +111,7 @@ public class Assertion extends Command {
                 }
             } else {
                 try {
-                    boolean result = proc.execute(getter, getterArgs);
+                    boolean result = (Boolean) proc.execute(getter, getterArgs);
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
