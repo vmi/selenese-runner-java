@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
@@ -335,6 +336,7 @@ public class Main {
      * @param args command line arguments.
      */
     public static void main(String[] args) {
+        LoggerUtils.initLogger();
         new Main().run(args);
     }
 }
