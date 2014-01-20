@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
-import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.VarsMap;
 
 /**
@@ -24,7 +24,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     public CustomCommandProcessor(final String baseUrl, final WebDriver driver, final VarsMap varsMap) {
         super(baseUrl, driver); // dummy
-        this.proc = new SeleneseRunnerCommandProcessor(new Context() {
+        this.proc = new SeleneseRunnerCommandProcessor(new NullContext() {
 
             @Override
             public String getCurrentBaseURL() {
@@ -34,11 +34,6 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
             @Override
             public WebDriver getWrappedDriver() {
                 return driver;
-            }
-
-            @Override
-            public String getInitialWindowHandle() {
-                return null;
             }
 
             @Override

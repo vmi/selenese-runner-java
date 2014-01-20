@@ -11,13 +11,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.NoOp;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.VarsMap;
+import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 
@@ -30,33 +28,7 @@ public class CommandList {
 
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(new Context() {
-
-                @Override
-                public String getCurrentBaseURL() {
-                    return null;
-                }
-
-                @Override
-                public WebDriver getWrappedDriver() {
-                    return null;
-                }
-
-                @Override
-                public String getInitialWindowHandle() {
-                    return null;
-                }
-
-                @Override
-                public VarsMap getVarsMap() {
-                    return null;
-                }
-
-                @Override
-                public SeleneseRunnerCommandProcessor getProc() {
-                    return null;
-                }
-            });
+            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(new NullContext());
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
             @SuppressWarnings("unchecked")

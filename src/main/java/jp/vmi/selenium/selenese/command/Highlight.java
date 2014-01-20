@@ -25,7 +25,7 @@ public class Highlight extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        runner.getProc().highlight(args[LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
+        runner.highlight(args[LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
         return SUCCESS;
     }
 }

@@ -1,13 +1,10 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.internal.seleniumemulation.*;
 
@@ -27,15 +24,11 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
 
     private final Timer timer = null;
     private JavascriptLibrary javascriptLibrary = null;
-    private WebDriverElementFinder elementFinder = null;
     private KeyState keyState = null;
     private AlertOverride alertOverride = null;
     private SeleneseRunnerWindows windows = null;
 
     private final Context context;
-    private final Eval eval;
-
-    final List<HighlightStyleBackup> styleBackups = new ArrayList<HighlightStyleBackup>();
 
     /**
      * Constructor.
@@ -44,10 +37,8 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
      */
     public SeleneseRunnerCommandProcessor(Context context) {
         this.context = context;
-        this.eval = new Eval(context);
 
         this.javascriptLibrary = new JavascriptLibrary();
-        this.elementFinder = new WebDriverElementFinder();
         this.keyState = new KeyState();
         this.alertOverride = new AlertOverride(enableAlertOverrides);
         this.windows = new SeleneseRunnerWindows(context);
@@ -67,6 +58,8 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
     }
 
     private void setUpMethodMap() {
+        Eval eval = context.getEval();
+        WebDriverElementFinder elementFinder = context.getElementFinder();
         seleneseMethods.put("addLocationStrategy", new AddLocationStrategy(elementFinder));
         seleneseMethods.put("addSelection", new AddSelection(javascriptLibrary, elementFinder));
         seleneseMethods.put("allowNativeXpath", new AllowNativeXPath());
@@ -267,16 +260,6 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
     }
 
     /**
-     * Get boolean value of expr.
-     * 
-     * @param expr expression.
-     * @return cast from result of expr to Javascript Boolean.
-     */
-    public boolean isTrue(String expr) {
-        return (Boolean) eval.eval(context.getWrappedDriver(), context.getVarsMap().replaceVars(expr), "Boolean");
-    }
-
-    /**
      * Set variable value.
      *
      * @param value value.
@@ -318,37 +301,6 @@ public class SeleneseRunnerCommandProcessor implements WrapsDriver {
     @Deprecated
     public String[] replaceVarsForArray(String[] exprs) {
         return context.getVarsMap().replaceVarsForArray(exprs);
-    }
-
-    /**
-     * Highlight and backup specified locator.
-     *
-     * @param locator locator.
-     * @param highlightStyle highlight style.
-     */
-    public void highlight(String locator, HighlightStyle highlightStyle) {
-        WebDriver driver = context.getWrappedDriver();
-        WebElement element;
-        try {
-            element = elementFinder.findElement(driver, locator);
-        } catch (SeleniumException e) {
-            // element specified by locator is not found.
-            return;
-        }
-        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, element);
-        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, element);
-        styleBackups.add(backup);
-    }
-
-    /**
-     * Unhighlight backed up styles.
-     */
-    public void unhighlight() {
-        if (styleBackups.isEmpty())
-            return;
-        for (HighlightStyleBackup backup : styleBackups)
-            backup.restore(context.getWrappedDriver());
-        styleBackups.clear();
     }
 
     private static class CommandArgumentInfo {

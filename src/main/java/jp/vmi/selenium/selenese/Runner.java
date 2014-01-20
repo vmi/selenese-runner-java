@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -16,17 +17,24 @@ import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.cmdproc.Eval;
+import jp.vmi.selenium.selenese.cmdproc.HighlightStyle;
+import jp.vmi.selenium.selenese.cmdproc.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
@@ -67,6 +75,9 @@ public class Runner implements Context, HtmlResultHolder {
     private long speed = 0; /* ms */
     private final SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(this);
     private final CommandFactory commandFactory = new CommandFactory(this);
+    private final Eval eval = new Eval(this);
+    private final WebDriverElementFinder elementFinder = new WebDriverElementFinder();
+    private final List<HighlightStyleBackup> styleBackups = new ArrayList<HighlightStyleBackup>();
 
     private VarsMap varsMap = new VarsMap();
 
@@ -288,6 +299,7 @@ public class Runner implements Context, HtmlResultHolder {
      *
      * @param defaultBaseURL base URL.
      */
+    @Override
     public void setDefaultBaseURL(String defaultBaseURL) {
         this.defaultBaseURL = defaultBaseURL;
     }
@@ -449,6 +461,16 @@ public class Runner implements Context, HtmlResultHolder {
         this.varsMap = varsMap;
     }
 
+    @Override
+    public Eval getEval() {
+        return eval;
+    }
+
+    @Override
+    public WebDriverElementFinder getElementFinder() {
+        return elementFinder;
+    }
+
     /**
      * Execute test-suite.
      *
@@ -457,6 +479,16 @@ public class Runner implements Context, HtmlResultHolder {
      */
     public Result execute(TestSuite testSuite) {
         return testSuite.execute(null, this);
+    }
+
+    /**
+     * Get boolean value of expr.
+     * 
+     * @param expr expression.
+     * @return cast from result of expr to Javascript Boolean.
+     */
+    public boolean isTrue(String expr) {
+        return (Boolean) eval.eval(driver, varsMap.replaceVars(expr), "Boolean");
     }
 
     /**
@@ -573,4 +605,35 @@ public class Runner implements Context, HtmlResultHolder {
     public void finish() {
         htmlResult.generateIndex();
     }
+
+    /**
+     * Highlight and backup specified locator.
+     *
+     * @param locator locator.
+     * @param highlightStyle highlight style.
+     */
+    public void highlight(String locator, HighlightStyle highlightStyle) {
+        WebElement element;
+        try {
+            element = elementFinder.findElement(driver, locator);
+        } catch (SeleniumException e) {
+            // element specified by locator is not found.
+            return;
+        }
+        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, element);
+        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, element);
+        styleBackups.add(backup);
+    }
+
+    /**
+     * Unhighlight backed up styles.
+     */
+    public void unhighlight() {
+        if (styleBackups.isEmpty())
+            return;
+        for (HighlightStyleBackup backup : styleBackups)
+            backup.restore(driver);
+        styleBackups.clear();
+    }
+
 }
