@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -29,9 +30,6 @@ public class BuiltInCommandTest extends TestBase {
     @Test
     @Ignore("test fail on buildhive....")
     public void userFriendlyErrorMessage() throws IOException {
-        Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, "click", false);
-        Command open = new Open(1, "open", new String[] { "/index.html" }, "open", false);
-
         File selenesefile = File.createTempFile("selenese", ".html");
 
         TestCase testcase = new TestCase();
@@ -41,6 +39,10 @@ public class BuiltInCommandTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile.getPath(), "test", runner, wsr.getBaseURL());
+
+        WDCommand wdcpClick = runner.getProc().getCommand("click");
+        Command click = new BuiltInCommand(1, "click", new String[] { "link=linktext" }, wdcpClick, false);
+        Command open = new Open(1, "open", new String[] { "/index.html" }, "open", false);
 
         assertTrue(open.doCommand(testcase, runner).isSuccess());
         Result result = click.doCommand(testcase, runner);

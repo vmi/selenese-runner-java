@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -27,9 +28,6 @@ public class AssertionTest extends TestBase {
      */
     @Test
     public void userFriendlyAssertionMessage() throws IOException {
-        Command cmd01 = new Open(1, "open", new String[] { "/assertion.html" }, "open", false);
-        Command cmd02 = new Assertion(2, "assertTitle", new String[] { "title", "title" }, "assert", "getTitle", false, false);
-
         File selenesefile = File.createTempFile("selenese", ".html");
 
         TestCase testcase = new TestCase();
@@ -39,6 +37,10 @@ public class AssertionTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
         testcase.initialize(selenesefile.getPath(), "test", runner, wsr.getBaseURL());
+
+        Command cmd01 = new Open(1, "open", new String[] { "/assertion.html" }, "open", false);
+        WDCommand getTitle = runner.getProc().getCommand("getTitle");
+        Command cmd02 = new Assertion(2, "assertTitle", new String[] { "title", "title" }, "assert", getTitle, false, false);
 
         Result result;
         result = cmd01.doCommand(testcase, runner);

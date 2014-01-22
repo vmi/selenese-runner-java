@@ -61,6 +61,11 @@ public class WebDriverElementFinder extends ElementFinder {
         return this;
     }
 
+    @Override
+    public void add(String strategyName, String implementation) {
+        registerHandler(new AdditionalHandler(strategyName, implementation));
+    }
+
     /**
      * call findElement of superclass.
      *  
@@ -74,7 +79,10 @@ public class WebDriverElementFinder extends ElementFinder {
     }
 
     private boolean hasFrames(WebDriver driver) {
-        return (Boolean) ((JavascriptExecutor) driver).executeScript("return window.frames.length > 0");
+        if (driver instanceof JavascriptExecutor)
+            return (Boolean) ((JavascriptExecutor) driver).executeScript("return window.frames.length > 0");
+        else
+            return false;
     }
 
     private List<WebElement> findElementsImpl(LocatorHandler handler, WebDriver driver, String arg, String locator) {

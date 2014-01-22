@@ -16,6 +16,7 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 
 /**
  * Factory of selenese command.
@@ -167,8 +168,9 @@ public class CommandFactory {
 
         // command supported by WebDriverCommandProcessor
         SeleneseRunnerCommandProcessor proc = context.getProc();
-        if (proc.isMethodAvailable(realName))
-            return new BuiltInCommand(index, name, args, realName, andWait);
+        WDCommand command = proc.getCommand(realName);
+        if (command != null)
+            return new BuiltInCommand(index, name, args, command, andWait);
 
         // FIXME #32 workaround alert command handling.
         if (realName.matches("(?i)(?:assert|verify|waitFor)(?:Alert|Confirmation|Prompt)(?:(?:Not)?Present)?")) {
@@ -189,19 +191,21 @@ public class CommandFactory {
             target = "Expression";
         if (matcher.group(PRESENT) != null)
             target += "Present";
-        String getter = "get" + target;
         boolean isBoolean = false;
-        if (!proc.isMethodAvailable(getter)) {
+        String getter = "get" + target;
+        WDCommand getterCommand = proc.getCommand(getter);
+        if (getterCommand == null) {
             getter = "is" + target;
-            if (!proc.isMethodAvailable(getter))
+            getterCommand = proc.getCommand(getter);
+            if (getterCommand == null)
                 throw new SeleniumException("No such command: " + name);
             isBoolean = true;
         }
         if (assertion != null) {
             boolean isInverse = matcher.group(IS_INVERSE) != null || matcher.group(IS_PRESENT_INVERSE) != null;
-            return new Assertion(index, name, args, assertion, getter, isBoolean, isInverse);
+            return new Assertion(index, name, args, assertion, getterCommand, isBoolean, isInverse);
         } else { // Accessor
-            return new Store(index, name, args, getter);
+            return new Store(index, name, args, getterCommand);
         }
     }
 

@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.VarsMap;
 
@@ -64,7 +65,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      * @param proc SeleneseRunnerCommandProcessor instance. 
      */
     public CustomCommandProcessor(SeleneseRunnerCommandProcessor proc) {
-        super("http://localhost", proc.getWrappedDriver()); // dummy
+        super("http://localhost", proc.getContext().getWrappedDriver()); // dummy
         this.proc = proc;
     }
 
@@ -78,16 +79,19 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     }
 
     /**
-     * @see SeleneseRunnerCommandProcessor#isMethodAvailable(String)
+     * Check the method existence.
+     * 
+     * @param methodName method name.
+     * @return true if the method exists.
      */
     @Override
     @Deprecated
     public boolean isMethodAvailable(String methodName) {
-        return proc.isMethodAvailable(methodName);
+        return proc.getCommand(methodName) != null;
     }
 
     /**
-     * @see SeleneseRunnerCommandProcessor#execute(String, String...)
+     * @see WDCommand#execute(Context, String...)
      *
      * @param commandName command name.
      * @param args arguments.
@@ -95,7 +99,9 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     @Deprecated
     public Object execute(String commandName, String... args) {
-        return proc.execute(commandName, args);
+        WDCommand command = proc.getCommand(commandName);
+        Context context = proc.getContext();
+        return command.execute(context, args);
     }
 
     /**
@@ -112,7 +118,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     @Override
     @Deprecated
     public String doCommand(String commandName, String[] args) {
-        Object result = proc.execute(commandName, args);
+        Object result = execute(commandName, args);
         if (result == null)
             return "";
         else if (result instanceof String)

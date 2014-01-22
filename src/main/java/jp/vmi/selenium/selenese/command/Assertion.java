@@ -9,13 +9,12 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
-import static jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -47,17 +46,17 @@ public class Assertion extends Command {
     }
 
     private final Type type;
-    private final String getter;
+    private final WDCommand getterCommand;
     private final String[] getterArgs;
     private final String expected;
     private final boolean isInverse;
     private final String[] cssLocator;
 
-    Assertion(int index, String name, String[] args, String assertion, String getter, boolean isBoolean, boolean isInverse) {
-        super(index, name, args, getArgumentCount(getter) + (isBoolean ? 0 : 1), getLocatorIndexes(getter));
+    Assertion(int index, String name, String[] args, String assertion, WDCommand getterCommand, boolean isBoolean, boolean isInverse) {
+        super(index, name, args, getterCommand.argumentCount + (isBoolean ? 0 : 1), getterCommand.locatorIndexes);
         args = this.args;
         type = Type.of(assertion);
-        this.getter = getter;
+        this.getterCommand = getterCommand;
         if (isBoolean) {
             getterArgs = args;
             expected = null;
@@ -69,12 +68,12 @@ public class Assertion extends Command {
         this.isInverse = isInverse;
         // "getAttribute" has a special locator argument.
         // Please check Store.java if want to modify following code.
-        if ("getAttribute".equals(getter)) {
+        if ("getAttribute".equalsIgnoreCase(getterCommand.name)) {
             int at = locators[0].lastIndexOf('@');
             if (at >= 0)
                 locators[0] = locators[0].substring(0, at);
         }
-        if (getter.equalsIgnoreCase("getCssCount"))
+        if ("getCssCount".equalsIgnoreCase(getterCommand.name))
             cssLocator = new String[] { "css=" + args[0] };
         else
             cssLocator = null;
@@ -87,7 +86,6 @@ public class Assertion extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        SeleneseRunnerCommandProcessor proc = runner.getProc();
         boolean found = true;
         String message = null;
         int timeout = runner.getTimeout();
@@ -96,7 +94,7 @@ public class Assertion extends Command {
             found = true;
             if (this.expected != null) {
                 try {
-                    String resultString = proc.convertToString(proc.execute(getter, getterArgs));
+                    String resultString = getterCommand.convertToString(getterCommand.execute(runner, getterArgs));
                     String expected = runner.getVarsMap().replaceVars(this.expected);
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
@@ -111,7 +109,7 @@ public class Assertion extends Command {
                 }
             } else {
                 try {
-                    boolean result = (Boolean) proc.execute(getter, getterArgs);
+                    boolean result = (Boolean) getterCommand.execute(runner, getterArgs);
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
