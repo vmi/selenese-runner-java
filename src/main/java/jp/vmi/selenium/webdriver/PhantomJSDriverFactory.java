@@ -34,7 +34,7 @@ public class PhantomJSDriverFactory extends WebDriverFactory {
                 throw new IllegalArgumentException("Missing PhantomJS binary: " + binary);
             caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, binary.getPath());
         }
-        PhantomJSDriver driver = new PhantomJSDriver(caps);
+        PhantomJSDriver driver = new PhantomJSDriver(driverOptions.addCapabilityDefinitions(caps));
         int width = NumberUtils.toInt(driverOptions.get(DriverOption.WIDTH), DEFAULT_WIDTH);
         int height = NumberUtils.toInt(driverOptions.get(DriverOption.HEIGHT), DEFAULT_HEIGHT);
         driver.manage().window().setSize(new Dimension(width, height));

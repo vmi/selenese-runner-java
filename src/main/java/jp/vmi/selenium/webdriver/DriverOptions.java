@@ -3,12 +3,20 @@ package jp.vmi.selenium.webdriver;
 import java.util.IdentityHashMap;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
 
 /**
  * Options for WebDriver.
  */
 public class DriverOptions {
+
+    private static final Logger log = LoggerFactory.getLogger(DriverOptions.class);
 
     /**
      * WebDriver option.
@@ -46,13 +54,14 @@ public class DriverOptions {
         HEIGHT,
     }
 
-    private final IdentityHashMap<DriverOptions.DriverOption, String> map = new IdentityHashMap<DriverOptions.DriverOption, String>();
+    private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
+    private final String[] capDefs;
 
     /**
      * Constructs empty options.
      */
     public DriverOptions() {
-        // no operation
+        capDefs = ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
     /**
@@ -65,6 +74,10 @@ public class DriverOptions {
             String key = opt.name().toLowerCase().replace('_', '-');
             set(opt, cli.getOptionValue(key));
         }
+        if (cli.hasOption("define"))
+            capDefs = cli.getOptionValues("define");
+        else
+            capDefs = ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
     /**
@@ -123,5 +136,32 @@ public class DriverOptions {
      */
     public String get(DriverOption opt, String defaultValue) {
         return ObjectUtils.defaultIfNull(get(opt), defaultValue);
+    }
+
+    /**
+     * Add definitions to capabilities.
+     *
+     * @param caps capabilities.
+     * @return capabilities itself.
+     */
+    public DesiredCapabilities addCapabilityDefinitions(DesiredCapabilities caps) {
+        if (capDefs.length > 0) {
+            log.info("Add capability definisions:");
+            for (String capDef : capDefs) {
+                String[] pair = capDef.split("=", 2);
+                log.info("  [{}]=[{}]", pair[0], pair[1]);
+                caps.setCapability(pair[0], pair[1]);
+            }
+        }
+        return caps;
+    }
+
+    /**
+     * Get capability definitions.
+     * 
+     * @return capability definitions.
+     */
+    public String[] getCapabilityDefinitions() {
+        return capDefs;
     }
 }

@@ -46,6 +46,6 @@ public class IEDriverFactory extends WebDriverFactory {
             .usingAnyFreePort()
             .usingDriverExecutable(driver)
             .build();
-        return new InternetExplorerDriver(service, caps);
+        return new InternetExplorerDriver(service, driverOptions.addCapabilityDefinitions(caps));
     }
 }

@@ -18,6 +18,6 @@ public class AndroidDriverFactory extends WebDriverFactory {
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.android(), driverOptions);
-        return new AndroidDriver(caps);
+        return new AndroidDriver(driverOptions.addCapabilityDefinitions(caps));
     }
 }

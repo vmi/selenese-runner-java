@@ -184,6 +184,10 @@ public class Main {
             .hasArg().withArgName("width")
             .withDescription("browser width (only phantomjs)")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("define")
+            .hasArg().withArgName("key=value")
+            .withDescription("define parameters for capabilities. (multiple)")
+            .create('D'));
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
@@ -256,7 +260,7 @@ public class Main {
      * @return parsed command line information.
      * @throws IllegalArgumentException invalid options.
      */
-    public CommandLine parseCommandLine(String[] args) throws IllegalArgumentException {
+    public CommandLine parseCommandLine(String... args) throws IllegalArgumentException {
         CommandLine cli = null;
         try {
             cli = new PosixParser().parse(options, args);

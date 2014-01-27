@@ -38,6 +38,9 @@ public class ChromeDriverFactory extends WebDriverFactory {
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));
+        String[] capDefs = driverOptions.getCapabilityDefinitions();
+        if (capDefs.length > 0)
+            options.addArguments(capDefs);
         return new ChromeDriver(service, options);
     }
 }

@@ -61,8 +61,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             profile = new FirefoxProfile();
         }
 
-        DesiredCapabilities capabilities = setupProxy(DesiredCapabilities.firefox(), driverOptions);
+        DesiredCapabilities caps = setupProxy(DesiredCapabilities.firefox(), driverOptions);
 
-        return new FirefoxDriver(binary, profile, capabilities);
+        return new FirefoxDriver(binary, profile, driverOptions.addCapabilityDefinitions(caps));
     }
 }

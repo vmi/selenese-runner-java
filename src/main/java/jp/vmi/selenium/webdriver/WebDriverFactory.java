@@ -31,12 +31,12 @@ public abstract class WebDriverFactory {
         return true;
     }
 
-    protected DesiredCapabilities setupProxy(DesiredCapabilities capabilities, DriverOptions driverOptions) {
+    protected DesiredCapabilities setupProxy(DesiredCapabilities caps, DriverOptions driverOptions) {
         if (driverOptions.has(PROXY)) {
             if (!isProxySupported()) {
                 log.warn("No support proxy with {}. Please set proxy to browser configuration in advance.",
                     getClass().getSimpleName().replaceFirst("Factory$", ""));
-                return capabilities;
+                return caps;
             }
             Proxy proxy = new Proxy();
             proxy.setProxyType(ProxyType.MANUAL);
@@ -46,9 +46,9 @@ public abstract class WebDriverFactory {
                 .setFtpProxy(ps);
             if (driverOptions.has(NO_PROXY))
                 proxy.setNoProxy(driverOptions.get(NO_PROXY));
-            capabilities.setCapability(CapabilityType.PROXY, proxy);
+            caps.setCapability(CapabilityType.PROXY, proxy);
         }
-        return capabilities;
+        return caps;
     }
 
     /**

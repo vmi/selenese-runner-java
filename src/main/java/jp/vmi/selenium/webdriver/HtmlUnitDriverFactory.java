@@ -13,6 +13,6 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.htmlUnit(), driverOptions);
         caps.setJavascriptEnabled(true);
-        return new HtmlUnitDriver(caps);
+        return new HtmlUnitDriver(driverOptions.addCapabilityDefinitions(caps));
     }
 }
