@@ -42,12 +42,14 @@ Usage
      -b,--baseurl <baseURL>                  override base URL set in selenese.
         --chromedriver <path>                path to 'chromedriver' binary. (implies '--driver chrome')
         --iedriver <path>                    path to 'IEDriverServer' binary. (implies '--driver ie')
+        --phantomjs <path>                   path to 'phantomjs' binary. (implies '--driver phantomjs')
         --xml-result <dir>                   output XML JUnit results to specified directory.
         --html-result <dir>                  output HTML results to specified directory.
      -t,--timeout <timeout>                  set timeout (ms) for waiting. (default: 30000 ms)
         --set-speed <speed>                  same as executing setSpeed(ms) command first.
         --height <height>                    browser height (only phantomjs)
         --width <width>                      browser width (only phantomjs)
+     -D,--define <key=value>                 define parameters for capabilities. (multiple)
      -h,--help                               show this message.
 
 Requirements
@@ -62,6 +64,8 @@ Relase Note
 ### 1.3.3
 
 * Add ${KEY\_\*} variables. (see: http://blog.reallysimplethoughts.com/2013/09/25/using-special-keys-in-selenium-ide-part-2/ )
+* Add new option '-D/--define' for setting capabilities of WebDriver.
+* Fix issues #87, #90, #91.
 * Update Selenium version to 2.39.0.
 
 ### 1.3.2
