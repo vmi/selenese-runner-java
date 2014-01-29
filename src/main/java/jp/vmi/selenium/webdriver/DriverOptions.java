@@ -1,13 +1,17 @@
 package jp.vmi.selenium.webdriver;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
@@ -16,7 +20,7 @@ import com.google.common.collect.Maps;
  */
 public class DriverOptions {
 
-    private static final Logger log = LoggerFactory.getLogger(DriverOptions.class);
+    // private static final Logger log = LoggerFactory.getLogger(DriverOptions.class);
 
     /**
      * WebDriver option.
@@ -52,16 +56,17 @@ public class DriverOptions {
         WIDTH,
         /** --height */
         HEIGHT,
+        /** --define */
+        DEFINE,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
-    private final String[] capDefs;
+    private final DesiredCapabilities caps = new DesiredCapabilities();
 
     /**
      * Constructs empty options.
      */
     public DriverOptions() {
-        capDefs = ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
     /**
@@ -72,12 +77,11 @@ public class DriverOptions {
     public DriverOptions(CommandLine cli) {
         for (DriverOption opt : DriverOption.values()) {
             String key = opt.name().toLowerCase().replace('_', '-');
-            set(opt, cli.getOptionValue(key));
+            if (opt != DriverOption.DEFINE)
+                set(opt, cli.getOptionValue(key));
+            else
+                addDefinitions(cli.getOptionValues("define"));
         }
-        if (cli.hasOption("define"))
-            capDefs = cli.getOptionValues("define");
-        else
-            capDefs = ArrayUtils.EMPTY_STRING_ARRAY;
     }
 
     /**
@@ -87,6 +91,8 @@ public class DriverOptions {
      * @return option value.
      */
     public String get(DriverOption opt) {
+        if (opt == DriverOption.DEFINE)
+            throw new IllegalArgumentException("Need to use DriverOptions#getCapabilities() instead of get(DriverOption.DEFINE).");
         return map.get(opt);
     }
 
@@ -97,71 +103,106 @@ public class DriverOptions {
      * @return true if has specified option.
      */
     public boolean has(DriverOption opt) {
-        return map.containsKey(opt);
+        if (opt != DriverOption.DEFINE)
+            return map.containsKey(opt);
+        else
+            return !caps.asMap().isEmpty();
     }
 
     /**
      * Set option key and value.
      *
      * @param opt option key.
-     * @param value option value.
+     * @param values option values. (multiple values are accepted by DEFINE only)
      * @return this.
      */
-    public DriverOptions set(DriverOption opt, String value) {
-        if (value != null)
-            map.put(opt, value);
-        else
-            map.remove(opt);
+    public DriverOptions set(DriverOption opt, String... values) {
+        if (opt != DriverOption.DEFINE) {
+            if (values.length != 1)
+                throw new IllegalArgumentException("Need to pass only a single value for " + opt);
+            if (values[0] != null)
+                map.put(opt, values[0]);
+            else
+                map.remove(opt);
+        } else {
+            addDefinitions(values);
+        }
+        return this;
+    }
+
+    /**
+     * Add "define" parameters.
+     *
+     * @param defs definitions.
+     * @return this.
+     */
+    public DriverOptions addDefinitions(String... defs) {
+        for (String def : defs) {
+            if (def.contains("+=")) {
+                String[] pair = def.split("\\+=", 2);
+                String capName = pair[0];
+                String capValue = pair[1];
+                Object prevCapValue = caps.getCapability(capName);
+                if (prevCapValue == null)
+                    caps.setCapability(capName, capValue);
+                else if (prevCapValue instanceof String)
+                    caps.setCapability(capName, new String[] { (String) prevCapValue, capValue });
+                else if (prevCapValue instanceof String[])
+                    caps.setCapability(capName, ArrayUtils.add((String[]) prevCapValue, capValue));
+                else
+                    throw new IllegalArgumentException("The capability " + capName + " is not string.");
+            } else if (def.contains("=")) {
+                String[] pair = def.split("=", 2);
+                String capName = pair[0];
+                String capValue = pair[1];
+                caps.setCapability(capName, capValue);
+            } else {
+                throw new IllegalArgumentException("The definition format need to be KEY=VALUE or KEY+=VALUE: " + def);
+            }
+        }
         return this;
     }
 
     @Override
     public String toString() {
-        if (map.isEmpty())
-            return "[]";
         StringBuilder result = new StringBuilder("[");
-        for (DriverOption opt : DriverOption.values())
-            if (map.containsKey(opt))
-                result.append(opt.name()).append('=').append(map.get(opt)).append("|");
-        result.setCharAt(result.length() - 1, ']');
+        String sep = "";
+        if (!map.isEmpty()) {
+            for (DriverOption opt : DriverOption.values())
+                if (opt != DriverOption.DEFINE && map.containsKey(opt))
+                    result.append(opt.name()).append('=').append(map.get(opt)).append('|');
+            result.deleteCharAt(result.length() - 1);
+            sep = "|";
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> capsMap = (Map<String, Object>) caps.asMap();
+        if (!capsMap.isEmpty()) {
+            result.append(sep).append("DEFINE=[\n");
+            List<Entry<String, Object>> capsList = new ArrayList<Entry<String, Object>>(capsMap.entrySet());
+            Collections.sort(capsList, new Comparator<Entry<String, Object>>() {
+                @Override
+                public int compare(Entry<String, Object> e1, Entry<String, Object> e2) {
+                    return e1.getKey().compareTo(e2.getKey());
+                }
+            });
+            for (Entry<String, Object> cap : capsList) {
+                Object value = cap.getValue();
+                if (value instanceof Object[])
+                    value = StringUtils.join((Object[]) value, ", ");
+                result.append("  ").append(cap.getKey()).append('=').append(value).append("\n");
+            }
+            result.append(']');
+        }
+        result.append(']');
         return result.toString();
     }
 
     /**
-     * Get option value.
+     * Get desired capabilities.
      *
-     * @param opt option key.
-     * @param defaultValue return this if option is null
-     * @return option value.
+     * @return desired capabilities.
      */
-    public String get(DriverOption opt, String defaultValue) {
-        return ObjectUtils.defaultIfNull(get(opt), defaultValue);
-    }
-
-    /**
-     * Add definitions to capabilities.
-     *
-     * @param caps capabilities.
-     * @return capabilities itself.
-     */
-    public DesiredCapabilities addCapabilityDefinitions(DesiredCapabilities caps) {
-        if (capDefs.length > 0) {
-            log.info("Add capability definisions:");
-            for (String capDef : capDefs) {
-                String[] pair = capDef.split("=", 2);
-                log.info("  [{}]=[{}]", pair[0], pair[1]);
-                caps.setCapability(pair[0], pair[1]);
-            }
-        }
+    public DesiredCapabilities getCapabilities() {
         return caps;
-    }
-
-    /**
-     * Get capability definitions.
-     * 
-     * @return capability definitions.
-     */
-    public String[] getCapabilityDefinitions() {
-        return capDefs;
     }
 }

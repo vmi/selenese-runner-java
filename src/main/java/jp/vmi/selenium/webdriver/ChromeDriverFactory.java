@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import jp.vmi.selenium.selenese.utils.PathUtils;
 
@@ -35,12 +36,12 @@ public class ChromeDriverFactory extends WebDriverFactory {
             .usingAnyFreePort()
             .withEnvironment(getEnvironmentVariables())
             .build();
+        DesiredCapabilities caps = DesiredCapabilities.chrome();
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));
-        String[] capDefs = driverOptions.getCapabilityDefinitions();
-        if (capDefs.length > 0)
-            options.addArguments(capDefs);
-        return new ChromeDriver(service, options);
+        caps.setCapability(ChromeOptions.CAPABILITY, options);
+        caps.merge(driverOptions.getCapabilities());
+        return new ChromeDriver(service, caps);
     }
 }

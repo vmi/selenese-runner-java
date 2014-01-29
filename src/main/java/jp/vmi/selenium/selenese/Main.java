@@ -185,13 +185,12 @@ public class Main {
             .withDescription("browser width (only phantomjs)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("define")
-            .hasArg().withArgName("key=value")
+            .hasArg().withArgName("key=value or key+=value")
             .withDescription("define parameters for capabilities. (multiple)")
             .create('D'));
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
-
     }
 
     /**

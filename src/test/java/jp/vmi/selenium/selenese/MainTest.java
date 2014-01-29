@@ -15,13 +15,14 @@ public class MainTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testOptions() {
-        CommandLine cli = new Main().parseCommandLine("-D", "key1=value1", "-D", "key2=value2");
+        CommandLine cli = new Main().parseCommandLine("-D", "key1=value1", "-D", "key2=value21", "-D", "key2+=value22");
         String[] defines = cli.getOptionValues("define");
-        assertThat(defines, is(array(equalTo("key1=value1"), equalTo("key2=value2"))));
+        assertThat(defines, is(array(equalTo("key1=value1"), equalTo("key2=value21"), equalTo("key2+=value22"))));
         DriverOptions driverOptions = new DriverOptions(cli);
         DesiredCapabilities caps = new DesiredCapabilities();
-        driverOptions.addCapabilityDefinitions(caps);
+        caps.merge(driverOptions.getCapabilities());
         assertThat(caps.getCapability("key1"), is(equalTo((Object) "value1")));
-        assertThat(caps.getCapability("key2"), is(equalTo((Object) "value2")));
+        assertThat((Object[]) caps.getCapability("key2"), is(array(equalTo((Object) "value21"), equalTo((Object) "value22"))));
+        assertThat(driverOptions.toString(), is(not("[]")));
     }
 }

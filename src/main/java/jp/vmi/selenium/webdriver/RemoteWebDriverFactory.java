@@ -38,7 +38,8 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         } else {
             throw new IllegalArgumentException("Require --remote-url to know where to connect to");
         }
-        RemoteWebDriver driver = new RemoteWebDriver(url, driverOptions.addCapabilityDefinitions(caps));
+        caps.merge(driverOptions.getCapabilities());
+        RemoteWebDriver driver = new RemoteWebDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
         return driver;
     }

@@ -17,6 +17,7 @@ public class SafariDriverFactory extends WebDriverFactory {
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.safari(), driverOptions);
-        return new SafariDriver(driverOptions.addCapabilityDefinitions(caps));
+        caps.merge(driverOptions.getCapabilities());
+        return new SafariDriver(caps);
     }
 }
