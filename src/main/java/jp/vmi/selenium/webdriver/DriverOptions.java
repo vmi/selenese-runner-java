@@ -137,6 +137,8 @@ public class DriverOptions {
      * @return this.
      */
     public DriverOptions addDefinitions(String... defs) {
+        if (defs == null)
+            return this;
         for (String def : defs) {
             if (def.contains("+=")) {
                 String[] pair = def.split("\\+=", 2);
