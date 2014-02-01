@@ -49,8 +49,7 @@ public class BuiltInCommand extends Command {
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
         CustomCommandProcessor proc = testCase.getProc();
         try {
-            Object result = proc.execute(realName, args);
-            String resultString = (result != null) ? result.toString() : "";
+            String resultString = proc.doCommand(realName, args);
             if (andWait) {
                 int timeout = runner.getTimeout();
                 proc.execute(WAIT_FOR_PAGE_TO_LOAD, new String[] { Integer.toString(timeout) });

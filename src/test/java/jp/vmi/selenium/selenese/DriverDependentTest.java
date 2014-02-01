@@ -199,4 +199,10 @@ public class DriverDependentTest extends TestCaseTestBase {
         execute("verifyCssCount");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void issue93() {
+        execute("issue93");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

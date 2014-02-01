@@ -3,11 +3,11 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import jp.vmi.selenium.selenese.Runner;
-
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+
 import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
 
 /**
@@ -55,6 +55,6 @@ public class Store extends Command {
         CustomCommandProcessor proc = testCase.getProc();
         Object result = proc.execute(getter, getterArgs);
         proc.setVar(result, varName);
-        return new Success(String.valueOf(result));
+        return new Success(proc.convertResultToString(result));
     }
 }

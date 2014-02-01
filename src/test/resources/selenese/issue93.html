@@ -4,32 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost" />
-<title>Issue #77 test</title>
+<title>Issue #93 test</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Issue #77 test</td></tr>
+<tr><td rowspan="1" colspan="3">Issue #93 test</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/issue77test.html</td>
-	<td></td>
+    <td>open</td>
+    <td>/issue77test.html</td>
+    <td></td>
 </tr>
 <tr>
-	<td>verifyNotSomethingSelected</td>
-	<td>css=select[name='report1']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifySelectedLabel</td>
-	<td>css=select[name='report2']</td>
-	<td>Week 1</td>
-</tr>
-<tr>
-	<td>verifySomethingSelected</td>
-	<td>css=select[name='not_found']</td>
-	<td></td>
+    <td>verifySelectOptions</td>
+    <td>name=report1</td>
+    <td>Week 1,Week 2,Week 3</td>
 </tr>
 </tbody></table>
 </body>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverCommandProcessor;
@@ -69,10 +70,29 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
         this(baseUrl, driver, new HashMap<String, Object>());
     }
 
+    /**
+     * Do selenese command, and return String.
+     *
+     * Note: return empty string if the result of execute is null.
+     */
     @Override
     public String doCommand(String commandName, String[] args) {
-        Object val = execute(commandName, args);
-        return val != null ? val.toString() : null;
+        return convertResultToString(execute(commandName, args));
+    }
+
+    /**
+     * Convert command result to String.
+     *
+     * @param value command result.
+     * @return converted string.
+     */
+    public String convertResultToString(Object value) {
+        if (value == null)
+            return "";
+        if (value instanceof Object[])
+            return StringUtils.join((Object[]) value, ',');
+        else
+            return value.toString();
     }
 
     @Override

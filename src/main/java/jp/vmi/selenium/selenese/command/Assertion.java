@@ -96,8 +96,7 @@ public class Assertion extends Command {
             found = true;
             if (this.expected != null) {
                 try {
-                    Object result = proc.execute(getter, getterArgs);
-                    String resultString = (result != null) ? result.toString() : "";
+                    String resultString = proc.doCommand(getter, getterArgs);
                     String expected = testCase.getProc().replaceVars(this.expected);
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
