@@ -61,12 +61,18 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.4
+
+* The option '-D/--define' accepts not only 'key=value' bu 'key+=value'.
+* Fix issues #92, #93.
+
 ### 1.3.3
 
 * Add ${KEY\_\*} variables. (see: http://blog.reallysimplethoughts.com/2013/09/25/using-special-keys-in-selenium-ide-part-2/ )
 * Add new option '-D/--define' for setting capabilities of WebDriver.
 * Fix issues #87, #90, #91.
 * Update Selenium version to 2.39.0.
+* Update dependency versions.
 
 ### 1.3.2
 
