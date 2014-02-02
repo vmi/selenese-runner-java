@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.cmdproc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -89,8 +90,12 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     public String convertResultToString(Object value) {
         if (value == null)
             return "";
-        if (value instanceof Object[])
+        else if (value instanceof Object[])
             return StringUtils.join((Object[]) value, ',');
+        else if (value instanceof Iterable)
+            return StringUtils.join((Iterable<?>) value, ',');
+        else if (value instanceof Iterator)
+            return StringUtils.join((Iterator<?>) value, ',');
         else
             return value.toString();
     }
