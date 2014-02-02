@@ -31,6 +31,7 @@ public class ErrorTestCase extends ErrorSource implements ITestCase {
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {
+        logRecorder.setPrintStream(runner.getPrintStream());
         return super.execute(parent, runner);
     }
 

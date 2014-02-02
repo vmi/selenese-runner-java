@@ -316,7 +316,7 @@ public class Main {
             if (speed < 0)
                 throw new IllegalArgumentException("Invalid speed value. (" + cli.getOptionValue("set-speed") + ")");
             runner.setInitialSpeed(speed);
-            Runner.setPrintStream(System.out);
+            Runner.setDefaultPrintStream(System.out);
             System.err.println("FileNames=" + StringUtils.join(filenames, ", "));
             Result totalResult = runner.run(filenames);
             runner.finish();

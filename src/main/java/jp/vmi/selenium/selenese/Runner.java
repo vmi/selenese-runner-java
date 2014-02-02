@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.HasCapabilities;
@@ -29,7 +30,6 @@ import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 import static org.openqa.selenium.Keys.*;
@@ -44,7 +44,19 @@ public class Runner implements HtmlResultHolder {
 
     private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMdd_HHmmssSSS");
 
-    private WebDriver driver;
+    private static PrintStream defaultPrintStream = new PrintStream(new NullOutputStream());
+
+    /**
+     * Set default output PrintStream.
+     *
+     * @param ps PrintStream object.
+     */
+    public static void setDefaultPrintStream(PrintStream ps) {
+        defaultPrintStream = ps;
+    }
+
+    private PrintStream ps;
+    private WebDriver driver = null;
     private String screenshotDir = null;
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
@@ -63,9 +75,16 @@ public class Runner implements HtmlResultHolder {
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
 
-    // initialize varsMap.
-    // see: ide/main/src/content/selenium-runner.js on Selenium repos.
-    {
+    /**
+     * Constructor.
+     */
+    public Runner() {
+        this.ps = defaultPrintStream;
+        initializeVarsMap();
+    }
+
+    private void initializeVarsMap() {
+        // see: ide/main/src/content/selenium-runner.js on Selenium repos.
         varsMap.put("space", " ");
         varsMap.put("nbsp", "\u00A0");
 
@@ -105,10 +124,19 @@ public class Runner implements HtmlResultHolder {
     /**
      * Set PrintStream for logging.
      *
-     * @param out PrintStream for logging.
+     * @param ps PrintStream for logging.
      */
-    public static void setPrintStream(PrintStream out) {
-        LogRecorder.setPrintStream(out);
+    public void setPrintStream(PrintStream ps) {
+        this.ps = ps;
+    }
+
+    /**
+     * Get PrintStream for logging.
+     *
+     * @return PrintStream object.
+     */
+    public PrintStream getPrintStream() {
+        return ps;
     }
 
     private TakesScreenshot getTakesScreenshot() {

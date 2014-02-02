@@ -238,6 +238,7 @@ public class TestCase implements Selenese, ITestCase {
     public Result execute(Selenese parent, Runner runner) {
         if (commandList.isEmpty())
             return result = SUCCESS;
+        logRecorder.setPrintStream(runner.getPrintStream());
         Command command = commandList.first();
         while (command != null) {
             Result r = doCommand(command, runner);

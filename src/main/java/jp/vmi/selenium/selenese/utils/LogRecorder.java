@@ -49,7 +49,7 @@ public class LogRecorder {
 
     private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
-    private static PrintStream ps = new PrintStream(new NullOutputStream());
+    private PrintStream ps = new PrintStream(new NullOutputStream());
 
     private final List<LogMessage> messages = new ArrayList<LogMessage>();
 
@@ -60,8 +60,8 @@ public class LogRecorder {
      *
      * @param ps PrintStream object.
      */
-    public static void setPrintStream(PrintStream ps) {
-        LogRecorder.ps = ps;
+    public void setPrintStream(PrintStream ps) {
+        this.ps = ps;
     }
 
     /**
