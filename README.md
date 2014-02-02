@@ -64,6 +64,7 @@ Relase Note
 ### 1.3.4
 
 * The option '-D/--define' accepts not only 'key=value' bu 'key+=value'.
+* PrintStream object for logging is changed to the instance variable of Runner from static variable.
 * Fix issues #92, #93.
 
 ### 1.3.3
