@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
+import java.util.Iterator;
+
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
@@ -65,8 +67,12 @@ public class WDCommand {
     public <T> String convertToString(T result) {
         if (result == null)
             return "";
-        if (result instanceof Object[])
+        else if (result instanceof Object[])
             return StringUtils.join((Object[]) result, ',');
+        else if (result instanceof Iterable)
+            return StringUtils.join((Iterable<?>) result, ',');
+        else if (result instanceof Iterator)
+            return StringUtils.join((Iterator<?>) result, ',');
         else
             return result.toString();
     }
