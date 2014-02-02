@@ -75,20 +75,21 @@ public class AssertionStringMatchTest extends TestBase {
     }
 
     /**
-     * test for string-match
+     * test for string-match (old style)
      *
      * @see "http://release.seleniumhq.org/selenium-core/1.0.1/reference.html#patterns"
      *
      * @throws IOException exception.
      */
+    @SuppressWarnings("deprecation")
     @Test
-    public void stringMatchPattern() throws IOException {
+    public void stringMatchPatternOld() throws IOException {
         Runner runner = new Runner();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         wdm.setDriverOptions(new DriverOptions());
         runner.setDriver(wdm.get());
-        TestCase testCase = Binder.newTestCase("", "", runner, wsr.getBaseURL());
+        TestCase testCase = Binder.newTestCase("dummy", "dummy", runner, wsr.getBaseURL());
         CommandFactory commandFactory = runner.getCommandFactory();
         commandFactory.setProc(testCase.getProc());
         testCase.addCommand(commandFactory.newCommand(0, "open", "/assertion.html"));
@@ -97,4 +98,25 @@ public class AssertionStringMatchTest extends TestBase {
         assertThat(result, is(instanceOf(resultClass)));
     }
 
+    /**
+     * test for string-match
+     *
+     * @see "http://release.seleniumhq.org/selenium-core/1.0.1/reference.html#patterns"
+     *
+     * @throws IOException exception.
+     */
+    @Test
+    public void stringMatchPattern() throws IOException {
+        WebDriverManager wdm = WebDriverManager.getInstance();
+        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
+        wdm.setDriverOptions(new DriverOptions());
+        Runner runner = new Runner();
+        runner.setDriver(wdm.get());
+        CommandFactory cf = runner.getCommandFactory();
+        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        testCase.addCommand(cf, "open", "/assertion.html");
+        testCase.addCommand(cf, commandName, argument);
+        Result result = runner.execute(testCase);
+        assertThat(result, is(instanceOf(resultClass)));
+    }
 }

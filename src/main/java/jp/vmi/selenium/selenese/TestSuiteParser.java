@@ -22,7 +22,7 @@ public class TestSuiteParser extends Parser {
     @Override
     protected Selenese parse(Runner runner) {
         try {
-            TestSuite testSuite = Binder.newTestSuite(filename, null, runner);
+            TestSuite testSuite = Binder.newTestSuite(filename, null);
             NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
             for (Node node : each(nodeList)) {
                 String tcFilename = node.getNodeValue();

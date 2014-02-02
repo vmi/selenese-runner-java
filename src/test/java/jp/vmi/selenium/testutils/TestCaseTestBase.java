@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
@@ -53,13 +54,15 @@ public abstract class TestCaseTestBase extends TestBase {
         testSuites = new ArrayList<TestSuite>();
         runner = new Runner() {
             @Override
-            public Result execute(TestSuite testSuite) {
-                testSuites.add(testSuite);
+            public Result execute(Selenese testSuite) {
+                if (!(testSuite instanceof TestSuite))
+                    throw new RuntimeException("The parameter is not TestSuite instance: " + testSuite);
+                testSuites.add((TestSuite) testSuite);
                 return super.execute(testSuite);
             }
         };
         runner.setDriver(driver);
-        runner.setBaseURL(wsr.getBaseURL());
+        runner.setOverridingBaseURL(wsr.getBaseURL());
         runner.setScreenshotDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
         runner.setJUnitResultDir(xmlResultDir.getRoot().getPath());
@@ -83,5 +86,4 @@ public abstract class TestCaseTestBase extends TestBase {
             runner.setJUnitResultDir(null);
         }
     }
-
 }

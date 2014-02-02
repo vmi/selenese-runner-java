@@ -8,14 +8,15 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import jp.vmi.selenium.selenese.command.Command;
-import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.EndLoop;
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -43,13 +44,15 @@ public class TestCaseParser extends Parser {
         return value.toString();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Selenese parse(Runner runner) {
         String name = null;
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
-            TestCase testCase = Binder.newTestCase(filename, name, baseURL, runner);
-            CommandFactory commandFactory = runner.getCommandFactory();
+            TestCase testCase = Binder.newTestCase(filename, name, baseURL);
+            testCase.setContext(runner); // TODO: This will remove future release.
+            ICommandFactory commandFactory = runner.getCommandFactory();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
@@ -73,7 +76,9 @@ public class TestCaseParser extends Parser {
                 default: // skip whitespace text.
                     continue;
                 }
-                Command command = commandFactory.newCommand(tri, cmdWithArgs);
+                String cmdName = cmdWithArgs.remove(0);
+                String[] cmdArgs = cmdWithArgs.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
+                Command command = commandFactory.newCommand(tri, cmdName, cmdArgs);
                 if (command instanceof Label) {
                     testCase.setLabelCommand((Label) command);
                 } else if (command instanceof StartLoop) {

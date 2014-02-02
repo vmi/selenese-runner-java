@@ -35,10 +35,9 @@ public class TestSuite implements Selenese, ITestSuite {
      *
      * @param filename Selenese script file.
      * @param name test-case name.
-     * @param runner Runner instance.
      * @return this.
      */
-    public TestSuite initialize(String filename, String name, Runner runner) {
+    public TestSuite initialize(String filename, String name) {
         this.filename = filename;
         if (filename != null)
             this.parentDir = FilenameUtils.getFullPathNoEndSeparator(filename);

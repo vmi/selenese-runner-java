@@ -1,9 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
 /**
- * Factory for user defined command.
+ * Interface of command factory.
  */
-public interface UserDefinedCommandFactory {
+public interface ICommandFactory {
 
     /**
      * Constructs selenese command.

@@ -22,7 +22,7 @@ import jp.vmi.selenium.selenese.cmdproc.WDCommand;
  * Factory of selenese command.
  */
 @SuppressWarnings("deprecation")
-public class CommandFactory {
+public class CommandFactory implements ICommandFactory {
 
     private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
 
@@ -97,7 +97,7 @@ public class CommandFactory {
     }
 
     /**
-     * Register user defined command factoryName.
+     * Register user defined command factory.
      *
      * @param factory user defined command factory.
      */
@@ -125,26 +125,10 @@ public class CommandFactory {
         this.context = proc.getContext();
     }
 
-    /**
-     * Constructs selenese command.
-     *
-     * @param index index in selenese script file.
-     * @param cmdWithArgs cmmand and arguments.
-     * @return Command instance.
+    /*
+     * @see jp.vmi.selenium.selenese.command.ICommandFactory#newCommand(int, java.lang.String, java.lang.String)
      */
-    public Command newCommand(int index, List<String> cmdWithArgs) {
-        String name = cmdWithArgs.remove(0);
-        return newCommand(index, name, cmdWithArgs.toArray(new String[cmdWithArgs.size()]));
-    }
-
-    /**
-     * Constructs selenese command.
-     *
-     * @param index index in selenese script file.
-     * @param name command name.
-     * @param args command arguments.
-     * @return Command instance.
-     */
+    @Override
     public Command newCommand(int index, String name, String... args) {
         // user defined command.
         for (UserDefinedCommandFactory factory : userDefinedCommandFactories) {

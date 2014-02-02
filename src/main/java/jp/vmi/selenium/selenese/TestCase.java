@@ -11,6 +11,7 @@ import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
@@ -35,7 +36,6 @@ public class TestCase implements Selenese, ITestCase {
     private String baseName = "nofile";
     private String name = null;
     private String baseURL = null;
-    private Context context = null;
 
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
@@ -45,6 +45,9 @@ public class TestCase implements Selenese, ITestCase {
     private final StopWatch stopWatch = new StopWatch();
     private final LogRecorder logRecorder = new LogRecorder();
     private Result result = UNEXECUTED;
+
+    @Deprecated
+    private Context context = null;
 
     /**
      * Initialize after constructed.
@@ -57,7 +60,9 @@ public class TestCase implements Selenese, ITestCase {
      */
     @Deprecated
     public TestCase initialize(String filename, String name, Runner runner, String baseURL) {
-        return initialize(filename, name, baseURL, runner);
+        TestCase testCase = initialize(filename, name, baseURL);
+        testCase.setContext(runner);
+        return testCase;
     }
 
     /**
@@ -66,17 +71,25 @@ public class TestCase implements Selenese, ITestCase {
      * @param filename selenese script filename. (This base name is used for generating screenshot file)
      * @param name test-case name.
      * @param baseURL effective base URL.
-     * @param context Selenese Runner context.
      * @return this.
      */
-    public TestCase initialize(String filename, String name, String baseURL, Context context) {
+    public TestCase initialize(String filename, String name, String baseURL) {
         this.filename = filename;
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
-        this.context = context;
         return this;
+    }
+
+    /**
+     * Set Selenese Runner context for backward compatibility.
+     *
+     * @param context Selenese Runner context.
+     */
+    @Deprecated
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -227,6 +240,19 @@ public class TestCase implements Selenese, ITestCase {
      */
     public void addCommand(Command command) {
         commandList.add(command);
+    }
+
+    /**
+     * Add command to command list.
+     * 
+     * @param commandFactory command factory.
+     * @param name command name.
+     * @param args command arguments.
+     */
+    public void addCommand(ICommandFactory commandFactory, String name, String... args) {
+        int i = commandList.size();
+        Command command = commandFactory.newCommand(i, name, args);
+        addCommand(command);
     }
 
     @DoCommand

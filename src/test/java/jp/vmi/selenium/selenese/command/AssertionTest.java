@@ -1,13 +1,12 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.WDCommand;
+import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -28,24 +27,18 @@ public class AssertionTest extends TestBase {
      */
     @Test
     public void userFriendlyAssertionMessage() throws IOException {
-        File selenesefile = File.createTempFile("selenese", ".html");
-
-        TestCase testcase = new TestCase();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         wdm.setDriverOptions(new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(wdm.get());
-        testcase.initialize(selenesefile.getPath(), "test", runner, wsr.getBaseURL());
+        runner.setOverridingBaseURL(wsr.getBaseURL());
+        CommandFactory cf = runner.getCommandFactory();
 
-        Command cmd01 = new Open(1, "open", new String[] { "/assertion.html" }, "open", false);
-        WDCommand getTitle = runner.getProc().getCommand("getTitle");
-        Command cmd02 = new Assertion(2, "assertTitle", new String[] { "title", "title" }, "assert", getTitle, false, false);
-
-        Result result;
-        result = cmd01.doCommand(testcase, runner);
-        result = cmd02.doCommand(testcase, runner);
-
+        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        testCase.addCommand(cf, "open", "/assertion.html");
+        testCase.addCommand(cf, "assertTitle", "title", "title");
+        Result result = runner.execute(testCase);
         assertThat(result.getMessage(), is("Failure: Assertion failed (Result: [assertion test] / Expected: [title])"));
     }
 }

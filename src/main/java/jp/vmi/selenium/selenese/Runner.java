@@ -478,13 +478,17 @@ public class Runner implements Context, HtmlResultHolder {
     }
 
     /**
-     * Execute test-suite.
+     * Execute test-suite / test-case.
      *
-     * @param testSuite test-suite.
+     * @param selenese test-suite or test-case.
      * @return result.
      */
-    public Result execute(TestSuite testSuite) {
-        return testSuite.execute(null, this);
+    public Result execute(Selenese selenese) {
+        try {
+            return selenese.execute(null, this);
+        } catch (InvalidSeleneseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -520,7 +524,7 @@ public class Runner implements Context, HtmlResultHolder {
                 break;
             case TEST_CASE:
                 if (defaultTestSuite == null) {
-                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
+                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++));
                     testSuiteList.add(defaultTestSuite);
                 }
                 defaultTestSuite.addSelenese(selenese);
@@ -553,7 +557,7 @@ public class Runner implements Context, HtmlResultHolder {
         Selenese selenese = Parser.parse(filename, is, this);
         switch (selenese.getType()) {
         case TEST_CASE:
-            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++), this);
+            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++));
             testSuite.addSelenese(selenese);
             break;
         case TEST_SUITE:

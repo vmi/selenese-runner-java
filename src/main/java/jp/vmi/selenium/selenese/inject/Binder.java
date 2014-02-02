@@ -5,7 +5,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 
-import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
@@ -47,12 +46,12 @@ public class Binder {
     }
 
     /**
-     * Constructs TestCase applied aspect.
+     * Constructs TestCase applied aspect. (old style)
      *
      * @param filename selenese script file.
      * @param name test-case name.
      * @param runner Runner instance.
-     * @param baseURL effective base URL.
+     * @param baseURL base URL in script.
      * @return TestCase instance.
      */
     @Deprecated
@@ -64,15 +63,27 @@ public class Binder {
     /**
      * Constructs TestCase applied aspect.
      *
-     * @param filename selenese script file.
+     * @param filename Selenese script file.
      * @param name test-case name.
-     * @param baseURL effective base URL.
-     * @param context Selenese Runner context.
+     * @param baseURL base URL in script.
      * @return TestCase instance.
      */
-    public static TestCase newTestCase(String filename, String name, String baseURL, Context context) {
-        TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(filename, name, baseURL, context);
+    public static TestCase newTestCase(String filename, String name, String baseURL) {
+        return injector.getInstance(TestCase.class).initialize(filename, name, baseURL);
+    }
+
+    /**
+     * Constructs TestSuite applied aspect. (old style)
+     *
+     * @param filename Selenese script file.
+     * @param name test-suite name.
+     * @param runner Runner instance.
+     * @return TestSuite instance.
+     */
+    @Deprecated
+    public static TestSuite newTestSuite(String filename, String name, Runner runner) {
+        TestSuite testSuite = injector.getInstance(TestSuite.class);
+        return testSuite.initialize(filename, name);
     }
 
     /**
@@ -80,12 +91,10 @@ public class Binder {
      *
      * @param filename Selenese script file.
      * @param name test-case name.
-     * @param runner Runner instance.
      * @return TestSuite instance.
      */
-    public static TestSuite newTestSuite(String filename, String name, Runner runner) {
-        TestSuite testSuite = injector.getInstance(TestSuite.class);
-        return testSuite.initialize(filename, name, runner);
+    public static TestSuite newTestSuite(String filename, String name) {
+        return injector.getInstance(TestSuite.class).initialize(filename, name);
     }
 
     /**
