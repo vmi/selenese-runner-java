@@ -146,7 +146,7 @@ public class DriverOptions {
                 String capValue = pair[1];
                 Object prevCapValue = caps.getCapability(capName);
                 if (prevCapValue == null)
-                    caps.setCapability(capName, capValue);
+                    caps.setCapability(capName, new String[] { capValue });
                 else if (prevCapValue instanceof String)
                     caps.setCapability(capName, new String[] { (String) prevCapValue, capValue });
                 else if (prevCapValue instanceof String[])
