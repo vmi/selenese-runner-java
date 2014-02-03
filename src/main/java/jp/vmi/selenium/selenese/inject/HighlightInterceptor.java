@@ -25,11 +25,11 @@ public class HighlightInterceptor implements MethodInterceptor {
         proc.unhighlight();
         if (runner.isHighlight()) {
             int i = 0;
-            for (String locator : command.getLocators())
+            String[] locators = proc.replaceVarsForArray(command.getLocators());
+            for (String locator : locators)
                 proc.highlight(locator, HighlightStyle.ELEMENT_STYLES[i++]);
         }
         Result result = (Result) invocation.proceed();
         return result;
     }
-
 }
