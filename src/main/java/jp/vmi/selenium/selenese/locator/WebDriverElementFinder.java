@@ -43,6 +43,11 @@ public class WebDriverElementFinder extends ElementFinder {
         registerHandler(new XPathHandler());
         registerHandler(new LinkHandler());
         registerHandler(new CSSHandler());
+
+        // unsupported locator.
+        registerHandler(new LabelHandler());
+        registerHandler(new IndexHandler());
+        registerHandler(new ValueHandler());
     }
 
     /**
