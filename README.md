@@ -61,6 +61,10 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.5
+
+* Fix issue #96.
+
 ### 1.3.4
 
 * The option '-D/--define' accepts not only 'key=value' bu 'key+=value'.
