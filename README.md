@@ -61,6 +61,10 @@ Requirements
 Relase Note
 -----------
 
+### 1.3.6
+
+* Remove default logging command line option for phantomjs from GhostDriver because it depends on user.dir system property.
+
 ### 1.3.5
 
 * Fix issue #96.
