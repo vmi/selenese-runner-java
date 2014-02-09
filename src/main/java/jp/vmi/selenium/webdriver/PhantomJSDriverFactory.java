@@ -5,9 +5,9 @@ import java.io.File;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.CustomPhantomJSDriverServiceFactory;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.phantomjs.PhantomJSDriverServiceWrapper;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +36,7 @@ public class PhantomJSDriverFactory extends WebDriverFactory {
             caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, binary.getPath());
         }
         caps.merge(driverOptions.getCapabilities());
-
-        PhantomJSDriverService service = PhantomJSDriverServiceWrapper.createDefaultService(caps);
-
+        PhantomJSDriverService service = CustomPhantomJSDriverServiceFactory.createDefaultService(caps);
         PhantomJSDriver driver = new PhantomJSDriver(service, caps);
         int width = NumberUtils.toInt(driverOptions.get(DriverOption.WIDTH), DEFAULT_WIDTH);
         int height = NumberUtils.toInt(driverOptions.get(DriverOption.HEIGHT), DEFAULT_HEIGHT);
