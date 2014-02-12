@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.ITestSuite;
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
@@ -76,12 +77,12 @@ public class TestSuite implements Selenese, ITestSuite {
      * Add Selenese file. (test-suite or test-case)
      *
      * @param filename Selenese file name.
-     * @param runner Runner object.
+     * @param commandFactory command factory.
      */
-    public void addSeleneseFile(String filename, Runner runner) {
+    public void addSeleneseFile(String filename, ICommandFactory commandFactory) {
         if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
             filename = FilenameUtils.concat(parentDir, filename);
-        addSelenese(Parser.parse(filename, runner));
+        addSelenese(Parser.parse(filename, commandFactory));
     }
 
     /**

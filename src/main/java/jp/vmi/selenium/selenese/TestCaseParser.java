@@ -44,15 +44,12 @@ public class TestCaseParser extends Parser {
         return value.toString();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public Selenese parse(Runner runner) {
+    public Selenese parse(ICommandFactory commandFactory) {
         String name = null;
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(filename, name, baseURL);
-            testCase.setContext(runner); // TODO: This will remove future release.
-            ICommandFactory commandFactory = runner.getCommandFactory();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();

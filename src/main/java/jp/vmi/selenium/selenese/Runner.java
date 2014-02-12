@@ -512,7 +512,8 @@ public class Runner implements Context, HtmlResultHolder {
         TestSuite defaultTestSuite = null;
         List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
         for (String filename : filenames) {
-            Selenese selenese = Parser.parse(filename, this);
+            Selenese selenese = Parser.parse(filename, commandFactory);
+            Parser.setContextForBackwardCompatibility(selenese, this);
             if (selenese.isError()) {
                 log.error(selenese.toString());
                 totalResult = ((ErrorSource) selenese).getResult();
@@ -554,7 +555,8 @@ public class Runner implements Context, HtmlResultHolder {
      */
     public Result run(String filename, InputStream is) {
         TestSuite testSuite;
-        Selenese selenese = Parser.parse(filename, is, this);
+        Selenese selenese = Parser.parse(filename, is, commandFactory);
+        Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
             testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++));
