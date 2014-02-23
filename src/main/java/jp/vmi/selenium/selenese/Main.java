@@ -304,7 +304,7 @@ public class Main {
             runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
-            runner.setBaseURL(cli.getOptionValue("baseurl"));
+            runner.setOverridingBaseURL(cli.getOptionValue("baseurl"));
             runner.setIgnoreScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
             runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
             runner.setHtmlResultDir(cli.getOptionValue("html-result"));

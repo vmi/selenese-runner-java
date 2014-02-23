@@ -27,7 +27,7 @@ public class Open extends Command {
         String url = testCase.getProc().replaceVars(args[URL]);
         if (!url.contains("://")) {
             try {
-                url = new URI(testCase.getBaseURL()).resolve(url).toASCIIString();
+                url = new URI(runner.getCurrentBaseURL()).resolve(url).toASCIIString();
             } catch (URISyntaxException e) {
                 throw new SeleniumException(e);
             }

@@ -60,7 +60,8 @@ public class Runner implements HtmlResultHolder {
     private String screenshotDir = null;
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
-    private String baseURL = "";
+    private String overridingBaseURL = null;
+    private String defaultBaseURL = null;
     private boolean ignoreScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
@@ -277,23 +278,54 @@ public class Runner implements HtmlResultHolder {
     }
 
     /**
-     * Get URL for overriding selenium.base in Selenese script.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @return URL.
+     * Get current base URL.
+     *
+     * @return base URL.
      */
+    @Deprecated
     public String getBaseURL() {
-        return baseURL;
+        return getCurrentBaseURL();
     }
 
     /**
      * Set URL for overriding selenium.base in Selenese script.
      *
-     * @param baseURL URL.
+     * @param baseURL base URL.
+     * 
+     * @deprecated Replaced by {@link #setOverridingBaseURL(String)}
      */
+    @Deprecated
     public void setBaseURL(String baseURL) {
-        this.baseURL = baseURL;
+        setOverridingBaseURL(baseURL);
+    }
+
+    /**
+     * Get current base URL.
+     *
+     * @return base URL.
+     */
+    public String getCurrentBaseURL() {
+        return StringUtils.defaultIfBlank(overridingBaseURL, defaultBaseURL);
+    }
+
+    /**
+     * Set default base URL.
+     * 
+     * It is overrided by overridingBaesURL.
+     *
+     * @param defaultBaseURL base URL.
+     */
+    public void setDefaultBaseURL(String defaultBaseURL) {
+        this.defaultBaseURL = defaultBaseURL;
+    }
+
+    /**
+     * Set URL for overriding selenium.base in Selenese script.
+     *
+     * @param overridingBaseURL base URL.
+     */
+    public void setOverridingBaseURL(String overridingBaseURL) {
+        this.overridingBaseURL = overridingBaseURL;
     }
 
     /**
@@ -330,21 +362,6 @@ public class Runner implements HtmlResultHolder {
      */
     public void setHighlight(boolean isHighlight) {
         this.isHighlight = isHighlight;
-    }
-
-    /**
-     * Get <b>effective</b> base URL for running Selenese script.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @param baseURL URL specified in file.
-     * @return effective URL.
-     */
-    public String getEffectiveBaseURL(String baseURL) {
-        if (StringUtils.isBlank(this.baseURL))
-            return baseURL;
-        else
-            return this.baseURL;
     }
 
     /**

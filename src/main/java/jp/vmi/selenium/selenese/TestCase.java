@@ -109,15 +109,6 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Get base URL.
-     *
-     * @return base URL.
-     */
-    public String getBaseURL() {
-        return baseURL;
-    }
-
-    /**
      * Get command list.
      * 
      * @return command list.
@@ -239,6 +230,7 @@ public class TestCase implements Selenese, ITestCase {
         if (commandList.isEmpty())
             return result = SUCCESS;
         logRecorder.setPrintStream(runner.getPrintStream());
+        runner.setDefaultBaseURL(baseURL);
         Command command = commandList.first();
         while (command != null) {
             Result r = doCommand(command, runner);

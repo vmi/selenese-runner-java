@@ -121,7 +121,7 @@ public class DriverDependentTest extends TestCaseTestBase {
         assumeNot(HtmlUnitDriver.class);
 
         execute("basicAuth");
-        runner.setBaseURL("http://user:pass@" + wsr.getServerNameString() + "/");
+        runner.setOverridingBaseURL("http://user:pass@" + wsr.getServerNameString() + "/");
         assertThat(result.isSuccess(), is(true));
     }
 
@@ -129,7 +129,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     public void highlight() {
         assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
         runner.setHighlight(true);
-        runner.setBaseURL(wsr.getBaseURL());
+        runner.setOverridingBaseURL(wsr.getBaseURL());
         execute("highlight");
         assertThat(result, is(instanceOf(Success.class)));
     }

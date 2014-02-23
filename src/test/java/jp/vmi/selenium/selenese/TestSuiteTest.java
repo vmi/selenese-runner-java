@@ -23,7 +23,7 @@ public class TestSuiteTest extends TestBase {
         manager.setDriverOptions(new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(manager.get());
-        runner.setBaseURL(wsr.getBaseURL());
+        runner.setOverridingBaseURL(wsr.getBaseURL());
         runner.run(script);
     }
 }

@@ -47,7 +47,6 @@ public class TestCaseParser extends Parser {
     public Selenese parse(Runner runner) {
         String name = null;
         try {
-            String baseURL = runner.getEffectiveBaseURL(this.baseURL);
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(filename, name, runner, baseURL);
             CommandFactory commandFactory = runner.getCommandFactory();

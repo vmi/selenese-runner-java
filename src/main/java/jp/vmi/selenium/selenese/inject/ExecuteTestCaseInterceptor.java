@@ -26,7 +26,8 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
         ITestCase testCase = (ITestCase) invocation.getThis();
         Object[] args = invocation.getArguments();
         ITestSuite testSuite = (ITestSuite) args[0];
-        JUnitResult jUnitResult = ((Runner) args[1]).getJUnitResult();
+        Runner runner = (Runner) args[1];
+        JUnitResult jUnitResult = runner.getJUnitResult();
         StopWatch sw = testCase.getStopWatch();
         LogRecorder clr = testCase.getLogRecorder();
         jUnitResult.startTestCase(testSuite, testCase);
@@ -36,7 +37,7 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
             clr.info("Start: " + testCase);
         }
         if (testCase instanceof TestCase) {
-            String baseURL = ((TestCase) testCase).getBaseURL();
+            String baseURL = runner.getCurrentBaseURL();
             log.info("baseURL: {}", baseURL);
             clr.info("baseURL: " + baseURL);
         }
