@@ -1,5 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
@@ -20,8 +25,13 @@ public class Open extends Command {
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
         String url = testCase.getProc().replaceVars(args[URL]);
-        if (!url.contains("://"))
-            url = testCase.getBaseURL() + (url.startsWith("/") ? "" : "/") + url;
+        if (!url.contains("://")) {
+            try {
+                url = new URI(testCase.getBaseURL()).resolve(url).toASCIIString();
+            } catch (URISyntaxException e) {
+                throw new SeleniumException(e);
+            }
+        }
         runner.getDriver().get(url);
         return SUCCESS;
     }
