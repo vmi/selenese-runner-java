@@ -9,13 +9,13 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
-import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
+import static jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -87,7 +87,7 @@ public class Assertion extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        CustomCommandProcessor proc = testCase.getProc();
+        SeleneseRunnerCommandProcessor proc = testCase.getProc();
         boolean found = true;
         String message = null;
         int timeout = runner.getTimeout();
@@ -96,7 +96,7 @@ public class Assertion extends Command {
             found = true;
             if (this.expected != null) {
                 try {
-                    String resultString = proc.doCommand(getter, getterArgs);
+                    String resultString = proc.convertToString(proc.execute(getter, getterArgs));
                     String expected = testCase.getProc().replaceVars(this.expected);
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
@@ -111,7 +111,7 @@ public class Assertion extends Command {
                 }
             } else {
                 try {
-                    boolean result = proc.getBoolean(getter, getterArgs);
+                    boolean result = proc.execute(getter, getterArgs);
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);

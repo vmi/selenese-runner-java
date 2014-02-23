@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 
 /**
  * Factory of selenese command.
@@ -74,7 +75,7 @@ public class CommandFactory {
 
     private final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
 
-    private CustomCommandProcessor proc = null;
+    private SeleneseRunnerCommandProcessor proc = null;
 
     /**
      * Register user defined command factoryName.
@@ -91,6 +92,15 @@ public class CommandFactory {
      * @param proc CustomCommandProcessor instance.
      */
     public void setProc(CustomCommandProcessor proc) {
+        this.proc = proc.getProc();
+    }
+
+    /**
+     * Set SeleneseRunnerCommandProcessor instance.
+     *
+     * @param proc SeleneseRunnerCommandProcessor instance.
+     */
+    public void setProc(SeleneseRunnerCommandProcessor proc) {
         this.proc = proc;
     }
 

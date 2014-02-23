@@ -8,12 +8,12 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
-import static jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor.*;
+import static jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -47,12 +47,12 @@ public class BuiltInCommand extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        CustomCommandProcessor proc = testCase.getProc();
+        SeleneseRunnerCommandProcessor proc = testCase.getProc();
         try {
-            String resultString = proc.doCommand(realName, args);
+            String resultString = proc.convertToString(proc.execute(realName, args));
             if (andWait) {
                 int timeout = runner.getTimeout();
-                proc.execute(WAIT_FOR_PAGE_TO_LOAD, new String[] { Integer.toString(timeout) });
+                proc.execute(WAIT_FOR_PAGE_TO_LOAD, Integer.toString(timeout));
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
         } catch (SeleniumException e) {

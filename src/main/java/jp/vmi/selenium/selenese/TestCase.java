@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 
 import jp.vmi.junit.result.ITestCase;
-import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.Label;
@@ -36,7 +36,7 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private String baseURL = null;
 
-    private CustomCommandProcessor proc = null;
+    private SeleneseRunnerCommandProcessor proc = null;
 
     private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
@@ -62,7 +62,7 @@ public class TestCase implements Selenese, ITestCase {
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
-        this.proc = new CustomCommandProcessor(baseURL, runner.getDriver(), runner.getVarsMap());
+        this.proc = new SeleneseRunnerCommandProcessor(baseURL, runner.getDriver(), runner.getVarsMap());
         return this;
     }
 
@@ -104,7 +104,7 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @return CustomCommandProcessor.
      */
-    public CustomCommandProcessor getProc() {
+    public SeleneseRunnerCommandProcessor getProc() {
         return proc;
     }
 
@@ -153,7 +153,7 @@ public class TestCase implements Selenese, ITestCase {
      * @return result.
      */
     public boolean isTrue(String expr) {
-        return Boolean.parseBoolean(proc.doCommand("getEval", new String[] { expr }));
+        return (Boolean) proc.execute("getEval", new String[] { expr });
     }
 
     /**
