@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.PrintStream;
+
 import org.openqa.selenium.WebDriver;
 
 import jp.vmi.selenium.selenese.cmdproc.Eval;
@@ -10,6 +12,11 @@ import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
  * Null implementation of Context.
  */
 public class NullContext implements Context {
+
+    @Override
+    public PrintStream getPrintStream() {
+        return null;
+    }
 
     @Override
     public WebDriver getWrappedDriver() {
@@ -42,10 +49,33 @@ public class NullContext implements Context {
     }
 
     @Override
+    public boolean isTrue(String expr) {
+        return false;
+    }
+
+    @Override
     public SeleneseRunnerCommandProcessor getProc() {
         return null;
     }
 
+    @Override
     public void setDefaultBaseURL(String defaultBaseURL) {
+    }
+
+    @Override
+    public int getTimeout() {
+        return 0;
+    }
+
+    @Override
+    public void resetSpeed() {
+    }
+
+    @Override
+    public void setSpeed(long speed) {
+    }
+
+    @Override
+    public void waitSpeed() {
     }
 }

@@ -49,16 +49,7 @@ public class Runner implements Context, HtmlResultHolder {
 
     private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMdd_HHmmssSSS");
 
-    private static PrintStream defaultPrintStream = new PrintStream(new NullOutputStream());
-
-    /**
-     * Set default output PrintStream.
-     *
-     * @param ps PrintStream object.
-     */
-    public static void setDefaultPrintStream(PrintStream ps) {
-        defaultPrintStream = ps;
-    }
+    private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(new NullOutputStream());
 
     private PrintStream ps;
     private WebDriver driver = null;
@@ -90,7 +81,7 @@ public class Runner implements Context, HtmlResultHolder {
      * Constructor.
      */
     public Runner() {
-        this.ps = defaultPrintStream;
+        this.ps = DEFAULT_PRINT_STREAM;
         this.eval = new Eval(this);
         this.elementFinder = new WebDriverElementFinder();
         this.proc = new SeleneseRunnerCommandProcessor(this);
@@ -108,11 +99,7 @@ public class Runner implements Context, HtmlResultHolder {
         this.ps = ps;
     }
 
-    /**
-     * Get PrintStream for logging.
-     *
-     * @return PrintStream object.
-     */
+    @Override
     public PrintStream getPrintStream() {
         return ps;
     }
@@ -288,23 +275,11 @@ public class Runner implements Context, HtmlResultHolder {
         setOverridingBaseURL(baseURL);
     }
 
-    /**
-     * Get current base URL.
-     *
-     * @return base URL.
-     */
     @Override
     public String getCurrentBaseURL() {
         return StringUtils.defaultIfBlank(overridingBaseURL, defaultBaseURL);
     }
 
-    /**
-     * Set default base URL.
-     * 
-     * It is overrided by overridingBaesURL.
-     *
-     * @param defaultBaseURL base URL.
-     */
     @Override
     public void setDefaultBaseURL(String defaultBaseURL) {
         this.defaultBaseURL = defaultBaseURL;
@@ -355,11 +330,7 @@ public class Runner implements Context, HtmlResultHolder {
         this.isHighlight = isHighlight;
     }
 
-    /**
-     * Get timeout for waiting. (ms)
-     *
-     * @return timeout for waiting.
-     */
+    @Override
     public int getTimeout() {
         return timeout;
     }
@@ -400,25 +371,17 @@ public class Runner implements Context, HtmlResultHolder {
         return speed;
     }
 
-    /**
-     * Set speed for setSpeed command.
-     *
-     * @param speed speed.
-     */
-    public void setSpeed(long speed) {
-        this.speed = speed;
-    }
-
-    /**
-     * Reset speed as initial speed.
-     */
+    @Override
     public void resetSpeed() {
         speed = initialSpeed;
     }
 
-    /**
-     * Wait according to speed setting. 
-     */
+    @Override
+    public void setSpeed(long speed) {
+        this.speed = speed;
+    }
+
+    @Override
     public void waitSpeed() {
         if (speed > 0) {
             try {
@@ -429,11 +392,6 @@ public class Runner implements Context, HtmlResultHolder {
         }
     }
 
-    /**
-     * Get SeleneseRunnerCommandProcessor instance.
-     * 
-     * @return SeleneseRunnerCommandProcessor instance.
-     */
     @Override
     public SeleneseRunnerCommandProcessor getProc() {
         return proc;
@@ -448,11 +406,6 @@ public class Runner implements Context, HtmlResultHolder {
         return commandFactory;
     }
 
-    /**
-     * Get variables map used for this session.
-     *
-     * @return the evaluated variables (state) for the current context.
-     */
     @Override
     public VarsMap getVarsMap() {
         return this.varsMap;
@@ -491,12 +444,7 @@ public class Runner implements Context, HtmlResultHolder {
         }
     }
 
-    /**
-     * Get boolean value of expr.
-     * 
-     * @param expr expression.
-     * @return cast from result of expr to Javascript Boolean.
-     */
+    @Override
     public boolean isTrue(String expr) {
         return (Boolean) eval.eval(driver, varsMap.replaceVars(expr), "Boolean");
     }
@@ -599,11 +547,6 @@ public class Runner implements Context, HtmlResultHolder {
         htmlResult.setDir(dir);
     }
 
-    /**
-     * Get HTML result instance.
-     *
-     * @return HTML result instance.
-     */
     @Override
     public HtmlResult getHtmlResult() {
         return htmlResult;
