@@ -362,18 +362,14 @@ public class Runner implements Context, HtmlResultHolder {
         this.initialSpeed = initialSpeed;
     }
 
-    /**
-     * Get speed for setSpeed command.
-     *
-     * @return speed.
-     */
-    public long getSpeed() {
-        return speed;
-    }
-
     @Override
     public void resetSpeed() {
         speed = initialSpeed;
+    }
+
+    @Override
+    public long getSpeed() {
+        return speed;
     }
 
     @Override

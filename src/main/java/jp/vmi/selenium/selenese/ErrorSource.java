@@ -60,7 +60,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
     }
 
     @Override
-    public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {
+    public Result execute(Selenese parent, Context context) throws InvalidSeleneseException {
         throw e;
     }
 

@@ -115,12 +115,12 @@ public class TestSuite implements Selenese, ITestSuite {
 
     @ExecuteTestSuite
     @Override
-    public Result execute(Selenese parent, Runner runner) {
-        runner.resetSpeed();
+    public Result execute(Selenese parent, Context context) {
+        context.resetSpeed();
         for (Selenese selenese : seleneseList) {
             Result r;
             try {
-                r = selenese.execute(this, runner);
+                r = selenese.execute(this, context);
             } catch (RuntimeException e) {
                 String msg = e.getMessage();
                 result = new Error(msg);

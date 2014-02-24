@@ -21,7 +21,7 @@ public class ErrorTestSuite extends ErrorSource implements ITestSuite {
 
     @ExecuteTestSuite
     @Override
-    public Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException {
-        return super.execute(parent, runner);
+    public Result execute(Selenese parent, Context context) throws InvalidSeleneseException {
+        return super.execute(parent, context);
     }
 }

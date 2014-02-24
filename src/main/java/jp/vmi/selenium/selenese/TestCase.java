@@ -256,9 +256,9 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     @DoCommand
-    protected Result doCommand(Command command, Runner runner) {
+    protected Result doCommand(Command command, Context context) {
         try {
-            return command.doCommand(this, runner);
+            return command.doCommand(this, (Runner) context);
         } catch (Exception e) {
             return new Error(e);
         }
@@ -266,19 +266,19 @@ public class TestCase implements Selenese, ITestCase {
 
     @ExecuteTestCase
     @Override
-    public Result execute(Selenese parent, Runner runner) {
+    public Result execute(Selenese parent, Context context) {
         if (commandList.isEmpty())
             return result = SUCCESS;
-        logRecorder.setPrintStream(runner.getPrintStream());
-        runner.setDefaultBaseURL(baseURL);
+        logRecorder.setPrintStream(context.getPrintStream());
+        context.setDefaultBaseURL(baseURL);
         Command command = commandList.first();
         while (command != null) {
-            Result r = doCommand(command, runner);
+            Result r = doCommand(command, context);
             result = result.update(r);
             if (result.isAborted())
                 break;
-            command = command.next(this, runner);
-            runner.waitSpeed();
+            command = command.next(this, (Runner) context);
+            context.waitSpeed();
         }
         return result;
     }

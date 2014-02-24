@@ -39,9 +39,9 @@ public interface Selenese {
     /**
      * Execute script.
      * @param parent parent selenese instance or null.
-     * @param runner Runner object.
+     * @param context Selenese Runner context.
      * @exception InvalidSeleneseException failed in parsing or executing selenese.
      * @return result.
      */
-    Result execute(Selenese parent, Runner runner) throws InvalidSeleneseException;
+    Result execute(Selenese parent, Context context) throws InvalidSeleneseException;
 }

@@ -90,6 +90,13 @@ public interface Context extends WrapsDriver {
     void resetSpeed();
 
     /**
+     * Get speed for setSpeed command.
+     *
+     * @return speed.
+     */
+    long getSpeed();
+
+    /**
      * Set speed for setSpeed command.
      *
      * @param speed speed.

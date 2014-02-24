@@ -76,6 +76,11 @@ public class NullContext implements Context {
     }
 
     @Override
+    public long getSpeed() {
+        return 0;
+    }
+
+    @Override
     public void waitSpeed() {
     }
 }
