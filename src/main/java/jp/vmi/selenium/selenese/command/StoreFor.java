@@ -29,7 +29,7 @@ public class StoreFor extends Command implements StartLoop {
 
     @Override
     public Command next(TestCase testCase, Runner runner) {
-        String value = testCase.pollFromCollection(args[COLLECTION_NAME]);
+        String value = runner.getCollectionMap().pollFromCollection(args[COLLECTION_NAME]);
         if (value == null)
             return endLoop.next;
         runner.getVarsMap().put(args[VAR_NAME], value);

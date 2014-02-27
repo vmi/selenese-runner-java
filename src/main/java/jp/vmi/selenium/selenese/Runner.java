@@ -69,6 +69,7 @@ public class Runner implements Context, HtmlResultHolder {
     private final WebDriverElementFinder elementFinder;
     private final CommandFactory commandFactory;
     private VarsMap varsMap = new VarsMap();
+    private final CollectionMap collectionMap = new CollectionMap();
     private final List<HighlightStyleBackup> styleBackups;
 
     private int countForDefault = 0;
@@ -413,6 +414,11 @@ public class Runner implements Context, HtmlResultHolder {
      */
     public void setVarsMap(VarsMap varsMap) {
         this.varsMap = varsMap;
+    }
+
+    @Override
+    public CollectionMap getCollectionMap() {
+        return collectionMap;
     }
 
     @Override

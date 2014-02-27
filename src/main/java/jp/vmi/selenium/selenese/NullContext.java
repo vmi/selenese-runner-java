@@ -33,6 +33,11 @@ public class NullContext implements Context {
     }
 
     @Override
+    public CollectionMap getCollectionMap() {
+        return null;
+    }
+
+    @Override
     public String getInitialWindowHandle() {
         return null;
     }

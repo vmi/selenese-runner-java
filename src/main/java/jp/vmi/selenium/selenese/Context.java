@@ -36,9 +36,16 @@ public interface Context extends WrapsDriver {
     /**
      * Get variables map.
      *
-     * @return varsMap.
+     * @return VarsMap.
      */
     VarsMap getVarsMap();
+
+    /**
+     * Get collection map.
+     *
+     * @return CollectionMap.
+     */
+    CollectionMap getCollectionMap();
 
     /**
      * Get initial window handle.

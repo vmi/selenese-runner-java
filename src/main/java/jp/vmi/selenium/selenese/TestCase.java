@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +35,6 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private String baseURL = null;
 
-    private final Map<String, Deque<String>> collectionMap = new HashMap<String, Deque<String>>();
     private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
     private final CommandList commandList = new CommandList();
@@ -188,8 +185,9 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @param collectionName collection name.
      */
+    @Deprecated
     public void addCollection(String collectionName) {
-        collectionMap.put(collectionName, new ArrayDeque<String>());
+        context.getCollectionMap().addCollection(collectionName);
     }
 
     /**
@@ -198,9 +196,9 @@ public class TestCase implements Selenese, ITestCase {
      * @param collectionName collection name.
      * @param value value.
      */
+    @Deprecated
     public void addToCollection(String collectionName, String value) {
-        Deque<String> collection = collectionMap.get(collectionName);
-        collection.addLast(value);
+        context.getCollectionMap().addToCollection(collectionName, value);
     }
 
     /**
@@ -209,9 +207,9 @@ public class TestCase implements Selenese, ITestCase {
      * @param collectionName collection name.
      * @return value.
      */
+    @Deprecated
     public String pollFromCollection(String collectionName) {
-        Deque<String> collection = collectionMap.get(collectionName);
-        return collection.pollFirst();
+        return context.getCollectionMap().pollFromCollection(collectionName);
     }
 
     /**
@@ -271,6 +269,7 @@ public class TestCase implements Selenese, ITestCase {
             return result = SUCCESS;
         logRecorder.setPrintStream(context.getPrintStream());
         context.setDefaultBaseURL(baseURL);
+        context.getCollectionMap().clear();
         Command command = commandList.first();
         while (command != null) {
             Result r = doCommand(command, context);

@@ -24,7 +24,7 @@ public class AddCollection extends Command {
 
     @Override
     protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        testCase.addCollection(args[COLLECTION_NAME]);
+        runner.getCollectionMap().addCollection(args[COLLECTION_NAME]);
         return SUCCESS;
     }
 }
