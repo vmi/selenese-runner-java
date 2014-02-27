@@ -9,10 +9,10 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.subcommand.WDCommand;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;

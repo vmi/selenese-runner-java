@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.cmdproc.WDCommand;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+import jp.vmi.selenium.selenese.subcommand.WDCommand;
 
 /**
  * Command "store".

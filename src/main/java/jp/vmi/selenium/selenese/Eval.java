@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese;
 
 import java.util.List;
 import java.util.Map;
@@ -10,9 +10,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import com.thoughtworks.selenium.SeleniumException;
-
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.VarsMap;
 
 /**
  * Evaluator of script including "storedVars" variable.

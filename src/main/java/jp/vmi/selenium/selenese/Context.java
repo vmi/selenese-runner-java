@@ -4,9 +4,8 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.internal.WrapsDriver;
 
-import jp.vmi.selenium.selenese.cmdproc.Eval;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * Selenese Runner Context.
@@ -71,11 +70,11 @@ public interface Context extends WrapsDriver {
     boolean isTrue(String expr);
 
     /**
-     * Get SeleneseRunnerCommandProcessor instance.
+     * Get SubCommandMap instance.
      * 
-     * @return SeleneseRunnerCommandProcessor instance.
+     * @return SubCommandMap instance.
      */
-    SeleneseRunnerCommandProcessor getProc();
+    SubCommandMap getSubCommandMap();
 
     /**
      * Get timeout for waiting. (ms)

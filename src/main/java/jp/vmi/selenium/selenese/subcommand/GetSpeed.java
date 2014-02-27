@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese.subcommand;
 
 import jp.vmi.selenium.selenese.Context;
 

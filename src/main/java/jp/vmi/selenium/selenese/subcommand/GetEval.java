@@ -1,7 +1,9 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese.subcommand;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+
+import jp.vmi.selenium.selenese.Eval;
 
 /**
  * An implementation of the "getEval" method from Selenium.

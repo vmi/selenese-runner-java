@@ -1,11 +1,10 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese;
 
 import org.openqa.selenium.internal.seleniumemulation.CompoundMutator;
 import org.openqa.selenium.internal.seleniumemulation.ScriptMutator;
 import org.openqa.selenium.internal.seleniumemulation.VariableDeclaration;
 
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.cmdproc.VariableDeclarationWithDynamicValue.DynamicValue;
+import jp.vmi.selenium.selenese.VariableDeclarationWithDynamicValue.DynamicValue;
 
 /**
  * Substitute for CompoundMutator without static base URL.

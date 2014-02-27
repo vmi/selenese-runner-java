@@ -16,8 +16,8 @@ import org.openqa.selenium.internal.seleniumemulation.NoOp;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 import jp.vmi.selenium.selenese.NullContext;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * List supported commands.
@@ -28,11 +28,11 @@ public class CommandList {
 
     private static void extractCommandsFromCommandProcessor(Collection<String> commands) {
         try {
-            SeleneseRunnerCommandProcessor proc = new SeleneseRunnerCommandProcessor(new NullContext());
+            SubCommandMap subCommandMap = new SubCommandMap(new NullContext());
             Field methodsField = WebDriverCommandProcessor.class.getDeclaredField("seleneseMethods");
             methodsField.setAccessible(true);
             @SuppressWarnings("unchecked")
-            Map<String, SeleneseCommand<?>> methodsMap = (Map<String, SeleneseCommand<?>>) methodsField.get(proc);
+            Map<String, SeleneseCommand<?>> methodsMap = (Map<String, SeleneseCommand<?>>) methodsField.get(subCommandMap);
             Set<String> methods = methodsMap.keySet();
             for (String method : methods) {
                 if (methodsMap.get(method) instanceof NoOp)

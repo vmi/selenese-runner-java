@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese.highlight;
 
 import java.util.HashMap;
 import java.util.Map;

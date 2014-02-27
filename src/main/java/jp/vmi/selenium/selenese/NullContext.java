@@ -4,9 +4,8 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.WebDriver;
 
-import jp.vmi.selenium.selenese.cmdproc.Eval;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * Null implementation of Context.
@@ -54,7 +53,7 @@ public class NullContext implements Context {
     }
 
     @Override
-    public SeleneseRunnerCommandProcessor getProc() {
+    public SubCommandMap getSubCommandMap() {
         return null;
     }
 

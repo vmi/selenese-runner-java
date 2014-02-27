@@ -28,14 +28,13 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
-import jp.vmi.selenium.selenese.cmdproc.Eval;
-import jp.vmi.selenium.selenese.cmdproc.HighlightStyle;
-import jp.vmi.selenium.selenese.cmdproc.HighlightStyleBackup;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.selenese.highlight.HighlightStyle;
+import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 import static org.openqa.selenium.remote.CapabilityType.*;
@@ -66,7 +65,7 @@ public class Runner implements Context, HtmlResultHolder {
     private long speed = 0; /* ms */
 
     private final Eval eval;
-    private final SeleneseRunnerCommandProcessor proc;
+    private final SubCommandMap subCommandMap;
     private final WebDriverElementFinder elementFinder;
     private final CommandFactory commandFactory;
     private VarsMap varsMap = new VarsMap();
@@ -84,7 +83,7 @@ public class Runner implements Context, HtmlResultHolder {
         this.ps = DEFAULT_PRINT_STREAM;
         this.eval = new Eval(this);
         this.elementFinder = new WebDriverElementFinder();
-        this.proc = new SeleneseRunnerCommandProcessor(this);
+        this.subCommandMap = new SubCommandMap(this);
         this.commandFactory = new CommandFactory(this);
         this.varsMap = new VarsMap();
         this.styleBackups = new ArrayList<HighlightStyleBackup>();
@@ -389,8 +388,8 @@ public class Runner implements Context, HtmlResultHolder {
     }
 
     @Override
-    public SeleneseRunnerCommandProcessor getProc() {
-        return proc;
+    public SubCommandMap getSubCommandMap() {
+        return subCommandMap;
     }
 
     /**

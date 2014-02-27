@@ -20,7 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.webdriver.NullDriver;
 
 @SuppressWarnings("javadoc")
 public class SeleneseRunnerWindows extends Windows {

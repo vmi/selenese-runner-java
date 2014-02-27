@@ -7,6 +7,8 @@ import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.VarsMap;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import jp.vmi.selenium.selenese.subcommand.WDCommand;
 
 /**
  * WebDriverCommandProcessor no timeout version.
@@ -14,7 +16,7 @@ import jp.vmi.selenium.selenese.VarsMap;
 @Deprecated
 public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
-    private final SeleneseRunnerCommandProcessor proc;
+    private final SubCommandMap subCommandMap;
 
     /**
      * Constructor.
@@ -25,7 +27,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     public CustomCommandProcessor(final String baseUrl, final WebDriver driver, final VarsMap varsMap) {
         super(baseUrl, driver); // dummy
-        this.proc = new SeleneseRunnerCommandProcessor(new NullContext() {
+        this.subCommandMap = new SubCommandMap(new NullContext() {
 
             @Override
             public String getCurrentBaseURL() {
@@ -43,8 +45,8 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
             }
 
             @Override
-            public SeleneseRunnerCommandProcessor getProc() {
-                return proc;
+            public SubCommandMap getSubCommandMap() {
+                return subCommandMap;
             }
         });
     }
@@ -62,20 +64,20 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     /**
      * Constructor.
      *
-     * @param proc SeleneseRunnerCommandProcessor instance. 
+     * @param subCommandMap SubCommandMap instance. 
      */
-    public CustomCommandProcessor(SeleneseRunnerCommandProcessor proc) {
-        super("http://localhost", proc.getContext().getWrappedDriver()); // dummy
-        this.proc = proc;
+    public CustomCommandProcessor(SubCommandMap subCommandMap) {
+        super("http://localhost", subCommandMap.getContext().getWrappedDriver()); // dummy
+        this.subCommandMap = subCommandMap;
     }
 
     /**
-     * Get SeleneseRunnerCommandProcessor.
+     * Get SubCommandMap.
      * 
-     * @return SeleneseRunnerCommandProcessor instance.
+     * @return SubCommandMap instance.
      */
-    public SeleneseRunnerCommandProcessor getProc() {
-        return proc;
+    public SubCommandMap getProc() {
+        return subCommandMap;
     }
 
     /**
@@ -87,7 +89,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     @Override
     @Deprecated
     public boolean isMethodAvailable(String methodName) {
-        return proc.getCommand(methodName) != null;
+        return subCommandMap.getCommand(methodName) != null;
     }
 
     /**
@@ -99,20 +101,20 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     @Deprecated
     public Object execute(String commandName, String... args) {
-        WDCommand command = proc.getCommand(commandName);
-        Context context = proc.getContext();
+        WDCommand command = subCommandMap.getCommand(commandName);
+        Context context = subCommandMap.getContext();
         return command.execute(context, args);
     }
 
     /**
-     * @see SeleneseRunnerCommandProcessor#setVar(Object, String)
+     * @see SubCommandMap#setVar(Object, String)
      * 
      * @param value value.
      * @param varName variable name.
      */
     @Deprecated
     public void setVar(Object value, String varName) {
-        proc.setVar(value, varName);
+        subCommandMap.setVar(value, varName);
     }
 
     @Override

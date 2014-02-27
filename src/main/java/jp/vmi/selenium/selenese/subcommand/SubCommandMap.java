@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.Map;
 
@@ -7,14 +7,18 @@ import org.openqa.selenium.internal.seleniumemulation.*;
 import com.google.common.collect.Maps;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.Eval;
+import jp.vmi.selenium.selenese.command.ArgumentType;
+import jp.vmi.selenium.selenese.command.OpenWindow;
+import jp.vmi.selenium.selenese.command.RunScript;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
-import static jp.vmi.selenium.selenese.cmdproc.ArgType.*;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
  * Replacement of WebDriverCommandProcessor for extention.
  */
-public class SeleneseRunnerCommandProcessor {
+public class SubCommandMap {
 
     private final Map<String, WDCommand> wdCommands = Maps.newHashMap();
     private final boolean enableAlertOverrides = true;
@@ -39,7 +43,7 @@ public class SeleneseRunnerCommandProcessor {
      * 
      * @param context Selenese Runner context.
      */
-    public SeleneseRunnerCommandProcessor(Context context) {
+    public SubCommandMap(Context context) {
         this.context = context;
         this.javascriptLibrary = new JavascriptLibrary();
         this.keyState = new KeyState();
@@ -197,7 +201,7 @@ public class SeleneseRunnerCommandProcessor {
         wdCommands.put("sendKeys", wdCommands.get("typeKeys"));
     }
 
-    private void register(SeleneseCommand<?> seleneseCommand, String name, ArgType... argTypes) {
+    private void register(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
         wdCommands.put(name, new WDCommand(seleneseCommand, name, argTypes));
     }
 

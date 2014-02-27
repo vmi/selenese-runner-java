@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.cmdproc.HighlightStyle;
 import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**

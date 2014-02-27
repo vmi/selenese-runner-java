@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.webdriver;
 
 import java.util.List;
 import java.util.Set;

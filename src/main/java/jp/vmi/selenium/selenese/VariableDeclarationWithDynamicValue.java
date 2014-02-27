@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.cmdproc;
+package jp.vmi.selenium.selenese;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.internal.seleniumemulation.ScriptMutator;

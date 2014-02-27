@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 
 import jp.vmi.junit.result.ITestCase;
-import jp.vmi.selenium.selenese.cmdproc.SeleneseRunnerCommandProcessor;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
@@ -17,6 +16,7 @@ import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
@@ -126,23 +126,23 @@ public class TestCase implements Selenese, ITestCase {
     }
 
     /**
-     * Set SeleneseRunnerCommandProcessor instance for backward compatibility.
+     * Set SubCommandMap instance for backward compatibility.
      * 
-     * @param proc SeleneseRunnerCommandProcessor intance. 
+     * @param proc SubCommandMap intance. 
      */
     @Deprecated
-    public void setProc(SeleneseRunnerCommandProcessor proc) {
+    public void setProc(SubCommandMap proc) {
         this.context = proc.getContext();
     }
 
     /**
-     * Get SeleneseRunnerCommandProcessor instance generated at initialize.
+     * Get SubCommandMap instance generated at initialize.
      *
-     * @return SeleneseRunnerCommandProcessor instance.
+     * @return SubCommandMap instance.
      */
     @Deprecated
-    public SeleneseRunnerCommandProcessor getProc() {
-        return context.getProc();
+    public SubCommandMap getProc() {
+        return context.getSubCommandMap();
     }
 
     /**
