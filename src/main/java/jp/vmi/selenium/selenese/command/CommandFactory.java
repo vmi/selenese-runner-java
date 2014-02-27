@@ -15,8 +15,8 @@ import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
-import jp.vmi.selenium.selenese.subcommand.WDCommand;
 
 /**
  * Factory of selenese command.
@@ -24,13 +24,13 @@ import jp.vmi.selenium.selenese.subcommand.WDCommand;
 @SuppressWarnings("deprecation")
 public class CommandFactory implements ICommandFactory {
 
-    private static final Map<String, Constructor<? extends Command>> constructorMap = new HashMap<String, Constructor<? extends Command>>();
+    private static final Map<String, Constructor<? extends ICommand>> constructorMap = new HashMap<String, Constructor<? extends ICommand>>();
 
-    private static void addConstructor(Class<? extends Command> cmdClass) {
+    private static void addConstructor(Class<? extends ICommand> cmdClass) {
         try {
             String name = StringUtils.uncapitalize(cmdClass.getSimpleName());
-            Constructor<? extends Command> constructor;
-            constructor = cmdClass.getDeclaredConstructor(int.class, String.class, String[].class, String.class, boolean.class);
+            Constructor<? extends ICommand> constructor;
+            constructor = cmdClass.getDeclaredConstructor(int.class/*index*/, String.class/*name*/, String[].class/*args*/);
             constructorMap.put(name, constructor);
         } catch (Exception e) {
             throw new SeleniumException(e);
@@ -40,6 +40,8 @@ public class CommandFactory implements ICommandFactory {
     static {
         // commands overriding the command of WebDriverCommandProcessor.
         addConstructor(Open.class);
+        addConstructor(OpenWindow.class);
+        addConstructor(RunScript.class);
         addConstructor(Highlight.class);
 
         // commands unsupported by WebDriverCommandProcessor
@@ -129,7 +131,7 @@ public class CommandFactory implements ICommandFactory {
      * @see jp.vmi.selenium.selenese.command.ICommandFactory#newCommand(int, java.lang.String, java.lang.String)
      */
     @Override
-    public Command newCommand(int index, String name, String... args) {
+    public ICommand newCommand(int index, String name, String... args) {
         // user defined command.
         for (UserDefinedCommandFactory factory : userDefinedCommandFactories) {
             Command command = factory.newCommand(index, name, args);
@@ -140,11 +142,11 @@ public class CommandFactory implements ICommandFactory {
         boolean andWait = name.endsWith(AND_WAIT);
         String realName = andWait ? name.substring(0, name.length() - AND_WAIT.length()) : name;
 
-        // command supported by subclass of Command without BuiltInCommand
-        Constructor<? extends Command> constructor = constructorMap.get(realName);
+        // command supported by the c ICommand without BuiltInCommand
+        Constructor<? extends ICommand> constructor = constructorMap.get(realName);
         if (constructor != null) {
             try {
-                return constructor.newInstance(index, name, args, realName, andWait);
+                return constructor.newInstance(index, name, args);
             } catch (Exception e) {
                 throw new SeleniumException(e);
             }
@@ -152,7 +154,7 @@ public class CommandFactory implements ICommandFactory {
 
         // command supported by WebDriverCommandProcessor
         SubCommandMap subCommandMap = context.getSubCommandMap();
-        WDCommand subCommand = subCommandMap.getCommand(realName);
+        ISubCommand<?> subCommand = subCommandMap.get(realName);
         if (subCommand != null)
             return new BuiltInCommand(index, name, args, subCommand, andWait);
 
@@ -161,7 +163,7 @@ public class CommandFactory implements ICommandFactory {
             StringBuilder echo = new StringBuilder(name);
             for (String arg : args)
                 echo.append(" ").append(arg);
-            return new Echo(index, name, new String[] { echo.toString() }, "echo", false);
+            return new Echo(index, name, echo.toString());
         }
 
         // See: http://selenium.googlecode.com/svn/trunk/ide/main/src/content/selenium-core/reference.html
@@ -177,10 +179,10 @@ public class CommandFactory implements ICommandFactory {
             target += "Present";
         boolean isBoolean = false;
         String getter = "get" + target;
-        WDCommand getterSubCommand = subCommandMap.getCommand(getter);
+        ISubCommand<?> getterSubCommand = subCommandMap.get(getter);
         if (getterSubCommand == null) {
             getter = "is" + target;
-            getterSubCommand = subCommandMap.getCommand(getter);
+            getterSubCommand = subCommandMap.get(getter);
             if (getterSubCommand == null)
                 throw new SeleniumException("No such command: " + name);
             isBoolean = true;

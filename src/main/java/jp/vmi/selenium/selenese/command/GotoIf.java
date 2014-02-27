@@ -1,38 +1,32 @@
 package jp.vmi.selenium.selenese.command;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.result.Error;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "gotoIf".
  */
-public class GotoIf extends Command {
+public class GotoIf extends AbstractCommand {
 
-    private static final int EXPRESSION = 0;
-    private static final int LABEL = 1;
+    private static final int ARG_EXPRESSION = 0;
+    private static final int ARG_LABEL = 1;
 
-    GotoIf(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 2);
+    GotoIf(int index, String name, String... args) {
+        super(index, name, args, VALUE, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    public Command next(TestCase testCase, Runner runner) {
-        if (!runner.isTrue(args[EXPRESSION]))
-            return next;
-        Label labelCommand = testCase.getLabelCommand(args[LABEL]);
-        if (labelCommand == null) {
-            String msg = "label \"" + args[LABEL] + "\" is not found.";
-            setResult(new Error(msg));
-            throw new SeleniumException(msg);
-        }
-        return labelCommand.next;
+    public Result executeImpl(Context context, String... curArgs) {
+        if (context.isTrue(curArgs[ARG_EXPRESSION]))
+            context.getCommandListIterator().jumpTo(curArgs[ARG_LABEL]);
+        return SUCCESS;
     }
 }

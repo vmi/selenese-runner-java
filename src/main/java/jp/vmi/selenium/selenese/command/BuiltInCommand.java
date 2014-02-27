@@ -6,58 +6,55 @@ import org.openqa.selenium.WebDriverCommandProcessor;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
-import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
-import jp.vmi.selenium.selenese.subcommand.WDCommand;
+import jp.vmi.selenium.selenese.subcommand.ISubCommand;
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Commands implemented by {@link WebDriverCommandProcessor}.
  */
-public class BuiltInCommand extends Command {
+public class BuiltInCommand extends AbstractCommand {
 
     private static final String WAIT_FOR_PAGE_TO_LOAD = "waitForPageToLoad";
 
-    private static final String[] CANNOT_UPDATES = {
+    private static final String[] NO_UPDATE_SCREEN = {
         "createCookie",
         "deleteCookie",
         "deleteAllVisibleCookies"
     };
 
-    private final WDCommand command;
+    private final ISubCommand<?> subCommand;
     private final boolean andWait;
-    private final boolean canUpdate;
+    private final boolean mayUpdateScreen;
 
-    BuiltInCommand(int index, String name, String[] args, WDCommand command, boolean andWait) {
-        super(index, name, args, command.argumentCount, command.locatorIndexes);
-        this.command = command;
+    BuiltInCommand(int index, String name, String[] args, ISubCommand<?> subCommand, boolean andWait) {
+        super(index, name, args, subCommand.getArgumentTypes());
+        this.subCommand = subCommand;
         this.andWait = andWait;
-        this.canUpdate = !ArrayUtils.contains(CANNOT_UPDATES, command.name);
+        this.mayUpdateScreen = !ArrayUtils.contains(NO_UPDATE_SCREEN, subCommand.getName());
     }
 
     @Override
-    public boolean canUpdate() {
-        return canUpdate;
+    public boolean mayUpdateScreen() {
+        return mayUpdateScreen;
     }
 
     @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        SubCommandMap subCommandMap = runner.getSubCommandMap();
+    protected Result executeImpl(Context context, String... curArgs) {
         try {
-            String resultString = command.convertToString(command.execute(runner, args));
+            String resultString = SeleniumUtils.convertToString(subCommand.execute(context, curArgs));
             if (andWait) {
-                int timeout = runner.getTimeout();
-                subCommandMap.getCommand(WAIT_FOR_PAGE_TO_LOAD).execute(runner, Integer.toString(timeout));
+                int timeout = context.getTimeout();
+                context.getSubCommandMap().get(WAIT_FOR_PAGE_TO_LOAD).execute(context, Integer.toString(timeout));
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
         } catch (SeleniumException e) {
-            String msg = e.getMessage().replaceAll("(\r?\n)+", " / ");
-            return new Failure(msg);
+            return new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
         }
     }
 }

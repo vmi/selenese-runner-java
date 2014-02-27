@@ -1,34 +1,34 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
-
 import com.thoughtworks.selenium.Wait;
 
-import jp.vmi.selenium.selenese.Eval;
+import jp.vmi.selenium.selenese.Context;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
  * An implementation of the "getEval" method from Selenium.
  */
-public class WaitForCondition extends SeleneseCommand<Void> {
+public class WaitForCondition extends AbstractSubCommand<Void> {
 
-    private final Eval eval;
+    private static final int ARG_SCRIPT = 0;
+    private static final int ARG_TIMEOUT = 1;
 
     /**
      * Constructor.
-     *
-     * @param eval evaluator.
      */
-    public WaitForCondition(Eval eval) {
-        this.eval = eval;
+    public WaitForCondition() {
+        super(VALUE, VALUE);
     }
 
     @Override
-    protected Void handleSeleneseCommand(final WebDriver driver, final String script, final String timeout) {
+    public Void execute(final Context context, String... args) {
+        final String script = args[ARG_SCRIPT];
+        final String timeout = args[ARG_TIMEOUT];
         new Wait() {
             @Override
             public boolean until() {
-                Object result = eval.eval(driver, script);
+                Object result = context.getEval().eval(context.getWrappedDriver(), script);
                 if (result == null) {
                     return false;
                 } else if (result instanceof String) {

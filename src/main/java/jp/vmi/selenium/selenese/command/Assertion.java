@@ -2,25 +2,26 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
-import jp.vmi.selenium.selenese.subcommand.WDCommand;
+import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Commands of "assert*", "verify*", and "waitFor*".
  */
-public class Assertion extends Command {
+public class Assertion extends AbstractCommand {
 
     private static final Logger log = LoggerFactory.getLogger(Assertion.class);
 
@@ -46,60 +47,58 @@ public class Assertion extends Command {
     }
 
     private final Type type;
-    private final WDCommand getterCommand;
-    private final String[] getterArgs;
-    private final String expected;
+    private final ISubCommand<?> getterSubCommand;
+    private final boolean isBoolean;
     private final boolean isInverse;
-    private final String[] cssLocator;
 
-    Assertion(int index, String name, String[] args, String assertion, WDCommand getterCommand, boolean isBoolean, boolean isInverse) {
-        super(index, name, args, getterCommand.argumentCount + (isBoolean ? 0 : 1), getterCommand.locatorIndexes);
-        args = this.args;
-        type = Type.of(assertion);
-        this.getterCommand = getterCommand;
+    private static ArgumentType[] getArgumentTypesOfThisCommand(ArgumentType[] argTypes, boolean isBoolean) {
+        return isBoolean ? argTypes : ArrayUtils.add(argTypes, VALUE);
+    }
+
+    Assertion(int index, String name, String[] args, String assertion, ISubCommand<?> getterSubCommand, boolean isBoolean,
+        boolean isInverse) {
+        super(index, name, args, getArgumentTypesOfThisCommand(getterSubCommand.getArgumentTypes(), isBoolean));
+        this.type = Type.of(assertion);
+        this.getterSubCommand = getterSubCommand;
+        this.isBoolean = isBoolean;
+        this.isInverse = isInverse;
+        //        // "getAttribute" has a special locator argument.
+        //        // Please check Store.java if want to modify following code.
+        //        if ("getAttribute".equalsIgnoreCase(getterSubCommand.name)) {
+        //            int at = locators[0].lastIndexOf('@');
+        //            if (at >= 0)
+        //                locators[0] = locators[0].substring(0, at);
+        //        }
+        //        if ("getCssCount".equalsIgnoreCase(getterSubCommand.name))
+        //            cssLocator = new String[] { "css=" + args[0] };
+        //        else
+        //            cssLocator = null;
+    }
+
+    @Override
+    protected Result executeImpl(Context context, String... curArgs) {
+        String[] getterArgs;
+        String expected;
         if (isBoolean) {
-            getterArgs = args;
+            getterArgs = curArgs;
             expected = null;
         } else {
-            int len = args.length;
-            getterArgs = Arrays.copyOf(args, len - 1);
-            expected = args[len - 1];
+            int newLen = getterSubCommand.getArgumentTypes().length;
+            getterArgs = Arrays.copyOf(curArgs, newLen);
+            expected = curArgs[newLen];
         }
-        this.isInverse = isInverse;
-        // "getAttribute" has a special locator argument.
-        // Please check Store.java if want to modify following code.
-        if ("getAttribute".equalsIgnoreCase(getterCommand.name)) {
-            int at = locators[0].lastIndexOf('@');
-            if (at >= 0)
-                locators[0] = locators[0].substring(0, at);
-        }
-        if ("getCssCount".equalsIgnoreCase(getterCommand.name))
-            cssLocator = new String[] { "css=" + args[0] };
-        else
-            cssLocator = null;
-    }
-
-    @Override
-    public String[] getLocators() {
-        return cssLocator != null ? cssLocator : super.getLocators();
-    }
-
-    @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
         boolean found = true;
         String message = null;
-        int timeout = runner.getTimeout();
+        int timeout = context.getTimeout();
         long breakAfter = System.currentTimeMillis() + timeout;
         while (true) {
             found = true;
-            if (this.expected != null) {
+            if (isBoolean) {
                 try {
-                    String resultString = getterCommand.convertToString(getterCommand.execute(runner, getterArgs));
-                    String expected = runner.getVarsMap().replaceVars(this.expected);
-                    if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
+                    boolean result = (Boolean) getterSubCommand.execute(context, getterArgs);
+                    if (result ^ isInverse)
                         return SUCCESS;
-                    message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
-                        resultString, isInverse ? "Not " : "", expected);
+                    message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
                 } catch (SeleniumException e) {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
@@ -109,10 +108,11 @@ public class Assertion extends Command {
                 }
             } else {
                 try {
-                    boolean result = (Boolean) getterCommand.execute(runner, getterArgs);
-                    if (result ^ isInverse)
+                    String resultString = SeleniumUtils.convertToString(getterSubCommand.execute(context, getterArgs));
+                    if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
-                    message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
+                    message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
+                        resultString, isInverse ? "Not " : "", expected);
                 } catch (SeleniumException e) {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))

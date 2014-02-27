@@ -5,18 +5,17 @@ import jp.vmi.selenium.selenese.Context;
 /**
  * "getSpeed".
  */
-public class GetSpeed extends WDCommand {
+public class GetSpeed extends AbstractSubCommand<Number> {
 
     /**
      * Constructor.
      */
     public GetSpeed() {
-        super(null, "getSpeed");
+        super();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T execute(Context context, String... args) {
-        return (T) Long.valueOf(context.getSpeed());
+    public Number execute(Context context, String... args) {
+        return context.getSpeed();
     }
 }

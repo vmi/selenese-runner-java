@@ -29,6 +29,7 @@ import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -52,12 +53,11 @@ public class Runner implements Context, HtmlResultHolder {
 
     private PrintStream ps;
     private WebDriver driver = null;
+    private String overridingBaseURL = null;
     private String initialWindowHandle = null;
     private String screenshotDir = null;
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
-    private String overridingBaseURL = null;
-    private String defaultBaseURL = null;
     private boolean ignoreScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
@@ -68,6 +68,8 @@ public class Runner implements Context, HtmlResultHolder {
     private final SubCommandMap subCommandMap;
     private final WebDriverElementFinder elementFinder;
     private final CommandFactory commandFactory;
+    private TestCase currentTestCase = null;
+    private CommandListIterator commandListIterator = null;
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
     private final List<HighlightStyleBackup> styleBackups;
@@ -88,6 +90,16 @@ public class Runner implements Context, HtmlResultHolder {
         this.commandFactory = new CommandFactory(this);
         this.varsMap = new VarsMap();
         this.styleBackups = new ArrayList<HighlightStyleBackup>();
+    }
+
+    @Override
+    public TestCase getCurrentTestCase() {
+        return currentTestCase;
+    }
+
+    @Override
+    public void setCurrentTestCase(TestCase currentTestCase) {
+        this.currentTestCase = currentTestCase;
     }
 
     /**
@@ -277,21 +289,21 @@ public class Runner implements Context, HtmlResultHolder {
 
     @Override
     public String getCurrentBaseURL() {
-        return StringUtils.defaultIfBlank(overridingBaseURL, defaultBaseURL);
-    }
-
-    @Override
-    public void setDefaultBaseURL(String defaultBaseURL) {
-        this.defaultBaseURL = defaultBaseURL;
+        return StringUtils.defaultIfBlank(overridingBaseURL, currentTestCase.getBaseURL());
     }
 
     /**
-     * Set URL for overriding selenium.base in Selenese script.
+     * Set URL for overriding test-case base URL.
      *
      * @param overridingBaseURL base URL.
      */
     public void setOverridingBaseURL(String overridingBaseURL) {
         this.overridingBaseURL = overridingBaseURL;
+    }
+
+    @Override
+    public String getOverridingBaseURL() {
+        return overridingBaseURL;
     }
 
     /**
@@ -403,8 +415,18 @@ public class Runner implements Context, HtmlResultHolder {
     }
 
     @Override
+    public CommandListIterator getCommandListIterator() {
+        return commandListIterator;
+    }
+
+    @Override
+    public void setCommandListIterator(CommandListIterator commandListIterator) {
+        this.commandListIterator = commandListIterator;
+    }
+
+    @Override
     public VarsMap getVarsMap() {
-        return this.varsMap;
+        return varsMap;
     }
 
     /**

@@ -3,30 +3,29 @@ package jp.vmi.selenium.selenese.subcommand;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.seleniumemulation.ElementFinder;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+
+import jp.vmi.selenium.selenese.Context;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
  * Alternative IsSomethingSelected.
  */
-public class IsSomethingSelected extends SeleneseCommand<Boolean> {
+public class IsSomethingSelected extends AbstractSubCommand<Boolean> {
 
-    private final ElementFinder finder;
+    private static int ARG_SELECT_LOCATOR = 0;
 
     /**
      * Constructor.
-     *
-     * @param finder element finder.
      */
-    public IsSomethingSelected(ElementFinder finder) {
-        this.finder = finder;
+    public IsSomethingSelected() {
+        super(LOCATOR);
     }
 
     @Override
-    protected Boolean handleSeleneseCommand(WebDriver driver, String selectLocator, String ignored) {
-        WebElement select = finder.findElement(driver, selectLocator);
+    public Boolean execute(Context context, String... args) {
+        WebElement select = context.getElementFinder().findElement(context.getWrappedDriver(), args[ARG_SELECT_LOCATOR]);
         List<WebElement> options = select.findElements(By.tagName("option"));
         for (WebElement option : options)
             if (option.isSelected())

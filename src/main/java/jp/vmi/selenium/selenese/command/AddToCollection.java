@@ -1,31 +1,31 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "addToCollection".
  */
-public class AddToCollection extends Command {
+public class AddToCollection extends AbstractCommand {
 
-    private static final int COLLECTION_NAME = 0;
-    private static final int VALUE = 1;
+    private static final int ARG_COLLECTION_NAME = 0;
+    private static final int ARG_VALUE_TO_ADDING = 1;
 
-    AddToCollection(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 2);
+    AddToCollection(int index, String name, String... args) {
+        super(index, name, args, VALUE, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        runner.getCollectionMap().addToCollection(args[COLLECTION_NAME], runner.getVarsMap().replaceVars(args[VALUE]));
+    protected Result executeImpl(Context context, String... curArgs) {
+        context.getCollectionMap().addToCollection(curArgs[ARG_COLLECTION_NAME], curArgs[ARG_VALUE_TO_ADDING]);
         return SUCCESS;
     }
 }

@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.internal.WrapsDriver;
 
+import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -13,6 +14,20 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 public interface Context extends WrapsDriver {
 
     /**
+     * Get current test-case.
+     * 
+     * @return current test-case.
+     */
+    TestCase getCurrentTestCase();
+
+    /**
+     * Set current test-case.
+     *
+     * @param testCase current test-case.
+     */
+    void setCurrentTestCase(TestCase testCase);
+
+    /**
      * Get PrintStream for logging.
      *
      * @return PrintStram object.
@@ -20,11 +35,11 @@ public interface Context extends WrapsDriver {
     PrintStream getPrintStream();
 
     /**
-     * Set default base URL.
+     * Get base URL for overriding test-case base URL.
      *
-     * @param defaultBaseURL base URL in test-case.
+     * @return base URL.
      */
-    void setDefaultBaseURL(String defaultBaseURL);
+    String getOverridingBaseURL();
 
     /**
      * Get current base URL.
@@ -32,6 +47,20 @@ public interface Context extends WrapsDriver {
      * @return base URL.
      */
     String getCurrentBaseURL();
+
+    /**
+     * Get CommandListIterator.
+     *
+     * @return CommanListIterator.
+     */
+    CommandListIterator getCommandListIterator();
+
+    /**
+     * Set CommandListIterator.
+     *
+     * @param commandListIterator CommanListIterator.
+     */
+    void setCommandListIterator(CommandListIterator commandListIterator);
 
     /**
      * Get variables map.
@@ -42,7 +71,11 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get collection map.
+    <<<<<<< HEAD
      *
+    =======
+     * 
+    >>>>>>> nci
      * @return CollectionMap.
      */
     CollectionMap getCollectionMap();

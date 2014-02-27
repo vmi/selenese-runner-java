@@ -77,7 +77,12 @@ public class JUnitResultTest {
             final int num = i;
             testCases[i] = new ITestCase() {
                 private final StopWatch stopWatch = new StopWatch();
-                private final LogRecorder logRecorder = new LogRecorder();
+                private final LogRecorder logRecorder;
+
+                {
+                    logRecorder = new LogRecorder();
+                    logRecorder.setPrintStream(System.out);
+                }
 
                 @Override
                 public String getName() {

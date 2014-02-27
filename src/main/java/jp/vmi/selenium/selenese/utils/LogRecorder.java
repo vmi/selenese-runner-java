@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 /**
@@ -49,7 +48,7 @@ public class LogRecorder {
 
     private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
-    private PrintStream ps = new PrintStream(new NullOutputStream());
+    private PrintStream ps = null;
 
     private final List<LogMessage> messages = new ArrayList<LogMessage>();
 

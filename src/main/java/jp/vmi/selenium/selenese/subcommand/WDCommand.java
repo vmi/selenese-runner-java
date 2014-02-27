@@ -1,8 +1,5 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import java.util.Iterator;
-
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 
 import com.thoughtworks.selenium.SeleniumException;
@@ -10,46 +7,36 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 
-import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-
 /**
  * WDCP command with the information.
  */
-@SuppressWarnings("javadoc")
-public class WDCommand {
+public class WDCommand extends AbstractSubCommand<Object> {
 
     private final SeleneseCommand<?> seleneseCommand;
-
-    public final String name;
-    public final int argumentCount;
-    public final int[] locatorIndexes;
-
-    public WDCommand(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
-        this.seleneseCommand = seleneseCommand;
-        this.name = name;
-        this.argumentCount = argTypes.length;
-        int count = 0;
-        for (ArgumentType argType : argTypes)
-            if (argType == LOCATOR || argType == CSS_LOCATOR)
-                count++;
-        locatorIndexes = new int[count];
-        for (int n = 0, i = 0; i < argTypes.length; i++)
-            if (argTypes[i] == LOCATOR || argTypes[i] == CSS_LOCATOR)
-                locatorIndexes[n++] = i;
-    }
+    private final String name;
 
     /**
-     * Execute command.
+     * Constructor.
      *
-     * @param context Selenese Runner context.
-     * @param args arguments.
-     * @return command result.
+     * @param seleneseCommand Selenese command.
+     * @param name command name.
+     * @param argTypes argument types.
      */
-    public <T> T execute(Context context, String... args) {
+    public WDCommand(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
+        super(argTypes);
+        this.seleneseCommand = seleneseCommand;
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Object execute(Context context, String... args) {
         try {
-            @SuppressWarnings("unchecked")
-            T result = (T) seleneseCommand.apply(context.getWrappedDriver(), context.getVarsMap().replaceVarsForArray(args));
-            return result;
+            return seleneseCommand.apply(context.getWrappedDriver(), args);
         } catch (RuntimeException e) {
             // for HtmlUnit
             if (!e.getClass().getSimpleName().contains("Script"))
@@ -57,24 +44,5 @@ public class WDCommand {
             String message = e.getMessage().replaceFirst("\\s*\\([^()]+\\)$", "");
             throw new SeleniumException(message, e);
         }
-    }
-
-    /**
-     * Convert to String from the result of execute().
-     *
-     * @param result the result of execute().
-     * @return converted string.
-     */
-    public <T> String convertToString(T result) {
-        if (result == null)
-            return "";
-        else if (result instanceof Object[])
-            return StringUtils.join((Object[]) result, ',');
-        else if (result instanceof Iterable)
-            return StringUtils.join((Iterable<?>) result, ',');
-        else if (result instanceof Iterator)
-            return StringUtils.join((Iterator<?>) result, ',');
-        else
-            return result.toString();
     }
 }

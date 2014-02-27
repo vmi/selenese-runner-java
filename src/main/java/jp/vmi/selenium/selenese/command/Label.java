@@ -1,18 +1,24 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
+
 /**
  * Command "label".
  */
-public class Label extends Command {
+public class Label extends AbstractCommand implements ILabel {
 
-    private static final int LABEL = 0;
+    private static final int ARG_LABEL = 0;
 
-    Label(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+    Label(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
@@ -21,7 +27,13 @@ public class Label extends Command {
      *
      * @return label.
      */
+    @Override
     public String getLabel() {
-        return args[LABEL];
+        return getArguments()[ARG_LABEL];
+    }
+
+    @Override
+    protected Result executeImpl(Context context, String... curArgs) {
+        return SUCCESS;
     }
 }

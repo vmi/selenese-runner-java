@@ -2,39 +2,39 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang3.StringUtils;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "setSpeed".
  */
-public class SetSpeed extends Command {
+public class SetSpeed extends AbstractCommand {
 
-    private static final int SPEED = 0;
+    private static final int ARG_SPEED = 0;
 
-    SetSpeed(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+    SetSpeed(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        String speed = args[SPEED];
+    protected Result executeImpl(Context context, String... curArgs) {
+        String speed = curArgs[ARG_SPEED];
         if (StringUtils.isBlank(speed))
             return new Warning("the argument of setSpeed is ignored: empty.");
         try {
-            runner.setSpeed(Long.parseLong(speed));
+            context.setSpeed(Long.parseLong(speed));
+            return SUCCESS;
         } catch (NumberFormatException e) {
             return new Warning("the argument of setSpeed is ignored: invalid number format: " + speed);
         }
-        return SUCCESS;
     }
 }

@@ -14,10 +14,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.EndLoop;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
-import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 
@@ -50,6 +50,7 @@ public class TestCaseParser extends Parser {
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(filename, name, baseURL);
+            CommandList commandList = testCase.getCommandList();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
@@ -75,17 +76,15 @@ public class TestCaseParser extends Parser {
                 }
                 String cmdName = cmdWithArgs.remove(0);
                 String[] cmdArgs = cmdWithArgs.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
-                Command command = commandFactory.newCommand(tri, cmdName, cmdArgs);
-                if (command instanceof Label) {
-                    testCase.setLabelCommand((Label) command);
-                } else if (command instanceof StartLoop) {
+                ICommand command = commandFactory.newCommand(tri, cmdName, cmdArgs);
+                if (command instanceof StartLoop) {
                     loopCommandStack.push((StartLoop) command);
                 } else if (command instanceof EndLoop) {
                     StartLoop startLoop = loopCommandStack.pop();
                     startLoop.setEndLoop((EndLoop) command);
                     ((EndLoop) command).setStartLoop(startLoop);
                 }
-                testCase.addCommand(command);
+                commandList.add(command);
             }
             return testCase;
         } catch (TransformerException e) {

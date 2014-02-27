@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.WebDriver;
 
+import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -11,6 +12,15 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
  * Null implementation of Context.
  */
 public class NullContext implements Context {
+
+    @Override
+    public TestCase getCurrentTestCase() {
+        return null;
+    }
+
+    @Override
+    public void setCurrentTestCase(TestCase testCase) {
+    }
 
     @Override
     public PrintStream getPrintStream() {
@@ -23,8 +33,22 @@ public class NullContext implements Context {
     }
 
     @Override
+    public String getOverridingBaseURL() {
+        return null;
+    }
+
+    @Override
     public String getCurrentBaseURL() {
         return null;
+    }
+
+    @Override
+    public CommandListIterator getCommandListIterator() {
+        return null;
+    }
+
+    @Override
+    public void setCommandListIterator(CommandListIterator commandListIterator) {
     }
 
     @Override
@@ -60,10 +84,6 @@ public class NullContext implements Context {
     @Override
     public SubCommandMap getSubCommandMap() {
         return null;
-    }
-
-    @Override
-    public void setDefaultBaseURL(String defaultBaseURL) {
     }
 
     @Override

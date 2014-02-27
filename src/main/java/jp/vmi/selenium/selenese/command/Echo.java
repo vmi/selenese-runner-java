@@ -1,28 +1,29 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
  * Command "echo".
  */
-public class Echo extends Command {
+public class Echo extends AbstractCommand {
 
-    private static final int MESSAGE = 0;
+    private static final int ARG_MESSAGE = 0;
 
-    Echo(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+    Echo(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        return new Success(runner.getVarsMap().replaceVars(args[MESSAGE]));
+    protected Result executeImpl(Context context, String... curArgs) {
+        return new Success(curArgs[ARG_MESSAGE]);
     }
 }

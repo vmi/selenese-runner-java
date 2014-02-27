@@ -1,10 +1,15 @@
 package jp.vmi.selenium.selenese.command;
 
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * <!-- comment -->
  */
-public class Comment extends Command {
+public class Comment extends AbstractCommand {
 
     private static final String COMMENT_PREFIX = "### ";
 
@@ -12,22 +17,22 @@ public class Comment extends Command {
 
     private static final int MESSAGE = 0;
 
-    Comment(int index, String name, String[] args, String realName, boolean andWait) {
-        super(-1, name, args, 1);
+    Comment(int index, String name, String... args) {
+        super(-1, name, args, VALUE);
     }
 
     @Override
-    public boolean hasResult() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    public boolean canUpdate() {
-        return false;
+    protected Result executeImpl(Context context, String... curArgs) {
+        return SUCCESS;
     }
 
     @Override
     public String toString() {
-        return COMMENT_PREFIX + args[MESSAGE] + COMMENT_SUFFIX;
+        return COMMENT_PREFIX + getArguments()[MESSAGE] + COMMENT_SUFFIX;
     }
 }

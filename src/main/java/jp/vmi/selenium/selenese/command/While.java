@@ -1,23 +1,26 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "while".
  */
-public class While extends Command implements StartLoop {
+public class While extends AbstractCommand implements StartLoop {
 
-    private static final int CONDITION = 0;
+    private static final int ARG_CONDITION = 0;
 
     private EndWhile endLoop;
 
-    While(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+    While(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
@@ -27,10 +30,9 @@ public class While extends Command implements StartLoop {
     }
 
     @Override
-    public Command next(TestCase testCase, Runner runner) {
-        if (runner.isTrue(args[CONDITION]))
-            return next;
-        else
-            return endLoop.next;
+    protected Result executeImpl(Context context, String... curArgs) {
+        if (!context.isTrue(curArgs[ARG_CONDITION]))
+            context.getCommandListIterator().jumpToNextOf(endLoop);
+        return SUCCESS;
     }
 }

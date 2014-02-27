@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,5 +69,24 @@ public class SeleniumUtils {
         Pattern p = Pattern.compile("\\Q" + pattern.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"), Pattern.DOTALL);
         Matcher m = p.matcher(input);
         return m.matches();
+    }
+
+    /**
+     * Convert to String from the result of execute().
+     *
+     * @param result the result of execute().
+     * @return converted string.
+     */
+    public static <T> String convertToString(T result) {
+        if (result == null)
+            return "";
+        else if (result instanceof Object[])
+            return StringUtils.join((Object[]) result, ',');
+        else if (result instanceof Iterable)
+            return StringUtils.join((Iterable<?>) result, ',');
+        else if (result instanceof Iterator)
+            return StringUtils.join((Iterator<?>) result, ',');
+        else
+            return result.toString();
     }
 }

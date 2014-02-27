@@ -1,13 +1,12 @@
 package jp.vmi.selenium.selenese;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.io.FilenameUtils;
 
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
+import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.inject.DoCommand;
@@ -34,8 +33,6 @@ public class TestCase implements Selenese, ITestCase {
     private String baseName = "nofile";
     private String name = null;
     private String baseURL = null;
-
-    private final Map<String, Label> labelCommandMap = new HashMap<String, Label>();
 
     private final CommandList commandList = new CommandList();
 
@@ -120,6 +117,15 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public String getName() {
         return name;
+    }
+
+    /**
+     * Get base URL in the test-case.
+     *
+     * @return base URL.
+     */
+    public String getBaseURL() {
+        return baseURL;
     }
 
     /**
@@ -217,18 +223,9 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @param labelCommand label command.
      */
+    @Deprecated
     public void setLabelCommand(Label labelCommand) {
-        labelCommandMap.put(labelCommand.getLabel(), labelCommand);
-    }
-
-    /**
-     * Get label by name.
-     *
-     * @param label label name.
-     * @return label command.
-     */
-    public Label getLabelCommand(String label) {
-        return labelCommandMap.get(label);
+        // no opertion
     }
 
     /**
@@ -236,7 +233,17 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @param command command.
      */
+    @Deprecated
     public void addCommand(Command command) {
+        commandList.add(command);
+    }
+
+    /**
+     * Add command to command list.
+     *
+     * @param command command.
+     */
+    public void addCommand(ICommand command) {
         commandList.add(command);
     }
 
@@ -249,14 +256,14 @@ public class TestCase implements Selenese, ITestCase {
      */
     public void addCommand(ICommandFactory commandFactory, String name, String... args) {
         int i = commandList.size();
-        Command command = commandFactory.newCommand(i, name, args);
+        ICommand command = commandFactory.newCommand(i, name, args);
         addCommand(command);
     }
 
     @DoCommand
-    protected Result doCommand(Command command, Context context) {
+    protected Result doCommand(Context context, ICommand command, String... curArgs) {
         try {
-            return command.doCommand(this, (Runner) context);
+            return command.execute(context, curArgs);
         } catch (Exception e) {
             return new Error(e);
         }
@@ -267,16 +274,16 @@ public class TestCase implements Selenese, ITestCase {
     public Result execute(Selenese parent, Context context) {
         if (commandList.isEmpty())
             return result = SUCCESS;
-        logRecorder.setPrintStream(context.getPrintStream());
-        context.setDefaultBaseURL(baseURL);
+        context.setCurrentTestCase(this);
         context.getCollectionMap().clear();
-        Command command = commandList.first();
-        while (command != null) {
-            Result r = doCommand(command, context);
-            result = result.update(r);
+        CommandListIterator commandListIterator = commandList.iterator();
+        context.setCommandListIterator(commandListIterator);
+        while (commandListIterator.hasNext()) {
+            ICommand command = commandListIterator.next();
+            String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
+            result = result.update(doCommand(context, command, curArgs));
             if (result.isAborted())
                 break;
-            command = command.next(this, (Runner) context);
             context.waitSpeed();
         }
         return result;

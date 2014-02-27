@@ -1,28 +1,25 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+import jp.vmi.selenium.selenese.Context;
 
-import jp.vmi.selenium.selenese.Eval;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
  * An implementation of the "getEval" method from Selenium.
  */
-public class GetEval extends SeleneseCommand<Object> {
+public class GetEval extends AbstractSubCommand<Object> {
 
-    private final Eval eval;
+    private static final int ARG_SCRIPT = 0;
 
     /**
      * Constructor.
-     *
-     * @param eval evaluator.
      */
-    public GetEval(Eval eval) {
-        this.eval = eval;
+    public GetEval() {
+        super(VALUE);
     }
 
     @Override
-    protected Object handleSeleneseCommand(WebDriver driver, String script, String ignored) {
-        return eval.eval(driver, script);
+    public Object execute(Context context, String... args) {
+        return context.getEval().eval(context.getWrappedDriver(), args[ARG_SCRIPT]);
     }
 }

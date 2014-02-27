@@ -1,29 +1,30 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
 
-import jp.vmi.selenium.selenese.Eval;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * An implementation of the "runScript" method from Selenium.
  */
-public class RunScript extends SeleneseCommand<Void> {
+public class RunScript extends AbstractCommand {
 
-    private final Eval eval;
+    private static final int ARG_SCRIPT = 0;
 
     /**
      * Constructor.
      *
      * @param eval evaluator.
      */
-    public RunScript(Eval eval) {
-        this.eval = eval;
+    RunScript(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    protected Void handleSeleneseCommand(WebDriver driver, String script, String ignored) {
-        eval.eval(driver, script);
-        return null;
+    protected Result executeImpl(Context context, String... curArgs) {
+        context.getEval().eval(context.getWrappedDriver(), curArgs[ARG_SCRIPT]);
+        return SUCCESS;
     }
 }

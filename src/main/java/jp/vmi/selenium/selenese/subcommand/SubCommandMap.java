@@ -7,10 +7,7 @@ import org.openqa.selenium.internal.seleniumemulation.*;
 import com.google.common.collect.Maps;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Eval;
 import jp.vmi.selenium.selenese.command.ArgumentType;
-import jp.vmi.selenium.selenese.command.OpenWindow;
-import jp.vmi.selenium.selenese.command.RunScript;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -20,7 +17,7 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
  */
 public class SubCommandMap {
 
-    private final Map<String, WDCommand> wdCommands = Maps.newHashMap();
+    private final Map<String, ISubCommand<?>> subCommands = Maps.newHashMap();
     private final boolean enableAlertOverrides = true;
 
     private final Timer timer = null;
@@ -49,7 +46,7 @@ public class SubCommandMap {
         this.keyState = new KeyState();
         this.alertOverride = new AlertOverride(enableAlertOverrides);
         this.windows = new SeleneseRunnerWindows(context);
-        setUpMethodMap();
+        setUpSubCommands();
     }
 
     /**
@@ -64,11 +61,10 @@ public class SubCommandMap {
         return context;
     }
 
-    private void setUpMethodMap() {
-        Eval eval = context.getEval();
+    private void setUpSubCommands() {
         WebDriverElementFinder elementFinder = context.getElementFinder();
         register(new AddLocationStrategy(elementFinder), "addLocationStrategy", VALUE, VALUE);
-        register(new AddSelection(javascriptLibrary, elementFinder), "addSelection", LOCATOR, LOCATOR);
+        register(new AddSelection(javascriptLibrary, elementFinder), "addSelection", LOCATOR, OPTION_LOCATOR);
         register(new AllowNativeXPath(), "allowNativeXpath", VALUE);
         register(new AltKeyDown(keyState), "altKeyDown");
         register(new AltKeyUp(keyState), "altKeyUp");
@@ -100,7 +96,7 @@ public class SubCommandMap {
         register(new GetAllLinks(), "getAllLinks");
         register(new GetAllWindowNames(), "getAllWindowNames");
         register(new GetAllWindowTitles(), "getAllWindowTitles");
-        register(new GetAttribute(javascriptLibrary, elementFinder), "getAttribute", LOCATOR);
+        register(new GetAttribute(javascriptLibrary, elementFinder), "getAttribute", ATTRIBUTE_LOCATOR);
         register(new GetAttributeFromAllWindows(), "getAttributeFromAllWindows", VALUE);
         register(new GetBodyText(), "getBodyText");
         register(new GetConfirmation(alertOverride), "getConfirmation");
@@ -115,14 +111,14 @@ public class SubCommandMap {
         register(new GetExpression(), "getExpression", VALUE);
         register(new GetHtmlSource(), "getHtmlSource");
         register(new GetLocation(), "getLocation");
-        register(new FindFirstSelectedOptionProperty(javascriptLibrary, elementFinder, "id"), "getSelectedId", LOCATOR);
-        register(new FindSelectedOptionProperties(javascriptLibrary, elementFinder, "id"), "getSelectedIds", LOCATOR);
-        register(new FindFirstSelectedOptionProperty(javascriptLibrary, elementFinder, "index"), "getSelectedIndex", LOCATOR);
-        register(new FindSelectedOptionProperties(javascriptLibrary, elementFinder, "index"), "getSelectedIndexes", LOCATOR);
-        register(new FindFirstSelectedOptionProperty(javascriptLibrary, elementFinder, "text"), "getSelectedLabel", LOCATOR);
-        register(new FindSelectedOptionProperties(javascriptLibrary, elementFinder, "text"), "getSelectedLabels", LOCATOR);
-        register(new FindFirstSelectedOptionProperty(javascriptLibrary, elementFinder, "value"), "getSelectedValue", LOCATOR);
-        register(new FindSelectedOptionProperties(javascriptLibrary, elementFinder, "value"), "getSelectedValues", LOCATOR);
+        // "getSelectedId"
+        // "getSelectedIds"
+        // "getSelectedIndex"
+        // "getSelectedIndexes"
+        // "getSelectedLabel"
+        // "getSelectedLabels"
+        // "getSelectedValue"
+        // "getSelectedValues"
         register(new GetSelectOptions(javascriptLibrary, elementFinder), "getSelectOptions", LOCATOR);
         // "getSpeed"
         register(new GetTable(elementFinder, javascriptLibrary), "getTable", VALUE);
@@ -164,9 +160,9 @@ public class SubCommandMap {
         // "openWindow"
         register(new Refresh(), "refresh");
         register(new RemoveAllSelections(elementFinder), "removeAllSelections", LOCATOR);
-        register(new RemoveSelection(javascriptLibrary, elementFinder), "removeSelection", LOCATOR, LOCATOR);
+        register(new RemoveSelection(javascriptLibrary, elementFinder), "removeSelection", LOCATOR, OPTION_LOCATOR);
         // "runScript"
-        register(new SelectOption(alertOverride, javascriptLibrary, elementFinder), "select", LOCATOR, LOCATOR);
+        register(new SelectOption(alertOverride, javascriptLibrary, elementFinder), "select", LOCATOR, OPTION_LOCATOR);
         register(new SelectFrame(windows), "selectFrame", LOCATOR);
         register(new SelectPopUp(windows), "selectPopUp", VALUE);
         register(new SelectWindow(windows), "selectWindow", VALUE);
@@ -188,31 +184,55 @@ public class SubCommandMap {
         register(new WindowMaximize(javascriptLibrary), "windowMaximize");
 
         // Customized methods.
-        register(new GetEval(eval), "getEval", VALUE);
-        register(new OpenWindow(eval), "openWindow", VALUE, VALUE);
-        register(new RunScript(eval), "runScript", VALUE);
-        register(new WaitForCondition(eval), "waitForCondition", VALUE, VALUE);
-        register(new IsSomethingSelected(elementFinder), "isSomethingSelected", LOCATOR);
-        register(new GetCssCount(elementFinder), "getCssCount", CSS_LOCATOR);
+        // "openWindow"
+        // "runScript"
 
-        wdCommands.put("getSpeed", new GetSpeed());
+        register(new GetEval());
+        register(new GetCssCount());
+        register(new GetSpeed());
+        register(new IsSomethingSelected());
+        register(new WaitForCondition());
+        register(new GetSelected(GetSelected.Type.LABEL, false));
+        register(new GetSelected(GetSelected.Type.LABEL, true));
+        register(new GetSelected(GetSelected.Type.VALUE, false));
+        register(new GetSelected(GetSelected.Type.VALUE, true));
+        register(new GetSelected(GetSelected.Type.INDEX, false));
+        register(new GetSelected(GetSelected.Type.INDEX, true));
+        register(new GetSelected(GetSelected.Type.ID, false));
+        register(new GetSelected(GetSelected.Type.ID, true));
 
         // Aliases.
-        wdCommands.put("sendKeys", wdCommands.get("typeKeys"));
-    }
-
-    private void register(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
-        wdCommands.put(name, new WDCommand(seleneseCommand, name, argTypes));
+        subCommands.put("sendKeys", subCommands.get("typeKeys"));
     }
 
     /**
-     * Get WDCP command.
-     * 
-     * @param commandName command name.
-     * @return WDCP command, or null if command does not exist.
+     * Register SeleneseCommand as ISubCommand.
+     *
+     * @param seleneseCommand SeleneseCommand object.
+     * @param name SeleneseCommand name.
+     * @param argTypes argument types.
      */
-    public WDCommand getCommand(String commandName) {
-        return wdCommands.get(commandName);
+    public void register(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
+        subCommands.put(name, new WDCommand(seleneseCommand, name, argTypes));
+    }
+
+    /**
+     * Register sub-command.
+     *
+     * @param subCommand ISubCommand object.
+     */
+    public void register(ISubCommand<?> subCommand) {
+        subCommands.put(subCommand.getName(), subCommand);
+    }
+
+    /**
+     * Get sub-command.
+     * 
+     * @param commandName sub-command name.
+     * @return sub-command, or null if sub-command does not exist.
+     */
+    public ISubCommand<?> get(String commandName) {
+        return subCommands.get(commandName);
     }
 
     /**

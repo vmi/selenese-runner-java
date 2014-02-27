@@ -2,42 +2,48 @@ package jp.vmi.selenium.selenese.command;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "captureEntirePageScreenshot".
  */
-public class CaptureEntirePageScreenshot extends Command {
+public class CaptureEntirePageScreenshot extends AbstractCommand {
 
-    private static final int FILENAME = 0;
+    private static final int ARG_FILENAME = 0;
 
-    CaptureEntirePageScreenshot(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 1);
+    CaptureEntirePageScreenshot(int index, String name, String... args) {
+        super(index, name, args, VALUE);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
     @Override
-    protected Result doCommandImpl(TestCase testCase, Runner runner) {
-        String filename = args[FILENAME];
-        if (runner.isIgnoreScreenshotCommand())
-            return new Success("captureEntirePageScreenshot is ignored");
-        if (StringUtils.isBlank(filename))
+    protected Result executeImpl(Context context, String... curArgs) {
+        String filename = curArgs[ARG_FILENAME];
+        if (!(context instanceof Runner))
+            return new Success("captureEntirePageScreenshot is not supported.");
+        Runner runner = (Runner) context;
+        if (runner.isIgnoreScreenshotCommand()) {
+            return new Success("captureEntirePageScreenshot is ignored.");
+        } else if (StringUtils.isBlank(filename)) {
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
-        try {
-            runner.takeScreenshot(filename, testCase);
-            return SUCCESS;
-        } catch (UnsupportedOperationException e) {
-            return new Warning(e.getMessage());
+        } else {
+            try {
+                runner.takeScreenshot(filename, runner.getCurrentTestCase());
+                return SUCCESS;
+            } catch (UnsupportedOperationException e) {
+                return new Warning(e.getMessage());
+            }
         }
     }
 }

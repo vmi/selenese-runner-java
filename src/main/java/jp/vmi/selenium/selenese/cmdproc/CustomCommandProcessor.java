@@ -7,6 +7,7 @@ import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.VarsMap;
+import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.subcommand.WDCommand;
 
@@ -89,7 +90,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     @Override
     @Deprecated
     public boolean isMethodAvailable(String methodName) {
-        return subCommandMap.getCommand(methodName) != null;
+        return subCommandMap.get(methodName) != null;
     }
 
     /**
@@ -101,13 +102,13 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
      */
     @Deprecated
     public Object execute(String commandName, String... args) {
-        WDCommand command = subCommandMap.getCommand(commandName);
+        ISubCommand<?> command = subCommandMap.get(commandName);
         Context context = subCommandMap.getContext();
         return command.execute(context, args);
     }
 
     /**
-     * @see SubCommandMap#setVar(Object, String)
+     * Same as "context.getVarsMap().put(varName, value)".
      * 
      * @param value value.
      * @param varName variable name.

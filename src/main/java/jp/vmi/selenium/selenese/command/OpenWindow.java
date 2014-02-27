@@ -1,30 +1,27 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
 
-import jp.vmi.selenium.selenese.Eval;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * An implementation of the "openWindow" method from Selenium.
  */
-public class OpenWindow extends SeleneseCommand<Void> {
+public class OpenWindow extends AbstractCommand {
 
-    private final Eval eval;
+    private static final int ARG_URL = 0;
+    private static final int ARG_WINDOW_ID = 1;
 
-    /**
-     * Constructor.
-     *
-     * @param eval evaluator.
-     */
-    public OpenWindow(Eval eval) {
-        this.eval = eval;
+    OpenWindow(int index, String name, String... args) {
+        super(index, name, args, VALUE, VALUE);
     }
 
     @Override
-    protected Void handleSeleneseCommand(WebDriver driver, String url, String windowID) {
-        String script = String.format("window.open('%s', '%s'); null;", url, windowID);
-        eval.eval(driver, script);
-        return null;
+    protected Result executeImpl(Context context, String... curArgs) {
+        String script = String.format("window.open('%s', '%s'); null;", curArgs[ARG_URL], curArgs[ARG_WINDOW_ID]);
+        context.getEval().eval(context.getWrappedDriver(), script);
+        return SUCCESS;
     }
 }

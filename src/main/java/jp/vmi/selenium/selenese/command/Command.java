@@ -2,8 +2,10 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Error;
@@ -16,18 +18,16 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 /**
  * Abstract class for implementing selenese command.
  */
-public abstract class Command {
+public abstract class Command implements ICommand {
 
-    /**
-     * Path to constructor if the command arguments have no locator. 
-     */
-    public static final int[] NO_LOCATOR_INDEX = new int[0];
+    private static final Command NEXT = new Command(-1, "dummy", ArrayUtils.EMPTY_STRING_ARRAY, 0) {
+    };
 
     private final int index;
     protected final String name;
     protected final String[] args;
+    private final int[] locatorIndexes;
     protected final String[] locators;
-    protected Command next = null;
     private Result result = UNEXECUTED;
 
     /**
@@ -43,6 +43,7 @@ public abstract class Command {
         this.index = index;
         this.name = name;
         this.args = (args.length == argCnt) ? args : Arrays.copyOf(args, argCnt);
+        this.locatorIndexes = locatorIndexes;
         this.locators = new String[locatorIndexes.length];
         int i = 0;
         for (int ndx : locatorIndexes)
@@ -58,7 +59,7 @@ public abstract class Command {
      * @param argCnt argument count. (<= args.length)
      */
     public Command(int index, String name, String[] args, int argCnt) {
-        this(index, name, args, argCnt, NO_LOCATOR_INDEX);
+        this(index, name, args, argCnt, ArrayUtils.EMPTY_INT_ARRAY);
     }
 
     /**
@@ -86,6 +87,7 @@ public abstract class Command {
      *
      * @return index.
      */
+    @Override
     public final int getIndex() {
         return index;
     }
@@ -104,6 +106,7 @@ public abstract class Command {
      * 
      * @return result of this command.
      */
+    @Override
     public final Result getResult() {
         return result;
     }
@@ -123,6 +126,7 @@ public abstract class Command {
      *
      * @return array of source elements. (always 3 elements)
      */
+    @Override
     public final String[] getSource() {
         String[] source = new String[3];
         source[0] = name;
@@ -168,40 +172,54 @@ public abstract class Command {
     }
 
     /**
-     * add command at end of command list.
-     * @param next command.
-     * @return same as next.
-     */
-    public Command setNext(Command next) {
-        return this.next = next;
-    }
-
-    /**
      * Get next command.
-     * 
-     * Please replace {@link #next(TestCase, Runner)}.
      *
      * @param testCase test-case instance.
      * @return next command.
      */
     @Deprecated
     public Command next(TestCase testCase) {
-        return next;
-    }
-
-    /**
-     * Get next command.
-     *
-     * @param testCase test-case instance.
-     * @param runner Runner object.
-     * @return next command.
-     */
-    public Command next(TestCase testCase, Runner runner) {
-        return next(testCase);
+        return NEXT;
     }
 
     @Override
     public String toString() {
         return "Command#" + index + ": " + name + "(" + StringUtils.join(LoggerUtils.quote(args), ", ") + ")";
+    }
+
+    @Override
+    public boolean mayUpdateScreen() {
+        return canUpdate();
+    }
+
+    @Override
+    public String[] getArguments() {
+        return args;
+    }
+
+    @Override
+    public String[] convertLocators(String[] args) {
+        if (locatorIndexes.length == 0)
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        String[] locators = new String[locatorIndexes.length];
+        int i = 0;
+        for (int locatorIndex : locatorIndexes)
+            locators[i++] = args[locatorIndex];
+        return locators;
+    }
+
+    @Override
+    public final Result execute(Context context, String... curArgs) {
+        Runner runner = (Runner) context;
+        TestCase testCase = runner.getCurrentTestCase();
+        try {
+            result = doCommandImpl(testCase, runner);
+        } catch (RuntimeException e) {
+            result = new Error(e);
+        }
+        ICommand next = next(testCase);
+        if (next != NEXT)
+            runner.getCommandListIterator().jumpTo(null);
+        return result;
     }
 }

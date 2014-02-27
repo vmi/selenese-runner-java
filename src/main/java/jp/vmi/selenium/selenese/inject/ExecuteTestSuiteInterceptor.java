@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
@@ -22,11 +23,22 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestSuite testSuite = (TestSuite) invocation.getThis();
-        Runner runner = (Runner) invocation.getArguments()[1];
-        JUnitResult jUnitResult = runner.getJUnitResult();
-        HtmlResult htmlResult = runner.getHtmlResult();
+        Context context = (Context) invocation.getArguments()[1];
+        Runner runner;
+        JUnitResult jUnitResult;
+        HtmlResult htmlResult;
+        if (context instanceof Runner) {
+            runner = (Runner) context;
+            jUnitResult = runner.getJUnitResult();
+            htmlResult = runner.getHtmlResult();
+        } else {
+            runner = null;
+            jUnitResult = null;
+            htmlResult = null;
+        }
         StopWatch sw = testSuite.getStopWatch();
         LogRecorder slr = new LogRecorder();
+        slr.setPrintStream(context.getPrintStream());
         sw.start();
         if (!testSuite.isError()) {
             String msg = "Start: " + testSuite;
@@ -48,8 +60,10 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
                 slr.info(msg);
             }
             sw.end();
-            jUnitResult.endTestSuite(testSuite);
-            htmlResult.generate(testSuite);
+            if (runner != null) {
+                jUnitResult.endTestSuite(testSuite);
+                htmlResult.generate(testSuite);
+            }
         }
     }
 }

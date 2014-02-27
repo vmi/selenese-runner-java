@@ -1,21 +1,23 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "endFor".
  */
-public class EndFor extends Command implements EndLoop {
+public class EndFor extends AbstractCommand implements EndLoop {
 
     private StoreFor startLoop;
 
-    EndFor(int index, String name, String[] args, String realName, boolean andWait) {
-        super(index, name, args, 0);
+    EndFor(int index, String name, String... args) {
+        super(index, name, args);
     }
 
     @Override
-    public boolean canUpdate() {
+    public boolean mayUpdateScreen() {
         return false;
     }
 
@@ -25,7 +27,8 @@ public class EndFor extends Command implements EndLoop {
     }
 
     @Override
-    public Command next(TestCase testCase, Runner runner) {
-        return startLoop;
+    protected Result executeImpl(Context context, String... curArgs) {
+        context.getCommandListIterator().jumpTo(startLoop);
+        return SUCCESS;
     }
 }

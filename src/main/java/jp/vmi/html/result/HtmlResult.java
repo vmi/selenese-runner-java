@@ -20,7 +20,7 @@ import jp.vmi.html.result.TestSuiteTree.Node;
 import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
-import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
@@ -140,7 +140,7 @@ public class HtmlResult {
                     summary.numTestFailures++;
                     break;
                 }
-                for (Command command : testCase.getCommandList()) {
+                for (ICommand command : testCase.getCommandList()) {
                     switch (command.getResult().getLevel()) {
                     case UNEXECUTED:
                         // no count

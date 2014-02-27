@@ -20,9 +20,10 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
-import jp.vmi.selenium.selenese.command.Command;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
@@ -55,9 +56,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(String cmdStr, Result result, TestCase testCase, Runner runner) {
+    private void log(String cmdStr, Result result, TestCase testCase, Context context) {
         LogRecorder clr = testCase.getLogRecorder();
-        List<String> messages = getPageInformation(testCase, runner);
+        List<String> messages = getPageInformation(testCase, context);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result;
@@ -111,9 +112,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private List<String> getPageInformation(TestCase testCase, Runner runner) {
+    private List<String> getPageInformation(TestCase testCase, Context context) {
         List<String> messages = new ArrayList<String>();
-        WebDriver driver = runner.getWrappedDriver();
+        WebDriver driver = context.getWrappedDriver();
         try {
             String handle = driver.getWindowHandle();
             if (StringUtils.isEmpty(handle))
@@ -138,23 +139,22 @@ public class CommandLogInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestCase testCase = (TestCase) invocation.getThis();
         Object[] args = invocation.getArguments();
-        Command command = (Command) args[0];
-        Runner runner = (Runner) args[1];
+        Context context = (Context) args[0];
+        ICommand command = (ICommand) args[1];
         String cmdStr = command.toString();
         LogRecorder clr = testCase.getLogRecorder();
         log.info(cmdStr);
         clr.info(cmdStr);
         try {
             Result result = (Result) invocation.proceed();
-            if (command.hasResult())
-                log(cmdStr, result, testCase, runner);
+            log(cmdStr, result, testCase, context);
             return result;
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();
             log.error(msg);
             clr.error(msg);
-            if (testCase != null)
-                runner.getJUnitResult().setError(testCase, e.getMessage(), e.toString());
+            if (testCase != null && context instanceof Runner)
+                ((Runner) context).getJUnitResult().setError(testCase, e.getMessage(), e.toString());
             throw e;
         }
     }
