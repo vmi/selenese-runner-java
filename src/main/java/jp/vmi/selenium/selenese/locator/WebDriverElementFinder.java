@@ -1,12 +1,12 @@
 package jp.vmi.selenium.selenese.locator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +15,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.seleniumemulation.ElementFinder;
 
 import com.thoughtworks.selenium.SeleniumException;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * WebDriver Element Locator.
@@ -28,9 +30,28 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class WebDriverElementFinder extends ElementFinder {
 
+    /** Separator between locator and option locator. */
+    public static final char OPTION_LOCATOR_SEPARATOR = '\0';
+
+    /**
+     * Convert to option locator with parent.
+     * 
+     * @param parentLocator parent locator.
+     * @param optionLocator child option locator.
+     * @return option locator with parent.
+     */
+    public static String convertToOptionLocatorWithParent(String parentLocator, String optionLocator) {
+        return parentLocator + OPTION_LOCATOR_SEPARATOR + optionLocator;
+    }
+
     private static final Pattern LOCATORS_RE = Pattern.compile("(\\w+)=(.*)|(document\\..*)|(//.*)");
+    private static final int LOCATOR_TYPE = 1;
+    private static final int LOCATOR_ARG = 2;
+    private static final int DOM_LOCATOR = 3;
+    private static final int XPATH_LOCATOR = 4;
 
     private final Map<String, LocatorHandler> handlerMap = new HashMap<String, LocatorHandler>();
+    private final Map<String, OptionLocatorHandler> optionHandlerMap = new HashMap<String, OptionLocatorHandler>();
 
     /**
      * Constructor.
@@ -43,11 +64,10 @@ public class WebDriverElementFinder extends ElementFinder {
         registerHandler(new XPathHandler());
         registerHandler(new LinkHandler());
         registerHandler(new CSSHandler());
-
-        // unsupported locator.
-        registerHandler(new LabelHandler());
-        registerHandler(new IndexHandler());
-        registerHandler(new ValueHandler());
+        registerOptionHandler(new OptionLabelHandler());
+        registerOptionHandler(new OptionIdHandler());
+        registerOptionHandler(new OptionIndexHandler());
+        registerOptionHandler(new OptionValueHandler());
     }
 
     /**
@@ -58,6 +78,17 @@ public class WebDriverElementFinder extends ElementFinder {
      */
     public WebDriverElementFinder registerHandler(LocatorHandler handler) {
         handlerMap.put(handler.locatorType(), handler);
+        return this;
+    }
+
+    /**
+     * Register option locator handler.
+     *
+     * @param handler option locator handler.
+     * @return this.
+     */
+    public WebDriverElementFinder registerOptionHandler(OptionLocatorHandler handler) {
+        optionHandlerMap.put(handler.optionLocatorType(), handler);
         return this;
     }
 
@@ -85,7 +116,7 @@ public class WebDriverElementFinder extends ElementFinder {
             return false;
     }
 
-    private List<WebElement> findElementsImpl(LocatorHandler handler, WebDriver driver, String arg, String locator) {
+    private List<WebElement> findElementsByLocator(LocatorHandler handler, WebDriver driver, String arg, String locator) {
         TargetLocator switchTo = driver.switchTo();
         switchTo.defaultContent();
         List<WebElement> result = handler.handle(driver, arg);
@@ -103,6 +134,32 @@ public class WebDriverElementFinder extends ElementFinder {
         throw new SeleniumException("Element " + locator + " not found");
     }
 
+    private List<WebElement> filterElementsByOptionLocator(List<WebElement> elements, String option) {
+        if (option == null)
+            return elements;
+        String[] pair = option.split("=", 2);
+        String type;
+        String arg;
+        if (pair.length == 1) {
+            type = "label";
+            arg = option;
+        } else {
+            type = pair[0];
+            arg = pair[1];
+        }
+        OptionLocatorHandler handler = optionHandlerMap.get(type);
+        if (handler == null)
+            throw new UnsupportedOperationException("Unknown option locator type: " + option);
+        List<WebElement> result = new ArrayList<WebElement>();
+        for (WebElement element : elements)
+            result.addAll(handler.handle(element, arg));
+        return result;
+    }
+
+    private String formatLocator(String locator, String option) {
+        return (option == null) ? locator : locator + " (" + option + ")";
+    }
+
     /**
      * Find elements of specified locator.
      *
@@ -111,25 +168,33 @@ public class WebDriverElementFinder extends ElementFinder {
      * @return list of found elements. (empty if no element)
      */
     public List<WebElement> findElements(WebDriver driver, String locator) {
+        String option;
+        int optIndex = locator.indexOf(OPTION_LOCATOR_SEPARATOR);
+        if (optIndex >= 0) {
+            option = locator.substring(optIndex + 1);
+            locator = locator.substring(0, optIndex);
+        } else {
+            option = null;
+        }
         Matcher matcher = LOCATORS_RE.matcher(locator);
         String type;
         String arg;
         if (matcher.matches()) {
-            type = matcher.group(1);
-            arg = matcher.group(2);
-            if (StringUtils.isNotEmpty(type)) {
+            type = matcher.group(LOCATOR_TYPE);
+            arg = matcher.group(LOCATOR_ARG);
+            if (isNotEmpty(type)) {
                 type = type.toLowerCase();
-            } else if (StringUtils.isNotEmpty(matcher.group(3))) {
+            } else if (isNotEmpty(matcher.group(DOM_LOCATOR))) {
                 // start with "document."
                 type = "dom";
                 arg = locator;
-            } else if (StringUtils.isNotEmpty(matcher.group(4))) {
+            } else if (isNotEmpty(matcher.group(XPATH_LOCATOR))) {
                 // start with "//"
                 type = "xpath";
                 arg = locator;
             } else {
                 // not reached?
-                throw new UnsupportedOperationException("Unknown locator type: " + locator);
+                throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(locator, option));
             }
         } else {
             type = "identifier";
@@ -137,8 +202,8 @@ public class WebDriverElementFinder extends ElementFinder {
         }
         LocatorHandler handler = handlerMap.get(type);
         if (handler == null)
-            throw new UnsupportedOperationException("Unknown locator type: " + locator);
-        return findElementsImpl(handler, driver, arg, locator);
+            throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(locator, option));
+        return filterElementsByOptionLocator(findElementsByLocator(handler, driver, arg, locator), option);
     }
 
     @Override
