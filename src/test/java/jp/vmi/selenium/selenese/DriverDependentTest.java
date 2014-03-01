@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.safari.SafariDriver;
 
@@ -203,6 +204,14 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Test
     public void issue93() {
         execute("issue93");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void issue99() {
+        assumeNot(HtmlUnitDriver.class);
+        assumeNot(PhantomJSDriver.class);
+        execute("issue99");
         assertThat(result, is(instanceOf(Success.class)));
     }
 }

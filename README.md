@@ -67,6 +67,7 @@ Relase Note
 * Remove Andorid driver support because it is removed from Selenium 2.40.
 * Re-implement command handling. TOO MANY internal API is changed.
 * Update dependency versions.
+* Fix issue #99.
 
 ### 1.3.6
 
