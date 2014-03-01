@@ -31,10 +31,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.seleniumemulation.Windows;
 
 import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.webdriven.commands.Windows;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.webdriver.NullDriver;

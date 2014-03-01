@@ -2,9 +2,10 @@ package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.Map;
 
-import org.openqa.selenium.internal.seleniumemulation.*;
-
 import com.google.common.collect.Maps;
+import com.thoughtworks.selenium.webdriven.JavascriptLibrary;
+import com.thoughtworks.selenium.webdriven.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.commands.*;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
@@ -128,7 +129,7 @@ public class SubCommandMap {
         register(new GetXpathCount(), "getXpathCount", VALUE);
         // "getCssCount"
         register(new GoBack(), "goBack");
-        register(new Highlight(elementFinder, javascriptLibrary), "highlight", LOCATOR);
+        // "highlight"
         register(new IsAlertPresent(alertOverride), "isAlertPresent");
         register(new IsChecked(elementFinder), "isChecked", LOCATOR);
         register(new IsConfirmationPresent(alertOverride), "isConfirmationPresent");

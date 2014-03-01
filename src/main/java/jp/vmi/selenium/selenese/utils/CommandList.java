@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.WebDriverCommandProcessor;
-import org.openqa.selenium.internal.seleniumemulation.NoOp;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
+import com.thoughtworks.selenium.webdriven.commands.NoOp;
 
 import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.command.CommandFactory;

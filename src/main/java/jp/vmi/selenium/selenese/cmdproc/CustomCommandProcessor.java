@@ -1,8 +1,9 @@
 package jp.vmi.selenium.selenese.cmdproc;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverCommandProcessor;
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
+
+import com.thoughtworks.selenium.webdriven.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.NullContext;

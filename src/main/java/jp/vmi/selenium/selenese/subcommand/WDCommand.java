@@ -1,8 +1,7 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import org.openqa.selenium.internal.seleniumemulation.SeleneseCommand;
-
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.webdriven.SeleneseCommand;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;

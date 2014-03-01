@@ -61,6 +61,12 @@ Requirements
 Relase Note
 -----------
 
+### 1.4.0
+
+* Catch up Selenium 2.40.0. (It changed too many internal API, and removed Android driver)
+* Remove Andorid driver support because it is removed from Selenium 2.40.
+* Re-implement command handling. TOO MANY internal API is changed.
+
 ### 1.3.6
 
 * Remove default logging command line option for phantomjs from GhostDriver because it depends on user.dir system property.

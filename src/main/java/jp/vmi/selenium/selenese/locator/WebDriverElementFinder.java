@@ -12,9 +12,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.TargetLocator;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.seleniumemulation.ElementFinder;
 
 import com.thoughtworks.selenium.SeleniumException;
+import com.thoughtworks.selenium.webdriven.ElementFinder;
 
 import static org.apache.commons.lang3.StringUtils.*;
 

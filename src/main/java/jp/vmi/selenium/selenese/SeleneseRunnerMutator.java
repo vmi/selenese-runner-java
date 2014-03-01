@@ -1,8 +1,8 @@
 package jp.vmi.selenium.selenese;
 
-import org.openqa.selenium.internal.seleniumemulation.CompoundMutator;
-import org.openqa.selenium.internal.seleniumemulation.ScriptMutator;
-import org.openqa.selenium.internal.seleniumemulation.VariableDeclaration;
+import com.thoughtworks.selenium.webdriven.CompoundMutator;
+import com.thoughtworks.selenium.webdriven.ScriptMutator;
+import com.thoughtworks.selenium.webdriven.VariableDeclaration;
 
 import jp.vmi.selenium.selenese.VariableDeclarationWithDynamicValue.DynamicValue;
 

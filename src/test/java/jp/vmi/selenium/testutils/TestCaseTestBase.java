@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.android.AndroidDriver;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.Selenese;
@@ -18,7 +17,7 @@ import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
 
-@SuppressWarnings({ "javadoc", "deprecation" })
+@SuppressWarnings("javadoc")
 public abstract class TestCaseTestBase extends TestBase {
 
     @Rule
@@ -45,11 +44,6 @@ public abstract class TestCaseTestBase extends TestBase {
     @Before
     public void initialize() {
         initDriver();
-
-        if (driver instanceof AndroidDriver) {
-            //for AndroidEmulator
-            wsr.setFqdn("10.0.2.2");
-        }
 
         testSuites = new ArrayList<TestSuite>();
         runner = new Runner() {

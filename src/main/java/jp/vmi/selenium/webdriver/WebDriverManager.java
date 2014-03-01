@@ -171,9 +171,6 @@ public class WebDriverManager implements Supplier<WebDriver> {
             factory = new AppiumWebDriverFactory();
         } else if (PHANTOMJS.equals(factoryName)) {
             factory = new PhantomJSDriverFactory();
-        } else if (ANDROID.equals(factoryName)) {
-            factory = new AndroidDriverFactory();
-
         } else {
             try {
                 factory = (WebDriverFactory) Class.forName(factoryName).newInstance();
