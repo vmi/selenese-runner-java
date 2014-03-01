@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +74,7 @@ public class Runner implements Context, HtmlResultHolder {
     private CommandListIterator commandListIterator = null;
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
-    private final List<HighlightStyleBackup> styleBackups;
+    private final Deque<HighlightStyleBackup> styleBackups;
 
     private int countForDefault = 0;
 
@@ -89,7 +91,7 @@ public class Runner implements Context, HtmlResultHolder {
         this.subCommandMap = new SubCommandMap(this);
         this.commandFactory = new CommandFactory(this);
         this.varsMap = new VarsMap();
-        this.styleBackups = new ArrayList<HighlightStyleBackup>();
+        this.styleBackups = new ArrayDeque<HighlightStyleBackup>();
     }
 
     @Override
@@ -600,18 +602,16 @@ public class Runner implements Context, HtmlResultHolder {
         }
         Map<String, String> prevStyles = highlightStyle.doHighlight(driver, element);
         HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, element);
-        styleBackups.add(backup);
+        styleBackups.push(backup);
     }
 
     /**
      * Unhighlight backed up styles.
      */
     public void unhighlight() {
-        if (styleBackups.isEmpty())
-            return;
-        for (HighlightStyleBackup backup : styleBackups)
+        while (!styleBackups.isEmpty()) {
+            HighlightStyleBackup backup = styleBackups.pop();
             backup.restore(driver);
-        styleBackups.clear();
+        }
     }
-
 }
