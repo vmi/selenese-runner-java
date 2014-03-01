@@ -3,11 +3,14 @@ package jp.vmi.selenium.selenese.command;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.result.Result;
 
+import static jp.vmi.selenium.selenese.result.Success.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -21,6 +24,18 @@ public class UserDefinedCommandFactoryTest {
 
         TestCommand(int index, String name, String[] args, int argCnt) {
             super(index, name, args, argCnt);
+        }
+    }
+
+    private static class TestCommandNew extends AbstractCommand {
+
+        TestCommandNew(int index, String name, String... args) {
+            super(index, name, args);
+        }
+
+        @Override
+        protected Result executeImpl(Context context, String... curArgs) {
+            return SUCCESS;
         }
     }
 
@@ -59,11 +74,11 @@ public class UserDefinedCommandFactoryTest {
     public void registerUDCF() {
         Runner runner = new Runner();
         CommandFactory cf = runner.getCommandFactory();
-        cf.registerUserDefinedCommandFactory(new UserDefinedCommandFactory() {
+        cf.registerCommandFactory(new ICommandFactory() {
             @Override
-            public Command newCommand(int index, String name, String... args) {
+            public ICommand newCommand(int index, String name, String... args) {
                 if ("test".equals(name)) {
-                    return new TestCommand(index, name, args, args.length);
+                    return new TestCommandNew(index, name, args);
                 } else {
                     return null;
                 }
@@ -73,6 +88,6 @@ public class UserDefinedCommandFactoryTest {
         testCase.addCommand(cf, "test");
         testCase.addCommand(cf, "echo", "test");
         CommandList commandList = testCase.getCommandList();
-        assertThat(commandList.toArray(), is(array(instanceOf(TestCommand.class), instanceOf(Echo.class))));
+        assertThat(commandList.toArray(), is(array(instanceOf(TestCommandNew.class), instanceOf(Echo.class))));
     }
 }

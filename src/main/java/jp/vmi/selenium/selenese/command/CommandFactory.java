@@ -79,7 +79,7 @@ public class CommandFactory implements ICommandFactory {
     private static final int IS_PRESENT_INVERSE = 4;
     private static final int PRESENT = 5;
 
-    private final List<UserDefinedCommandFactory> userDefinedCommandFactories = new ArrayList<UserDefinedCommandFactory>();
+    private final List<ICommandFactory> commandFactories = new ArrayList<ICommandFactory>();
 
     private Context context = null;
 
@@ -100,12 +100,29 @@ public class CommandFactory implements ICommandFactory {
     }
 
     /**
+     * Register user defined comman factory.
+     *
+     * @param factory ICommandFactory object.
+     */
+    public void registerCommandFactory(ICommandFactory factory) {
+        commandFactories.add(factory);
+    }
+
+    /**
      * Register user defined command factory.
+     * 
+     * @deprecated use {@link #registerCommandFactory(ICommandFactory)}.
      *
      * @param factory user defined command factory.
      */
-    public void registerUserDefinedCommandFactory(UserDefinedCommandFactory factory) {
-        userDefinedCommandFactories.add(factory);
+    @Deprecated
+    public void registerUserDefinedCommandFactory(final UserDefinedCommandFactory factory) {
+        commandFactories.add(new ICommandFactory() {
+            @Override
+            public ICommand newCommand(int index, String name, String... args) {
+                return factory.newCommand(index, name, args);
+            }
+        });
     }
 
     /**
@@ -128,14 +145,11 @@ public class CommandFactory implements ICommandFactory {
         this.context = proc.getContext();
     }
 
-    /*
-     * @see jp.vmi.selenium.selenese.command.ICommandFactory#newCommand(int, java.lang.String, java.lang.String)
-     */
     @Override
     public ICommand newCommand(int index, String name, String... args) {
         // user defined command.
-        for (UserDefinedCommandFactory factory : userDefinedCommandFactories) {
-            Command command = factory.newCommand(index, name, args);
+        for (ICommandFactory factory : commandFactories) {
+            ICommand command = factory.newCommand(index, name, args);
             if (command != null)
                 return command;
         }
