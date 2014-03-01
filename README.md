@@ -66,6 +66,7 @@ Relase Note
 * Catch up Selenium 2.40.0. (It changed too many internal API, and removed Android driver)
 * Remove Andorid driver support because it is removed from Selenium 2.40.
 * Re-implement command handling. TOO MANY internal API is changed.
+* Update dependency versions.
 
 ### 1.3.6
 
