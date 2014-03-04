@@ -73,7 +73,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final WebDriverElementFinder elementFinder;
     private final CommandFactory commandFactory;
     private TestCase currentTestCase = null;
-    private CommandListIterator commandListIterator = null;
+    private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<CommandListIterator>();
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
     private final Deque<HighlightStyleBackup> styleBackups;
@@ -413,12 +413,17 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public CommandListIterator getCommandListIterator() {
-        return commandListIterator;
+        return commandListIteratorStack.getFirst();
     }
 
     @Override
-    public void setCommandListIterator(CommandListIterator commandListIterator) {
-        this.commandListIterator = commandListIterator;
+    public void pushCommandListIterator(CommandListIterator commandListIterator) {
+        commandListIteratorStack.push(commandListIterator);
+    }
+
+    @Override
+    public void popCommandListIterator() {
+        commandListIteratorStack.pop();
     }
 
     @Override

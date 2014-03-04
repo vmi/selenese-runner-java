@@ -11,6 +11,7 @@ import jp.vmi.selenium.selenese.InvalidSeleneseException;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
+import jp.vmi.selenium.selenese.command.CommandList;
 
 /**
  * Apply aspect.
@@ -119,5 +120,14 @@ public class Binder {
     public static ErrorTestSuite newErrorTestSuite(String filename, InvalidSeleneseException e) {
         ErrorTestSuite errorTestSuite = injector.getInstance(ErrorTestSuite.class);
         return errorTestSuite.initialize(filename, e);
+    }
+
+    /**
+     * Constructs CommandList applied aspect.
+     * 
+     * @return CommandList instance.
+     */
+    public static CommandList newCommandList() {
+        return injector.getInstance(CommandList.class);
     }
 }

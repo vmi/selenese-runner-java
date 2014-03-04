@@ -49,18 +49,23 @@ public interface Context extends WrapsDriver {
     String getCurrentBaseURL();
 
     /**
-     * Get CommandListIterator.
+     * Get current CommandListIterator.
      *
-     * @return CommanListIterator.
+     * @return current CommanListIterator.
      */
     CommandListIterator getCommandListIterator();
 
     /**
-     * Set CommandListIterator.
+     * Push CommandListIterator.
      *
      * @param commandListIterator CommanListIterator.
      */
-    void setCommandListIterator(CommandListIterator commandListIterator);
+    void pushCommandListIterator(CommandListIterator commandListIterator);
+
+    /**
+     * Pop CommandListIterator.
+     */
+    void popCommandListIterator();
 
     /**
      * Get variables map.

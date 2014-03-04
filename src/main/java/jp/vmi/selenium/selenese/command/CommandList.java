@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.result.Error;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.result.Success.*;
+
 /**
  * Command list.
  */
@@ -64,5 +71,39 @@ public class CommandList extends ArrayList<ICommand> {
     @Override
     public CommandListIterator iterator() {
         return listIterator();
+    }
+
+    @DoCommand
+    protected Result doCommand(Context context, ICommand command, String... curArgs) {
+        try {
+            return command.execute(context, curArgs);
+        } catch (Exception e) {
+            return new Error(e);
+        }
+    }
+
+    /**
+     * Execute command list.
+     * 
+     * @param context Selenese Runner context.
+     * @return result of command list execution.
+     */
+    public Result execute(Context context) {
+        Result result = SUCCESS;
+        CommandListIterator commandListIterator = listIterator();
+        context.pushCommandListIterator(commandListIterator);
+        try {
+            while (commandListIterator.hasNext()) {
+                ICommand command = commandListIterator.next();
+                String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
+                result = result.update(doCommand(context, command, curArgs));
+                if (result.isAborted())
+                    break;
+                context.waitSpeed();
+            }
+        } finally {
+            context.popCommandListIterator();
+        }
+        return result;
     }
 }

@@ -5,13 +5,11 @@ import org.apache.commons.io.FilenameUtils;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
-import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.Label;
-import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
-import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
@@ -34,7 +32,7 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private String baseURL = null;
 
-    private final CommandList commandList = new CommandList();
+    private final CommandList commandList = Binder.newCommandList();
 
     private final StopWatch stopWatch = new StopWatch();
     private final LogRecorder logRecorder = new LogRecorder();
@@ -260,15 +258,6 @@ public class TestCase implements Selenese, ITestCase {
         addCommand(command);
     }
 
-    @DoCommand
-    protected Result doCommand(Context context, ICommand command, String... curArgs) {
-        try {
-            return command.execute(context, curArgs);
-        } catch (Exception e) {
-            return new Error(e);
-        }
-    }
-
     @ExecuteTestCase
     @Override
     public Result execute(Selenese parent, Context context) {
@@ -276,17 +265,7 @@ public class TestCase implements Selenese, ITestCase {
             return result = SUCCESS;
         context.setCurrentTestCase(this);
         context.getCollectionMap().clear();
-        CommandListIterator commandListIterator = commandList.iterator();
-        context.setCommandListIterator(commandListIterator);
-        while (commandListIterator.hasNext()) {
-            ICommand command = commandListIterator.next();
-            String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
-            result = result.update(doCommand(context, command, curArgs));
-            if (result.isAborted())
-                break;
-            context.waitSpeed();
-        }
-        return result;
+        return commandList.execute(context);
     }
 
     @Override

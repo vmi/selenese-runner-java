@@ -48,7 +48,11 @@ public class NullContext implements Context {
     }
 
     @Override
-    public void setCommandListIterator(CommandListIterator commandListIterator) {
+    public void pushCommandListIterator(CommandListIterator commandListIterator) {
+    }
+
+    @Override
+    public void popCommandListIterator() {
     }
 
     @Override
