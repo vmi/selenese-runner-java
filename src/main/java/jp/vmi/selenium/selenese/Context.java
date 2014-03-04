@@ -71,11 +71,7 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get collection map.
-    <<<<<<< HEAD
      *
-    =======
-     * 
-    >>>>>>> nci
      * @return CollectionMap.
      */
     CollectionMap getCollectionMap();
