@@ -20,8 +20,8 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.Result;
@@ -135,14 +135,21 @@ public class CommandLogInterceptor implements MethodInterceptor {
         return messages;
     }
 
+    private static final int CONTEXT = 0;
+    private static final int COMMAND = 1;
+
+    /*
+     * target signature:
+     * Result doCommand(Context context, ICommand command, String... curArgs)
+     */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestCase testCase = (TestCase) invocation.getThis();
         Object[] args = invocation.getArguments();
-        Context context = (Context) args[0];
-        ICommand command = (ICommand) args[1];
-        String cmdStr = command.toString();
+        Context context = (Context) args[CONTEXT];
+        ICommand command = (ICommand) args[COMMAND];
+        TestCase testCase = context.getCurrentTestCase();
         LogRecorder clr = testCase.getLogRecorder();
+        String cmdStr = command.toString();
         log.info(cmdStr);
         clr.info(cmdStr);
         try {
@@ -153,8 +160,8 @@ public class CommandLogInterceptor implements MethodInterceptor {
             String msg = cmdStr + " => " + e.getMessage();
             log.error(msg);
             clr.error(msg);
-            if (testCase != null && context instanceof Runner)
-                ((Runner) context).getJUnitResult().setError(testCase, e.getMessage(), e.toString());
+            if (context instanceof JUnitResultHolder)
+                ((JUnitResultHolder) context).getJUnitResult().setError(testCase, e.getMessage(), e.toString());
             throw e;
         }
     }

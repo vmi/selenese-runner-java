@@ -30,6 +30,7 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
@@ -45,7 +46,7 @@ import static org.openqa.selenium.remote.CapabilityType.*;
 /**
  * Provide Java API to run Selenese script.
  */
-public class Runner implements Context, HtmlResultHolder {
+public class Runner implements Context, JUnitResultHolder, HtmlResultHolder {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
@@ -554,11 +555,7 @@ public class Runner implements Context, HtmlResultHolder {
         jUnitResult.setDir(dir);
     }
 
-    /**
-     * Get JUnit result instance.
-     *
-     * @return JUnit result instance.
-     */
+    @Override
     public JUnitResult getJUnitResult() {
         return jUnitResult;
     }
