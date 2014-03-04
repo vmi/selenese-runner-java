@@ -33,6 +33,7 @@ import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -46,7 +47,7 @@ import static org.openqa.selenium.remote.CapabilityType.*;
 /**
  * Provide Java API to run Selenese script.
  */
-public class Runner implements Context, JUnitResultHolder, HtmlResultHolder {
+public class Runner implements Context, HighlightHandler, JUnitResultHolder, HtmlResultHolder {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
@@ -327,11 +328,7 @@ public class Runner implements Context, JUnitResultHolder, HtmlResultHolder {
         return ignoreScreenshotCommand;
     }
 
-    /**
-     * Get locator highlighting.
-     *
-     * @return true if use locator highlighting.
-     */
+    @Override
     public boolean isHighlight() {
         return isHighlight;
     }
@@ -583,12 +580,7 @@ public class Runner implements Context, JUnitResultHolder, HtmlResultHolder {
         htmlResult.generateIndex();
     }
 
-    /**
-     * Highlight and backup specified locator.
-     *
-     * @param locator locator.
-     * @param highlightStyle highlight style.
-     */
+    @Override
     public void highlight(String locator, HighlightStyle highlightStyle) {
         WebElement element;
         try {
@@ -602,9 +594,7 @@ public class Runner implements Context, JUnitResultHolder, HtmlResultHolder {
         styleBackups.push(backup);
     }
 
-    /**
-     * Unhighlight backed up styles.
-     */
+    @Override
     public void unhighlight() {
         while (!styleBackups.isEmpty()) {
             HighlightStyleBackup backup = styleBackups.pop();

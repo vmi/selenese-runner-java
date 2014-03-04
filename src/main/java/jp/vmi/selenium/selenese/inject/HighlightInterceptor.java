@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.command.ICommand;
+import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 
 /**
@@ -13,20 +13,28 @@ import jp.vmi.selenium.selenese.highlight.HighlightStyle;
  */
 public class HighlightInterceptor implements MethodInterceptor {
 
+    private static final int CONTEXT = 0;
+    private static final int COMMAND = 1;
+    private static final int CUR_ARGS = 2;
+
+    /*
+     * target signature:
+     * Result doCommand(Context context, ICommand command, String... curArgs)
+     */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Object[] args = invocation.getArguments();
-        Context context = (Context) args[0];
-        ICommand command = (ICommand) args[1];
-        String[] curArgs = (String[]) args[2];
-        if (context instanceof Runner) {
-            Runner runner = (Runner) context;
-            runner.unhighlight();
-            if (runner.isHighlight()) {
+        Context context = (Context) args[CONTEXT];
+        ICommand command = (ICommand) args[COMMAND];
+        String[] curArgs = (String[]) args[CUR_ARGS];
+        if (context instanceof HighlightHandler) {
+            HighlightHandler handler = (HighlightHandler) context;
+            handler.unhighlight();
+            if (handler.isHighlight()) {
                 int i = 0;
                 String[] locators = command.convertLocators(curArgs);
                 for (String locator : locators)
-                    runner.highlight(locator, HighlightStyle.ELEMENT_STYLES[i++]);
+                    handler.highlight(locator, HighlightStyle.ELEMENT_STYLES[i++]);
             }
         }
         return invocation.proceed();
