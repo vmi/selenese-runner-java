@@ -100,4 +100,13 @@ public class CommandListIterator implements ListIterator<ICommand> {
         }
         iterator = commandList.originalListIterator(index);
     }
+
+    /**
+     * Get log indent level of command list.
+     *
+     * @return log indent level.
+     */
+    public int getLogIndentLevel() {
+        return commandList.getLogIndentLevel();
+    }
 }

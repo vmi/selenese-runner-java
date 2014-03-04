@@ -188,6 +188,10 @@ public class Main {
             .hasArg().withArgName("key=value or key+=value")
             .withDescription("define parameters for capabilities. (multiple)")
             .create('D'));
+        options.addOption(OptionBuilder.withLongOpt("rollup")
+            .hasArg().withArgName("file")
+            .withDescription("define rollup rule by JavaScript. (multiple)")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
@@ -306,6 +310,11 @@ public class Main {
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setOverridingBaseURL(cli.getOptionValue("baseurl"));
             runner.setIgnoredScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
+            if (cli.hasOption("rollup")) {
+                String[] rollups = cli.getOptionValues("rollup");
+                for (String rollup : rollups)
+                    runner.getRollupRules().load(rollup);
+            }
             runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
             runner.setHtmlResultDir(cli.getOptionValue("html-result"));
             int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));

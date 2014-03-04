@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.*;
 /**
  * Annotates TestCase execution.
  * <p>
- * Expected signature: {@code Result ITestCase#method(ITestSuite testSuite, ...)}
+ * Expected signature: {@code Result method(Selenese parent, Context context)}
  * </p>
  */
 @BindingAnnotation

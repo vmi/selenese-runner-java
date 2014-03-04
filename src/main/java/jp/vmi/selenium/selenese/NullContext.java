@@ -4,7 +4,9 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.WebDriver;
 
+import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -43,6 +45,11 @@ public class NullContext implements Context {
     }
 
     @Override
+    public ICommandFactory getCommandFactory() {
+        return null;
+    }
+
+    @Override
     public CommandListIterator getCommandListIterator() {
         return null;
     }
@@ -57,6 +64,11 @@ public class NullContext implements Context {
 
     @Override
     public VarsMap getVarsMap() {
+        return null;
+    }
+
+    @Override
+    public RollupRules getRollupRules() {
         return null;
     }
 

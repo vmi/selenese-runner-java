@@ -49,7 +49,8 @@ Usage
         --set-speed <speed>                  same as executing setSpeed(ms) command first.
         --height <height>                    browser height (only phantomjs)
         --width <width>                      browser width (only phantomjs)
-     -D,--define <key=value>                 define parameters for capabilities. (multiple)
+     -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
+        --rollup <file>                      define rollup rule by JavaScript. (multiple)
      -h,--help                               show this message.
 
 Requirements
@@ -63,6 +64,7 @@ Relase Note
 
 ### 1.4.0
 
+* Add support "rollup" command and "user-extention-rollup.js". (issue #100)
 * Catch up Selenium 2.40.0. (It changed too many internal API, and removed Android driver)
 * Remove Andorid driver support because it is removed from Selenium 2.40.
 * Re-implement command handling. TOO MANY internal API is changed.

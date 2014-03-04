@@ -31,6 +31,7 @@ import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.junit.result.JUnitResultHolder;
+import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.highlight.HighlightHandler;
@@ -76,6 +77,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<CommandListIterator>();
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
+    private final RollupRules rollupRules = new RollupRules();
     private final Deque<HighlightStyleBackup> styleBackups;
 
     private int countForDefault = 0;
@@ -402,11 +404,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return subCommandMap;
     }
 
-    /**
-     * Get CommandFactory instance.
-     * 
-     * @return CommandFactory instance.
-     */
+    @Override
     public CommandFactory getCommandFactory() {
         return commandFactory;
     }
@@ -443,6 +441,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public CollectionMap getCollectionMap() {
         return collectionMap;
+    }
+
+    @Override
+    public RollupRules getRollupRules() {
+        return rollupRules;
     }
 
     @Override

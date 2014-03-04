@@ -4,7 +4,9 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.internal.WrapsDriver;
 
+import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -49,6 +51,13 @@ public interface Context extends WrapsDriver {
     String getCurrentBaseURL();
 
     /**
+     * Get CommandFactory instance.
+     * 
+     * @return CommandFactory instance.
+     */
+    ICommandFactory getCommandFactory();
+
+    /**
      * Get current CommandListIterator.
      *
      * @return current CommanListIterator.
@@ -73,6 +82,13 @@ public interface Context extends WrapsDriver {
      * @return VarsMap.
      */
     VarsMap getVarsMap();
+
+    /**
+     * Get rollup rules.
+     *
+     * @return RollupRules object.
+     */
+    RollupRules getRollupRules();
 
     /**
      * Get collection map.

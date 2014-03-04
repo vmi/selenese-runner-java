@@ -24,6 +24,7 @@ import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.ICommand;
+import jp.vmi.selenium.selenese.command.LogIndentLevelHolder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
@@ -56,39 +57,39 @@ public class CommandLogInterceptor implements MethodInterceptor {
         }
     }
 
-    private void log(String cmdStr, Result result, TestCase testCase, Context context) {
+    private void log(String indent, String cmdStr, Result result, TestCase testCase, Context context) {
         LogRecorder clr = testCase.getLogRecorder();
         List<String> messages = getPageInformation(testCase, context);
         if (ListUtils.isEqualList(messages, prevMessages)) {
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result;
-                log.error(resStr);
-                clr.error(resStr);
+                log.error(indent + resStr);
+                clr.error(indent + resStr);
             } else {
                 String resStr = "- " + result;
-                log.info(resStr);
-                clr.info(resStr);
+                log.info(indent + resStr);
+                clr.info(indent + resStr);
             }
         } else {
             Iterator<String> iter = messages.iterator();
             String message = iter.next();
             if (result.isFailed()) {
                 String resStr = cmdStr + " => " + result + " " + message;
-                log.error(resStr);
-                clr.error(resStr);
+                log.error(indent + resStr);
+                clr.error(indent + resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
-                    log.error(message);
-                    clr.error(message);
+                    log.error(indent + message);
+                    clr.error(indent + message);
                 }
             } else {
                 String resStr = "- " + result + " " + message;
-                log.info(resStr);
-                clr.info(resStr);
+                log.info(indent + resStr);
+                clr.info(indent + resStr);
                 while (iter.hasNext()) {
                     message = iter.next();
-                    log.info(message);
-                    clr.info(message);
+                    log.info(indent + message);
+                    clr.info(indent + message);
                 }
             }
             prevMessages = messages;
@@ -140,26 +141,28 @@ public class CommandLogInterceptor implements MethodInterceptor {
 
     /*
      * target signature:
-     * Result doCommand(Context context, ICommand command, String... curArgs)
+     * Result LogIndentLevelHolder#doCommand(Context context, ICommand command, String... curArgs)
      */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
+        LogIndentLevelHolder holder = (LogIndentLevelHolder) invocation.getThis();
         Object[] args = invocation.getArguments();
         Context context = (Context) args[CONTEXT];
         ICommand command = (ICommand) args[COMMAND];
         TestCase testCase = context.getCurrentTestCase();
         LogRecorder clr = testCase.getLogRecorder();
+        String indent = StringUtils.repeat("  ", holder.getLogIndentLevel());
         String cmdStr = command.toString();
-        log.info(cmdStr);
-        clr.info(cmdStr);
+        log.info(indent + cmdStr);
+        clr.info(indent + cmdStr);
         try {
             Result result = (Result) invocation.proceed();
-            log(cmdStr, result, testCase, context);
+            log(indent, cmdStr, result, testCase, context);
             return result;
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();
-            log.error(msg);
-            clr.error(msg);
+            log.error(indent + msg);
+            clr.error(indent + msg);
             if (context instanceof JUnitResultHolder)
                 ((JUnitResultHolder) context).getJUnitResult().setError(testCase, e.getMessage(), e.toString());
             throw e;

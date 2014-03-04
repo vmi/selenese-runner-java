@@ -15,11 +15,22 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 /**
  * Command list.
  */
-public class CommandList extends ArrayList<ICommand> {
+public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHolder {
 
     private static final long serialVersionUID = 1L;
 
     private final Map<Object, Integer> indexCache = new HashMap<Object, Integer>();
+    private int logIndentLevel = 0;
+
+    @Override
+    public int getLogIndentLevel() {
+        return logIndentLevel;
+    }
+
+    @Override
+    public void setLogIndentLevel(int logIndentLevel) {
+        this.logIndentLevel = logIndentLevel;
+    }
 
     @Override
     public boolean add(ICommand command) {

@@ -422,6 +422,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>3.0</version>
     </dependency>
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20080701</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>

@@ -50,6 +50,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Pause.class);
         addConstructor(SetSpeed.class);
+        addConstructor(Rollup.class);
 
         // commands of selenium-ide-flowcontrol
         // https://github.com/davehunt/selenium-ide-flowcontrol

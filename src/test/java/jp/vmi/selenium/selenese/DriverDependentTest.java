@@ -162,6 +162,13 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Test
+    public void rollup() {
+        runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
+        execute("rollup");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void issue48() {
         assumeNot(SafariDriver.class); // FIXME don't work this test on SafariDriver.
         execute("issue48");
