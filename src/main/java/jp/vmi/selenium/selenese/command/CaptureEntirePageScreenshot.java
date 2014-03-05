@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.ScreenshotHandler;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
@@ -29,21 +29,19 @@ public class CaptureEntirePageScreenshot extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        String filename = curArgs[ARG_FILENAME];
-        if (!(context instanceof Runner))
+        if (!(context instanceof ScreenshotHandler))
             return new Success("captureEntirePageScreenshot is not supported.");
-        Runner runner = (Runner) context;
-        if (runner.isIgnoreScreenshotCommand()) {
-            return new Success("captureEntirePageScreenshot is ignored.");
-        } else if (StringUtils.isBlank(filename)) {
+        String filename = curArgs[ARG_FILENAME];
+        if (StringUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
-        } else {
-            try {
-                runner.takeScreenshot(filename, runner.getCurrentTestCase());
-                return SUCCESS;
-            } catch (UnsupportedOperationException e) {
-                return new Warning(e.getMessage());
-            }
+        ScreenshotHandler handler = (ScreenshotHandler) context;
+        if (handler.isIgnoredScreenshotCommand())
+            return new Success("captureEntirePageScreenshot is ignored.");
+        try {
+            handler.takeScreenshot(filename);
+            return SUCCESS;
+        } catch (UnsupportedOperationException e) {
+            return new Warning(e.getMessage());
         }
     }
 }

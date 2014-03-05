@@ -47,7 +47,7 @@ import static org.openqa.selenium.remote.CapabilityType.*;
 /**
  * Provide Java API to run Selenese script.
  */
-public class Runner implements Context, HighlightHandler, JUnitResultHolder, HtmlResultHolder {
+public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUnitResultHolder, HtmlResultHolder {
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
@@ -62,7 +62,7 @@ public class Runner implements Context, HighlightHandler, JUnitResultHolder, Htm
     private String screenshotDir = null;
     private String screenshotAllDir = null;
     private String screenshotOnFailDir = null;
-    private boolean ignoreScreenshotCommand = false;
+    private boolean isIgnoredScreenshotCommand = false;
     private boolean isHighlight = false;
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
@@ -130,7 +130,8 @@ public class Runner implements Context, HighlightHandler, JUnitResultHolder, Htm
         }
     }
 
-    private void takeScreenshot(TakesScreenshot tss, File file, TestCase testcase) {
+    private void takeScreenshot(TakesScreenshot tss, File file) {
+        file = file.getAbsoluteFile();
         // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
         driver.switchTo().defaultContent();
         File tmp = tss.getScreenshotAs(OutputType.FILE);
@@ -140,66 +141,42 @@ public class Runner implements Context, HighlightHandler, JUnitResultHolder, Htm
             throw new RuntimeException("failed to rename captured screenshot image: " + file, e);
         }
         log.info("- captured screenshot: {}", file);
-        testcase.getLogRecorder().info("[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
+        currentTestCase.getLogRecorder().info("[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
     }
 
-    /**
-     * Take screenshot to filename. (override directory if --screenshot-dir option specified)
-     * <p>
-     * <p>Internal use only.</p>
-     * </p>
-     * @param filename filename.
-     * @param testcase test-case instance.
-     * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
-     */
-    public void takeScreenshot(String filename, TestCase testcase) throws UnsupportedOperationException {
+    @Override
+    public void takeScreenshot(String filename) throws UnsupportedOperationException {
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         if (File.separatorChar != '\\' && filename.contains("\\"))
             filename = filename.replace('\\', File.separatorChar);
-        File file = new File(filename).getAbsoluteFile();
+        File file = new File(filename);
         if (screenshotDir != null)
-            file = new File(screenshotDir, file.getName()).getAbsoluteFile();
-        takeScreenshot(tss, file, testcase);
+            file = new File(screenshotDir, file.getName());
+        takeScreenshot(tss, file);
     }
 
-    /**
-     * Take screenshot at all commands if --screenshot-all option specified.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @param prefix prefix name.
-     * @param index command index.
-     * @param testcase test-case instance.
-     */
-    public void takeScreenshotAll(String prefix, int index, TestCase testcase) {
+    @Override
+    public void takeScreenshotAll(String prefix, int index) {
         if (screenshotAllDir == null)
             return;
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             return;
         String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(tss, new File(screenshotAllDir, filename), testcase);
+        takeScreenshot(tss, new File(screenshotAllDir, filename));
     }
 
-    /**
-     * Take screenshot on fail commands if --screenshot-on-fail option specified.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @param prefix prefix name.
-     * @param index command index.
-     * @param testcase test-case instance.
-     */
-    public void takeScreenshotOnFail(String prefix, int index, TestCase testcase) {
+    @Override
+    public void takeScreenshotOnFail(String prefix, int index) {
         if (screenshotOnFailDir == null)
             return;
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             return;
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(tss, new File(screenshotOnFailDir, filename), testcase);
+        takeScreenshot(tss, new File(screenshotOnFailDir, filename));
     }
 
     /**
@@ -312,20 +289,40 @@ public class Runner implements Context, HighlightHandler, JUnitResultHolder, Htm
 
     /**
      * Set ignore screenshot command flag.
+     * 
+     * @deprecated use {@link #setIgnoredScreenshotCommand(boolean)}
      *
-     * @param ignoreScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
+     * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
      */
-    public void setIgnoreScreenshotCommand(boolean ignoreScreenshotCommand) {
-        this.ignoreScreenshotCommand = ignoreScreenshotCommand;
+    @Deprecated
+    public void setIgnoreScreenshotCommand(boolean isIgnoredScreenshotCommand) {
+        setIgnoredScreenshotCommand(isIgnoredScreenshotCommand);
+    }
+
+    /**
+     * Set ignore screenshot command flag.
+     *
+     * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
+     */
+    public void setIgnoredScreenshotCommand(boolean isIgnoredScreenshotCommand) {
+        this.isIgnoredScreenshotCommand = isIgnoredScreenshotCommand;
     }
 
     /**
      * Get ignore screenshot command flag.
+     * 
+     * @deprecated use {@link #isIgnoredScreenshotCommand()}
      *
      * @return flag to ignore "captureEntirePageScreenshot"
      */
+    @Deprecated
     public boolean isIgnoreScreenshotCommand() {
-        return ignoreScreenshotCommand;
+        return isIgnoredScreenshotCommand();
+    }
+
+    @Override
+    public boolean isIgnoredScreenshotCommand() {
+        return isIgnoredScreenshotCommand;
     }
 
     @Override

@@ -305,7 +305,7 @@ public class Main {
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
             runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
             runner.setOverridingBaseURL(cli.getOptionValue("baseurl"));
-            runner.setIgnoreScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
+            runner.setIgnoredScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
             runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
             runner.setHtmlResultDir(cli.getOptionValue("html-result"));
             int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));

@@ -5,32 +5,38 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.openqa.selenium.NoSuchWindowException;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
-import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.ScreenshotHandler;
 import jp.vmi.selenium.selenese.command.ICommand;
+import jp.vmi.selenium.selenese.result.Result;
 
 /**
  * Interceptor for screenshot.
  */
 public class ScreenshotInterceptor implements MethodInterceptor {
 
+    private static final int CONTEXT = 0;
+    private static final int COMMAND = 1;
+
+    /*
+     * target signature:
+     * Result doCommand(Context context, ICommand command, String... curArgs)
+     */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestCase testCase = (TestCase) invocation.getThis();
         Object[] args = invocation.getArguments();
-        Context context = (Context) args[0];
-        ICommand command = (ICommand) args[1];
-        Object result = invocation.proceed();
-        if (context instanceof Runner && command.mayUpdateScreen()) {
-            Runner runner = (Runner) context;
-            String baseName = testCase.getBaseName();
+        Context context = (Context) args[CONTEXT];
+        ICommand command = (ICommand) args[COMMAND];
+        Result result = (Result) invocation.proceed();
+        if (context instanceof ScreenshotHandler && command.mayUpdateScreen()) {
+            ScreenshotHandler handler = (ScreenshotHandler) context;
+            String baseName = context.getCurrentTestCase().getBaseName();
             try {
-                runner.takeScreenshotAll(baseName, command.getIndex(), testCase);
+                handler.takeScreenshotAll(baseName, command.getIndex());
             } catch (NoSuchWindowException e) {
                 // ignore if failed to capturing.
             }
-            if (!command.getResult().isSuccess())
-                runner.takeScreenshotOnFail(baseName, command.getIndex(), testCase);
+            if (!result.isSuccess())
+                handler.takeScreenshotOnFail(baseName, command.getIndex());
         }
         return result;
     }
