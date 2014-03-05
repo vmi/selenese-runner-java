@@ -118,7 +118,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                 <filter>
                   <artifact>org.seleniumhq.selenium:selenium-server</artifact>
                   <includes>
-                    <include>org/openqa/selenium/internal/seleniumemulation/**/*.js</include>
+                    <include>com/thoughtworks/selenium/webdriven/**/*.js</include>
                   </includes>
                 </filter>
                 <filter>
@@ -129,12 +129,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                     <exclude>META-INF/*.RSA</exclude>
                   </excludes>
                 </filter>
-		<filter>
-		  <artifact>org.seleniumhq.selenium:selenium-java</artifact>
-		  <excludes>
-		    <exclude>org/openqa/selenium/WebDriverCommandProcessor.class</exclude>
-		  </excludes>
-		</filter>
               </filters>
             </configuration>
             <executions>
