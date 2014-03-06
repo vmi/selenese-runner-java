@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.junit.result.JUnitResult;
+import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
@@ -23,22 +23,24 @@ public class ExecuteTestCaseInterceptor implements MethodInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestCaseInterceptor.class);
 
+    private static final int PARENT = 0;
+    private static final int CONTEXT = 1;
+
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         ITestCase testCase = (ITestCase) invocation.getThis();
         Object[] args = invocation.getArguments();
-        ITestSuite testSuite = (ITestSuite) args[0];
-        Context context = (Context) args[1];
+        Context context = (Context) args[CONTEXT];
         JUnitResult jUnitResult;
-        if (context instanceof Runner) {
-            jUnitResult = ((Runner) context).getJUnitResult();
-            jUnitResult.startTestCase(testSuite, testCase);
+        if (context instanceof JUnitResultHolder) {
+            jUnitResult = ((JUnitResultHolder) context).getJUnitResult();
+            jUnitResult.startTestCase((ITestSuite) args[PARENT], testCase);
         } else {
             jUnitResult = null;
         }
         StopWatch sw = testCase.getStopWatch();
-        LogRecorder clr = testCase.getLogRecorder();
-        clr.setPrintStream(context.getPrintStream());
+        LogRecorder clr = new LogRecorder(context.getPrintStream());
+        testCase.setLogRecorder(clr);
         sw.start();
         if (!testCase.isError()) {
             log.info("Start: {}", testCase);

@@ -2,6 +2,8 @@ package jp.vmi.selenium.selenese;
 
 import org.apache.commons.io.FilenameUtils;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
@@ -35,7 +37,7 @@ public class TestCase implements Selenese, ITestCase {
     private final CommandList commandList = Binder.newCommandList();
 
     private final StopWatch stopWatch = new StopWatch();
-    private final LogRecorder logRecorder = new LogRecorder();
+    private LogRecorder logRecorder = null;
     private Result result = UNEXECUTED;
 
     @Deprecated
@@ -165,11 +167,13 @@ public class TestCase implements Selenese, ITestCase {
         return stopWatch;
     }
 
-    /**
-     * Get log recorder.
-     *
-     * @return log recorder.
-     */
+    @Override
+    public void setLogRecorder(LogRecorder logRecorder) {
+        if (this.logRecorder != null)
+            throw new SeleniumException("The log recorder of " + this + " is already set.");
+        this.logRecorder = logRecorder;
+    }
+
     @Override
     public LogRecorder getLogRecorder() {
         return logRecorder;

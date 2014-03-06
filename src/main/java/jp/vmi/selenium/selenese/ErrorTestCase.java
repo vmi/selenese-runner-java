@@ -11,7 +11,12 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
  */
 public class ErrorTestCase extends ErrorSource implements ITestCase {
 
-    private final LogRecorder logRecorder = new LogRecorder();
+    private LogRecorder logRecorder = null;
+
+    @Override
+    public void setLogRecorder(LogRecorder logRecorder) {
+        this.logRecorder = logRecorder;
+    }
 
     @Override
     public LogRecorder getLogRecorder() {

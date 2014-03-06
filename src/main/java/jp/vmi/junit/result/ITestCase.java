@@ -8,6 +8,13 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
 public interface ITestCase extends ITestTarget {
 
     /**
+     * Set log recorder.
+     * 
+     * @param logRecorder log recorder.
+     */
+    void setLogRecorder(LogRecorder logRecorder);
+
+    /**
      * Get log recorder.
      *
      * @return log recorder.

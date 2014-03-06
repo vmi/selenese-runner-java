@@ -77,12 +77,7 @@ public class JUnitResultTest {
             final int num = i;
             testCases[i] = new ITestCase() {
                 private final StopWatch stopWatch = new StopWatch();
-                private final LogRecorder logRecorder;
-
-                {
-                    logRecorder = new LogRecorder();
-                    logRecorder.setPrintStream(System.out);
-                }
+                private final LogRecorder logRecorder = new LogRecorder(System.out);
 
                 @Override
                 public String getName() {
@@ -97,6 +92,11 @@ public class JUnitResultTest {
                 @Override
                 public StopWatch getStopWatch() {
                     return stopWatch;
+                }
+
+                @Override
+                public void setLogRecorder(LogRecorder logRecorder) {
+                    throw new UnsupportedOperationException();
                 }
 
                 @Override
