@@ -18,12 +18,32 @@
 </tr>
 <tr>
     <td>storeEval</td>
+    <td>setTimeout("window.open('/form.html', 'maximize', 'width=640, height=480')",0)</td>
+    <td>dummy</td>
+</tr>
+<tr>
+    <td>selectWindow</td>
+    <td>maximize</td>
+    <td></td>
+</tr>
+<tr>
+    <td>storeEval</td>
     <td>window.innerWidth</td>
     <td>width1</td>
 </tr>
 <tr>
+    <td>storeEval</td>
+    <td>window.innerHeight</td>
+    <td>height1</td>
+</tr>
+<tr>
     <td>windowMaximize</td>
     <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>pause</td>
+    <td>1000</td>
     <td></td>
 </tr>
 <tr>
@@ -32,9 +52,24 @@
     <td>width2</td>
 </tr>
 <tr>
+    <td>storeEval</td>
+    <td>window.innerHeight</td>
+    <td>height2</td>
+</tr>
+<tr>
     <td>assertEval</td>
-    <td>${width1} &lt; ${width2}</td>
+    <td>${width1} &lt; ${width2} || ${height1} &lt; ${height2}</td>
     <td>true</td>
+</tr>
+<tr>
+    <td>close</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>selectWindow</td>
+    <td>null</td>
+    <td></td>
 </tr>
 </tbody></table>
 </body>
