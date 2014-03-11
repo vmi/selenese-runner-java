@@ -16,10 +16,10 @@ import static org.hamcrest.MatcherAssert.*;
 public class RollupTest {
 
     private static final String EXPECTED = "["
-        + "Command#1: open(\"\"), "
-        + "Command#2: type(\"login\", \"USERNAME\"), "
+        + "Command#1: open(\"/rollup01.html\"), "
+        + "Command#2: type(\"username\", \"USERNAME\"), "
         + "Command#3: type(\"password\", \"PASSWORD\"), "
-        + "Command#4: click(\"btnLogin\")"
+        + "Command#4: click(\"id=login\")"
         + "]";
 
     @Test

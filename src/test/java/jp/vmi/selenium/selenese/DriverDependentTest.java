@@ -163,6 +163,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void rollup() {
+        assumeNot(HtmlUnitDriver.class);
         runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         execute("rollup");
         assertThat(result, is(instanceOf(Success.class)));
