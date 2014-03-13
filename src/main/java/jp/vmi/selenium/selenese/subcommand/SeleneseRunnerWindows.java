@@ -105,6 +105,13 @@ public class SeleneseRunnerWindows extends Windows {
       return;
     }
 
+// TODO uncomment when support parentFrame() on next Selenium.
+//    if ("relative=up".equals(locator)) {
+//      driver.switchTo().parentFrame();
+//      lastFrame.put(driver.getWindowHandle(), locator);
+//      return;
+//    }
+
     if (locator.startsWith("index=")) {
       try {
         int index = Integer.parseInt(locator.substring("index=".length()));
