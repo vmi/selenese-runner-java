@@ -128,6 +128,26 @@ Building the Application
 
 That will create the *selenese-runner.jar* file within the 'target' directory.
 
+Rollup
+------
+
+"--rollup" option and "rollup" command are used for a definition and execution of a user-defined command.
+
+Refer to the following for how to write "rollup" script:
+
+* Using the rollup feature of Selenium  
+http://sanjitmohanty.wordpress.com/2012/07/06/using-the-rollup-feature-of-selenium/
+* Selenium Tutorial : Testing Strategies
+https://thenewcircle.com/static/bookshelf/selenium_tutorial/testing_strategies.html
+
+However, this feature has the following limitations:
+
+* supported properties of rollup rule:
+** name
+** args
+** expandedCommands or getExpandedCommans
+* cannot access any browser object.
+
 License
 -------
 
