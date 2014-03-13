@@ -154,7 +154,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Test
-    public void test() {
+    public void sendkeys() {
         assumeNot(HtmlUnitDriver.class);
         assumeNot(FirefoxDriver.class);
         execute("sendkeys");
