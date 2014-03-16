@@ -23,7 +23,19 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class RollupRules {
 
+    private static enum EngineType {
+        RHINO("Mozilla Rhino"),
+        NASHORN("Oracle Nashorn");
+
+        public final String engineName;
+
+        private EngineType(String engineName) {
+            this.engineName = engineName;
+        }
+    }
+
     private final ScriptEngine engine;
+    private final EngineType engineType;
     private final Map<String, RollupRule> rollupRules = new HashMap<String, RollupRule>();
 
     /**
@@ -31,6 +43,15 @@ public class RollupRules {
      */
     public RollupRules() {
         engine = new ScriptEngineManager().getEngineByExtension("js");
+        String engineName = engine.getFactory().getEngineName();
+        EngineType engineType = null;
+        for (EngineType et : EngineType.values()) {
+            if (engineName.equals(et.engineName))
+                engineType = et;
+        }
+        if (engineType == null)
+            throw new SeleniumException("Unknown script engine: " + engineName);
+        this.engineType = engineType;
     }
 
     /**
@@ -45,6 +66,8 @@ public class RollupRules {
                 Reader r = null;
                 try {
                     String packageName = RollupManager.class.getPackage().getName();
+                    if (engineType == EngineType.NASHORN)
+                        engine.eval("load('nashorn:mozilla_compat.js');");
                     engine.eval("importPackage(Packages." + packageName + ");");
                     r = new InputStreamReader(is, Charsets.UTF_8);
                     engine.eval(r);
