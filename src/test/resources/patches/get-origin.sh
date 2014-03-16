@@ -10,7 +10,7 @@ fi
 
 javas=(
   com/thoughtworks/selenium/webdriven/WebDriverCommandProcessor.java
-  com/thoughtworks/selenium/webdriven/commands/Windows.java
+  com/thoughtworks/selenium/webdriven/Windows.java
 )
 
 for java in "${javas[@]}"; do
