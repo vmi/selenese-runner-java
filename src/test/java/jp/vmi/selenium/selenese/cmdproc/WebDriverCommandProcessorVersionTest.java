@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class WebDriverCommandProcessorVersionTest {
 
     private static final String ORIG_PKG_URL = "https://selenium.googlecode.com/git/java/client/src/com/thoughtworks/selenium/webdriven/";
-    private static final String[] ORIG_JAVA_FILES = { "WebDriverCommandProcessor.java", "commands/Windows.java" };
+    private static final String[] ORIG_JAVA_FILES = { "WebDriverCommandProcessor.java", "Windows.java" };
     private static final String COPIED_PATH = "/patches/";
 
     private List<String> split(String s) {
