@@ -72,6 +72,9 @@ public class CommandFactory implements ICommandFactory {
 
         // commands for comment
         addConstructor(Comment.class);
+
+        // commands for include
+        addConstructor(Include.class);
     }
 
     private static final String AND_WAIT = "AndWait";
