@@ -17,7 +17,10 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Abstract class for implementing selenese command.
+ * 
+ * @deprecated use {@link AbstractCommand}.
  */
+@Deprecated
 public abstract class Command implements ICommand {
 
     private static final Command NEXT = new Command(-1, "dummy", ArrayUtils.EMPTY_STRING_ARRAY, 0) {
