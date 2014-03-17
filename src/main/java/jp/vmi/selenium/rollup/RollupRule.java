@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.script.JSArray;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.ICommand;
@@ -37,18 +38,17 @@ public class RollupRule implements IRollupRule {
         return (String) rule.get("name");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public CommandList getExpandedCommands(Context context, Map<String, String> rollupArgs) {
         List<Map<String, String>> commands;
         if (rule.containsKey("expandedCommands")) {
-            commands = (List<Map<String, String>>) rule.get("expandedCommands");
+            commands = JSArray.wrap(rule.get("expandedCommands"));
         } else {
             Bindings bindings = new SimpleBindings();
             bindings.put("rule", rule);
             String args = new JSONObject(rollupArgs).toString();
             try {
-                commands = (List<Map<String, String>>) engine.eval("rule.getExpandedCommands(" + args + ")", bindings);
+                commands = JSArray.wrap(engine.eval("rule.getExpandedCommands(" + args + ")", bindings));
             } catch (ScriptException e) {
                 throw new SeleniumException(e);
             }

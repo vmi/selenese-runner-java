@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.script.JSArray;
+
 /**
  * Rollup manager called by user-extention-rollup.js.
  */
@@ -42,9 +44,8 @@ public class RollupManager {
         currentRollupRules.addRule(rule);
         log.info("Added rollup rule: {}", rule.get("name"));
         log.info("- Description: {}", rule.get("description"));
-        @SuppressWarnings("unchecked")
-        List<Map<String, String>> args = (List<Map<String, String>>) rule.get("args");
-        if (args != null) {
+        List<Map<String, String>> args = JSArray.wrap(rule.get("args"));
+        if (args != null && args.size() > 0) {
             log.info("- Arguments:");
             for (Map<String, String> arg : args) {
                 log.info("  + {}: {}", arg.get("name"), arg.get("description"));
