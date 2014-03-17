@@ -15,6 +15,7 @@ import javax.script.ScriptException;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -24,13 +25,17 @@ import com.thoughtworks.selenium.SeleniumException;
 public class RollupRules {
 
     private static enum EngineType {
-        RHINO("Mozilla Rhino"),
-        NASHORN("Oracle Nashorn");
+        RHINO("Rhino"),
+        NASHORN("Nashorn");
 
         public final String engineName;
 
         private EngineType(String engineName) {
             this.engineName = engineName;
+        }
+
+        public boolean matches(String name) {
+            return StringUtils.containsIgnoreCase(name, engineName);
         }
     }
 
@@ -46,8 +51,10 @@ public class RollupRules {
         String engineName = engine.getFactory().getEngineName();
         EngineType engineType = null;
         for (EngineType et : EngineType.values()) {
-            if (engineName.equals(et.engineName))
+            if (et.matches(engineName)) {
                 engineType = et;
+                break;
+            }
         }
         if (engineType == null)
             throw new SeleniumException("Unknown script engine: " + engineName);
