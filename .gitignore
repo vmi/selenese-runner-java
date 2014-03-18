@@ -14,3 +14,5 @@ release.properties
 /chromedriver-original
 /phantomjs
 /phantomjs-original
+\#*
+.\#*
