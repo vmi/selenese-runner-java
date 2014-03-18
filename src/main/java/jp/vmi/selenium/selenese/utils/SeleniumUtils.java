@@ -74,6 +74,7 @@ public class SeleniumUtils {
     /**
      * Convert to String from the result of execute().
      *
+     * @param <T> the type of result object.
      * @param result the result of execute().
      * @return converted string.
      */

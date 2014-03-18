@@ -55,6 +55,7 @@ public abstract class JSArray<E> extends AbstractList<E> {
     /**
      * Wrap JavaScript array object.
      *
+     * @param <E> the type of array element.
      * @param object JavaScript array object.
      * @return wrapped class instance.
      */

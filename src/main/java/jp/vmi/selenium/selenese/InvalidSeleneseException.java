@@ -12,6 +12,7 @@ public class InvalidSeleneseException extends Exception {
      * <p>
      * {@link Throwable#Throwable(Throwable)}
      * </p>
+     * @param cause the cause.
      */
     public InvalidSeleneseException(Throwable cause) {
         super(cause);
@@ -22,6 +23,7 @@ public class InvalidSeleneseException extends Exception {
      * <p>
      * {@link Throwable#Throwable(String)}
      * </p>
+     * @param message the detail message. 
      */
     public InvalidSeleneseException(String message) {
         super(message);

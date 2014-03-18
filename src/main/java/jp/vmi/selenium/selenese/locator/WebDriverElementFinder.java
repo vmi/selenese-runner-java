@@ -25,8 +25,10 @@ import static org.apache.commons.lang3.StringUtils.*;
  * 
  * Note: This does not support ui locator.
  * 
+ * <ul>
  * <li>@see <a href="https://code.google.com/p/selenium/source/browse/ide/main/src/content/selenium-core/reference.html">SeleniumIDE Reference</a>
  * <li>@see <a href="https://code.google.com/p/selenium/source/browse/javascript/selenium-core/scripts/ui-doc.html">UI document</a>
+ * </ul>
  */
 public class WebDriverElementFinder extends ElementFinder {
 

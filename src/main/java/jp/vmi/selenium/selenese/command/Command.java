@@ -39,7 +39,7 @@ public abstract class Command implements ICommand {
      * @param index index number of Command. (1 origin)
      * @param name selenese command name.
      * @param args command arguments.
-     * @param argCnt argument count. (<= args.length)
+     * @param argCnt argument count. (less than or equals to args.length)
      * @param locatorIndexes locator indexes. (0 origin. use NO_LOCATOR_INDEX if no locator)
      */
     public Command(int index, String name, String[] args, int argCnt, int[] locatorIndexes) {
@@ -59,7 +59,7 @@ public abstract class Command implements ICommand {
      * @param index index number of Command. (1 origin)
      * @param name selenese command name.
      * @param args command arguments.
-     * @param argCnt argument count. (<= args.length)
+     * @param argCnt argument count. (less than or equals to args.length)
      */
     public Command(int index, String name, String[] args, int argCnt) {
         this(index, name, args, argCnt, ArrayUtils.EMPTY_INT_ARRAY);

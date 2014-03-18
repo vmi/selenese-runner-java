@@ -11,7 +11,7 @@ import javax.xml.bind.Marshaller;
 import static jp.vmi.junit.result.ObjectFactory.*;
 
 /**
- * Record and output test-suite & test-case results.
+ * Record and output test-suite &amp; test-case results.
  * <p>
  * It expected that this is parsed by Jenkins.
  * </p>
