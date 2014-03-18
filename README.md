@@ -59,8 +59,12 @@ Requirements
 * Java 6 or later.
 * Apache Maven 2.x or later.
 
-Relase Note
------------
+Release Note
+------------
+
+### 1.4.1
+
+* Fix failure on Java8.
 
 ### 1.4.0
 
