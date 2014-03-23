@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.subcommand;
 
 import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.webdriven.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.commands.NoOp;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
@@ -43,5 +44,14 @@ public class WDCommand extends AbstractSubCommand<Object> {
             String message = e.getMessage().replaceFirst("\\s*\\([^()]+\\)$", "");
             throw new SeleniumException(message, e);
         }
+    }
+
+    /**
+     * Test WDCP command is NoOp.
+     *
+     * @return true if WDCP command is NoOp.
+     */
+    public boolean isNoOp() {
+        return seleneseCommand instanceof NoOp;
     }
 }

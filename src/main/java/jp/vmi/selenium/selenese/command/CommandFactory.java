@@ -2,10 +2,12 @@ package jp.vmi.selenium.selenese.command;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,7 +113,7 @@ public class CommandFactory implements ICommandFactory {
 
     /**
      * Register user defined command factory.
-     * 
+     *
      * @deprecated use {@link #registerCommandFactory(ICommandFactory)}.
      *
      * @param factory user defined command factory.
@@ -212,13 +214,11 @@ public class CommandFactory implements ICommandFactory {
     }
 
     /**
-     * Add names of command implemented by selenese-runner.
+     * Get command entries.
      *
-     * @param commandNames collection of command names.
+     * @return command entries.
      */
-    public static void addCommandNames(Collection<String> commandNames) {
-        for (String name : constructorMap.keySet())
-            commandNames.add(name);
-        commandNames.add("store"); // rewrite storeExpression
+    public static Set<Entry<String, Constructor<? extends ICommand>>> getCommandEntries() {
+        return Collections.unmodifiableSet(constructorMap.entrySet());
     }
 }

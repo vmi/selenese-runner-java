@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.subcommand;
 
+import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -38,7 +39,7 @@ public class SubCommandMap {
      * <li>context.getElementFinder() is available.</li>
      * </ul>
      * </div>
-     * 
+     *
      * @param context Selenese Runner context.
      */
     public SubCommandMap(Context context) {
@@ -54,7 +55,7 @@ public class SubCommandMap {
      * Get Selenese Runner context.
      * <br>
      * <b>Internal use only.</b>
-     * 
+     *
      * @return Selenese Runner context.
      */
     @Deprecated
@@ -228,12 +229,20 @@ public class SubCommandMap {
 
     /**
      * Get sub-command.
-     * 
+     *
      * @param commandName sub-command name.
      * @return sub-command, or null if sub-command does not exist.
      */
     public ISubCommand<?> get(String commandName) {
         return subCommands.get(commandName);
+    }
+
+    /**
+     * Get read-only sub-command map.
+     * @return map.
+     */
+    public Map<String, ISubCommand<?>> getMap() {
+        return Collections.unmodifiableMap(subCommands);
     }
 
     /**
