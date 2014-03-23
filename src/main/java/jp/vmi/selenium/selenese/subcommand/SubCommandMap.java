@@ -183,7 +183,7 @@ public class SubCommandMap {
         register(new WaitForPageToLoad(), "waitForPageToLoad", VALUE);
         register(new WaitForPopup(windows), "waitForPopUp", VALUE, VALUE);
         register(new WindowFocus(javascriptLibrary), "windowFocus");
-        register(new WindowMaximize(javascriptLibrary), "windowMaximize");
+        // windowMaximize
 
         // Customized methods.
         // "openWindow"
