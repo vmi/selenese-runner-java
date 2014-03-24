@@ -16,4 +16,4 @@ if [ ! -f $file ]; then
   wget --no-check-certificate $src
 fi
 
-perl ../tools/mk-cmd-list-of-fc.pl $file | dos2unix | sort > cmd-list-of-fc.txt
+ruby ../tools/mk-cmd-list-of-fc.rb $file | dos2unix | sort -df > cmd-list-of-fc.txt

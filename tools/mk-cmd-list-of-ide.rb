@@ -1,21 +1,15 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8 -*-
 
-require 'xmlhash'
+require 'rexml/document'
+include REXML
 
 xml = File.read('../tmp/iedoc-core.xml')
 
-doc = Xmlhash.parse(xml)
-doc['function'].each do |f|
-  name = f["name"]
-  param = f["param"]
-  if param.nil?
-    params = ''
-  elsif param.is_a? Array
-    params = param.map {|e| e["name"]}.join(", ")
-  else
-    params = param["name"]
-  end
+doc = Document.new(xml)
+doc.elements.each('/apidoc/function') do |f|
+  name = f.attribute("name").value
+  # params = f.elements.collect("param") {|p| p.attribute("name").value}.join(", ")
   case name
   when /^(assert|get)([A-Z].*)/
     n = $2

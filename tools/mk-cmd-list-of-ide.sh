@@ -16,4 +16,4 @@ if [ ! -f $file ]; then
   wget $src
 fi
 
-ruby ../tools/mk-cmd-list-of-ide.rb $file | dos2unix | sort > cmd-list-of-ide.txt
+ruby ../tools/mk-cmd-list-of-ide.rb $file | dos2unix | sort -df > cmd-list-of-ide.txt

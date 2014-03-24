@@ -11,6 +11,7 @@ assertAlertPresent
 assertAllButtons
 assertAllFields
 assertAllLinks
+assertAllWindowNames
 assertAllWindowTitles
 assertAttribute
 assertAttributeFromAllWindows
@@ -23,6 +24,7 @@ assertCookie
 assertCookieByName
 assertCookieNotPresent
 assertCookiePresent
+assertCssCount
 assertEditable
 assertElementHeight
 assertElementIndex
@@ -39,6 +41,7 @@ assertNotAlert
 assertNotAllButtons
 assertNotAllFields
 assertNotAllLinks
+assertNotAllWindowNames
 assertNotAllWindowTitles
 assertNotAttribute
 assertNotAttributeFromAllWindows
@@ -47,6 +50,7 @@ assertNotChecked
 assertNotConfirmation
 assertNotCookie
 assertNotCookieByName
+assertNotCssCount
 assertNotEditable
 assertNotElementHeight
 assertNotElementIndex
@@ -68,6 +72,7 @@ assertNotSelectedLabels
 assertNotSelectedValue
 assertNotSelectedValues
 assertNotSomethingSelected
+assertNotSpeed
 assertNotTable
 assertNotText
 assertNotTitle
@@ -85,6 +90,7 @@ assertSelectedLabels
 assertSelectedValue
 assertSelectedValues
 assertSomethingSelected
+assertSpeed
 assertTable
 assertText
 assertTextNotPresent
@@ -96,7 +102,6 @@ assertXpathCount
 assignId
 attachFile
 captureEntirePageScreenshot
-captureScreenshotToString
 check
 chooseCancelOnNextConfirmation
 chooseOkOnNextConfirmation
@@ -109,8 +114,10 @@ controlKeyUp
 createCookie
 deleteAllVisibleCookies
 deleteCookie
+deselectPopUp
 doubleClick
 dragAndDrop
+dragAndDropToObject
 dragdrop
 echo
 endFor
@@ -141,10 +148,14 @@ pause
 refresh
 removeAllSelections
 removeSelection
+rollup
 runScript
 select
 selectFrame
+selectPopUp
 selectWindow
+sendKeys
+setBrowserLogLevel
 setSpeed
 setTimeout
 shiftKeyDown
@@ -155,6 +166,7 @@ storeAlertPresent
 storeAllButtons
 storeAllFields
 storeAllLinks
+storeAllWindowNames
 storeAllWindowTitles
 storeAttribute
 storeAttributeFromAllWindows
@@ -165,6 +177,7 @@ storeConfirmationPresent
 storeCookie
 storeCookieByName
 storeCookiePresent
+storeCssCount
 storeEditable
 storeElementHeight
 storeElementIndex
@@ -188,6 +201,7 @@ storeSelectedLabels
 storeSelectedValue
 storeSelectedValues
 storeSomethingSelected
+storeSpeed
 storeTable
 storeText
 storeTextPresent
@@ -206,6 +220,7 @@ verifyAlertPresent
 verifyAllButtons
 verifyAllFields
 verifyAllLinks
+verifyAllWindowNames
 verifyAllWindowTitles
 verifyAttribute
 verifyAttributeFromAllWindows
@@ -218,6 +233,7 @@ verifyCookie
 verifyCookieByName
 verifyCookieNotPresent
 verifyCookiePresent
+verifyCssCount
 verifyEditable
 verifyElementHeight
 verifyElementIndex
@@ -234,6 +250,7 @@ verifyNotAlert
 verifyNotAllButtons
 verifyNotAllFields
 verifyNotAllLinks
+verifyNotAllWindowNames
 verifyNotAllWindowTitles
 verifyNotAttribute
 verifyNotAttributeFromAllWindows
@@ -242,6 +259,7 @@ verifyNotChecked
 verifyNotConfirmation
 verifyNotCookie
 verifyNotCookieByName
+verifyNotCssCount
 verifyNotEditable
 verifyNotElementHeight
 verifyNotElementIndex
@@ -263,6 +281,7 @@ verifyNotSelectedLabels
 verifyNotSelectedValue
 verifyNotSelectedValues
 verifyNotSomethingSelected
+verifyNotSpeed
 verifyNotTable
 verifyNotText
 verifyNotTitle
@@ -280,6 +299,7 @@ verifySelectedLabels
 verifySelectedValue
 verifySelectedValues
 verifySomethingSelected
+verifySpeed
 verifyTable
 verifyText
 verifyTextNotPresent
@@ -294,6 +314,7 @@ waitForAlertPresent
 waitForAllButtons
 waitForAllFields
 waitForAllLinks
+waitForAllWindowNames
 waitForAllWindowTitles
 waitForAttribute
 waitForAttributeFromAllWindows
@@ -307,6 +328,7 @@ waitForCookie
 waitForCookieByName
 waitForCookieNotPresent
 waitForCookiePresent
+waitForCssCount
 waitForEditable
 waitForElementHeight
 waitForElementIndex
@@ -317,12 +339,14 @@ waitForElementPresent
 waitForElementWidth
 waitForEval
 waitForExpression
+waitForFrameToLoad
 waitForHtmlSource
 waitForLocation
 waitForNotAlert
 waitForNotAllButtons
 waitForNotAllFields
 waitForNotAllLinks
+waitForNotAllWindowNames
 waitForNotAllWindowTitles
 waitForNotAttribute
 waitForNotAttributeFromAllWindows
@@ -331,6 +355,7 @@ waitForNotChecked
 waitForNotConfirmation
 waitForNotCookie
 waitForNotCookieByName
+waitForNotCssCount
 waitForNotEditable
 waitForNotElementHeight
 waitForNotElementIndex
@@ -352,6 +377,7 @@ waitForNotSelectedLabels
 waitForNotSelectedValue
 waitForNotSelectedValues
 waitForNotSomethingSelected
+waitForNotSpeed
 waitForNotTable
 waitForNotText
 waitForNotTitle
@@ -371,6 +397,7 @@ waitForSelectedLabels
 waitForSelectedValue
 waitForSelectedValues
 waitForSomethingSelected
+waitForSpeed
 waitForTable
 waitForText
 waitForTextNotPresent
