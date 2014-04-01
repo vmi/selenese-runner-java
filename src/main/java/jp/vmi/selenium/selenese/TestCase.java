@@ -269,7 +269,7 @@ public class TestCase implements Selenese, ITestCase {
             return result = SUCCESS;
         context.setCurrentTestCase(this);
         context.getCollectionMap().clear();
-        return commandList.execute(context);
+        return result = commandList.execute(context);
     }
 
     @Override
