@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.webdriven.JavascriptLibrary;
 import com.thoughtworks.selenium.webdriven.SeleneseCommand;
+import com.thoughtworks.selenium.webdriven.Timer;
 import com.thoughtworks.selenium.webdriven.commands.*;
 
 import jp.vmi.selenium.selenese.Context;

@@ -34,7 +34,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.SeleniumException;
-import com.thoughtworks.selenium.webdriven.commands.Windows;
+import com.thoughtworks.selenium.webdriven.Windows;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.webdriver.NullDriver;
@@ -166,7 +166,7 @@ public class SeleneseRunnerWindows extends Windows {
    * If none of the windows have <code>window.name = null</code> the last selected one will be
    * re-selected and a {@link SeleniumException} will be thrown.
    * </p>
-   * 
+   *
    * @throws NoSuchWindowException if no window with <code>window.name = null</code> is found.
    */
   @Override
