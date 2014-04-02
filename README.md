@@ -62,6 +62,11 @@ Requirements
 Release Note
 ------------
 
+### 1.4.2
+
+* Catch up Selenium 2.41.0.
+* Fix issue #104.
+
 ### 1.4.1
 
 * Fix failure on Java8.
