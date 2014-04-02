@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Utililities for Selenium. 
+ * Utililities for Selenium.
  */
 public class SeleniumUtils {
 
@@ -36,7 +36,7 @@ public class SeleniumUtils {
 
     /**
      * String-match pattern.
-     * 
+     *
      * @param pattern pattern. prefix is "glob:", "regexp:", "regexpi:", or "exact:".
      * @param input input string.
      * @return true if matched pattern.

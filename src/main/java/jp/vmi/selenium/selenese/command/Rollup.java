@@ -25,7 +25,7 @@ public class Rollup extends AbstractCommand {
     private static final int ARG_KWARGS = 1;
 
     // requirement: kwArgs is trim'ed.
-    private static final Pattern RE_KW_ARGS = Pattern.compile("\\G(\\w+)\\s*=\\s*(?:" // 1 
+    private static final Pattern RE_KW_ARGS = Pattern.compile("\\G(\\w+)\\s*=\\s*(?:" // 1
         + "\"((?:\\\\.|[^\\\"])*)\"" // 2
         + "|'((?:\\\\.|[^\\'])*)'" // 3
         + "|(.*?)" // 4

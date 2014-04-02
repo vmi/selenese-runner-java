@@ -7,7 +7,7 @@ public interface ScreenshotHandler {
 
     /**
      * Get ignore screenshot command flag.
-     * 
+     *
      * @return flag to ignore "captureEntirePageScreenshot"
      */
     boolean isIgnoredScreenshotCommand();

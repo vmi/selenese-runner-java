@@ -59,9 +59,9 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
 
     /**
      * Original list iterator.
-     * 
+     *
      * see {@link ArrayList#listIterator(int)}
-     * 
+     *
      * @param index start index.
      * @return ListIterator.
      */
@@ -95,7 +95,7 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
 
     /**
      * Execute command list.
-     * 
+     *
      * @param context Selenese Runner context.
      * @return result of command list execution.
      */

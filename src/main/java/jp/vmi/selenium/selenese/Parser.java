@@ -66,8 +66,8 @@ public abstract class Parser {
      * @param is input stream of script file. (test-case or test-suite)
      * @param runner Runner object.
      * @return TestCase or TestSuite.
-     * 
-     * @deprecated Replaced by {@link #parse(String, InputStream, ICommandFactory)} 
+     *
+     * @deprecated Replaced by {@link #parse(String, InputStream, ICommandFactory)}
      */
     @Deprecated
     public static Selenese parse(String filename, InputStream is, Runner runner) {
@@ -117,7 +117,7 @@ public abstract class Parser {
      * @param filename selenese script file. (test-case or test-suite)
      * @param runner Runner object.
      * @return TestCase or TestSuite.
-     * 
+     *
      * @deprecated {@link #parse(String, ICommandFactory)}
      */
     @Deprecated
@@ -128,12 +128,12 @@ public abstract class Parser {
     }
 
     /**
-    * Parse file.
-    *
-    * @param filename selenese script file. (test-case or test-suite)
-    * @param commandFactory command factory.
-    * @return TestCase or TestSuite.
-    */
+     * Parse file.
+     *
+     * @param filename selenese script file. (test-case or test-suite)
+     * @param commandFactory command factory.
+     * @return TestCase or TestSuite.
+     */
     public static Selenese parse(String filename, ICommandFactory commandFactory) {
         try {
             return parse(filename, new FileInputStream(filename), commandFactory);

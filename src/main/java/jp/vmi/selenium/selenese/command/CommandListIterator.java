@@ -85,7 +85,7 @@ public class CommandListIterator implements ListIterator<ICommand> {
 
     /**
      * Jump to next of label or command.
-     * 
+     *
      * @param key label string or ICommand object.
      */
     public void jumpToNextOf(Object key) {

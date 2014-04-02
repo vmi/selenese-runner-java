@@ -11,7 +11,7 @@ public interface OptionLocatorHandler {
 
     /**
      * Option locator type.
-     * 
+     *
      * @return option locator type.
      */
     String optionLocatorType();

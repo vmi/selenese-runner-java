@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Wrapper for JavaScript array object.
- * 
+ *
  * @param <E> the type of array element.
  */
 public abstract class JSArray<E> extends AbstractList<E> {

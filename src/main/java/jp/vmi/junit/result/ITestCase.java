@@ -9,7 +9,7 @@ public interface ITestCase extends ITestTarget {
 
     /**
      * Set log recorder.
-     * 
+     *
      * @param logRecorder log recorder.
      */
     void setLogRecorder(LogRecorder logRecorder);

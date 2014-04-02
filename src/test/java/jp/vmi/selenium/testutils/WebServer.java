@@ -118,7 +118,7 @@ public class WebServer {
 
     /**
      * Set FQDN of base URL for android test.
-     * 
+     *
      * @param fqdn FQDN.
      */
     public void setFqdn(String fqdn) {

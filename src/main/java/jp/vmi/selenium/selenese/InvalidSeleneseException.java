@@ -23,7 +23,7 @@ public class InvalidSeleneseException extends Exception {
      * <p>
      * {@link Throwable#Throwable(String)}
      * </p>
-     * @param message the detail message. 
+     * @param message the detail message.
      */
     public InvalidSeleneseException(String message) {
         super(message);

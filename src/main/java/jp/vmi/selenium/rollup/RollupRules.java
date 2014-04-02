@@ -90,7 +90,7 @@ public class RollupRules {
     /**
      * Load rollup rule definitions.
      *
-     * @param filename JavaScript file for rollup rule definitions. 
+     * @param filename JavaScript file for rollup rule definitions.
      */
     public void load(String filename) {
         try {

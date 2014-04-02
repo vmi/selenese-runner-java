@@ -96,7 +96,7 @@ public class TestSuite implements Selenese, ITestSuite {
 
     /**
      * Get stop watch.
-     * 
+     *
      * @return stop watch.
      */
     @Override

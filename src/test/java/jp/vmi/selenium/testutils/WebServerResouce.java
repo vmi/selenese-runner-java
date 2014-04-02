@@ -22,7 +22,7 @@ public class WebServerResouce extends ExternalResource {
 
     /**
      * Get server name.
-     * 
+     *
      * @return server name.
      */
     public String getServerNameString() {
@@ -31,7 +31,7 @@ public class WebServerResouce extends ExternalResource {
 
     /**
      * Get base URL.
-     * 
+     *
      * @return URL.
      */
     public String getBaseURL() {

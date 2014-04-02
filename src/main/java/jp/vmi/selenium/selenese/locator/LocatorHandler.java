@@ -12,7 +12,7 @@ public interface LocatorHandler {
 
     /**
      * Locator type.
-     * 
+     *
      * @return locator type.
      */
     String locatorType();

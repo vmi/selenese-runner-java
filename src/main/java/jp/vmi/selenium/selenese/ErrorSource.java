@@ -32,7 +32,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
 
     /**
      * Is error object?
-     * 
+     *
      * @return true.
      */
     @Override

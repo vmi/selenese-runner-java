@@ -13,7 +13,7 @@ public class CollectionMap extends HashMap<String, Deque<String>> {
 
     /**
      * Create new collection (FIFO).
-     * 
+     *
      * @param collectionName collection name.
      */
     public void addCollection(String collectionName) {

@@ -85,7 +85,7 @@ public class LogRecorder {
 
     /**
      * Log error message.
-     * 
+     *
      * @param message error message.
      */
     public void error(String message) {

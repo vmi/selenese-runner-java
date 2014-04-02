@@ -23,7 +23,7 @@ public interface ITestTarget {
 
     /**
      * Get stop watch.
-     * 
+     *
      * @return stop watch.
      */
     StopWatch getStopWatch();

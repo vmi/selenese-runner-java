@@ -26,8 +26,8 @@ public class StopWatch {
 
     /**
      * Start time.
-     * 
-     * @param nanoTime System.nanoTime() 
+     *
+     * @param nanoTime System.nanoTime()
      * @param currentTimeMillis System.currentTimeMillis()
      */
     public void start(long nanoTime, long currentTimeMillis) {
@@ -45,7 +45,7 @@ public class StopWatch {
     /**
      * End time.
      *
-     * @param nanoTime System.nanoTime() 
+     * @param nanoTime System.nanoTime()
      * @param currentTimeMillis System.currentTimeMillis()
      */
     public void end(long nanoTime, long currentTimeMillis) {
@@ -73,7 +73,7 @@ public class StopWatch {
 
     /**
      * Get nano-second of duration.
-     * 
+     *
      * @return duration (ns)
      */
     public long getDurationNanoSec() {

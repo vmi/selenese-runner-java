@@ -262,7 +262,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * Set URL for overriding selenium.base in Selenese script.
      *
      * @param baseURL base URL.
-     * 
+     *
      * @deprecated Replaced by {@link #setOverridingBaseURL(String)}
      */
     @Deprecated
@@ -291,7 +291,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Set ignore screenshot command flag.
-     * 
+     *
      * @deprecated use {@link #setIgnoredScreenshotCommand(boolean)}
      *
      * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
@@ -312,7 +312,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Get ignore screenshot command flag.
-     * 
+     *
      * @deprecated use {@link #isIgnoredScreenshotCommand()}
      *
      * @return flag to ignore "captureEntirePageScreenshot"
@@ -357,7 +357,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Get initial speed at starting test-suite. (ms)
-     * 
+     *
      * @return initial speed.
      */
     public long getInitialSpeed() {
@@ -366,7 +366,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Set initial speed at starting test-suite. (ms)
-     * 
+     *
      * @param initialSpeed initial speed.
      */
     public void setInitialSpeed(long initialSpeed) {
@@ -564,7 +564,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Initialize HTMLResult.
-     * 
+     *
      * @param dir HTML result directory.
      */
     public void setHtmlResultDir(String dir) {
@@ -578,7 +578,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     /**
      * Finish test.
-     * 
+     *
      * generate index.html for HTML result.
      */
     public void finish() {

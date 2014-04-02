@@ -55,7 +55,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     /**
      * Constructor.
-     * 
+     *
      * @param baseUrl base URL.
      * @param driver WebDriver instance.
      */
@@ -66,7 +66,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     /**
      * Constructor.
      *
-     * @param subCommandMap SubCommandMap instance. 
+     * @param subCommandMap SubCommandMap instance.
      */
     public CustomCommandProcessor(SubCommandMap subCommandMap) {
         super("http://localhost", subCommandMap.getContext().getWrappedDriver()); // dummy
@@ -75,7 +75,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     /**
      * Get SubCommandMap.
-     * 
+     *
      * @return SubCommandMap instance.
      */
     public SubCommandMap getProc() {
@@ -84,7 +84,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     /**
      * Check the method existence.
-     * 
+     *
      * @param methodName method name.
      * @return true if the method exists.
      */
@@ -110,7 +110,7 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
 
     /**
      * Same as "context.getVarsMap().put(varName, value)".
-     * 
+     *
      * @param value value.
      * @param varName variable name.
      */

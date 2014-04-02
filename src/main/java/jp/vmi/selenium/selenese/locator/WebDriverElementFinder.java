@@ -20,11 +20,11 @@ import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * WebDriver Element Locator.
- * 
+ *
  * Fully override the implementation of original ElementFinder.
- * 
+ *
  * Note: This does not support ui locator.
- * 
+ *
  * <ul>
  * <li>@see <a href="https://code.google.com/p/selenium/source/browse/ide/main/src/content/selenium-core/reference.html">SeleniumIDE Reference</a>
  * <li>@see <a href="https://code.google.com/p/selenium/source/browse/javascript/selenium-core/scripts/ui-doc.html">UI document</a>
@@ -37,7 +37,7 @@ public class WebDriverElementFinder extends ElementFinder {
 
     /**
      * Convert to option locator with parent.
-     * 
+     *
      * @param parentLocator parent locator.
      * @param optionLocator child option locator.
      * @return option locator with parent.
@@ -101,7 +101,7 @@ public class WebDriverElementFinder extends ElementFinder {
 
     /**
      * call findElement of superclass.
-     *  
+     *
      * @param driver driver.
      * @param locator locator.
      *

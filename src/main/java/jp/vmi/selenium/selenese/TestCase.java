@@ -130,8 +130,8 @@ public class TestCase implements Selenese, ITestCase {
 
     /**
      * Set SubCommandMap instance for backward compatibility.
-     * 
-     * @param proc SubCommandMap intance. 
+     *
+     * @param proc SubCommandMap intance.
      */
     @Deprecated
     public void setProc(SubCommandMap proc) {
@@ -150,7 +150,7 @@ public class TestCase implements Selenese, ITestCase {
 
     /**
      * Get command list.
-     * 
+     *
      * @return command list.
      */
     public CommandList getCommandList() {
@@ -251,7 +251,7 @@ public class TestCase implements Selenese, ITestCase {
 
     /**
      * Add command to command list.
-     * 
+     *
      * @param commandFactory command factory.
      * @param name command name.
      * @param args command arguments.

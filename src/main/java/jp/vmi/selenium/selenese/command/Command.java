@@ -17,7 +17,7 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Abstract class for implementing selenese command.
- * 
+ *
  * @deprecated use {@link AbstractCommand}.
  */
 @Deprecated
@@ -106,7 +106,7 @@ public abstract class Command implements ICommand {
 
     /**
      * Get result of this command.
-     * 
+     *
      * @return result of this command.
      */
     @Override

@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 /**
  * Factory for user defined command.
- * 
+ *
  * @deprecated use {@link ICommandFactory}.
  */
 @Deprecated

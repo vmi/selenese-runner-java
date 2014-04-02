@@ -5,7 +5,7 @@ import jp.vmi.selenium.selenese.command.ArgumentType;
 
 /**
  * Sub-command interface.
- * 
+ *
  * @param <T> the result type of this sub-command.
  */
 public interface ISubCommand<T> {

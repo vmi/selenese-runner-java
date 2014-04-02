@@ -22,10 +22,10 @@ import static org.junit.Assert.*;
 public class BuiltInCommandTest extends TestBase {
 
     /**
-    * Test of user friendly error message.
-    *
-    * @throws IOException exception.
-    */
+     * Test of user friendly error message.
+     *
+     * @throws IOException exception.
+     */
     @Test
     @Ignore("test fail on buildhive....")
     public void userFriendlyErrorMessage() throws IOException {

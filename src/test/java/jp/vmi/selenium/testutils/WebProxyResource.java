@@ -49,7 +49,7 @@ public class WebProxyResource extends ExternalResource {
 
     /**
      * Get server name.
-     * 
+     *
      * @return server name.
      */
     public String getServerNameString() {

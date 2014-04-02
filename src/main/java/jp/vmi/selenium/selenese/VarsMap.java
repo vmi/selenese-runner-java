@@ -8,7 +8,7 @@ import org.openqa.selenium.Keys;
 import static org.openqa.selenium.Keys.*;
 
 /**
- * Variable Map. 
+ * Variable Map.
  */
 public class VarsMap extends HashMap<String, Object> {
 

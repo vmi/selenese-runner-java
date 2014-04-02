@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  * Included WDCP (WebDriverCommandProcessor) is copyed from Selenium and patched for me.
- * 
+ *
  * This test will fail if original WDCP is changed.
  */
 @SuppressWarnings("javadoc")

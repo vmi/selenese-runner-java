@@ -17,7 +17,7 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get current test-case.
-     * 
+     *
      * @return current test-case.
      */
     TestCase getCurrentTestCase();
@@ -52,7 +52,7 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get CommandFactory instance.
-     * 
+     *
      * @return CommandFactory instance.
      */
     ICommandFactory getCommandFactory();
@@ -120,7 +120,7 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get boolean value of expr.
-     * 
+     *
      * @param expr expression.
      * @return cast from result of expr to Javascript Boolean.
      */
@@ -128,7 +128,7 @@ public interface Context extends WrapsDriver {
 
     /**
      * Get SubCommandMap instance.
-     * 
+     *
      * @return SubCommandMap instance.
      */
     SubCommandMap getSubCommandMap();
@@ -160,7 +160,7 @@ public interface Context extends WrapsDriver {
     void setSpeed(long speed);
 
     /**
-     * Wait according to speed setting. 
+     * Wait according to speed setting.
      */
     void waitSpeed();
 }

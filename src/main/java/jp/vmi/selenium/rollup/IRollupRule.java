@@ -12,7 +12,7 @@ public interface IRollupRule {
 
     /**
      * Get rollup rule name.
-     * 
+     *
      * @return rollup rule name.
      */
     String getName();
@@ -20,7 +20,7 @@ public interface IRollupRule {
     /**
      * Get exapanded command list.
      *
-     * @param context Runner object as Selenese Runner context. 
+     * @param context Runner object as Selenese Runner context.
      * @param rollupArgs arguments for rollup.
      * @return command list.
      */

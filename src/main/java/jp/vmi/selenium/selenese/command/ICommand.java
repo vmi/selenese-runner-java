@@ -31,7 +31,7 @@ public interface ICommand {
 
     /**
      * Convert locators from arguments.
-     * 
+     *
      * @param args the command arguments.
      * @return converted locators.
      */
@@ -58,7 +58,7 @@ public interface ICommand {
 
     /**
      * Get the command result.
-     * 
+     *
      * @return the command result.
      */
     Result getResult();

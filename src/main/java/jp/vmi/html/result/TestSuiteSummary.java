@@ -1,7 +1,7 @@
 package jp.vmi.html.result;
 
 /**
- * Test-suite summary. 
+ * Test-suite summary.
  */
 @SuppressWarnings("javadoc")
 public class TestSuiteSummary {

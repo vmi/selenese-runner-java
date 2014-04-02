@@ -41,7 +41,7 @@ public class ErrorTestCase extends ErrorSource implements ITestCase {
 
     /**
      * Get command list.
-     * 
+     *
      * @return command list.
      */
     public CommandList getCommandList() {

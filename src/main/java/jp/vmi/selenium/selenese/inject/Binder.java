@@ -124,7 +124,7 @@ public class Binder {
 
     /**
      * Constructs CommandList applied aspect.
-     * 
+     *
      * @return CommandList instance.
      */
     public static CommandList newCommandList() {

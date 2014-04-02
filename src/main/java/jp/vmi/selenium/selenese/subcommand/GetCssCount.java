@@ -9,7 +9,7 @@ import jp.vmi.selenium.selenese.Context;
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
 /**
- *  
+ *
  */
 public class GetCssCount extends AbstractSubCommand<Number> {
 

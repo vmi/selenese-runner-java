@@ -7,7 +7,7 @@ import jp.vmi.selenium.selenese.command.ArgumentType;
 /**
  * Base implementation of sub-command.
  *
- * @param <T> the result type of sub-command. 
+ * @param <T> the result type of sub-command.
  */
 public abstract class AbstractSubCommand<T> implements ISubCommand<T> {
 

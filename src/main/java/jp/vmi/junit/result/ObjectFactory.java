@@ -12,7 +12,7 @@ public class ObjectFactory {
 
     /**
      * Create TestCaseResult instance.
-     * 
+     *
      * @param testCase test-case intance.
      * @return TestCaseResult instance.
      */

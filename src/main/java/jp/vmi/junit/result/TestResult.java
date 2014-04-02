@@ -6,8 +6,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * Test result interface. (for TestResult map in JUnitResult)
- * 
- * @param <T> test target type. 
+ *
+ * @param <T> test target type.
  */
 public abstract class TestResult<T extends ITestTarget> {
 
@@ -15,7 +15,7 @@ public abstract class TestResult<T extends ITestTarget> {
 
     /**
      * Set test target.
-     * 
+     *
      * @param testTarget test target.
      */
     public void setTestTarget(T testTarget) {
