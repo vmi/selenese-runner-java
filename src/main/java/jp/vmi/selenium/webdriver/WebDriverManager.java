@@ -66,6 +66,11 @@ public class WebDriverManager implements Supplier<WebDriver> {
     public static final String ANDROID = "android";
 
     /**
+     * SelendroidDriver
+     */
+    public static final String SELENDROID = "selendroid";
+
+    /**
      * System property name for user defined {@link WebDriverFactory}.
      */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";

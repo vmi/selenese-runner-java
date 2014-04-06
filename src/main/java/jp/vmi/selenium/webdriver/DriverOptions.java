@@ -44,6 +44,8 @@ public class DriverOptions {
         IEDRIVER,
         /** --phantomjs */
         PHANTOMJS,
+        /** --selendroid */
+        SELENDROID,
         /** --remote-platform */
         REMOTE_PLATFORM,
         /** --remote-browser */

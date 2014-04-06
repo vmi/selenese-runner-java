@@ -337,6 +337,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>io.selendroid</groupId>
+      <artifactId>selendroid-client</artifactId>
+      <version>0.9.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.3.2</version>

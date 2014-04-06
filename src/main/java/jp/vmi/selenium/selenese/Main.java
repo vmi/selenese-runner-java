@@ -84,7 +84,7 @@ public class Main {
             .hasArg()
             .withArgName("driver")
             .withDescription(
-                "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
+                "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | selendroid | FQCN-of-WebDriverFactory")
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
@@ -159,6 +159,10 @@ public class Main {
         options.addOption(OptionBuilder.withLongOpt("phantomjs")
             .hasArg().withArgName("path")
             .withDescription("path to 'phantomjs' binary. (implies '--driver phantomjs')")
+            .create());
+        options.addOption(OptionBuilder.withLongOpt("selendroid")
+            .hasArg().withArgName("AUT,androidNN[,device|emulator]")
+            .withDescription("Set AUT name, target platform (NN=10-19), and target type (default is emulator). (implies '--driver selendroid')")
             .create());
         options.addOption(OptionBuilder.withLongOpt("xml-result")
             .hasArg().withArgName("dir")
@@ -298,6 +302,8 @@ public class Main {
                     driverName = WebDriverManager.IE;
                 else if (driverOptions.has(DriverOption.PHANTOMJS))
                     driverName = WebDriverManager.PHANTOMJS;
+                else if (driverOptions.has(DriverOption.SELENDROID))
+                    driverName = WebDriverManager.SELENDROID;
             }
             WebDriverManager manager = WebDriverManager.getInstance();
             manager.setWebDriverFactory(driverName);
