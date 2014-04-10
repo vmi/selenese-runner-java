@@ -47,8 +47,8 @@ Usage
         --html-result <dir>                  output HTML results to specified directory.
      -t,--timeout <timeout>                  set timeout (ms) for waiting. (default: 30000 ms)
         --set-speed <speed>                  same as executing setSpeed(ms) command first.
-        --height <height>                    browser height (only phantomjs)
-        --width <width>                      browser width (only phantomjs)
+        --height <height>                    browser height (only phantomjs and firefox)
+        --width <width>                      browser width (only phantomjs and firefox)
      -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
      -h,--help                               show this message.
