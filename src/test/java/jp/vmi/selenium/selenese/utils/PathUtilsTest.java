@@ -31,4 +31,12 @@ public class PathUtilsTest {
         assertThat(PathUtils.concat("../a", "b"), equalTo(sep(parentDir + "/a/b")));
         assertThat(PathUtils.concat("../a", "../b"), equalTo(sep(parentDir + "/b")));
     }
+
+    @Test
+    public void testRelativize() throws Exception {
+        String from = new File(getClass().getResource("/selenese/command").toURI()).getPath();
+        String to = new File(getClass().getResource("/htdocs").toURI()).getPath();
+        String relPath = PathUtils.relativize(from, to);
+        assertThat(relPath, is("../../htdocs/"));
+    }
 }

@@ -2,6 +2,7 @@ package jp.vmi.html.result;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -12,6 +13,7 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 /**
  * HTML result test.
@@ -32,6 +34,7 @@ public class HtmlResultTest {
      * @throws Exception exception.
      */
     @SuppressWarnings("deprecation")
+    @Ignore
     @Test
     public void generateHtmlResultOld() throws Exception {
         //File root = tmpDir.getRoot();
@@ -67,7 +70,11 @@ public class HtmlResultTest {
         //File root = tmpDir.getRoot();
         File root = new File("/tmp");
         Runner runner = new Runner();
-        runner.setDriver(new HtmlUnitDriver(true));
+        WebDriverManager wdm = WebDriverManager.getInstance();
+        wdm.setWebDriverFactory(WebDriverManager.PHANTOMJS);
+        runner.setDriver(wdm.get());
+        runner.setHtmlResultDir(new File(root, "html").getPath());
+        runner.setScreenshotAllDir(new File(root, "img").getPath());
         CommandFactory cf = runner.getCommandFactory();
         String s1name = "suite1";
         TestSuite s1 = Binder.newTestSuite(filename(root, s1name), s1name);
@@ -75,14 +82,13 @@ public class HtmlResultTest {
         TestSuite s2 = Binder.newTestSuite(filename(root, s2name), s2name);
         String c1name = "case1";
         TestCase c1 = Binder.newTestCase(filename(root, c1name), c1name, "http://localhost");
-        c1.addCommand(cf, "echo", "c1");
+        c1.addCommand(cf, "open", "/form.html");
         String c2name = "case2";
         TestCase c2 = Binder.newTestCase(filename(root, c2name), c2name, "http://localhost");
-        c2.addCommand(cf, "echo", "c2");
+        c2.addCommand(cf, "open", "/form2.html");
         s2.addSelenese(c2);
         s1.addSelenese(c1);
         s1.addSelenese(s2);
-        runner.setHtmlResultDir(root.getPath());
         runner.execute(s1);
         runner.finish();
     }

@@ -70,6 +70,15 @@ public class HtmlResult {
     private final TestSuiteTree tree = new TestSuiteTree();
 
     /**
+     * Get HTML result directory.
+     *
+     * @return HTML result directory.
+     */
+    public String getDir() {
+        return htmlResultDir;
+    }
+
+    /**
      * Set HTML result directory.
      *
      * @param dir HTML result directory.
@@ -94,6 +103,7 @@ public class HtmlResult {
         if (engine == null) {
             engine = Engine.createCompilingEngine();
             engine.registerNamedRenderer(new HtmlEscapeRenderer());
+            engine.registerNamedRenderer(new LogRenderer(this));
             engine.registerNamedRenderer(new IndexRenderer());
             engine.registerRenderer(Result.class, new ResultRenderer());
             engine.registerRenderer(Node.class, new NodeRenderer(engine, getTemplate("index-node.html")));

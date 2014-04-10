@@ -71,4 +71,19 @@ public class PathUtils {
         s.append(normalizeSeparator(child));
         return normalizeInternal(s.toString());
     }
+
+    /**
+     * Get relative path.
+     *
+     * @param from from path.
+     * @param to to path.
+     * @return relative path.
+     */
+    public static String relativize(String from, String to) {
+        from = new File(normalize(from)).toURI().toASCIIString();
+        to = new File(normalize(to)).toURI().toASCIIString();
+        int prefixLen = StringUtils.getCommonPrefix(from, to).length();
+        int level = StringUtils.countMatches(from.substring(prefixLen), "/");
+        return StringUtils.repeat("../", level) + to.substring(prefixLen);
+    }
 }
