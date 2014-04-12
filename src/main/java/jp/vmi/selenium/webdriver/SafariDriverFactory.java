@@ -18,6 +18,8 @@ public class SafariDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.safari(), driverOptions);
         caps.merge(driverOptions.getCapabilities());
-        return new SafariDriver(caps);
+        SafariDriver driver = new SafariDriver(caps);
+        setInitialWindowSize(driver, driverOptions);
+        return driver;
     }
 }

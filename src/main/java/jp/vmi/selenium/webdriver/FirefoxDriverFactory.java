@@ -3,8 +3,6 @@ package jp.vmi.selenium.webdriver;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.lang3.math.NumberUtils;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -12,25 +10,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
-import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 /**
  * Factory of {@link FirefoxDriver}.
  */
 public class FirefoxDriverFactory extends WebDriverFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(FirefoxDriverFactory.class);
-
     /**
      * System property name for specifying Firefox binary.
      */
     public static final String WEBDRIVER_FIREFOX_BIN = "webdriver.firefox.bin";
-    private static final int DEFAULT_WIDTH = 1024;
-    private static final int DEFAULT_HEIGHT = 768;
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
@@ -70,15 +61,10 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             profile = new FirefoxProfile();
         }
 
-
-
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.firefox(), driverOptions);
         caps.merge(driverOptions.getCapabilities());
         FirefoxDriver driver = new FirefoxDriver(binary, profile, caps);
-        int width = NumberUtils.toInt(driverOptions.get(DriverOption.WIDTH), DEFAULT_WIDTH);
-        int height = NumberUtils.toInt(driverOptions.get(DriverOption.HEIGHT), DEFAULT_HEIGHT);
-        driver.manage().window().setSize(new Dimension(width, height));
-        log.info("firefox screen size: {}x{}", width, height);
+        setInitialWindowSize(driver, driverOptions);
         return driver;
     }
 }

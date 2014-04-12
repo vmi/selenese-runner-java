@@ -14,6 +14,8 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.htmlUnit(), driverOptions);
         caps.setJavascriptEnabled(true);
         caps.merge(driverOptions.getCapabilities());
-        return new HtmlUnitDriver(caps);
+        HtmlUnitDriver driver = new HtmlUnitDriver(caps);
+        setInitialWindowSize(driver, driverOptions);
+        return driver;
     }
 }

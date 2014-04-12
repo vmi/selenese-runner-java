@@ -3,6 +3,8 @@ package jp.vmi.selenium.webdriver;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +21,10 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 public abstract class WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverFactory.class);
+
+    private static final int DEFAULT_WIDTH = 1024;
+
+    private static final int DEFAULT_HEIGHT = 768;
 
     Map<String, String> environmentVariables = new HashMap<String, String>();
 
@@ -67,6 +73,13 @@ public abstract class WebDriverFactory {
      * @return WebDriver instance.
      */
     public abstract WebDriver newInstance(DriverOptions driverOptions);
+
+    protected void setInitialWindowSize(WebDriver driver, DriverOptions driverOptions) {
+        int width = NumberUtils.toInt(driverOptions.get(WIDTH), DEFAULT_WIDTH);
+        int height = NumberUtils.toInt(driverOptions.get(HEIGHT), DEFAULT_HEIGHT);
+        driver.manage().window().setSize(new Dimension(width, height));
+        log.info("Initial window size: {}x{}", width, height);
+    }
 
     @Override
     public String toString() {

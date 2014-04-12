@@ -178,11 +178,11 @@ public class Main {
             .create());
         options.addOption(OptionBuilder.withLongOpt("height")
             .hasArg().withArgName("height")
-            .withDescription("browser height (only phantomjs and firefox)")
+            .withDescription("set initial height. (excluding mobile)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("width")
             .hasArg().withArgName("width")
-            .withDescription("browser width (only phantomjs and firefox)")
+            .withDescription("set initial width. (excluding mobile)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("define")
             .hasArg().withArgName("key=value or key+=value")

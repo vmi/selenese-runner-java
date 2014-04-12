@@ -32,21 +32,23 @@ public class IEDriverFactory extends WebDriverFactory {
         if (!OS.isFamilyWindows())
             throw new UnsupportedOperationException("Unsupported platform: " + Platform.getCurrent());
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
-        File driver;
+        File executable;
         if (driverOptions.has(IEDRIVER)) {
-            driver = new File(driverOptions.get(IEDRIVER));
-            if (!driver.canExecute())
-                throw new IllegalArgumentException("Missing " + IE_DRIVER_SERVER_EXE + ": " + driver);
+            executable = new File(driverOptions.get(IEDRIVER));
+            if (!executable.canExecute())
+                throw new IllegalArgumentException("Missing " + IE_DRIVER_SERVER_EXE + ": " + executable);
         } else {
-            driver = PathUtils.searchExecutableFile(IE_DRIVER_SERVER_EXE);
-            if (driver == null)
+            executable = PathUtils.searchExecutableFile(IE_DRIVER_SERVER_EXE);
+            if (executable == null)
                 throw new IllegalStateException("Missing " + IE_DRIVER_SERVER_EXE + " in PATH");
         }
         InternetExplorerDriverService service = new InternetExplorerDriverService.Builder()
             .usingAnyFreePort()
-            .usingDriverExecutable(driver)
+            .usingDriverExecutable(executable)
             .build();
         caps.merge(driverOptions.getCapabilities());
-        return new InternetExplorerDriver(service, caps);
+        InternetExplorerDriver driver = new InternetExplorerDriver(service, caps);
+        setInitialWindowSize(driver, driverOptions);
+        return driver;
     }
 }

@@ -21,18 +21,18 @@ public class ChromeDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        File driver;
+        File executable;
         if (driverOptions.has(CHROMEDRIVER)) {
-            driver = new File(driverOptions.get(CHROMEDRIVER));
-            if (!driver.canExecute())
-                throw new IllegalArgumentException("Missing ChromeDriver: " + driver);
+            executable = new File(driverOptions.get(CHROMEDRIVER));
+            if (!executable.canExecute())
+                throw new IllegalArgumentException("Missing ChromeDriver: " + executable);
         } else {
-            driver = PathUtils.searchExecutableFile("chromedriver");
-            if (driver == null)
+            executable = PathUtils.searchExecutableFile("chromedriver");
+            if (executable == null)
                 throw new IllegalStateException("Missing ChromeDriver in PATH");
         }
         ChromeDriverService service = new ChromeDriverService.Builder()
-            .usingDriverExecutable(driver)
+            .usingDriverExecutable(executable)
             .usingAnyFreePort()
             .withEnvironment(getEnvironmentVariables())
             .build();
@@ -42,6 +42,8 @@ public class ChromeDriverFactory extends WebDriverFactory {
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));
         caps.setCapability(ChromeOptions.CAPABILITY, options);
         caps.merge(driverOptions.getCapabilities());
-        return new ChromeDriver(service, caps);
+        ChromeDriver driver = new ChromeDriver(service, caps);
+        setInitialWindowSize(driver, driverOptions);
+        return driver;
     }
 }
