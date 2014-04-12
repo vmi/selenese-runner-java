@@ -39,8 +39,8 @@ public class RollupRules {
         }
     }
 
-    private final ScriptEngine engine;
-    private final EngineType engineType;
+    final ScriptEngine engine;
+    final EngineType engineType;
     private final Map<String, RollupRule> rollupRules = new HashMap<String, RollupRule>();
 
     /**
