@@ -40,6 +40,7 @@ public class JSWrapper {
     /**
      * Evaluate script.
      *
+     * @param <T> result type.
      * @param script script.
      * @param args arguments.
      * @return result.
