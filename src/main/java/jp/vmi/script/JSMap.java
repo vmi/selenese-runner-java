@@ -34,7 +34,9 @@ public class JSMap<K, V> extends AbstractMap<K, V> {
         return wrapper.eval(OBJECT + "[" + ARGS + "[0]]", key);
     }
 
-    private static interface EntrySetCallback<K, V> {
+    // for internal use only, but ScriptEngine requires public scope.
+    @SuppressWarnings("javadoc")
+    public static interface EntrySetCallback<K, V> {
         public void execute(K key, V value);
     }
 
