@@ -24,21 +24,27 @@ public class WebResourcesTest {
     @Rule
     public final WebProxyResource wpr = new WebProxyResource();
 
+    // direct access.
     @Test
     public void testWebResources() throws IOException {
         String baseURL = wsr.getBaseURL();
         String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"));
-        // direct access.
         URL url = new URL(baseURL);
         Object content = url.getContent();
         String actualDirect = IOUtils.toString((InputStream) content);
         assertThat(actualDirect, is(expect));
-        // proxy access.
+    }
+
+    // proxy access.
+    @Test
+    public void testWebProxyResources() throws IOException {
+        String baseURL = wsr.getBaseURL();
+        String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"));
         int proxyPort = wpr.getPort();
         Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(proxyPort));
-        url = new URL(baseURL);
+        URL url = new URL(baseURL);
         URLConnection conn = url.openConnection(proxy);
-        content = conn.getContent();
+        Object content = conn.getContent();
         String actualProxy = IOUtils.toString((InputStream) content);
         assertThat(actualProxy, is(expect));
         assertThat(wpr.getCount(), is(1));
