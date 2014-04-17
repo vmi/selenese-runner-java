@@ -132,6 +132,13 @@ public class WebDriverElementFinder extends ElementFinder {
                 if (!result.isEmpty())
                     return result;
             }
+            List<WebElement> frames = driver.findElements(By.tagName("frame"));
+            for (WebElement frame : frames) {
+                switchTo.frame(frame);
+                result = handler.handle(driver, arg);
+                if (!result.isEmpty())
+                    return result;
+            }
         }
         throw new SeleniumException("Element " + locator + " not found");
     }
