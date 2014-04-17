@@ -66,7 +66,7 @@ Release Note
 
 ### 1.4.4
 
-* Fix issue #108.
+* Fix issues #108, #109.
 
 ### 1.4.3
 
