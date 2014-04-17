@@ -64,6 +64,11 @@ Requirements
 Release Note
 ------------
 
+### 1.4.3
+
+* Add support initial width and height for browsers excluding mobile. (PR #106 by markkimsal, and refined by vmi)
+* Fix issue #100.
+
 ### 1.4.2
 
 * Catch up Selenium 2.41.0.
