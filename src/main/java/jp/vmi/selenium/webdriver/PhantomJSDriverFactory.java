@@ -2,6 +2,7 @@ package jp.vmi.selenium.webdriver;
 
 import java.io.File;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.CustomPhantomJSDriverServiceFactory;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -29,5 +30,10 @@ public class PhantomJSDriverFactory extends WebDriverFactory {
         PhantomJSDriver driver = new PhantomJSDriver(service, caps);
         setInitialWindowSize(driver, driverOptions);
         return driver;
+    }
+
+    @Override
+    protected Dimension getDefaultWindowSize(WebDriver driver) {
+        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 }
