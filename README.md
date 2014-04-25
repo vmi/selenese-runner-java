@@ -67,7 +67,7 @@ Release Note
 ### 1.4.4
 
 * Change the behavior about initial window size: set default size only if driver is htmlunit or phantomjs (i.e. headless drivers). (issue #110)
-* Fix issues #108, #109.
+* Fix issues #107, #108, #109.
 
 ### 1.4.3
 
