@@ -6,7 +6,6 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.thoughtworks.selenium.webdriven.JavascriptLibrary;
 import com.thoughtworks.selenium.webdriven.SeleneseCommand;
-import com.thoughtworks.selenium.webdriven.Timer;
 import com.thoughtworks.selenium.webdriven.commands.*;
 
 import jp.vmi.selenium.selenese.Context;
@@ -23,11 +22,10 @@ public class SubCommandMap {
     private final Map<String, ISubCommand<?>> subCommands = Maps.newHashMap();
     private final boolean enableAlertOverrides = true;
 
-    private final Timer timer = null;
-    private JavascriptLibrary javascriptLibrary = null;
-    private KeyState keyState = null;
-    private AlertOverride alertOverride = null;
-    private SeleneseRunnerWindows windows = null;
+    private final JavascriptLibrary javascriptLibrary;
+    private final KeyState keyState;
+    private final AlertOverride alertOverride;
+    private final SeleneseRunnerWindows windows;
 
     private final Context context;
 
@@ -171,7 +169,7 @@ public class SubCommandMap {
         register(new SelectWindow(windows), "selectWindow", VALUE);
         register(new NoOp(null), "setBrowserLogLevel", VALUE);
         // "setSpeed"
-        register(new SetTimeout(timer), "setTimeout", VALUE);
+        // "setTimeout"
         register(new ShiftKeyDown(keyState), "shiftKeyDown");
         register(new ShiftKeyUp(keyState), "shiftKeyUp");
         register(new Submit(alertOverride, elementFinder), "submit", LOCATOR);

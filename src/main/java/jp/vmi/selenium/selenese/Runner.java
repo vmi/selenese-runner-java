@@ -346,11 +346,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return timeout;
     }
 
-    /**
-     * Set timeout for waiting. (ms)
-     *
-     * @param timeout for waiting.
-     */
+    @Override
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }

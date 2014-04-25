@@ -138,7 +138,14 @@ public interface Context extends WrapsDriver {
      *
      * @return timeout for waiting.
      */
-    public int getTimeout();
+    int getTimeout();
+
+    /**
+     * Set timeout for waiting. (ms)
+     *
+     * @param timeout for waiting.
+     */
+    void setTimeout(int timeout);
 
     /**
      * Reset speed as initial speed.

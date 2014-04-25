@@ -108,6 +108,10 @@ public class NullContext implements Context {
     }
 
     @Override
+    public void setTimeout(int timeout) {
+    }
+
+    @Override
     public void resetSpeed() {
     }
 
