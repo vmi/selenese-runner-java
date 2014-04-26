@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.TargetLocator;
 import org.openqa.selenium.WebElement;
@@ -140,7 +141,7 @@ public class WebDriverElementFinder extends ElementFinder {
                     return result;
             }
         }
-        throw new SeleniumException("Element " + locator + " not found");
+        throw new SeleniumException("Element " + locator + " not found", new NoSuchElementException(locator));
     }
 
     private List<WebElement> filterElementsByOptionLocator(List<WebElement> elements, String option) {
