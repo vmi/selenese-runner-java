@@ -1,12 +1,16 @@
 package jp.vmi.junit.result;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
+import org.apache.commons.io.IOUtils;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
 
@@ -20,11 +24,16 @@ import static jp.vmi.junit.result.ObjectFactory.*;
  */
 public final class JUnitResult {
 
+    /** filename of failsafe-summary. */
+    public static final String FAILSAFE_SUMMARY_FILENAME = "failsafe-summary.xml";
+
     private String xmlResultDir = null;
 
     private final JAXBContext context = initContext();
 
     private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
+
+    private boolean isSuccess = true;
 
     private JAXBContext initContext() {
         try {
@@ -128,6 +137,7 @@ public final class JUnitResult {
     public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
+        isSuccess = false;
     }
 
     /**
@@ -140,5 +150,28 @@ public final class JUnitResult {
     public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
+        isSuccess = false;
+    }
+
+    /**
+     * Generate "failsafe-summary.xml" into XML result directory.
+     */
+    public void generateFailsafeSummary() {
+        if (xmlResultDir == null)
+            return;
+        PrintStream ps = null;
+        try {
+            File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
+            ps = new PrintStream(file, "UTF-8");
+            ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            ps.print("<failsafe-summary");
+            if (!isSuccess)
+                ps.print(" result=\"255\"");
+            ps.println("/>");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(ps);
+        }
     }
 }

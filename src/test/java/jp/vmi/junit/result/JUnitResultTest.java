@@ -2,29 +2,72 @@ package jp.vmi.junit.result;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
+import javax.xml.namespace.QName;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
+import static javax.xml.xpath.XPathConstants.*;
+import static jp.vmi.junit.result.JUnitResultTest.RegexMatcher.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
 /**
  * Test of {@link JUnitResult}.
  */
+@SuppressWarnings("javadoc")
 public class JUnitResultTest {
 
-    /** temporary folder. */
+    // See http://piotrga.wordpress.com/2009/03/27/hamcrest-regex-matcher/
+    public static class RegexMatcher extends BaseMatcher<String> {
+
+        private final String regex;
+
+        public RegexMatcher(String regex) {
+            this.regex = regex;
+        }
+
+        @Override
+        public boolean matches(Object o) {
+            return ((String) o).matches(regex);
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("matches regex=");
+        }
+
+        public static RegexMatcher matches(String regex) {
+            return new RegexMatcher(regex);
+        }
+    }
+
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
 
-    /** JUnit result instance. */
     public JUnitResult jur;
+
+    public XPath xpath;
 
     /**
      * initialize for test.
@@ -35,6 +78,7 @@ public class JUnitResultTest {
     public void init() throws IOException {
         jur = new JUnitResult();
         jur.setDir(tmp.getRoot().getPath());
+        xpath = XPathFactory.newInstance().newXPath();
     }
 
     /**
@@ -51,9 +95,9 @@ public class JUnitResultTest {
      * @throws Exception exception.
      */
     @Test
-    @SuppressWarnings("unused")
-    public void testAll() throws Exception {
-        Date now = new Date();
+    public void testJUnitResult() throws Exception {
+        Calendar start = Calendar.getInstance();
+        start.set(Calendar.MILLISECOND, 0);
         final ITestSuite testSuite = new ITestSuite() {
             private final StopWatch stopWatch = new StopWatch();
 
@@ -167,53 +211,102 @@ public class JUnitResultTest {
                 e.printStackTrace();
             }
         }
+
+        // test-suite test.
         File resultFile = new File(tmp.getRoot(), "TEST-" + testSuite.getName() + ".xml");
-        //        List<SuiteResult> suiteResults = JenkinsSuiteResult.parse(resultFile);
-        //        // test-suite test.
-        //        SuiteResult suiteResult = suiteResults.get(0);
-        //        assertEquals("test-suite", suiteResult.getName());
-        //        float d = suiteResult.getDuration();
-        //        assertTrue(0 < d && d < 1.0);
-        //        String timestamp = suiteResult.getTimestamp();
-        //        Date suiteTimestamp = DateUtils.parseIso8601DateTime(timestamp);
-        //        long delta = suiteTimestamp.getTime() - now.getTime();
-        //        assertTrue(delta <= 1000);
-        //        List<CaseResult> caseResults = suiteResult.getCases();
-        //        CaseResult caseResult;
-        //        // test-case 0 test.
-        //        caseResult = caseResults.get(0);
-        //        assertNotSame(Result.UNSTABLE, caseResult.getBuildResult());
-        //        assertEquals("test-suite", caseResult.getClassName());
-        //        assertEquals("test-case0", caseResult.getDisplayName());
-        //        assertTrue(caseResult.getDuration() < 0.2);
-        //        assertNull(caseResult.getErrorDetails());
-        //        assertNull(caseResult.getErrorStackTrace());
-        //        assertEquals(1, caseResult.getPassCount());
-        //        assertEquals(0, caseResult.getFailCount());
-        //        assertEquals(0, caseResult.getSkipCount());
-        //        assertTrue(caseResult.getStdout().matches("(?s).*systemOut00.*\n.*systemOut01.*\n.*systemOut02.*"));
-        //        assertTrue(caseResult.getStderr().matches("(?s).*systemErr00.*\n.*systemErr01.*\n.*systemErr02.*"));
-        //        // test-case 1 test.
-        //        caseResult = caseResults.get(1);
-        //        assertEquals(Result.UNSTABLE, caseResult.getBuildResult());
-        //        assertEquals("detail1", caseResult.getErrorDetails());
-        //        assertEquals("trace1", caseResult.getErrorStackTrace());
-        //        assertEquals(0, caseResult.getPassCount());
-        //        assertEquals(1, caseResult.getFailCount());
-        //        assertEquals(0, caseResult.getSkipCount());
-        //        // test-case 2 test.
-        //        caseResult = caseResults.get(2);
-        //        assertEquals(Result.UNSTABLE, caseResult.getBuildResult());
-        //        assertEquals("detail2", caseResult.getErrorDetails());
-        //        assertEquals("trace2", caseResult.getErrorStackTrace());
-        //        assertEquals(0, caseResult.getPassCount());
-        //        assertEquals(1, caseResult.getFailCount());
-        //        assertEquals(0, caseResult.getSkipCount());
-        //        // test-case 3 test.
-        //        caseResult = caseResults.get(3);
-        //        assertNotSame(Result.UNSTABLE, caseResult.getBuildResult());
-        //        assertEquals(0, caseResult.getPassCount());
-        //        assertEquals(0, caseResult.getFailCount());
-        //        assertEquals(1, caseResult.getSkipCount());
+        Element suiteResult = (Element) xpath.evaluate("/testsuite", new InputSource(resultFile.getPath()), NODE);
+        assertThat(suiteResult.getAttribute("name"), is("test-suite"));
+        assertThat("test-suite:time", Double.parseDouble(suiteResult.getAttribute("time")), lessThan(1.0));
+        String timestamp = suiteResult.getAttribute("timestamp");
+        Date suiteTimestamp = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.parse(timestamp);
+        assertThat(suiteTimestamp, greaterThanOrEqualTo(start.getTime()));
+
+        // test-case test.
+        NodeList caseResults = getChild(suiteResult, "testcase", NODESET);
+        assertThat("test-case:count", caseResults.getLength(), is(4));
+
+        Element caseResult;
+        Element error;
+        Element failure;
+        boolean skipped;
+        String sysout;
+        String syserr;
+
+        // test-case 0 test.
+        caseResult = (Element) caseResults.item(0);
+        assertThat("test-case[0]:name", caseResult.getAttribute("name"), is("test-case0"));
+        assertThat("test-case[0]:time", Double.parseDouble(caseResult.getAttribute("time")), lessThan(0.2));
+
+        error = getChild(caseResult, "error", NODE);
+        failure = getChild(caseResult, "failure", NODE);
+        skipped = getChild(caseResult, "skipped", BOOLEAN);
+        assertThat("test-case[0]:error", error, is(nullValue()));
+        assertThat("test-case[0]:failure", failure, is(nullValue()));
+        assertThat("test-case[0]:skipped", skipped, is(false));
+
+        sysout = getChild(caseResult, "system-out", STRING);
+        syserr = getChild(caseResult, "system-err", STRING);
+        assertThat("test-case[0]:system-out", sysout, matches("(?s).*systemOut00.*\n.*systemOut01.*\n.*systemOut02.*"));
+        assertThat("test-case[0]:system-err", syserr, matches("(?s).*systemErr00.*\n.*systemErr01.*\n.*systemErr02.*"));
+
+        // test-case 1 test.
+        caseResult = (Element) caseResults.item(1);
+        assertThat("test-case[1]:name", caseResult.getAttribute("name"), is("test-case1"));
+
+        error = getChild(caseResult, "error", NODE);
+        failure = getChild(caseResult, "failure", NODE);
+        skipped = getChild(caseResult, "skipped", BOOLEAN);
+        assertThat("test-case[1]:error", error.getTextContent(), is("trace1"));
+        assertThat("test-case[1]:error@message", error.getAttribute("message"), is("detail1"));
+        assertThat("test-case[1]:failure", failure, is(nullValue()));
+        assertThat("test-case[1]:skipped", skipped, is(false));
+
+        // test-case 2 test.
+        caseResult = (Element) caseResults.item(2);
+        assertThat("test-case[2]:name", caseResult.getAttribute("name"), is("test-case2"));
+
+        error = getChild(caseResult, "error", NODE);
+        failure = getChild(caseResult, "failure", NODE);
+        skipped = getChild(caseResult, "skipped", BOOLEAN);
+        assertThat("test-case[2]:error", error, is(nullValue()));
+        assertThat("test-case[2]:failure", failure.getTextContent(), is("trace2"));
+        assertThat("test-case[2]:failure@message", failure.getAttribute("message"), is("detail2"));
+        assertThat("test-case[2]:skipped", skipped, is(false));
+
+        // test-case 3 test.
+        caseResult = (Element) caseResults.item(3);
+        assertThat("test-case[3]:name", caseResult.getAttribute("name"), is("test-case3"));
+
+        error = getChild(caseResult, "error", NODE);
+        failure = getChild(caseResult, "failure", NODE);
+        skipped = getChild(caseResult, "skipped", BOOLEAN);
+        assertThat("test-case[3]:error", error, is(nullValue()));
+        assertThat("test-case[3]:failure", failure, is(nullValue()));
+        assertThat("test-case[2]:skipped", skipped, is(true));
+
+        // failsafe summary.
+        jur.generateFailsafeSummary();
+        File summaryFile = new File(tmp.getRoot(), JUnitResult.FAILSAFE_SUMMARY_FILENAME);
+        Element summary = (Element) xpath.evaluate("/failsafe-summary", new InputSource(summaryFile.getPath()), NODE);
+        assertThat("failsafe-summary", summary, is(not(nullValue())));
+        assertThat("failsafe-summary@result", summary.getAttribute("result"), is("255"));
+    }
+
+    @Test
+    public void testFailsafeSummaryOnSuccess() throws Exception {
+        jur.generateFailsafeSummary();
+        File summaryFile = new File(tmp.getRoot(), JUnitResult.FAILSAFE_SUMMARY_FILENAME);
+        Element summary = (Element) xpath.evaluate("/failsafe-summary", new InputSource(summaryFile.getPath()), NODE);
+        assertThat("failsafe-summary", summary, is(not(nullValue())));
+        assertThat("failsafe-summary@result", summary.getAttribute("result"), isEmptyOrNullString());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getChild(Node node, String name, QName type) {
+        try {
+            return (T) xpath.evaluate("./" + name, node, type);
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

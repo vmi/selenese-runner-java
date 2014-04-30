@@ -578,6 +578,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * generate index.html for HTML result.
      */
     public void finish() {
+        jUnitResult.generateFailsafeSummary();
         htmlResult.generateIndex();
     }
 
