@@ -228,7 +228,7 @@ public class JUnitResultTest {
         Element caseResult;
         Element error;
         Element failure;
-        boolean skipped;
+        Boolean skipped;
         String sysout;
         String syserr;
 
@@ -242,7 +242,7 @@ public class JUnitResultTest {
         skipped = getChild(caseResult, "skipped", BOOLEAN);
         assertThat("test-case[0]:error", error, is(nullValue()));
         assertThat("test-case[0]:failure", failure, is(nullValue()));
-        assertThat("test-case[0]:skipped", skipped, is(false));
+        assertThat("test-case[0]:skipped", skipped, is(Boolean.FALSE));
 
         sysout = getChild(caseResult, "system-out", STRING);
         syserr = getChild(caseResult, "system-err", STRING);
@@ -259,7 +259,7 @@ public class JUnitResultTest {
         assertThat("test-case[1]:error", error.getTextContent(), is("trace1"));
         assertThat("test-case[1]:error@message", error.getAttribute("message"), is("detail1"));
         assertThat("test-case[1]:failure", failure, is(nullValue()));
-        assertThat("test-case[1]:skipped", skipped, is(false));
+        assertThat("test-case[1]:skipped", skipped, is(Boolean.FALSE));
 
         // test-case 2 test.
         caseResult = (Element) caseResults.item(2);
@@ -271,7 +271,7 @@ public class JUnitResultTest {
         assertThat("test-case[2]:error", error, is(nullValue()));
         assertThat("test-case[2]:failure", failure.getTextContent(), is("trace2"));
         assertThat("test-case[2]:failure@message", failure.getAttribute("message"), is("detail2"));
-        assertThat("test-case[2]:skipped", skipped, is(false));
+        assertThat("test-case[2]:skipped", skipped, is(Boolean.FALSE));
 
         // test-case 3 test.
         caseResult = (Element) caseResults.item(3);
@@ -282,7 +282,7 @@ public class JUnitResultTest {
         skipped = getChild(caseResult, "skipped", BOOLEAN);
         assertThat("test-case[3]:error", error, is(nullValue()));
         assertThat("test-case[3]:failure", failure, is(nullValue()));
-        assertThat("test-case[2]:skipped", skipped, is(true));
+        assertThat("test-case[2]:skipped", skipped, is(Boolean.TRUE));
 
         // failsafe summary.
         jur.generateFailsafeSummary();
