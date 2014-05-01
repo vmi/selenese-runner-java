@@ -27,6 +27,7 @@ import org.xml.sax.InputSource;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
+import static java.lang.Boolean.*;
 import static javax.xml.xpath.XPathConstants.*;
 import static jp.vmi.junit.result.JUnitResultTest.RegexMatcher.*;
 import static org.hamcrest.Matchers.*;
@@ -242,7 +243,7 @@ public class JUnitResultTest {
         skipped = getChild(caseResult, "skipped", BOOLEAN);
         assertThat("test-case[0]:error", error, is(nullValue()));
         assertThat("test-case[0]:failure", failure, is(nullValue()));
-        assertThat("test-case[0]:skipped", skipped, is(Boolean.FALSE));
+        assertThat("test-case[0]:skipped", skipped, is(FALSE));
 
         sysout = getChild(caseResult, "system-out", STRING);
         syserr = getChild(caseResult, "system-err", STRING);
@@ -259,7 +260,7 @@ public class JUnitResultTest {
         assertThat("test-case[1]:error", error.getTextContent(), is("trace1"));
         assertThat("test-case[1]:error@message", error.getAttribute("message"), is("detail1"));
         assertThat("test-case[1]:failure", failure, is(nullValue()));
-        assertThat("test-case[1]:skipped", skipped, is(Boolean.FALSE));
+        assertThat("test-case[1]:skipped", skipped, is(FALSE));
 
         // test-case 2 test.
         caseResult = (Element) caseResults.item(2);
@@ -271,7 +272,7 @@ public class JUnitResultTest {
         assertThat("test-case[2]:error", error, is(nullValue()));
         assertThat("test-case[2]:failure", failure.getTextContent(), is("trace2"));
         assertThat("test-case[2]:failure@message", failure.getAttribute("message"), is("detail2"));
-        assertThat("test-case[2]:skipped", skipped, is(Boolean.FALSE));
+        assertThat("test-case[2]:skipped", skipped, is(FALSE));
 
         // test-case 3 test.
         caseResult = (Element) caseResults.item(3);
@@ -282,7 +283,7 @@ public class JUnitResultTest {
         skipped = getChild(caseResult, "skipped", BOOLEAN);
         assertThat("test-case[3]:error", error, is(nullValue()));
         assertThat("test-case[3]:failure", failure, is(nullValue()));
-        assertThat("test-case[2]:skipped", skipped, is(Boolean.TRUE));
+        assertThat("test-case[2]:skipped", skipped, is(TRUE));
 
         // failsafe summary.
         jur.generateFailsafeSummary();
