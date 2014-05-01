@@ -102,4 +102,13 @@ public class ObjectFactory {
         e.setValue(value);
         return e;
     }
+
+    /**
+     * Create FailsafeSummary instance.
+     *
+     * @return FailsafeSummary instance.
+     */
+    public FailsafeSummary createFailsafeSummary() {
+        return new FailsafeSummary();
+    }
 }

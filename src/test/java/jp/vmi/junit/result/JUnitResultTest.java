@@ -203,15 +203,8 @@ public class JUnitResultTest {
         jur.endTestCase(tc);
         testSuite.getStopWatch().end();
         jur.endTestSuite(testSuite);
-        for (File file : tmp.getRoot().listFiles()) {
-            try {
-                System.out.printf("[%s]%n", file);
-                String body = FileUtils.readFileToString(file, "UTF-8");
-                System.out.println(body);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        jur.generateFailsafeSummary();
+        dumpFiles();
 
         // test-suite test.
         File resultFile = new File(tmp.getRoot(), "TEST-" + testSuite.getName() + ".xml");
@@ -286,20 +279,45 @@ public class JUnitResultTest {
         assertThat("test-case[2]:skipped", skipped, is(TRUE));
 
         // failsafe summary.
-        jur.generateFailsafeSummary();
         File summaryFile = new File(tmp.getRoot(), JUnitResult.FAILSAFE_SUMMARY_FILENAME);
         Element summary = (Element) xpath.evaluate("/failsafe-summary", new InputSource(summaryFile.getPath()), NODE);
         assertThat("failsafe-summary", summary, is(not(nullValue())));
         assertThat("failsafe-summary@result", summary.getAttribute("result"), is("255"));
+        assertThat("failsafe-summary@timeout", summary.getAttribute("timeout"), is("false"));
+        assertThat("failsafe-summary/completed", (String) getChild(summary, "completed", STRING), is("1"));
+        assertThat("failsafe-summary/errors", (String) getChild(summary, "errors", STRING), is("1"));
+        assertThat("failsafe-summary/failures", (String) getChild(summary, "failures", STRING), is("1"));
+        assertThat("failsafe-summary/skipped", (String) getChild(summary, "skipped", STRING), is("1"));
+        assertThat("failsafe-summary/failureMessage", (String) getChild(summary, "failureMessage", STRING), isEmptyString());
     }
 
     @Test
     public void testFailsafeSummaryOnSuccess() throws Exception {
         jur.generateFailsafeSummary();
+        dumpFiles();
+
         File summaryFile = new File(tmp.getRoot(), JUnitResult.FAILSAFE_SUMMARY_FILENAME);
         Element summary = (Element) xpath.evaluate("/failsafe-summary", new InputSource(summaryFile.getPath()), NODE);
         assertThat("failsafe-summary", summary, is(not(nullValue())));
         assertThat("failsafe-summary@result", summary.getAttribute("result"), isEmptyOrNullString());
+        assertThat("failsafe-summary@timeout", summary.getAttribute("timeout"), is("false"));
+        assertThat("failsafe-summary/completed", (String) getChild(summary, "completed", STRING), is("0"));
+        assertThat("failsafe-summary/errors", (String) getChild(summary, "errors", STRING), is("0"));
+        assertThat("failsafe-summary/failures", (String) getChild(summary, "failures", STRING), is("0"));
+        assertThat("failsafe-summary/skipped", (String) getChild(summary, "skipped", STRING), is("0"));
+        assertThat("failsafe-summary/failureMessage", (String) getChild(summary, "failureMessage", STRING), isEmptyString());
+    }
+
+    private void dumpFiles() {
+        for (File file : tmp.getRoot().listFiles()) {
+            try {
+                System.out.printf("[%s]%n", file);
+                String body = FileUtils.readFileToString(file, "UTF-8");
+                System.out.println(body);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

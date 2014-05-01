@@ -1,16 +1,12 @@
 package jp.vmi.junit.result;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-
-import org.apache.commons.io.IOUtils;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
 
@@ -33,7 +29,7 @@ public final class JUnitResult {
 
     private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
 
-    private boolean isSuccess = true;
+    private final FailsafeSummary failsafeSummary = factory.createFailsafeSummary();
 
     private JAXBContext initContext() {
         try {
@@ -114,7 +110,8 @@ public final class JUnitResult {
      * @param testCase test-case instance.
      */
     public void endTestCase(ITestCase testCase) {
-        map.remove(testCase);
+        TestCaseResult caseResult = (TestCaseResult) map.remove(testCase);
+        failsafeSummary.skipped += caseResult.getSkipped();
     }
 
     /**
@@ -125,6 +122,7 @@ public final class JUnitResult {
     public void setSuccess(ITestCase testCase) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setSuccess();
+        failsafeSummary.completed++;
     }
 
     /**
@@ -137,7 +135,7 @@ public final class JUnitResult {
     public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
-        isSuccess = false;
+        failsafeSummary.errors++;
     }
 
     /**
@@ -150,7 +148,7 @@ public final class JUnitResult {
     public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
-        isSuccess = false;
+        failsafeSummary.failures++;
     }
 
     /**
@@ -159,19 +157,14 @@ public final class JUnitResult {
     public void generateFailsafeSummary() {
         if (xmlResultDir == null)
             return;
-        PrintStream ps = null;
         try {
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
-            ps = new PrintStream(file, "UTF-8");
-            ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            ps.print("<failsafe-summary");
-            if (!isSuccess)
-                ps.print(" result=\"255\"");
-            ps.println("/>");
-        } catch (IOException e) {
+            marshaller.marshal(failsafeSummary, file);
+        } catch (JAXBException e) {
             throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(ps);
         }
     }
 }
