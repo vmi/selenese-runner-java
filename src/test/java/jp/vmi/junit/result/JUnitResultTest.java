@@ -284,7 +284,7 @@ public class JUnitResultTest {
         assertThat("failsafe-summary", summary, is(not(nullValue())));
         assertThat("failsafe-summary@result", summary.getAttribute("result"), is("255"));
         assertThat("failsafe-summary@timeout", summary.getAttribute("timeout"), is("false"));
-        assertThat("failsafe-summary/completed", (String) getChild(summary, "completed", STRING), is("1"));
+        assertThat("failsafe-summary/completed", (String) getChild(summary, "completed", STRING), is("3"));
         assertThat("failsafe-summary/errors", (String) getChild(summary, "errors", STRING), is("1"));
         assertThat("failsafe-summary/failures", (String) getChild(summary, "failures", STRING), is("1"));
         assertThat("failsafe-summary/skipped", (String) getChild(summary, "skipped", STRING), is("1"));

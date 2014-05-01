@@ -135,6 +135,7 @@ public final class JUnitResult {
     public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
+        failsafeSummary.completed++;
         failsafeSummary.errors++;
     }
 
@@ -148,6 +149,7 @@ public final class JUnitResult {
     public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
+        failsafeSummary.completed++;
         failsafeSummary.failures++;
     }
 
