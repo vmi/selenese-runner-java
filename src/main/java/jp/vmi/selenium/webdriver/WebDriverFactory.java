@@ -76,7 +76,7 @@ public abstract class WebDriverFactory {
 
     protected void setInitialWindowSize(WebDriver driver, DriverOptions driverOptions) {
         Dimension size;
-        if (driverOptions.has(WIDTH) || !driverOptions.has(HEIGHT)) {
+        if (driverOptions.has(WIDTH) || driverOptions.has(HEIGHT)) {
             int width = NumberUtils.toInt(driverOptions.get(WIDTH), DEFAULT_WIDTH);
             int height = NumberUtils.toInt(driverOptions.get(HEIGHT), DEFAULT_HEIGHT);
             size = new Dimension(width, height);
