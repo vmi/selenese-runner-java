@@ -164,7 +164,7 @@ public class SubCommandMap {
         register(new RemoveSelection(javascriptLibrary, elementFinder), "removeSelection", LOCATOR, OPTION_LOCATOR);
         // "runScript"
         register(new SelectOption(alertOverride, javascriptLibrary, elementFinder), "select", LOCATOR, OPTION_LOCATOR);
-        register(new SelectFrame(windows), "selectFrame", LOCATOR);
+        // "selectFrame"
         register(new SelectPopUp(windows), "selectPopUp", VALUE);
         register(new SelectWindow(windows), "selectWindow", VALUE);
         register(new NoOp(null), "setBrowserLogLevel", VALUE);

@@ -19,13 +19,10 @@ import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
@@ -38,6 +35,7 @@ import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
@@ -584,15 +582,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public void highlight(String locator, HighlightStyle highlightStyle) {
-        WebElement element;
-        try {
-            element = elementFinder.findElement(driver, locator);
-        } catch (SeleniumException e) {
-            // element specified by locator is not found.
+        List<Locator> selectedFrameLocators = elementFinder.getCurrentFrameLocators();
+        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, elementFinder, locator, selectedFrameLocators);
+        if (prevStyles == null)
             return;
-        }
-        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, element);
-        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, element);
+        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, locator, selectedFrameLocators);
         styleBackups.push(backup);
     }
 
@@ -600,7 +594,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void unhighlight() {
         while (!styleBackups.isEmpty()) {
             HighlightStyleBackup backup = styleBackups.pop();
-            backup.restore(driver);
+            backup.restore(driver, elementFinder);
         }
     }
 }

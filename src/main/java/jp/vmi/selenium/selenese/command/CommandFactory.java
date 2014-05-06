@@ -46,6 +46,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(RunScript.class);
         addConstructor(Highlight.class);
         addConstructor(WindowMaximize.class);
+        addConstructor(SelectFrame.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);
