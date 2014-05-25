@@ -79,6 +79,12 @@ public class DriverIndependentTest extends TestCaseTestBase {
     }
 
     @Test
+    public void setTimeout() throws IllegalArgumentException {
+        execute("setTimeout");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void emptyFile() throws IOException {
         execute("empty");
         assertThat(result, is(instanceOf(Error.class)));

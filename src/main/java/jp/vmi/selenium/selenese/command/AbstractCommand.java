@@ -108,7 +108,7 @@ public abstract class AbstractCommand implements ICommand {
                 locators[i++] = arg;
                 break;
             case ATTRIBUTE_LOCATOR:
-                int at = arg.indexOf('@');
+                int at = arg.lastIndexOf('@');
                 locators[i++] = at >= 0 ? arg.substring(0, at) : arg;
                 break;
             case OPTION_LOCATOR:

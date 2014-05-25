@@ -20,11 +20,16 @@ import static jp.vmi.junit.result.ObjectFactory.*;
  */
 public final class JUnitResult {
 
+    /** filename of failsafe-summary. */
+    public static final String FAILSAFE_SUMMARY_FILENAME = "failsafe-summary.xml";
+
     private String xmlResultDir = null;
 
     private final JAXBContext context = initContext();
 
     private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
+
+    private final FailsafeSummary failsafeSummary = factory.createFailsafeSummary();
 
     private JAXBContext initContext() {
         try {
@@ -105,7 +110,8 @@ public final class JUnitResult {
      * @param testCase test-case instance.
      */
     public void endTestCase(ITestCase testCase) {
-        map.remove(testCase);
+        TestCaseResult caseResult = (TestCaseResult) map.remove(testCase);
+        failsafeSummary.skipped += caseResult.getSkipped();
     }
 
     /**
@@ -116,6 +122,7 @@ public final class JUnitResult {
     public void setSuccess(ITestCase testCase) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setSuccess();
+        failsafeSummary.completed++;
     }
 
     /**
@@ -128,6 +135,8 @@ public final class JUnitResult {
     public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
+        failsafeSummary.completed++;
+        failsafeSummary.errors++;
     }
 
     /**
@@ -140,5 +149,24 @@ public final class JUnitResult {
     public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
+        failsafeSummary.completed++;
+        failsafeSummary.failures++;
+    }
+
+    /**
+     * Generate "failsafe-summary.xml" into XML result directory.
+     */
+    public void generateFailsafeSummary() {
+        if (xmlResultDir == null)
+            return;
+        try {
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
+            marshaller.marshal(failsafeSummary, file);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -46,12 +46,14 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(RunScript.class);
         addConstructor(Highlight.class);
         addConstructor(WindowMaximize.class);
+        addConstructor(SelectFrame.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Pause.class);
         addConstructor(SetSpeed.class);
+        addConstructor(SetTimeout.class);
         addConstructor(Rollup.class);
 
         // commands of selenium-ide-flowcontrol

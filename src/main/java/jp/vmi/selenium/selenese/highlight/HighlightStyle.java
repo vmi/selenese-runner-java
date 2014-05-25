@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.highlight;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -8,6 +9,9 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import jp.vmi.selenium.selenese.locator.Locator;
+import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
 /**
  * Highlight style.
@@ -60,20 +64,22 @@ public class HighlightStyle {
      * Do highlight specified element.
      *
      * @param driver instance of WebDriver.
-     * @param element target element.
+     * @param elementFinder element finder.
+     * @param locator locator to target element.
+     * @param selectedFrameLocators selected frame locators.
      * @return previous style.
      */
     @SuppressWarnings("unchecked")
-    public Map<String, String> doHighlight(WebDriver driver, WebElement element) {
+    public Map<String, String> doHighlight(WebDriver driver, WebDriverElementFinder elementFinder, String locator, List<Locator> selectedFrameLocators) {
         try {
+            WebElement element = elementFinder.findElement(driver, locator, selectedFrameLocators);
             Object result = ((JavascriptExecutor) driver).executeScript(SCRIPT, element, styles);
             return result instanceof Map ? (Map<String, String>) result : null;
-        } catch (StaleElementReferenceException e) {
-            // target element disappeared.
-            return null;
-        } catch (NotFoundException e) {
-            // target window/frame disappeared.
-            return null;
+        } catch (RuntimeException e) {
+            // element specified by locator is not found.
+            if (e instanceof NotFoundException || e.getCause() instanceof NotFoundException || e instanceof StaleElementReferenceException)
+                return null;
+            throw e;
         }
     }
 }
