@@ -23,7 +23,8 @@ done
 ### GhostDriver
 
 java=org/openqa/selenium/phantomjs/PhantomJSDriverService.java
+f=${java##*/}
 
-if [ ! -f "$java" ]; then
+if [ ! -f "$f" ]; then
   wget https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/$java
 fi
