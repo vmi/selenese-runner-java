@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
+import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.StopWatch;
@@ -116,6 +117,7 @@ public class TestSuite implements Selenese, ITestSuite {
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Context context) {
+        context.setLatestPageInformation(PageInformation.EMPTY);
         context.resetSpeed();
         for (Selenese selenese : seleneseList) {
             Result r;

@@ -37,6 +37,7 @@ import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -77,6 +78,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final CollectionMap collectionMap = new CollectionMap();
     private final RollupRules rollupRules = new RollupRules();
     private final Deque<HighlightStyleBackup> styleBackups;
+
+    private PageInformation latestPageInformation = PageInformation.EMPTY;
 
     private int countForDefault = 0;
 
@@ -450,6 +453,16 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public WebDriverElementFinder getElementFinder() {
         return elementFinder;
+    }
+
+    @Override
+    public PageInformation getLatestPageInformation() {
+        return latestPageInformation;
+    }
+
+    @Override
+    public void setLatestPageInformation(PageInformation pageInformation) {
+        this.latestPageInformation = pageInformation;
     }
 
     /**

@@ -8,6 +8,7 @@ import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
@@ -170,4 +171,18 @@ public interface Context extends WrapsDriver {
      * Wait according to speed setting.
      */
     void waitSpeed();
+
+    /**
+     * Get latest page information.
+     *
+     * @return page information.
+     */
+    PageInformation getLatestPageInformation();
+
+    /**
+     * Set latest page information.
+     *
+     * @param pageInformation page information.
+     */
+    void setLatestPageInformation(PageInformation pageInformation);
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Cookie Test</title>
+  <script type="text/javascript" src="cookie.js"></script>
+  <script type="text/javascript"><!--
+    function getValue(key) {
+      return document.getElementsByName(key)[0].value;
+    }
+    function setCookieByForm() {
+      var key = getValue('key');
+      var value = getValue('value');
+      var expireDays = getValue('expireDays');
+      setCookie(key, value, expireDays);
+    }
+  // --></script>
+</head>
+<body>
+  <h1>Cookie Test</h1>
+  <hr>
+  <ul>
+    <li>Key: <input type="text" name="key"></li>
+    <li>Value: <input type="text" name="value"></li>
+    <li>Expire Days: <input type="text" name="expireDays"></li>
+    <li><input id="set" type="button" value="Set" onclick="setCookieByForm()"></li>
+  </ul>
+</body>
+</html>

@@ -67,6 +67,7 @@ public abstract class TestCaseTestBase extends TestBase {
         xmlResult = null;
         try {
             String scriptFile = TestUtils.getScriptFile(scriptName);
+            runner.setJUnitResultDir(xmlResultDir.getRoot().getPath());
             result = runner.run(scriptFile);
             if (testSuites.isEmpty()) {
                 xmlResult = null;
