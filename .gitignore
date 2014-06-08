@@ -5,6 +5,7 @@ target/
 tmp/
 *.log
 *.jpage
+TestTest.java
 TEST-*.xml
 pom.xml.releaseBackup
 release.properties
