@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.log.CookieFilter;
+
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ICommand;
@@ -26,12 +28,13 @@ public class CommandLogInterceptor implements MethodInterceptor {
     private void logResult(LogRecorder clr, String indent, String cmdStr, Result result, Context context) {
         PageInformation prevInfo = context.getLatestPageInformation();
         PageInformation info = new PageInformation(context);
+        CookieFilter cookieFilter = context.getCookieFilter();
         String prefix = indent + "- Cookie: ";
         if (result.isFailed()) {
             String resStr = info.getFirstMessage(prevInfo, indent, cmdStr, "=>", result.toString());
             log.error(resStr);
             clr.error(resStr);
-            for (String message : info.cookieMap.allMessages()) {
+            for (String message : info.cookieMap.allMessages(cookieFilter)) {
                 log.error(prefix + message);
                 clr.error(prefix + message);
             }
@@ -41,9 +44,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
             clr.info(resStr);
             List<String> messages;
             if (info.isSameOrigin(prevInfo))
-                messages = info.cookieMap.diffMessages(prevInfo.cookieMap);
+                messages = info.cookieMap.diffMessages(cookieFilter, prevInfo.cookieMap);
             else
-                messages = info.cookieMap.allMessages();
+                messages = info.cookieMap.allMessages(cookieFilter);
             for (String message : messages) {
                 log.info(prefix + message);
                 clr.info(prefix + message);

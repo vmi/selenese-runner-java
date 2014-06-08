@@ -32,32 +32,39 @@ public class CookieMap extends TreeMap<CookieKey, CookieValue> {
     /**
      * Get all cookies as string.
      *
+     * @param cookieFilter cookie filter.
+     *
      * @return list of cookie string.
      */
-    public List<String> allMessages() {
+    public List<String> allMessages(CookieFilter cookieFilter) {
         List<String> list = new ArrayList<String>();
         for (CookieValue value : values())
-            list.add(value.toString());
+            if (cookieFilter.isPass(value.key.name))
+                list.add(value.toString());
         return list;
     }
 
     /**
      * Get differential cookies as string.
      *
+     * @param cookieFilter cookie filter.
      * @param prev previous cookie map.
+     *
      * @return list of differential cookie string.
      */
-    public List<String> diffMessages(CookieMap prev) {
+    public List<String> diffMessages(CookieFilter cookieFilter, CookieMap prev) {
         List<String> list = new ArrayList<String>();
         for (CookieValue value : values()) {
-            CookieValue prevValue = prev.get(value.key);
-            if (prevValue == null)
-                list.add("[add] " + value);
-            else if (!value.equals(prevValue))
-                list.add("[mod] " + value);
+            if (cookieFilter.isPass(value.key.name)) {
+                CookieValue prevValue = prev.get(value.key);
+                if (prevValue == null)
+                    list.add("[add] " + value);
+                else if (!value.equals(prevValue))
+                    list.add("[mod] " + value);
+            }
         }
         for (CookieKey key : prev.keySet()) {
-            if (!containsKey(key))
+            if (cookieFilter.isPass(key.name) && !containsKey(key))
                 list.add("[del] " + key);
         }
         return list;

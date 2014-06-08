@@ -21,6 +21,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -192,6 +194,10 @@ public class Main {
             .hasArg().withArgName("file")
             .withDescription("define rollup rule by JavaScript. (multiple)")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("cookie-filter")
+            .hasArg().withArgName("+RE|-RE")
+            .withDescription("filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is ignoring)")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
@@ -314,6 +320,24 @@ public class Main {
                 String[] rollups = cli.getOptionValues("rollup");
                 for (String rollup : rollups)
                     runner.getRollupRules().load(rollup);
+            }
+            if (cli.hasOption("cookie-filter")) {
+                String cookieFilter = cli.getOptionValue("cookie-filter");
+                if (cookieFilter.length() < 2)
+                    throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
+                FilterType filterType;
+                switch (cookieFilter.charAt(0)) {
+                case '+':
+                    filterType = FilterType.PASS;
+                    break;
+                case '-':
+                    filterType = FilterType.SKIP;
+                    break;
+                default:
+                    throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
+                }
+                String pattern = cookieFilter.substring(1);
+                runner.setCookieFilter(new CookieFilter(filterType, pattern));
             }
             runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
             runner.setHtmlResultDir(cli.getOptionValue("html-result"));

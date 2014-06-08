@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.WebDriver;
 
+import jp.vmi.selenium.selenese.log.CookieFilter;
+
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
@@ -136,5 +138,14 @@ public class NullContext implements Context {
 
     @Override
     public void setLatestPageInformation(PageInformation pageInformation) {
+    }
+
+    @Override
+    public CookieFilter getCookieFilter() {
+        return null;
+    }
+
+    @Override
+    public void setCookieFilter(CookieFilter cookieFilter) {
     }
 }

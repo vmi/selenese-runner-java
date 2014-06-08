@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import org.openqa.selenium.internal.WrapsDriver;
 
+import jp.vmi.selenium.selenese.log.CookieFilter;
+
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
@@ -185,4 +187,18 @@ public interface Context extends WrapsDriver {
      * @param pageInformation page information.
      */
     void setLatestPageInformation(PageInformation pageInformation);
+
+    /**
+     * Get cookie filter.
+     *
+     * @return cookie filter.
+     */
+    CookieFilter getCookieFilter();
+
+    /**
+     * Set cookie filter.
+     *
+     * @param cookieFilter cookie filter.
+     */
+    void setCookieFilter(CookieFilter cookieFilter);
 }
