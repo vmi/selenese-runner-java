@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -21,8 +22,11 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.safari.SafariDriver;
 
+import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Success;
+import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -167,6 +171,105 @@ public class DriverDependentTest extends TestCaseTestBase {
         runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         execute("rollup");
         assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void cookie() {
+        execute("cookie");
+        assertThat(result, is(instanceOf(Warning.class)));
+        List<String> actual = getSystemOut(new Filter() {
+            private boolean fetch = false;
+
+            @Override
+            public String filter(String line) {
+                if (!fetch && line.contains("deleteAllVisibleCookies")) {
+                    fetch = true;
+                } else if (fetch && line.contains("- Cookie:")) {
+                    return line
+                        .replaceFirst("^\\[[^\\]]+\\]\\s+", "") // suppress timestamp.
+                        .replaceFirst("domain=\\*", "domain=localhost"); // fixup safari driver's bug.
+                }
+                return null;
+            }
+        });
+        assertThat(actual, is(equalTo(Arrays.asList(
+            "[INFO] - Cookie: [add] key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [add] key2=[value2] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [add] key3=[value3] (domain=localhost, path=/, expire=*)",
+            "[ERROR] - Cookie: key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[ERROR] - Cookie: key2=[value2] (domain=localhost, path=/, expire=*)",
+            "[ERROR] - Cookie: key3=[value3] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [mod] key2=[VALUE_TWO] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [del] key3 (domain=localhost, path=/)"))));
+
+        testSuites.clear();
+        execute("cookie2");
+        assertThat(result, is(instanceOf(Success.class)));
+        List<String> actual2 = getSystemOut(new Filter() {
+
+            @Override
+            public String filter(String line) {
+                if (line.contains("- Cookie:")) {
+                    return line
+                        .replaceFirst("^\\[[^\\]]+\\]\\s+", "") // suppress timestamp.
+                        .replaceFirst("domain=\\*", "domain=localhost"); // fixup safari driver's bug.
+                }
+                return null;
+            }
+        });
+        assertThat(actual2, is(equalTo(Arrays.asList(
+            "[INFO] - Cookie: key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: key2=[VALUE_TWO] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [del] key1 (domain=localhost, path=/)",
+            "[INFO] - Cookie: [del] key2 (domain=localhost, path=/)"))));
+    }
+
+    @Test
+    public void cookieFilter() {
+        runner.setCookieFilter(new CookieFilter(FilterType.SKIP, "key2"));
+        execute("cookie");
+        assertThat(result, is(instanceOf(Warning.class)));
+        List<String> actual = getSystemOut(new Filter() {
+            private boolean fetch = false;
+
+            @Override
+            public String filter(String line) {
+                if (!fetch && line.contains("deleteAllVisibleCookies")) {
+                    fetch = true;
+                } else if (fetch && line.contains("- Cookie:")) {
+                    return line
+                        .replaceFirst("^\\[[^\\]]+\\]\\s+", "") // suppress timestamp.
+                        .replaceFirst("domain=\\*", "domain=localhost"); // fixup safari driver's bug.
+                }
+                return null;
+            }
+        });
+        assertThat(actual, is(equalTo(Arrays.asList(
+            "[INFO] - Cookie: [add] key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [add] key3=[value3] (domain=localhost, path=/, expire=*)",
+            "[ERROR] - Cookie: key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[ERROR] - Cookie: key3=[value3] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [del] key3 (domain=localhost, path=/)"))));
+
+        testSuites.clear();
+        runner.setCookieFilter(new CookieFilter(FilterType.PASS, "key1"));
+        execute("cookie2");
+        assertThat(result, is(instanceOf(Success.class)));
+        List<String> actual2 = getSystemOut(new Filter() {
+
+            @Override
+            public String filter(String line) {
+                if (line.contains("- Cookie:")) {
+                    return line
+                        .replaceFirst("^\\[[^\\]]+\\]\\s+", "") // suppress timestamp.
+                        .replaceFirst("domain=\\*", "domain=localhost"); // fixup safari driver's bug.
+                }
+                return null;
+            }
+        });
+        assertThat(actual2, is(equalTo(Arrays.asList(
+            "[INFO] - Cookie: key1=[value1] (domain=localhost, path=/, expire=*)",
+            "[INFO] - Cookie: [del] key1 (domain=localhost, path=/)"))));
     }
 
     @Test

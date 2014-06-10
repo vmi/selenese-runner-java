@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
@@ -59,7 +62,6 @@ public abstract class TestCaseTestBase extends TestBase {
         runner.setOverridingBaseURL(wsr.getBaseURL());
         runner.setScreenshotDir(screenshotDir.getRoot().getPath());
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
-        runner.setJUnitResultDir(xmlResultDir.getRoot().getPath());
     }
 
     protected void execute(String scriptName) {
@@ -80,5 +82,34 @@ public abstract class TestCaseTestBase extends TestBase {
         } finally {
             runner.setJUnitResultDir(null);
         }
+    }
+
+    protected static interface Filter {
+        String filter(String line);
+    }
+
+    protected List<String> getSystemOut(Filter filter) {
+        List<String> list = new ArrayList<String>();
+        Pattern re = Pattern.compile("<system-out>(.*?)</system-out>", Pattern.DOTALL);
+        Matcher m = re.matcher(xmlResult);
+        if (!m.find())
+            return list;
+        String systemOut = StringEscapeUtils.unescapeXml(m.group(1));
+        for (String line : systemOut.split("\r?\n|\r")) {
+            String filtered = filter.filter(line);
+            if (filtered != null)
+                list.add(filtered);
+        }
+        return list;
+    }
+
+    protected List<String> listFilter(Filter filter, List<String> src) {
+        List<String> dst = new ArrayList<String>();
+        for (String line : src) {
+            String filtered = filter.filter(line);
+            if (filtered != null)
+                dst.add(filtered);
+        }
+        return dst;
     }
 }
