@@ -53,6 +53,7 @@ Usage
         --width <width>                      set initial width. (excluding mobile)
      -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
+        --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
      -h,--help                               show this message.
 
 Requirements
@@ -83,14 +84,14 @@ Options
 
 If you want to add command line options to PhantomJS binary, add following options:
 
-    java -jar selenese-runner-java --driver phantomjs \
+    java -jar selenese-runner.jar --driver phantomjs \
       --define phantomjs.cli.args+=ARG1 \
       --define phantomjs.cli.args+=ARG2 \
       ...
 
 Example:
 
-    java -jar selenese-runner-java --driver phantomjs \
+    java -jar selenese-runner.jar --driver phantomjs \
       --define phantomjs.cli.args+=--ssl-certificates-path=/path/to/certs-dir/
       ...
 
@@ -112,6 +113,20 @@ However, this feature has the following limitations:
 ** args
 ** expandedCommands or getExpandedCommans
 * cannot access any browser object.
+
+### Cookie filter
+
+You can filter cookies to log by the regular expression matching the name.
+
+Example:
+
+* logging the cookie whose name ends with "ID":
+
+    java -jar selenese-runner.jar --cookie-filter +'ID$' ...
+
+* don't logging the cookie whose name contains "__utm":
+
+    java -jar selenese-runner.jar --cookie-filter -__utm ...
 
 License
 -------
