@@ -51,7 +51,7 @@ public class WebDriverCommandProcessorVersionTest {
         log.info("git pull");
         while ((line = r.readLine()) != null)
             log.info("[{}]", line);
-        assertThat(gitPull.exitValue(), is(0));
+        assertThat(gitPull.waitFor(), is(0));
         // check diff.
         File pkgDir = new File(seleniumDir, ORIG_PKG_DIR);
         for (String javaFile : ORIG_JAVA_FILES) {
