@@ -16,6 +16,7 @@ import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static org.apache.xerces.impl.Constants.*;
 
@@ -164,7 +165,7 @@ public abstract class Parser {
     protected final Document docucment;
 
     protected Parser(String filename, Document document) {
-        this.filename = filename;
+        this.filename = PathUtils.normalizeSeparator(filename);
         this.docucment = document;
     }
 

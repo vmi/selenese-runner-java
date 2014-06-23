@@ -72,4 +72,18 @@ public class PathUtils {
         }
         return null;
     }
+
+    private static final Pattern SEP_RE = Pattern.compile("[/\\\\]");
+
+    /**
+     * Normalize filename separator.
+     *
+     * @param filename filename with any platform separator.
+     * @return normalized filename.
+     */
+    public static String normalizeSeparator(String filename) {
+        if (filename == null)
+            return null;
+        return SEP_RE.matcher(filename).replaceAll(File.separator);
+    }
 }

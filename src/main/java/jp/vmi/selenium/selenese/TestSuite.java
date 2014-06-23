@@ -13,6 +13,7 @@ import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
@@ -40,7 +41,7 @@ public class TestSuite implements Selenese, ITestSuite {
      * @return this.
      */
     public TestSuite initialize(String filename, String name) {
-        this.filename = filename;
+        this.filename = PathUtils.normalizeSeparator(filename);
         if (filename != null)
             this.parentDir = FilenameUtils.getFullPathNoEndSeparator(filename);
         if (name != null)

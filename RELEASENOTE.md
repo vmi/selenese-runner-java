@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 2.42.2.
 * Logging cookie information only when the cookie is added, modified or deleted. (issue #117)
 * Add new option "--cookie-filter", You can filter cookies to log by the regular expression matching the name. (issue #117)
+* Normalize filename separator of test-case/test-suite. (issue #122)
 
 ### 1.4.5
 

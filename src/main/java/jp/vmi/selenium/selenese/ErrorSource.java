@@ -5,6 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import jp.vmi.junit.result.ITestTarget;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
 /**
@@ -25,7 +26,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
      * @return this.
      */
     public ErrorSource initialize(String filename, InvalidSeleneseException e) {
-        this.filename = filename;
+        this.filename = PathUtils.normalizeSeparator(filename);
         this.e = e;
         return this;
     }

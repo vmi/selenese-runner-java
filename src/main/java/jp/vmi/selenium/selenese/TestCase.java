@@ -15,6 +15,7 @@ import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -68,7 +69,7 @@ public class TestCase implements Selenese, ITestCase {
      * @return this.
      */
     public TestCase initialize(String filename, String name, String baseURL) {
-        this.filename = filename;
+        this.filename = PathUtils.normalizeSeparator(filename);
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;

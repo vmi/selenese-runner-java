@@ -41,6 +41,7 @@ import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 import static org.openqa.selenium.remote.CapabilityType.*;
@@ -154,9 +155,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
-        if (File.separatorChar != '\\' && filename.contains("\\"))
-            filename = filename.replace('\\', File.separatorChar);
-        File file = new File(filename);
+        File file = new File(PathUtils.normalizeSeparator(filename));
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName());
         takeScreenshot(tss, file);
