@@ -82,6 +82,7 @@ public class TestSuite implements Selenese, ITestSuite {
      * @param commandFactory command factory.
      */
     public void addSeleneseFile(String filename, ICommandFactory commandFactory) {
+        filename = PathUtils.normalizeSeparator(filename);
         if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
             filename = FilenameUtils.concat(parentDir, filename);
         addSelenese(Parser.parse(filename, commandFactory));
