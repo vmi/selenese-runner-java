@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.utils;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.OS;
@@ -73,7 +74,8 @@ public class PathUtils {
         return null;
     }
 
-    private static final Pattern SEP_RE = Pattern.compile("[/\\\\]");
+    private static final Pattern SEP_REGEX = Pattern.compile("[/\\\\]");
+    private static final String SEP_REPL = Matcher.quoteReplacement(File.separator);
 
     /**
      * Normalize filename separator.
@@ -84,6 +86,6 @@ public class PathUtils {
     public static String normalizeSeparator(String filename) {
         if (filename == null)
             return null;
-        return SEP_RE.matcher(filename).replaceAll(File.separator);
+        return SEP_REGEX.matcher(filename).replaceAll(SEP_REPL);
     }
 }
