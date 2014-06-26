@@ -26,6 +26,7 @@ public abstract class WebDriverFactory {
 
     protected static final int DEFAULT_HEIGHT = 768;
 
+    @Deprecated
     Map<String, String> environmentVariables = new HashMap<String, String>();
 
     /**
@@ -62,6 +63,7 @@ public abstract class WebDriverFactory {
      *
      * @return environment variable map.
      */
+    @Deprecated
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }

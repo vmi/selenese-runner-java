@@ -2,20 +2,24 @@ package jp.vmi.selenium.webdriver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Supplier;
+import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * Manager of {@link WebDriver} instances.
  */
-public class WebDriverManager implements Supplier<WebDriver> {
+public class WebDriverManager implements WebDriverPreparator {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverManager.class);
 
@@ -65,6 +69,26 @@ public class WebDriverManager implements Supplier<WebDriver> {
     @Deprecated
     public static final String ANDROID = "android";
 
+    private static class Builder {
+        private final WebDriverFactory factory;
+        private final DriverOptions driverOptions;
+        public WebDriver driver;
+
+        public Builder(WebDriverFactory factory, DriverOptions driverOptions) {
+            this.factory = factory;
+            this.driverOptions = driverOptions;
+        }
+
+        public String getKey() {
+            return factory.getClass().getCanonicalName() + driverOptions.toString();
+        }
+
+        public Builder build() {
+            driver = factory.newInstance(driverOptions);
+            return this;
+        }
+    }
+
     /**
      * System property name for user defined {@link WebDriverFactory}.
      */
@@ -78,8 +102,9 @@ public class WebDriverManager implements Supplier<WebDriver> {
 
     private DriverOptions driverOptions = new DriverOptions();
 
-    private final Map<String, WebDriver> driverMap = new HashMap<String, WebDriver>();
+    private final Map<String, Builder> driverMap = new HashMap<String, Builder>();
 
+    @Deprecated
     private final Map<String, String> environmentVariables = new HashMap<String, String>();
 
     /**
@@ -211,62 +236,103 @@ public class WebDriverManager implements Supplier<WebDriver> {
      * Get environment variable map.
      *
      * @return environment variable map.
+     *
+     * @deprecated use {@link DriverOptions#getEnvVars()}.
      */
+    @Deprecated
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }
 
-    @Override
-    public synchronized WebDriver get() throws IllegalArgumentException {
-        factory.getEnvironmentVariables().clear();
-        factory.getEnvironmentVariables().putAll(getEnvironmentVariables());
+    private boolean isBrowserUnreachable(Throwable t) {
+        if (t instanceof UnreachableBrowserException)
+            return true;
+        while (t instanceof SeleniumException)
+            t = t.getCause();
+        if (t instanceof WebDriverException && StringUtils.contains(t.getMessage(), "not reachable"))
+            return true;
+        return false;
+    }
 
-        String key = factory.getClass().getCanonicalName() + driverOptions.toString();
-        WebDriver driver = driverMap.get(key);
-        if (driver != null) {
-            try {
-                log.info("Existing driver found.");
-                driver.getWindowHandle();
-            } catch (NoSuchWindowException e) {
-                log.info("No focused window.");
-                Set<String> handles = driver.getWindowHandles();
-                if (handles.isEmpty()) {
-                    log.warn("No window exists.");
-                    try {
-                        driver.quit();
-                    } catch (Throwable e2) {
-                        // no operation
-                    } finally {
-                        driverMap.remove(key);
-                        driver = null;
-                    }
-                } else {
-                    log.info("Activate a window.");
-                    driver.switchTo().window(handles.iterator().next());
-                }
+    private boolean reprepare(WebDriver driver, String message) {
+        try {
+            driver.getWindowHandle();
+            // ChromeDriver does not send UnreachableBrowserException.
+            // TODO fix me when ChromeDriver is fixed.
+            if (driver instanceof ChromeDriver)
+                driver.getTitle();
+            if (message != null)
+                log.info(message);
+            return true;
+        } catch (NoSuchWindowException e) {
+            log.info("No focused window.");
+            Set<String> handles = driver.getWindowHandles();
+            if (!handles.isEmpty()) {
+                log.info("Activate a window.");
+                driver.switchTo().window(handles.iterator().next());
+                return true;
+            }
+            log.warn("No window exists.");
+        } catch (RuntimeException e) {
+            if (!isBrowserUnreachable(e))
+                throw e;
+            log.warn("Browser might crash.");
+        }
+        try {
+            driver.quit();
+        } catch (Throwable e) {
+            // no operation
+        }
+        return false;
+    }
+
+    private synchronized WebDriver get(Builder builder) throws IllegalArgumentException {
+        String key = builder.getKey();
+        Builder prevBuilder = driverMap.get(key);
+        if (prevBuilder != null) {
+            WebDriver driver = prevBuilder.driver;
+            if (reprepare(driver, "Existing driver found."))
+                return driver;
+        }
+        if (isSingleInstance)
+            quitAllDrivers();
+        driverMap.put(builder.getKey(), builder.build());
+        log.info("Initialized: {}", getDriverName(builder.driver));
+        return builder.driver;
+    }
+
+    @Override
+    public WebDriver get() throws IllegalArgumentException {
+        DriverOptions dopts = new DriverOptions(driverOptions);
+        dopts.getEnvVars().putAll(environmentVariables); // for backward compaitibility.
+        return get(new Builder(factory, dopts));
+    }
+
+    @Override
+    public WebDriver reprepare(WebDriver driver) {
+        if (reprepare(driver, null))
+            return driver;
+        for (Entry<String, Builder> entry : driverMap.entrySet()) {
+            Builder builder = entry.getValue();
+            if (driver == builder.driver) {
+                log.info("Restart driver.");
+                return builder.build().driver;
             }
         }
-        if (driver == null) {
-            if (isSingleInstance)
-                quitAllDrivers();
-            driver = factory.newInstance(driverOptions);
-            log.info("Initialized: {}", getDriverName(driver));
-            driverMap.put(key, driver);
-        }
-        return driver;
+        throw new IllegalArgumentException("The driver is not managed by WebDriverManager: " + driver);
     }
 
     /**
      * Quit all WebDriver instances.
      */
     public synchronized void quitAllDrivers() {
-        for (WebDriver driver : driverMap.values()) {
+        for (Builder builder : driverMap.values()) {
             try {
-                driver.quit();
+                builder.driver.quit();
             } catch (Exception e) {
                 log.warn(e.getMessage());
             } finally {
-                log.info("Quit: {}", getDriverName(driver));
+                log.info("Quit: {}", getDriverName(builder.driver));
             }
         }
         driverMap.clear();

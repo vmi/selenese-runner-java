@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,7 @@ public class DriverOptions {
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
+    private final HashMap<String, String> envVars = Maps.newHashMap();
 
     /**
      * Constructs empty options.
@@ -82,6 +84,17 @@ public class DriverOptions {
             else
                 addDefinitions(cli.getOptionValues("define"));
         }
+    }
+
+    /**
+     * Constructs clone of DriverOptions.
+     *
+     * @param other other DriverOptions.
+     */
+    public DriverOptions(DriverOptions other) {
+        map.putAll(other.map);
+        caps.merge(other.caps);
+        envVars.putAll(other.envVars);
     }
 
     /**
@@ -165,6 +178,23 @@ public class DriverOptions {
         return this;
     }
 
+    /**
+     * Get environment variables map.
+     *
+     * @return environment variables map.
+     */
+    public Map<String, String> getEnvVars() {
+        return envVars;
+    }
+
+    private static final Comparator<Entry<String, ?>> mapEntryComparator = new Comparator<Map.Entry<String, ?>>() {
+
+        @Override
+        public int compare(Entry<String, ?> e1, Entry<String, ?> e2) {
+            return e1.getKey().compareTo(e2.getKey());
+        }
+    };
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("[");
@@ -181,18 +211,22 @@ public class DriverOptions {
         if (!capsMap.isEmpty()) {
             result.append(sep).append("DEFINE=[\n");
             List<Entry<String, Object>> capsList = new ArrayList<Entry<String, Object>>(capsMap.entrySet());
-            Collections.sort(capsList, new Comparator<Entry<String, Object>>() {
-                @Override
-                public int compare(Entry<String, Object> e1, Entry<String, Object> e2) {
-                    return e1.getKey().compareTo(e2.getKey());
-                }
-            });
+            Collections.sort(capsList, mapEntryComparator);
             for (Entry<String, Object> cap : capsList) {
                 Object value = cap.getValue();
                 if (value instanceof Object[])
                     value = StringUtils.join((Object[]) value, ", ");
                 result.append("  ").append(cap.getKey()).append('=').append(value).append("\n");
             }
+            result.append(']');
+            sep = "|";
+        }
+        if (!envVars.isEmpty()) {
+            result.append(sep).append("ENV_VARS=[\n");
+            List<Entry<String, String>> envVarsList = new ArrayList<Entry<String, String>>(envVars.entrySet());
+            Collections.sort(envVarsList, mapEntryComparator);
+            for (Entry<String, String> envVar : envVarsList)
+                result.append("  ").append(envVar.getKey()).append('=').append(envVar.getValue()).append("\n");
             result.append(']');
         }
         result.append(']');

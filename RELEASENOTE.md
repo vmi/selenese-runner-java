@@ -4,7 +4,10 @@ Selenese Runner Java Relase Note
 ### 1.5.0
 
 * Add loop count information to log message. (issue #113)
-* Change Internal APIs for issue #113. (ICommand, StartLoop, EndLoop, and classes implementing these interfaces)
+* Restart WebDriver if it crashed. (issue #121)
+* Change Internal APIs for issue #113, #121.
+    * ICommand, StartLoop, EndLoop, and classes implementing these interfaces.
+    * Context, Runner, WebDriverManager, and TestSuite.
 
 ### 1.4.7
 

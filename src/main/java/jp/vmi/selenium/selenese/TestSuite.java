@@ -120,6 +120,7 @@ public class TestSuite implements Selenese, ITestSuite {
     @ExecuteTestSuite
     @Override
     public Result execute(Selenese parent, Context context) {
+        context.prepareWebDriver();
         context.setLatestPageInformation(PageInformation.EMPTY);
         context.resetSpeed();
         for (Selenese selenese : seleneseList) {

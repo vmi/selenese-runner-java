@@ -310,6 +310,7 @@ public class Main {
             manager.setDriverOptions(driverOptions);
             Runner runner = new Runner();
             runner.setDriver(manager.get());
+            runner.setWebDriverPreparator(manager);
             runner.setHighlight(cli.hasOption("highlight"));
             runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
             runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));

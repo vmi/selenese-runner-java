@@ -43,6 +43,7 @@ import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.PathUtils;
+import jp.vmi.selenium.webdriver.WebDriverPreparator;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 import static org.openqa.selenium.remote.CapabilityType.*;
@@ -60,6 +61,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private PrintStream ps;
     private WebDriver driver = null;
+    private WebDriverPreparator preparator = null;
     private String overridingBaseURL = null;
     private String initialWindowHandle = null;
     private String screenshotDir = null;
@@ -222,6 +224,22 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setDriver(WebDriver driver) {
         this.driver = driver;
         this.initialWindowHandle = driver.getWindowHandle();
+    }
+
+    @Override
+    public void prepareWebDriver() {
+        if (preparator == null)
+            return;
+        setDriver(driver == null ? preparator.get() : preparator.reprepare(driver));
+    }
+
+    /**
+     * Set WebDriverPreparator.
+     *
+     * @param preparator WebDriverPreparator.
+     */
+    public void setWebDriverPreparator(WebDriverPreparator preparator) {
+        this.preparator = preparator;
     }
 
     /**

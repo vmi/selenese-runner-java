@@ -18,6 +18,11 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 public interface Context extends WrapsDriver {
 
     /**
+     * Prepare WebDriver.
+     */
+    void prepareWebDriver();
+
+    /**
      * Get current test-case.
      *
      * @return current test-case.

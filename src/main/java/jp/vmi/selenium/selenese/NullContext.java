@@ -18,6 +18,10 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 public class NullContext implements Context {
 
     @Override
+    public void prepareWebDriver() {
+    }
+
+    @Override
     public TestCase getCurrentTestCase() {
         return null;
     }
