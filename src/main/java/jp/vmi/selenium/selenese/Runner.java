@@ -155,7 +155,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
-        File file = new File(PathUtils.normalizeSeparator(filename));
+        File file = new File(PathUtils.normalize(filename));
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName());
         takeScreenshot(tss, file);

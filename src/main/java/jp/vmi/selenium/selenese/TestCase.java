@@ -69,7 +69,7 @@ public class TestCase implements Selenese, ITestCase {
      * @return this.
      */
     public TestCase initialize(String filename, String name, String baseURL) {
-        this.filename = PathUtils.normalizeSeparator(filename);
+        this.filename = PathUtils.normalize(filename);
         if (filename != null)
             this.baseName = FilenameUtils.getBaseName(filename);
         this.name = name;

@@ -26,7 +26,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
      * @return this.
      */
     public ErrorSource initialize(String filename, InvalidSeleneseException e) {
-        this.filename = PathUtils.normalizeSeparator(filename);
+        this.filename = PathUtils.normalize(filename);
         this.e = e;
         return this;
     }

@@ -2,10 +2,12 @@ package jp.vmi.selenium.selenese.utils;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.OS;
+import org.apache.commons.io.FilenameUtils;
 
 import static org.apache.commons.io.FilenameUtils.*;
 
@@ -76,16 +78,28 @@ public class PathUtils {
 
     private static final Pattern SEP_REGEX = Pattern.compile("[/\\\\]");
     private static final String SEP_REPL = Matcher.quoteReplacement(File.separator);
+    private static final String PARENT_DIR = ".." + File.separator;
 
     /**
-     * Normalize filename separator.
+     * Normalize separators and relative path in filename.
      *
-     * @param filename filename with any platform separator.
+     * @param filename filename.
      * @return normalized filename.
      */
-    public static String normalizeSeparator(String filename) {
+    public static String normalize(String filename) {
         if (filename == null)
             return null;
-        return SEP_REGEX.matcher(filename).replaceAll(SEP_REPL);
+        filename = SEP_REGEX.matcher(filename).replaceAll(SEP_REPL);
+        if (filename.startsWith(PARENT_DIR))
+            filename = new File(filename).getAbsolutePath();
+        String nfn = FilenameUtils.normalize(filename);
+        if (nfn == null) {
+            try {
+                nfn = new File(filename).getCanonicalPath();
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Filename normalization failed: " + filename, e);
+            }
+        }
+        return nfn;
     }
 }

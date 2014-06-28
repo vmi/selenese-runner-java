@@ -165,7 +165,7 @@ public abstract class Parser {
     protected final Document docucment;
 
     protected Parser(String filename, Document document) {
-        this.filename = PathUtils.normalizeSeparator(filename);
+        this.filename = PathUtils.normalize(filename);
         this.docucment = document;
     }
 
