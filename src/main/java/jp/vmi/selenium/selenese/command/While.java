@@ -2,14 +2,14 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "while".
  */
-public class While extends AbstractCommand implements StartLoop {
+public class While extends StartLoopImpl {
 
     private static final int ARG_CONDITION = 0;
 
@@ -20,19 +20,18 @@ public class While extends AbstractCommand implements StartLoop {
     }
 
     @Override
-    public boolean mayUpdateScreen() {
-        return false;
-    }
-
-    @Override
     public void setEndLoop(EndLoop endLoop) {
         this.endLoop = (EndWhile) endLoop;
     }
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        if (!context.isTrue(curArgs[ARG_CONDITION]))
+        if (!context.isTrue(curArgs[ARG_CONDITION])) {
+            resetReachedCount();
             context.getCommandListIterator().jumpToNextOf(endLoop);
-        return SUCCESS;
+            return new Success("Break");
+        } else {
+            return new Success("Continue");
+        }
     }
 }

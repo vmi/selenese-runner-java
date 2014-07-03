@@ -21,6 +21,8 @@ import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 
+import static jp.vmi.selenium.selenese.command.StartLoop.*;
+
 /**
  * Parse Selenese script of test-case.
  */
@@ -53,6 +55,7 @@ public class TestCaseParser extends Parser {
             CommandList commandList = testCase.getCommandList();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
+            StartLoop currentStartLoop = NO_START_LOOP;
             Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
             int tri = 0;
             for (Node tr : each(trList)) {
@@ -77,12 +80,13 @@ public class TestCaseParser extends Parser {
                 String cmdName = cmdWithArgs.remove(0);
                 String[] cmdArgs = cmdWithArgs.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
                 ICommand command = commandFactory.newCommand(tri, cmdName, cmdArgs);
+                command.setStartLoop(currentStartLoop);
                 if (command instanceof StartLoop) {
-                    loopCommandStack.push((StartLoop) command);
+                    loopCommandStack.push(currentStartLoop);
+                    currentStartLoop = (StartLoop) command;
                 } else if (command instanceof EndLoop) {
-                    StartLoop startLoop = loopCommandStack.pop();
-                    startLoop.setEndLoop((EndLoop) command);
-                    ((EndLoop) command).setStartLoop(startLoop);
+                    currentStartLoop.setEndLoop((EndLoop) command);
+                    currentStartLoop = loopCommandStack.pop();
                 }
                 commandList.add(command);
             }

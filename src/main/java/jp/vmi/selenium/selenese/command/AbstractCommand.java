@@ -3,13 +3,13 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
+import static jp.vmi.selenium.selenese.command.StartLoop.*;
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
@@ -23,6 +23,7 @@ public abstract class AbstractCommand implements ICommand {
     private final ArgumentType[] argTypes;
     private final int[] locatorIndexes;
     private Result result = UNEXECUTED;
+    private StartLoop startLoop = NO_START_LOOP;
 
     /**
      * Constructor.
@@ -86,6 +87,11 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public String[] getArguments() {
         return args;
     }
@@ -141,7 +147,34 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
+    public void setStartLoop(StartLoop startLoop) {
+        this.startLoop = startLoop;
+    }
+
+    @Override
+    public StartLoop getStartLoop() {
+        return startLoop;
+    }
+
+    static String toString(int index, String suffix, String name, String[] args) {
+        StringBuilder s = new StringBuilder("Command#").append(index);
+        if (!suffix.isEmpty())
+            s.append('@').append(suffix);
+        s.append(": ").append(name).append("(");
+        boolean sep = false;
+        for (String arg : args) {
+            if (sep)
+                s.append(", ");
+            else
+                sep = true;
+            s.append(LoggerUtils.quote(arg));
+        }
+        s.append(')');
+        return s.toString();
+    }
+
+    @Override
     public String toString() {
-        return "Command#" + index + ": " + name + "(" + StringUtils.join(LoggerUtils.quote(args), ", ") + ")";
+        return toString(index, startLoop.getReachedCounts(), name, args);
     }
 }

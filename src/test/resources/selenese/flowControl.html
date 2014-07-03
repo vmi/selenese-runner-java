@@ -42,6 +42,11 @@
 	<td>y</td>
 </tr>
 <tr>
+	<td>store</td>
+	<td>3</td>
+	<td>z</td>
+</tr>
+<tr>
 	<td>gotoIf</td>
 	<td>${y} &gt; ${x}</td>
 	<td>target2</td>
@@ -68,12 +73,27 @@
 </tr>
 <tr>
 	<td>storeEval</td>
-	<td>eval(${x} + 1)</td>
+	<td>${x} + 1</td>
 	<td>x</td>
 </tr>
 <tr>
 	<td>echo</td>
 	<td>Compare :&nbsp;&nbsp;${x}&nbsp;&nbsp;vs&nbsp;&nbsp;${y}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${z} &gt 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${z} - 1</td>
+	<td>z</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>

@@ -2,14 +2,14 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "storeFor".
  */
-public class StoreFor extends AbstractCommand implements StartLoop {
+public class StoreFor extends StartLoopImpl {
 
     private static final int ARG_COLLECTION_NAME = 0;
     private static final int ARG_VAR_NAME = 1;
@@ -21,11 +21,6 @@ public class StoreFor extends AbstractCommand implements StartLoop {
     }
 
     @Override
-    public boolean mayUpdateScreen() {
-        return false;
-    }
-
-    @Override
     public void setEndLoop(EndLoop endLoop) {
         this.endLoop = (EndFor) endLoop;
     }
@@ -33,10 +28,13 @@ public class StoreFor extends AbstractCommand implements StartLoop {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String value = context.getCollectionMap().pollFromCollection(curArgs[ARG_COLLECTION_NAME]);
-        if (value == null)
+        if (value == null) {
+            resetReachedCount();
             context.getCommandListIterator().jumpToNextOf(endLoop);
-        else
+            return new Success("Break");
+        } else {
             context.getVarsMap().put(curArgs[ARG_VAR_NAME], value);
-        return SUCCESS;
+            return new Success("Continue");
+        }
     }
 }

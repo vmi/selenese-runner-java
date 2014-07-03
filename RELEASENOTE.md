@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.5.0
+
+* Add loop count information to log message. (issue #113)
+* Change Internal APIs for issue #113. (ICommand, StartLoop, EndLoop, and classes implementing these interfaces)
+
 ### 1.4.7
 
 * Refine exception message.

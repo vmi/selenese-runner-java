@@ -30,6 +30,13 @@ public interface ICommand {
     String[] getArguments();
 
     /**
+     * Get command name.
+     *
+     * @return command name.
+     */
+    String getName();
+
+    /**
      * Convert locators from arguments.
      *
      * @param args the command arguments.
@@ -62,4 +69,18 @@ public interface ICommand {
      * @return the command result.
      */
     Result getResult();
+
+    /**
+     * Set beginning-of-loop command.
+     *
+     * @param startLoop beginning-of-loop command.
+     */
+    void setStartLoop(StartLoop startLoop);
+
+    /**
+     * Get beginning-of-loop command.
+     *
+     * @return beginning-of-loop command.
+     */
+    StartLoop getStartLoop();
 }

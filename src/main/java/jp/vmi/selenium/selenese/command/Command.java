@@ -3,15 +3,14 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
+import static jp.vmi.selenium.selenese.command.StartLoop.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
@@ -32,6 +31,7 @@ public abstract class Command implements ICommand {
     private final int[] locatorIndexes;
     protected final String[] locators;
     private Result result = UNEXECUTED;
+    private StartLoop startLoop = NO_START_LOOP;
 
     /**
      * Constructor.
@@ -93,6 +93,11 @@ public abstract class Command implements ICommand {
     @Override
     public final int getIndex() {
         return index;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
@@ -186,8 +191,18 @@ public abstract class Command implements ICommand {
     }
 
     @Override
+    public void setStartLoop(StartLoop startLoop) {
+        this.startLoop = startLoop;
+    }
+
+    @Override
+    public StartLoop getStartLoop() {
+        return startLoop;
+    }
+
+    @Override
     public String toString() {
-        return "Command#" + index + ": " + name + "(" + StringUtils.join(LoggerUtils.quote(args), ", ") + ")";
+        return AbstractCommand.toString(index, startLoop.getReachedCounts(), name, args);
     }
 
     @Override
