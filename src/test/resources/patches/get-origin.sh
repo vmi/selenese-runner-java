@@ -6,6 +6,8 @@ if [ "${1:-}" = -f ]; then
   rm -f *.java
 fi
 
+dir="$(cd "${BASH_SOURCE[0]%/*}"; echo "$PWD")"
+
 ### Selenium
 
 javas=(
@@ -13,10 +15,12 @@ javas=(
   com/thoughtworks/selenium/webdriven/Windows.java
 )
 
+selenium_dir="${dir%/selenese-runner-java/*}/selenium"
+
 for java in "${javas[@]}"; do
   f=${java##*/}
   if [ ! -f "$f" ]; then
-    wget https://selenium.googlecode.com/git/java/client/src/$java
+    cp -v $selenium_dir/java/client/src/$java .
   fi
 done
 
