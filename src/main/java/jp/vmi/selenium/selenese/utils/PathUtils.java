@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.exec.OS;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.apache.commons.io.FilenameUtils.*;
 
@@ -80,16 +81,7 @@ public class PathUtils {
     private static final String SEP_REPL = Matcher.quoteReplacement(File.separator);
     private static final String PARENT_DIR = ".." + File.separator;
 
-    /**
-     * Normalize separators and relative path in filename.
-     *
-     * @param filename filename.
-     * @return normalized filename.
-     */
-    public static String normalize(String filename) {
-        if (filename == null)
-            return null;
-        filename = SEP_REGEX.matcher(filename).replaceAll(SEP_REPL);
+    private static String normalizeInternal(String filename) {
         if (filename.startsWith(PARENT_DIR))
             filename = new File(filename).getAbsolutePath();
         String nfn = FilenameUtils.normalize(filename);
@@ -101,5 +93,46 @@ public class PathUtils {
             }
         }
         return nfn;
+    }
+
+    /**
+     * Normalize filename separator.
+     *
+     * @param filename filename.
+     * @return separator normalized filename.
+     */
+    public static String normalizeSeparator(String filename) {
+        if (filename == null)
+            return null;
+        return SEP_REGEX.matcher(filename).replaceAll(SEP_REPL);
+    }
+
+    /**
+     * Normalize filename.
+     *
+     * @param filename filename.
+     * @return normalized filename.
+     */
+    public static String normalize(String filename) {
+        if (filename == null)
+            return null;
+        return normalizeInternal(normalizeSeparator(filename));
+    }
+
+    /**
+     * Concatinate filename.
+     *
+     * @param parent parent directory.
+     * @param child child file or directory.
+     * @return concatinated and normalized filename.
+     */
+    public static String concat(String parent, String child) {
+        if (StringUtils.isEmpty(parent))
+            return normalize(child);
+        StringBuilder s = new StringBuilder(normalizeSeparator(parent));
+        if (!parent.endsWith(File.separator))
+            s.append(File.separatorChar);
+        s.append(normalizeSeparator(child));
+        return normalizeInternal(s.toString());
     }
 }

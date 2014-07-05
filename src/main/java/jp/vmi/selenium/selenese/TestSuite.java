@@ -41,7 +41,7 @@ public class TestSuite implements Selenese, ITestSuite {
      * @return this.
      */
     public TestSuite initialize(String filename, String name) {
-        this.filename = PathUtils.normalize(filename);
+        this.filename = filename = PathUtils.normalize(filename);
         if (filename != null)
             this.parentDir = FilenameUtils.getFullPathNoEndSeparator(filename);
         if (name != null)
@@ -82,9 +82,10 @@ public class TestSuite implements Selenese, ITestSuite {
      * @param commandFactory command factory.
      */
     public void addSeleneseFile(String filename, ICommandFactory commandFactory) {
-        filename = PathUtils.normalize(filename);
         if (FilenameUtils.getPrefixLength(filename) == 0 && parentDir != null)
-            filename = FilenameUtils.concat(parentDir, filename);
+            filename = PathUtils.concat(parentDir, filename);
+        else
+            filename = PathUtils.normalize(filename);
         addSelenese(Parser.parse(filename, commandFactory));
     }
 
