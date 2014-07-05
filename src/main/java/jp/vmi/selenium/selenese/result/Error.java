@@ -18,7 +18,7 @@ public class Error extends Result {
         StringBuilder result = new StringBuilder("Error: ");
         String msg = e.getMessage();
         if (msg != null)
-            result.append(msg);
+            result.append(e.getClass().getSimpleName()).append(" - ").append(msg);
         else
             result.append(e.getClass().getName());
         result.append(" (");

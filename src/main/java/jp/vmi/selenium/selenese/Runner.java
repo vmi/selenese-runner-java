@@ -19,6 +19,7 @@ import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -136,7 +137,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    private void takeScreenshot(TakesScreenshot tss, File file) {
+    private void takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
         file = file.getAbsoluteFile();
         // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
         driver.switchTo().defaultContent();
@@ -151,7 +152,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public void takeScreenshot(String filename) throws UnsupportedOperationException {
+    public void takeScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
@@ -169,7 +170,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (tss == null)
             return;
         String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(tss, new File(screenshotAllDir, filename));
+        try {
+            takeScreenshot(tss, new File(screenshotAllDir, filename));
+        } catch (WebDriverException e) {
+            log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
@@ -180,7 +185,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (tss == null)
             return;
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
-        takeScreenshot(tss, new File(screenshotOnFailDir, filename));
+        try {
+            takeScreenshot(tss, new File(screenshotOnFailDir, filename));
+        } catch (WebDriverException e) {
+            log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     /**
