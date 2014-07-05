@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.4.7
+
+* Refine exception message.
+* Refine exception handling on screenshot.
+* Re-fix issue #122.
+
 ### 1.4.6
 
 * Catch up Selenium 2.42.2.
