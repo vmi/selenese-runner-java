@@ -11,7 +11,7 @@ public class Failure extends Result {
      * @param message failure message.
      */
     public Failure(String message) {
-        super("Failure: " + message);
+        super("Failure", message);
     }
 
     /**
@@ -20,7 +20,7 @@ public class Failure extends Result {
      * @param e Exception.
      */
     public Failure(Exception e) {
-        super(e.getMessage());
+        super("Failure", e);
     }
 
     @Override

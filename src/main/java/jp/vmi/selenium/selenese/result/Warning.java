@@ -11,7 +11,7 @@ public class Warning extends Result {
      * @param message warning message.
      */
     public Warning(String message) {
-        super("Warning: " + message);
+        super("Warning", message);
     }
 
     @Override
