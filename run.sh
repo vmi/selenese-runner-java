@@ -5,10 +5,28 @@ if [ x"$1" = x--build ]; then
   mvn -P package
 fi
 
-rm -rf tmp/img tmp/xml tmp/html
-mkdir -p tmp/img/failed tmp/xml tmp/html
+rm -rf tmp/img tmp/xml tmp/html logs/run.log
+mkdir -p tmp/img/failed tmp/xml tmp/html logs
 
-java -jar target/selenese-runner.jar \
+log_file=run-`date +'%Y%m%d_%H%M%S'`.log
+( cd logs
+  touch $log_file
+  ln -s $log_file run.log )
+
+do_script() {
+  local file="$1"; shift
+  set -x
+  case "$OSTYPE" in
+    linux*|cygwin*)
+      script -c "$*" "$file"
+      ;;
+    darwin*|*bsd*)
+      script "$file" "$@"
+      ;;
+  esac
+}
+
+do_script logs/$log_file java -jar target/selenese-runner.jar \
   --screenshot-dir tmp/img \
   --screenshot-on-fail tmp/img/failed \
   --xml-result tmp/xml \
