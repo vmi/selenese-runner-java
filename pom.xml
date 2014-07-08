@@ -326,9 +326,9 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.github.detro.ghostdriver</groupId>
+      <groupId>com.github.detro</groupId>
       <artifactId>phantomjsdriver</artifactId>
-      <version>1.1.0</version>
+      <version>1.2.0</version>
       <exclusions>
         <exclusion>
           <artifactId>selenium-server</artifactId>
