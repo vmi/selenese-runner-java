@@ -7,6 +7,13 @@ It supports test-case and test-suite which are Selenium IDE's native format.
 
 [![Build Status](https://travis-ci.org/vmi/selenese-runner-java.svg?branch=master)](https://travis-ci.org/vmi/selenese-runner-java)
 
+Download
+--------
+
+You can download the executable jar from:
+
+https://github.com/vmi/selenese-runner-java/releases
+
 Features
 --------
 
@@ -60,7 +67,7 @@ Requirements
 ------------
 
 * Java 6 or later.
-* Apache Maven 2.x or later.
+* Apache Maven 2.x or later to build.
 
 Release Note
 ------------
