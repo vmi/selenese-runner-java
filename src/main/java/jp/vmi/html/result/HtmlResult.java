@@ -10,6 +10,8 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.floreysoft.jmte.AnnotationProcessor;
 import com.floreysoft.jmte.Engine;
@@ -28,6 +30,8 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
  * HTML result generator.
  */
 public class HtmlResult {
+
+    private static final Logger log = LoggerFactory.getLogger(HtmlResult.class);
 
     private static class AnnoSet implements AnnotationProcessor<String> {
 
@@ -175,6 +179,7 @@ public class HtmlResult {
         File file = new File(htmlResultDir, "TEST-" + testSuite.getName() + ".html");
         try {
             FileUtils.write(file, html);
+            log.info("Generated HTML result: {}", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -195,6 +200,7 @@ public class HtmlResult {
         File file = new File(htmlResultDir, "index.html");
         try {
             FileUtils.write(file, html);
+            log.info("Generated index of HTML results: {}", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
