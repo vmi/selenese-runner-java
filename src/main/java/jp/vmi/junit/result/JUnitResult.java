@@ -8,6 +8,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static jp.vmi.junit.result.ObjectFactory.*;
 
 /**
@@ -19,6 +22,8 @@ import static jp.vmi.junit.result.ObjectFactory.*;
  * @see <a href="https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/tasks/junit/CaseResult.java">Jenkins CaseResult class.</a>
  */
 public final class JUnitResult {
+
+    private static final Logger log = LoggerFactory.getLogger(JUnitResult.class);
 
     /** filename of failsafe-summary. */
     public static final String FAILSAFE_SUMMARY_FILENAME = "failsafe-summary.xml";
@@ -73,6 +78,7 @@ public final class JUnitResult {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             File file = new File(xmlResultDir, "TEST-" + suiteResult.getName() + ".xml");
             marshaller.marshal(suiteResult, file);
+            log.info("Generated JUnit result: {}", file);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -165,6 +171,7 @@ public final class JUnitResult {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
             marshaller.marshal(failsafeSummary, file);
+            log.info("Generated failsafe summary: ", file);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
