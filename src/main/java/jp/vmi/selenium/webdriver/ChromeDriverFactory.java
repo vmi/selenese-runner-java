@@ -21,22 +21,14 @@ public class ChromeDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        File executable;
-        if (driverOptions.has(CHROMEDRIVER)) {
-            executable = new File(driverOptions.get(CHROMEDRIVER));
-            if (!executable.canExecute())
-                throw new IllegalArgumentException("Missing ChromeDriver: " + executable);
-        } else {
-            executable = PathUtils.searchExecutableFile("chromedriver");
-            if (executable == null)
-                throw new IllegalStateException("Missing ChromeDriver in PATH");
-        }
-        ChromeDriverService service = new ChromeDriverService.Builder()
-            .usingDriverExecutable(executable)
-            .usingAnyFreePort()
-            .withEnvironment(getEnvironmentVariables())
-            .build();
         DesiredCapabilities caps = DesiredCapabilities.chrome();
+        if (driverOptions.has(CHROMEDRIVER)) {
+            String executable = PathUtils.normalize(driverOptions.get(CHROMEDRIVER));
+            if (!new File(executable).canExecute())
+                throw new IllegalArgumentException("Missing ChromeDriver: " + executable);
+            System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, executable);
+        }
+        ChromeDriverService service = CustomChromeDriverService.createService(driverOptions.getEnvVars());
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));

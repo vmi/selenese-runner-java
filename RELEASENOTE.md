@@ -5,6 +5,7 @@ Selenese Runner Java Relase Note
 
 * Add loop count information to log message. (issue #113)
 * Restart WebDriver if it crashed. (issue #121)
+* Use a built-in executable file finder instead of original one.
 * Change Internal APIs for issue #113, #121.
     * ICommand, StartLoop, EndLoop, and classes implementing these interfaces.
     * Context, Runner, WebDriverManager, and TestSuite.

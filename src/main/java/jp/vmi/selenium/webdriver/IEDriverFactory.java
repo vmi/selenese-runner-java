@@ -18,10 +18,6 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  */
 public class IEDriverFactory extends WebDriverFactory {
 
-    // see: http://code.google.com/p/selenium/wiki/InternetExplorerDriver
-
-    private static final String IE_DRIVER_SERVER_EXE = "IEDriverServer.exe";
-
     @Override
     public boolean isProxySupported() {
         return false;
@@ -32,19 +28,15 @@ public class IEDriverFactory extends WebDriverFactory {
         if (!OS.isFamilyWindows())
             throw new UnsupportedOperationException("Unsupported platform: " + Platform.getCurrent());
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
-        File executable;
         if (driverOptions.has(IEDRIVER)) {
-            executable = new File(driverOptions.get(IEDRIVER));
-            if (!executable.canExecute())
-                throw new IllegalArgumentException("Missing " + IE_DRIVER_SERVER_EXE + ": " + executable);
-        } else {
-            executable = PathUtils.searchExecutableFile(IE_DRIVER_SERVER_EXE);
-            if (executable == null)
-                throw new IllegalStateException("Missing " + IE_DRIVER_SERVER_EXE + " in PATH");
+            String executable = PathUtils.normalize(driverOptions.get(IEDRIVER));
+            if (!new File(executable).canExecute())
+                throw new IllegalArgumentException("Missing IEDriverServer: " + executable);
+            System.setProperty(InternetExplorerDriverService.IE_DRIVER_EXE_PROPERTY, executable);
         }
         InternetExplorerDriverService service = new InternetExplorerDriverService.Builder()
             .usingAnyFreePort()
-            .usingDriverExecutable(executable)
+            .withEnvironment(driverOptions.getEnvVars())
             .build();
         caps.merge(driverOptions.getCapabilities());
         InternetExplorerDriver driver = new InternetExplorerDriver(service, caps);
