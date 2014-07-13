@@ -113,7 +113,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Test
     public void ignoreScreenshotCommand() {
         assumeThat(driver, is(instanceOf(TakesScreenshot.class)));
-        runner.setIgnoreScreenshotCommand(true);
+        runner.setIgnoredScreenshotCommand(true);
         execute("capture");
         assertThat(result, is(instanceOf(Success.class)));
         assertThat(FileUtils.listFiles(screenshotDir.getRoot(), new String[] { "png" }, true), is(empty()));
