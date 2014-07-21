@@ -23,27 +23,14 @@ public class CookieValue {
         this.expiry = expiry;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = key.hashCode();
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
-        result = prime * result + ((expiry == null) ? 0 : expiry.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equalsWithoutExpiry(CookieValue other) {
+        if (this == other)
             return true;
-        if (obj == null)
+        if (other == null)
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CookieValue other = (CookieValue) obj;
         return key.equals(other.key)
             && StringUtils.equals(value, other.value)
-            && ((expiry != null) ? expiry.equals(other.expiry) : other.expiry == null);
+            && ((expiry == null) == (other.expiry == null));
     }
 
     @Override

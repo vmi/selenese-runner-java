@@ -59,7 +59,7 @@ public class CookieMap extends TreeMap<CookieKey, CookieValue> {
                 CookieValue prevValue = prev.get(value.key);
                 if (prevValue == null)
                     list.add("[add] " + value);
-                else if (!value.equals(prevValue))
+                else if (!value.equalsWithoutExpiry(prevValue))
                     list.add("[mod] " + value);
             }
         }

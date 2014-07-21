@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.5.1
+
+* Ignore the expiry when comparing old/new cookie information. (issue #125)
+
 ### 1.5.0
 
 * Add loop count information to log message. (issue #113)
