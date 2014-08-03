@@ -141,12 +141,11 @@ public class SubCommandMap {
         register(new IsTextPresent(javascriptLibrary), "isTextPresent", VALUE);
         register(new IsVisible(elementFinder), "isVisible", LOCATOR);
         register(new KeyEvent(elementFinder, javascriptLibrary, keyState, "doKeyDown"), "keyDown", LOCATOR, VALUE);
-        // FIXME if Selenium version is 2.40?
-        // register(new KeyDownNative(), "keyDownNative", LOCATOR, VALUE);
+        register(new KeyDownNative(), "keyDownNative", LOCATOR, VALUE);
         register(new TypeKeys(alertOverride, elementFinder), "keyPress", LOCATOR, VALUE);
-        // register(new KeyPressNative(), "keyPressNative", LOCATOR, VALUE);
+        register(new KeyPressNative(), "keyPressNative", LOCATOR, VALUE);
         register(new KeyEvent(elementFinder, javascriptLibrary, keyState, "doKeyUp"), "keyUp", LOCATOR, VALUE);
-        // register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
+        register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
         register(new MetaKeyDown(keyState), "metaKeyDown");
         register(new MetaKeyUp(keyState), "metaKeyUp");
         register(new MouseEvent(elementFinder, javascriptLibrary, "mouseover"), "mouseOver", LOCATOR);
