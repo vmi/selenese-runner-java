@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>${title;h}</title>
-    <style type='text/css'>
+${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">${else}<style type='text/css'>
       body, table {
         font-family: Verdana, Arial, sans-serif;
         font-size: 12px;
@@ -70,7 +70,8 @@
         background-color: #cccccc;
         border: 1px solid black;
       }
-    </style>
+    </style>${end}
+${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${end}
   </head>
   <body>
     <h1>${title;h}</h1>
@@ -136,9 +137,10 @@ ${foreach seleneseList selenese}
     </tr>
     </table>
 
-    <pre>${foreach selenese.logRecorder.messages msg}${msg}
+    <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
 ${end}</pre>
   ${end}
+  <p>[<a href="#">Top</a>]</p>
   ${@inc index}
 ${end}
   </body>
