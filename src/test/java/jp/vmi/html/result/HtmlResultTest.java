@@ -82,7 +82,11 @@ public class HtmlResultTest {
         TestSuite s2 = Binder.newTestSuite(filename(root, s2name), s2name);
         String c1name = "case1";
         TestCase c1 = Binder.newTestCase(filename(root, c1name), c1name, "http://localhost");
+        c1.addCommand(cf, "store", "3", "index");
+        c1.addCommand(cf, "while", "${index} > 0");
         c1.addCommand(cf, "open", "/form.html");
+        c1.addCommand(cf, "storeEval", "${index} - 1", "index");
+        c1.addCommand(cf, "endWhile");
         String c2name = "case2";
         TestCase c2 = Binder.newTestCase(filename(root, c2name), c2name, "http://localhost");
         c2.addCommand(cf, "open", "/form2.html");

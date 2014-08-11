@@ -118,7 +118,7 @@ ${foreach seleneseList selenese}
           <div>
             <table cellpadding="1" cellspacing="1" border="1">
               <thead>
-                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td></tr>
+                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="4">${selenese.name;h}</td></tr>
               </thead>
               <tbody>
     ${foreach selenese.commandList command}
@@ -127,6 +127,9 @@ ${foreach seleneseList selenese}
       ${foreach command.source item}
                   <td>${item;h}</td>
       ${end}
+                  <td>
+      ${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot;relpath}">[${imgIndex}]</a>${@inc imgIndex}${end}
+                  </td>
                 </tr>
     ${end}
               </tbody>
