@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import org.apache.commons.io.FilenameUtils;
 
 import com.thoughtworks.selenium.SeleniumException;
@@ -7,9 +10,11 @@ import com.thoughtworks.selenium.SeleniumException;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
+import jp.vmi.selenium.selenese.command.EndLoop;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.command.Label;
+import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.Result;
@@ -18,6 +23,7 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
+import static jp.vmi.selenium.selenese.command.StartLoop.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
@@ -35,6 +41,8 @@ public class TestCase implements Selenese, ITestCase {
     private String name = null;
     private String baseURL = null;
 
+    private StartLoop currentStartLoop = NO_START_LOOP;
+    private final Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
     private final CommandList commandList = Binder.newCommandList();
 
     private final StopWatch stopWatch = new StopWatch();
@@ -238,7 +246,7 @@ public class TestCase implements Selenese, ITestCase {
      */
     @Deprecated
     public void addCommand(Command command) {
-        commandList.add(command);
+        addCommand((ICommand) command);
     }
 
     /**
@@ -247,6 +255,14 @@ public class TestCase implements Selenese, ITestCase {
      * @param command command.
      */
     public void addCommand(ICommand command) {
+        command.setStartLoop(currentStartLoop);
+        if (command instanceof StartLoop) {
+            loopCommandStack.push(currentStartLoop);
+            currentStartLoop = (StartLoop) command;
+        } else if (command instanceof EndLoop) {
+            currentStartLoop.setEndLoop((EndLoop) command);
+            currentStartLoop = loopCommandStack.pop();
+        }
         commandList.add(command);
     }
 
@@ -258,7 +274,7 @@ public class TestCase implements Selenese, ITestCase {
      * @param args command arguments.
      */
     public void addCommand(ICommandFactory commandFactory, String name, String... args) {
-        int i = commandList.size();
+        int i = commandList.size() + 1;
         ICommand command = commandFactory.newCommand(i, name, args);
         addCommand(command);
     }

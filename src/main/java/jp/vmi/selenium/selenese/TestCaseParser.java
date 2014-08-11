@@ -1,8 +1,6 @@
 package jp.vmi.selenium.selenese;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
@@ -14,14 +12,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import jp.vmi.selenium.selenese.command.CommandList;
-import jp.vmi.selenium.selenese.command.EndLoop;
-import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
-import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
-
-import static jp.vmi.selenium.selenese.command.StartLoop.*;
 
 /**
  * Parse Selenese script of test-case.
@@ -52,17 +44,12 @@ public class TestCaseParser extends Parser {
         try {
             name = XPathAPI.selectSingleNode(docucment, "//THEAD/TR/TD").getTextContent();
             TestCase testCase = Binder.newTestCase(filename, name, baseURL);
-            CommandList commandList = testCase.getCommandList();
             Node tbody = XPathAPI.selectSingleNode(docucment, "//TBODY");
             NodeList trList = tbody.getChildNodes();
-            StartLoop currentStartLoop = NO_START_LOOP;
-            Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
-            int tri = 0;
             for (Node tr : each(trList)) {
                 List<String> cmdWithArgs;
                 switch (tr.getNodeType()) {
                 case Node.ELEMENT_NODE: // TD
-                    tri++;
                     cmdWithArgs = new ArrayList<String>(3);
                     for (Node td : each(tr.getChildNodes())) {
                         if ("TD".equals(td.getNodeName()))
@@ -79,16 +66,7 @@ public class TestCaseParser extends Parser {
                 }
                 String cmdName = cmdWithArgs.remove(0);
                 String[] cmdArgs = cmdWithArgs.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
-                ICommand command = commandFactory.newCommand(tri, cmdName, cmdArgs);
-                command.setStartLoop(currentStartLoop);
-                if (command instanceof StartLoop) {
-                    loopCommandStack.push(currentStartLoop);
-                    currentStartLoop = (StartLoop) command;
-                } else if (command instanceof EndLoop) {
-                    currentStartLoop.setEndLoop((EndLoop) command);
-                    currentStartLoop = loopCommandStack.pop();
-                }
-                commandList.add(command);
+                testCase.addCommand(commandFactory, cmdName, cmdArgs);
             }
             return testCase;
         } catch (TransformerException e) {
