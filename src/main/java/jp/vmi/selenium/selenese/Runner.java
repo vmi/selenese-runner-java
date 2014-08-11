@@ -139,7 +139,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    private void takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
+    private String takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
         file = file.getAbsoluteFile();
         // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
         driver.switchTo().defaultContent();
@@ -149,48 +149,54 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         } catch (IOException e) {
             throw new RuntimeException("failed to rename captured screenshot image: " + file, e);
         }
-        log.info("- captured screenshot: {}", file);
-        currentTestCase.getLogRecorder().info("[[ATTACHMENT|" + file.getAbsolutePath() + "]]");
+        String path = file.getPath();
+        log.info("- captured screenshot: {}", path);
+        currentTestCase.getLogRecorder().info("[[ATTACHMENT|" + path + "]]");
+        return path;
     }
 
     @Override
-    public void takeScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
+    public String takeScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         File file = new File(PathUtils.normalize(filename));
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName());
-        takeScreenshot(tss, file);
+        return takeScreenshot(tss, file);
     }
 
     @Override
-    public void takeScreenshotAll(String prefix, int index) {
+    public String takeScreenshotAll(String prefix, int index) {
         if (screenshotAllDir == null)
-            return;
+            return null;
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
-            return;
+            return null;
         String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
-            takeScreenshot(tss, new File(screenshotAllDir, filename));
+            File file = new File(screenshotAllDir, filename);
+            return takeScreenshot(tss, file);
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
+            return null;
         }
     }
 
     @Override
-    public void takeScreenshotOnFail(String prefix, int index) {
+    public String takeScreenshotOnFail(String prefix, int index) {
         if (screenshotOnFailDir == null)
-            return;
+            return null;
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
-            return;
+            return null;
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
-            takeScreenshot(tss, new File(screenshotOnFailDir, filename));
+            File file = new File(screenshotOnFailDir, filename);
+            return takeScreenshot(tss, file);
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
+            return null;
         }
     }
 

@@ -1,6 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -32,6 +35,7 @@ public abstract class Command implements ICommand {
     protected final String[] locators;
     private Result result = UNEXECUTED;
     private StartLoop startLoop = NO_START_LOOP;
+    private List<String> screenshots = null;
 
     /**
      * Constructor.
@@ -239,5 +243,21 @@ public abstract class Command implements ICommand {
         if (next != NEXT)
             runner.getCommandListIterator().jumpTo(null);
         return result;
+    }
+
+    @Override
+    public void addScreenshot(String path) {
+        if (path == null)
+            return;
+        if (screenshots == null)
+            screenshots = new ArrayList<String>();
+        screenshots.add(path);
+    }
+
+    @Override
+    public List<String> getScreenshots() {
+        if (screenshots == null)
+            return Collections.emptyList();
+        return screenshots;
     }
 }

@@ -16,23 +16,26 @@ public interface ScreenshotHandler {
      * Take screenshot to filename. (override directory if --screenshot-dir option specified)
      *
      * @param filename filename.
+     * @return screenshot image path.
      * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
      */
-    void takeScreenshot(String filename) throws UnsupportedOperationException;
+    String takeScreenshot(String filename) throws UnsupportedOperationException;
 
     /**
      * Take screenshot at all commands if --screenshot-all option specified.
      *
      * @param prefix prefix name.
      * @param index command index.
+     * @return screenshot image path.
      */
-    void takeScreenshotAll(String prefix, int index);
+    String takeScreenshotAll(String prefix, int index);
 
     /**
      * Take screenshot on fail commands if --screenshot-on-fail option specified.
      *
      * @param prefix prefix name.
      * @param index command index.
+     * @return screenshot image path.
      */
-    void takeScreenshotOnFail(String prefix, int index);
+    String takeScreenshotOnFail(String prefix, int index);
 }

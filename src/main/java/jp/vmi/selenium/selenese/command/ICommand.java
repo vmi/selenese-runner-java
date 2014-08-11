@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.List;
+
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 
@@ -83,4 +85,18 @@ public interface ICommand {
      * @return beginning-of-loop command.
      */
     StartLoop getStartLoop();
+
+    /**
+     * Add screenshot image.
+     *
+     * @param path image path.
+     */
+    void addScreenshot(String path);
+
+    /**
+     * Get list of screenshot images.
+     *
+     * @return list of image path of sreenshot.
+     */
+    List<String> getScreenshots();
 }

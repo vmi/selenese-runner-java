@@ -31,12 +31,12 @@ public class ScreenshotInterceptor implements MethodInterceptor {
             ScreenshotHandler handler = (ScreenshotHandler) context;
             String baseName = context.getCurrentTestCase().getBaseName();
             try {
-                handler.takeScreenshotAll(baseName, command.getIndex());
+                command.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()));
             } catch (NoSuchWindowException e) {
                 // ignore if failed to capturing.
             }
             if (!result.isSuccess())
-                handler.takeScreenshotOnFail(baseName, command.getIndex());
+                command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()));
         }
         return result;
     }
