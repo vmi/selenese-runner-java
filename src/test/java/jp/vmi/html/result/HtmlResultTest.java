@@ -24,6 +24,13 @@ public class HtmlResultTest {
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
+    private File getTmpRoot() {
+        if (System.getenv("USE_IDE") != null)
+            return new File("/tmp");
+        else
+            return tmpDir.getRoot();
+    }
+
     private String filename(File root, String name) {
         return new File(root, name + ".html").getPath();
     }
@@ -37,8 +44,7 @@ public class HtmlResultTest {
     @Ignore
     @Test
     public void generateHtmlResultOld() throws Exception {
-        //File root = tmpDir.getRoot();
-        File root = new File("/tmp");
+        File root = getTmpRoot();
         Runner runner = new Runner();
         CommandFactory cf = runner.getCommandFactory();
         runner.setDriver(new HtmlUnitDriver(true));
@@ -67,8 +73,9 @@ public class HtmlResultTest {
      */
     @Test
     public void generateHtmlResult() throws Exception {
-        //File root = tmpDir.getRoot();
-        File root = new File("/tmp");
+        File root = getTmpRoot();
+        new File(root, "html").mkdir();
+        new File(root, "img").mkdir();
         Runner runner = new Runner();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.PHANTOMJS);
