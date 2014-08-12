@@ -2,10 +2,12 @@ package jp.vmi.html.result;
 
 import java.io.File;
 
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import jp.vmi.selenium.selenese.Runner;
@@ -79,7 +81,13 @@ public class HtmlResultTest {
         Runner runner = new Runner();
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.PHANTOMJS);
-        runner.setDriver(wdm.get());
+        WebDriver driver = null;
+        try {
+            driver = wdm.get();
+        } catch (RuntimeException e) {
+            Assume.assumeNoException(e);
+        }
+        runner.setDriver(driver);
         runner.setHtmlResultDir(new File(root, "html").getPath());
         runner.setScreenshotAllDir(new File(root, "img").getPath());
         CommandFactory cf = runner.getCommandFactory();
