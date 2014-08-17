@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Ignore the expiry when comparing old/new cookie information. (issue #125)
 * Add links to screenshot image to HTML result.
 * Add new commands: "keyDownNative", "keyUpNative", and "keyPressNative". (on Selenium 2.40 or later)
+* Add the feature in which "javascript{...}" can be used in any arguments.
 
 ### 1.5.0
 

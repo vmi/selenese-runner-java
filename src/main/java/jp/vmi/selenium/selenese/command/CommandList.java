@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.inject.DoCommand;
@@ -93,6 +95,20 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
         }
     }
 
+    private static final Pattern JS_BLOCK_RE = Pattern.compile("javascript\\{(.*)\\}", Pattern.DOTALL);
+
+    protected void evalCurArgs(Context context, String[] curArgs) {
+        for (int i = 0; i < curArgs.length; i++) {
+            Matcher matcher = JS_BLOCK_RE.matcher(curArgs[i]);
+            if (matcher.matches()) {
+                Object value = context.getEval().eval(context.getWrappedDriver(), matcher.group(1));
+                if (value == null)
+                    value = "";
+                curArgs[i] = value.toString();
+            }
+        }
+    }
+
     /**
      * Execute command list.
      *
@@ -107,6 +123,7 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
             while (commandListIterator.hasNext()) {
                 ICommand command = commandListIterator.next();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
+                evalCurArgs(context, curArgs);
                 result = result.update(doCommand(context, command, curArgs));
                 if (result.isAborted())
                     break;

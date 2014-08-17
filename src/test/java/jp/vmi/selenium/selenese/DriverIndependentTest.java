@@ -7,6 +7,8 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.selenese.command.CommandFactory;
+import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
@@ -102,5 +104,18 @@ public class DriverIndependentTest extends TestCaseTestBase {
         execute("issue75");
         assertThat(result, is(instanceOf(Error.class)));
         assertThat(result.getMessage(), containsString("notFound.html"));
+    }
+
+    @Test
+    public void javascriptBlock() {
+        Runner runner = new Runner();
+        runner.setDriver(driver);
+        runner.setOverridingBaseURL(wsr.getBaseURL());
+        CommandFactory cf = runner.getCommandFactory();
+        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        testCase.addCommand(cf, "open", "/index.html");
+        testCase.addCommand(cf, "store", "javascript{'x'}", "a");
+        runner.execute(testCase);
+        assertThat(runner.getVarsMap().get("a").toString(), equalTo("x"));
     }
 }
