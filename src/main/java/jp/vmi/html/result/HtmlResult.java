@@ -189,7 +189,7 @@ public class HtmlResult {
         String html = getEngine().transform(getTemplate("result.html"), model);
         File file = new File(htmlResultDir, "TEST-" + testSuite.getName() + ".html");
         try {
-            FileUtils.write(file, html);
+            FileUtils.write(file, html, "UTF-8");
             log.info("Generated HTML result: {}", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
