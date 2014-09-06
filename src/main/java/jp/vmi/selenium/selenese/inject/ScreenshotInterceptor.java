@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.inject;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ScreenshotHandler;
@@ -32,11 +32,11 @@ public class ScreenshotInterceptor implements MethodInterceptor {
             String baseName = context.getCurrentTestCase().getBaseName();
             try {
                 command.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()));
-            } catch (NoSuchWindowException e) {
+                if (!result.isSuccess())
+                    command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()));
+            } catch (WebDriverException e) {
                 // ignore if failed to capturing.
             }
-            if (!result.isSuccess())
-                command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()));
         }
         return result;
     }
