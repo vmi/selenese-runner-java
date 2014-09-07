@@ -41,6 +41,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         caps.merge(driverOptions.getCapabilities());
         RemoteWebDriver driver = new RemoteWebDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
+        setInitialWindowSize(driver, driverOptions);
         return driver;
     }
 }
