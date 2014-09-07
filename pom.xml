@@ -409,7 +409,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty</artifactId>
-      <version>3.9.2.Final</version>
+      <version>3.9.4.Final</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
