@@ -7,6 +7,8 @@ Selenese Runner Java Relase Note
 * Add links to screenshot image to HTML result.
 * Add new commands: "keyDownNative", "keyUpNative", and "keyPressNative". (on Selenium 2.40 or later)
 * Add the feature in which "javascript{...}" can be used in any arguments.
+* Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
+* Add initial width and height for remote driver. (PR #129 by patchpump)
 
 ### 1.5.0
 
