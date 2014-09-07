@@ -1,7 +1,7 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 1.5.1
+### 1.5.2
 
 * Ignore the expiry when comparing old/new cookie information. (issue #125)
 * Add links to screenshot image to HTML result.
@@ -10,6 +10,10 @@ Selenese Runner Java Relase Note
 * Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
 * Add initial width and height for remote driver. (PR #129 by patchpump)
 * Add new option "--firefox", it specifies firefox binary path. (issue #127)
+
+### 1.5.1
+
+* Missing number.
 
 ### 1.5.0
 
