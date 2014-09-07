@@ -28,8 +28,10 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         // Validate "webdriver.firefox.bin" value bacause FirefoxBinary only ignore invalid it.
         String path = System.getProperty(WEBDRIVER_FIREFOX_BIN);
         // Override by command line option.
-        if (driverOptions.has(FIREFOX))
+        if (driverOptions.has(FIREFOX)) {
             path = driverOptions.get(FIREFOX);
+            System.setProperty(WEBDRIVER_FIREFOX_BIN, path);
+        }
         if (path != null) {
             File file = new File(path);
             if (!file.isFile() || !file.canExecute())
