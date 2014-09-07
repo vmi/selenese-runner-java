@@ -150,6 +150,10 @@ public class Main {
             .hasArg().withArgName("baseURL")
             .withDescription("override base URL set in selenese.")
             .create('b'));
+        options.addOption(OptionBuilder.withLongOpt("firefox")
+            .hasArg().withArgName("path")
+            .withDescription("path to 'firefox' binary. (implies '--driver firefox')")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("chromedriver")
             .hasArg().withArgName("path")
             .withDescription("path to 'chromedriver' binary. (implies '--driver chrome')")
@@ -298,7 +302,9 @@ public class Main {
             String driverName = cli.getOptionValue("driver");
             DriverOptions driverOptions = new DriverOptions(cli);
             if (driverName == null) {
-                if (driverOptions.has(DriverOption.CHROMEDRIVER))
+                if (driverOptions.has(DriverOption.FIREFOX))
+                    driverName = WebDriverManager.FIREFOX;
+                else if (driverOptions.has(DriverOption.CHROMEDRIVER))
                     driverName = WebDriverManager.CHROME;
                 else if (driverOptions.has(DriverOption.IEDRIVER))
                     driverName = WebDriverManager.IE;

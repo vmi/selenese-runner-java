@@ -9,6 +9,7 @@ Selenese Runner Java Relase Note
 * Add the feature in which "javascript{...}" can be used in any arguments.
 * Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
 * Add initial width and height for remote driver. (PR #129 by patchpump)
+* Add new option "--firefox", it specifies firefox binary path. (issue #127)
 
 ### 1.5.0
 

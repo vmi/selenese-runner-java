@@ -39,6 +39,8 @@ public class DriverOptions {
         PROXY_PASSWORD,
         /** --no-proxy */
         NO_PROXY,
+        /** --firefox */
+        FIREFOX,
         /** --chromedriver */
         CHROMEDRIVER,
         /** --iedriver */
