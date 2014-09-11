@@ -128,7 +128,7 @@ ${foreach seleneseList selenese}
                   <td>${item;h}</td>
       ${end}
                   <td>
-      ${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot;relpath}">[${imgIndex}]</a>${@inc imgIndex}${end}
+      ${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot.path;relpath}">${imgIndex}:${screenshot.label;h}</a>${@inc imgIndex}${end}
                   </td>
                 </tr>
     ${end}

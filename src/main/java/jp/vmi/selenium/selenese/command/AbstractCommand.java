@@ -27,7 +27,7 @@ public abstract class AbstractCommand implements ICommand {
     private final int[] locatorIndexes;
     private Result result = UNEXECUTED;
     private StartLoop startLoop = NO_START_LOOP;
-    private List<String> screenshots = null;
+    private List<Screenshot> screenshots = null;
 
     /**
      * Constructor.
@@ -161,16 +161,16 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
-    public void addScreenshot(String path) {
+    public void addScreenshot(String path, String label) {
         if (path == null)
             return;
         if (screenshots == null)
-            screenshots = new ArrayList<String>();
-        screenshots.add(path);
+            screenshots = new ArrayList<Screenshot>();
+        screenshots.add(new Screenshot(path, label));
     }
 
     @Override
-    public List<String> getScreenshots() {
+    public List<Screenshot> getScreenshots() {
         if (screenshots == null)
             return Collections.emptyList();
         return screenshots;

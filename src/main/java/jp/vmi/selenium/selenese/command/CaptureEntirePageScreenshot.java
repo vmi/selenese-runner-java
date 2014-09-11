@@ -38,7 +38,7 @@ public class CaptureEntirePageScreenshot extends AbstractCommand {
         if (handler.isIgnoredScreenshotCommand())
             return new Success("captureEntirePageScreenshot is ignored.");
         try {
-            handler.takeScreenshot(filename);
+            addScreenshot(handler.takeScreenshot(filename), "cmd");
             return SUCCESS;
         } catch (UnsupportedOperationException e) {
             return new Warning(e.getMessage());

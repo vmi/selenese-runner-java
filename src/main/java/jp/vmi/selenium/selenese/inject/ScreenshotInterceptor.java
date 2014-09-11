@@ -31,9 +31,9 @@ public class ScreenshotInterceptor implements MethodInterceptor {
             ScreenshotHandler handler = (ScreenshotHandler) context;
             String baseName = context.getCurrentTestCase().getBaseName();
             try {
-                command.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()));
+                command.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()), "all");
                 if (!result.isSuccess())
-                    command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()));
+                    command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()), "fail");
             } catch (WebDriverException e) {
                 // ignore if failed to capturing.
             }
