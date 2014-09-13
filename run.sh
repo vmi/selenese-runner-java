@@ -6,7 +6,7 @@ if [ x"$1" = x--build ]; then
 fi
 
 rm -rf tmp/img tmp/xml tmp/html logs/run.log
-mkdir -p tmp/img/failed tmp/xml tmp/html logs
+mkdir -p tmp/img/all tmp/img/failed tmp/xml tmp/html logs
 
 log_file=run-`date +'%Y%m%d_%H%M%S'`.log
 ( cd logs
