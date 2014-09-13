@@ -24,7 +24,7 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.utils.SeleniumUtils;
+import jp.vmi.selenium.selenese.utils.SystemInformation;
 
 /**
  * HTML result generator.
@@ -64,10 +64,20 @@ public class HtmlResult {
         }
     }
 
+    private String[] commandLineArgs = null;
     private String htmlResultDir = null;
     private Engine engine = null;
 
     private final TestSuiteTree tree = new TestSuiteTree();
+
+    /**
+     * Set command line arguments.
+     *
+     * @param args command line arguments.
+     */
+    public void setCommandLineArgs(String[] args) {
+        commandLineArgs = args;
+    }
 
     /**
      * Get HTML result directory.
@@ -177,7 +187,7 @@ public class HtmlResult {
         }
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("title", testSuite.getName() + " results");
-        model.put("seleniumVersion", SeleniumUtils.getVersion());
+        model.put("sysInfo", SystemInformation.getInstance());
         model.put("testSuite", testSuite);
         model.put("seleneseList", seleneseList);
         model.put("numTestTotal", summary.numTestTotal);
@@ -186,6 +196,7 @@ public class HtmlResult {
         model.put("numCommandPasses", summary.numCommandPasses);
         model.put("numCommandFailures", summary.numCommandFailures);
         model.put("numCommandErrors", summary.numCommandErrors);
+        model.put("commandLine", commandLineArgs);
         String html = getEngine().transform(getTemplate("result.html"), model);
         File file = new File(htmlResultDir, "TEST-" + testSuite.getName() + ".html");
         try {

@@ -105,6 +105,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.styleBackups = new ArrayDeque<HighlightStyleBackup>();
     }
 
+    public void setCommandLineArgs(String[] args) {
+        jUnitResult.setCommandLineArgs(args);
+        htmlResult.setCommandLineArgs(args);
+    }
+
     @Override
     public TestCase getCurrentTestCase() {
         return currentTestCase;

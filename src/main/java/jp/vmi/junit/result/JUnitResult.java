@@ -11,6 +11,8 @@ import javax.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.utils.CommandLineUtils;
+
 import static jp.vmi.junit.result.ObjectFactory.*;
 
 /**
@@ -27,6 +29,19 @@ public final class JUnitResult {
 
     /** filename of failsafe-summary. */
     public static final String FAILSAFE_SUMMARY_FILENAME = "failsafe-summary.xml";
+
+    private static final String[] PROP_NAMES = {
+        "java.vm.name",
+        "java.version",
+        "os.name",
+        "os.version",
+        "os.arch",
+        "user.language",
+        "user.country",
+        "user.timezone",
+    };
+
+    private String[] commandLineArgs = null;
 
     private String xmlResultDir = null;
 
@@ -45,6 +60,15 @@ public final class JUnitResult {
     }
 
     /**
+     * Set command line arguments.
+     *
+     * @param args command line arguments.
+     */
+    public void setCommandLineArgs(String[] args) {
+        commandLineArgs = args;
+    }
+
+    /**
      * Set XML result directory.
      *
      * @param dir XML result directory.
@@ -59,7 +83,12 @@ public final class JUnitResult {
      * @param testSuite test-suite instance.
      */
     public void startTestSuite(ITestSuite testSuite) {
-        map.put(testSuite, factory.createTestSuiteResult(testSuite));
+        TestSuiteResult suiteResult = factory.createTestSuiteResult(testSuite);
+        for (String propName : PROP_NAMES)
+            suiteResult.addProperty(propName, System.getProperty(propName, "<UNKNOWN>"));
+        if (commandLineArgs != null)
+            suiteResult.addProperty("seleneseRunner.args", CommandLineUtils.espaceCommandLineArgs(commandLineArgs));
+        map.put(testSuite, suiteResult);
     }
 
     /**

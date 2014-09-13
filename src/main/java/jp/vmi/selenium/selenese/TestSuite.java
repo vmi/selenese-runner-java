@@ -25,6 +25,7 @@ public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
+    private String webDriverName = null;
     private String filename;
     private String parentDir = null;
     private String name;
@@ -64,6 +65,24 @@ public class TestSuite implements Selenese, ITestSuite {
     @Override
     public String getName() {
         return name;
+    }
+
+    /**
+     * Get WebDriver name.
+     *
+     * @return WebDriver name.
+     */
+    public String getWebDriverName() {
+        return webDriverName;
+    }
+
+    /**
+     * Set WebDriver name.
+     *
+     * @param webDriverName WebDriver name.
+     */
+    public void setWebDriverName(String webDriverName) {
+        this.webDriverName = webDriverName;
     }
 
     /**

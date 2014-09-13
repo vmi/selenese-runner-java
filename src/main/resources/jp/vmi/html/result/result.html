@@ -11,7 +11,6 @@ ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">
 
       table {
         border-collapse: collapse;
-        border: 1px solid #ccc;
       }
 
       th, td {
@@ -19,12 +18,66 @@ ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">
         padding-right: 0.3em;
       }
 
-      th {
+      a {
+        text-decoration: none;
+      }
+
+      div, pre {
+        display: table;
+      }
+
+      pre {
+        border: 1px solid #ccc;
+      }
+
+      .box, .lbox, .rbox {
+        border: 1px solid #ccc;
+      }
+
+      .lbox {
+        float: left;
+        margin: 0.5em;
+      }
+
+      .rbox {
+        float: right;
+        margin: 0.5em;
+      }
+
+      .lbox th, .rbox th {
         text-align: right;
       }
 
-      a {
-        text-decoration: none;
+      .command_line {
+        margin: 0.5em;
+      }
+
+      .command_line th {
+        text-align: left;
+      }
+
+      .command_line td {
+        border: 1px solid #ccc;
+        padding: 0.5ex 0.5em;
+        font-family: monospace;
+        line-height: 200%;
+      }
+
+      .arg {
+        white-space: nowrap;
+        border: 1px solid #ccc;
+        padding: 1px;
+        background-color: #efe;
+      }
+
+      .selenium {
+        border: 1px solid black;
+        margin: 0.5em;
+      }
+
+      .selenium th, .selenium td {
+        text-align: left;
+        border: 1px solid black;
       }
 
       .title {
@@ -76,70 +129,115 @@ ${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${
   <body>
     <h1>${title;h}</h1>
 
-    <table>
-      <tr><th>Result:</th><td>${testSuite.result}</td></tr>
-      <tr><th>Start time:</th><td>${testSuite.stopWatch.startTimeString}</td></tr>
-      <tr><th>Total Time:</th><td>${testSuite.stopWatch.durationString}</td></tr>
-      <tr><th>Number of Test Total:</th><td>${numTestTotal}</td></tr>
-      <tr><th>Number of Test Passes:</th><td>${numTestPasses}</td></tr>
-      <tr><th>Number of Test Failures:</th><td>${numTestFailures}</td></tr>
-      <tr><th>Number of Command Passes:</th><td>${numCommandPasses}</td></tr>
-      <tr><th>Number of Command Failures:</th><td>${numCommandFailures}</td></tr>
-      <tr><th>Number of Command Errors:</th><td>${numCommandErrors}</td></tr>
-      <tr><th>Selenium Version:</th><td>${seleniumVersion}</td></tr>
-      <tr><td>
-          <br>
-          <table id="suiteTable" class="selenium" cellpadding="1" cellspacing="1" border="1">
-            <tbody>
-              <tr class="title status_${testSuite.result}"><td><b>${testSuite.name}</b></td></tr>
+    <div class="box">
+      <div style="overflow: hidden">
+        <table class="lbox">
+          <tr>
+            <th>Result:</th><td>${testSuite.result}</td>
+          </tr>
+          <tr>
+            <th>Start Time:</th><td>${testSuite.stopWatch.startTimeString;h}</td>
+          </tr>
+          <tr>
+            <th>Total Time:</th><td>${testSuite.stopWatch.durationString;h}</td>
+          </tr>
+          <tr>
+            <th>Number of Test Total:</th><td>${numTestTotal}</td>
+          </tr>
+          <tr>
+            <th>Number of Test Passes:</th><td>${numTestPasses}</td>
+          </tr>
+          <tr>
+            <th>Number of Test Failures:</th><td>${numTestFailures}</td>
+          </tr>
+          <tr>
+            <th>Number of Command Passes:</th><td>${numCommandPasses}</td>
+          </tr>
+          <tr>
+            <th>Number of Command Failures:</th><td>${numCommandFailures}</td>
+          </tr>
+          <tr>
+            <th>Number of Command Errors:</th><td>${numCommandErrors}</td>
+          </tr>
+        </table>
+        <table class="rbox">
+          <tr>
+            <th>Selenese Runner Version:</th><td>${sysInfo.seleneseRunnerVersion}</td>
+          </tr>
+          <tr>
+            <th>WebDriver Name:</th><td>${testSuite.webDriverName;h}</td>
+          </tr>
+          <tr>
+            <th>Selenium Version:</th><td>${sysInfo.seleniumVersion}</td>
+          </tr>
+          <tr>
+            <th>Java Version:</th><td>${sysInfo.javaVersion;h}</td>
+          </tr>
+          <tr>
+            <th>Java VM Name:</th><td>${sysInfo.javaVMName;h}</td>
+          </tr>
+          <tr>
+            <th>Operating System:</th><td>${sysInfo.operatingSystem;h}</td>
+          </tr>
+          <tr>
+            <th>Language:</th><td>${sysInfo.language;h}</td>
+          </tr>
+          <tr>
+            <th>Country:</th><td>${sysInfo.country;h}</td>
+          </tr>
+          <tr>
+            <th>Time Zone:</th><td>${sysInfo.timeZone;h}</td>
+          </tr>
+        </table>
+      </div>
+${if commandLine}
+      <div>
+        <table class="command_line">
+          <tr><th>Command Line Arguments:</th></tr>
+          <tr><td>${foreach commandLine arg}<span class="arg">${arg;h}</span> ${end}</td></tr>
+        </table>
+      </div>
+${end}
+      <div>
+        <table id="suiteTable" class="selenium">
+          <tr class="title status_${testSuite.result}"><th>${testSuite.name}</th></tr>
 ${@set index 0}
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_SUITE"}
-              <tr class="status_${selenese.result}"><td><a href="TEST-${selenese.name}.html">${selenese.name;h}</a> (test-suite)</td></tr>
+          <tr class="status_${selenese.result}"><td><a href="TEST-${selenese.name}.html">${selenese.name;h}</a> (test-suite)</td></tr>
   ${end}
   ${if selenese.type="TEST_CASE"}
-              <tr class="status_${selenese.result}"><td><a href="#testCase${index}">${selenese.name;h}</a></td></tr>
+          <tr class="status_${selenese.result}"><td><a href="#testCase${index}">${selenese.name;h}</a></td></tr>
   ${end}
   ${@inc index}
 ${end}
-          </tbody>
-          </table>
-        </td>
-        <td>&nbsp;</td>
-      </tr>
-    </table>
+        </table>
+      </div>
+    </div>
 
 ${@set index 0}
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_CASE"}
     <br>
-    <table>
-      <tr>
-        <td><a name="testCase${index}">${selenese.filename;h}</a><br>
-          <div>
-            <table cellpadding="1" cellspacing="1" border="1">
-              <thead>
-                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Screenshot</td></tr>
-              </thead>
-              <tbody>
+    <div>
+      <a name="testCase${index}">${selenese.filename;h}</a><br>
+      <table cellpadding="1" cellspacing="1" border="1">
+        <thead>
+          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Screenshot</td></tr>
+        </thead>
+        <tbody>
     ${foreach selenese.commandList command}
-                <tr class="cmd_status_${command.result}" style="cursor: pointer;">
-                  <td class="index">${command.index;i}</td>
+          <tr class="cmd_status_${command.result}" style="cursor: pointer;">
+            <td class="index">${command.index;i}</td>
       ${foreach command.source item}
-                  <td>${item;h}</td>
+            <td>${item;h}</td>
       ${end}
-                  <td>
-      ${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot.path;relpath}">${imgIndex}:${screenshot.label;h}</a>${@inc imgIndex}${end}
-                  </td>
-                </tr>
+            <td>${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot.path;relpath}">${imgIndex}:${screenshot.label;h}</a>${@inc imgIndex}${end}</td>
+          </tr>
     ${end}
-              </tbody>
-            </table>
-          </div>
-        </td>
-        <td>&nbsp;</td>
-    </tr>
-    </table>
+        </tbody>
+      </table>
+    </div>
 
     <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
 ${end}</pre>

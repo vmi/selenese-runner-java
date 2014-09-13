@@ -315,6 +315,7 @@ public class Main {
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
             Runner runner = new Runner();
+            runner.setCommandLineArgs(args);
             runner.setDriver(manager.get());
             runner.setWebDriverPreparator(manager);
             runner.setHighlight(cli.hasOption("highlight"));
