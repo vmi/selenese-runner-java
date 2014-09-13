@@ -1,6 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.5.3
+
+* Catch up Selenium 2.43.1.
+* Add hardcoded UTF-8 encoding for HTML result. (PR #130 by patchpump)
+* Add screenshot link for "captureEntirePageScreenshot" in HTML result.
+* Add screenshot label in HTML result.
+
 ### 1.5.2
 
 * Ignore the expiry when comparing old/new cookie information. (issue #125)
