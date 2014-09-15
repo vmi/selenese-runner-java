@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.5.4
+
+* Add start and end time (PR #132), system information, and command line arguments to HTML/JUnit result.
+
 ### 1.5.3
 
 * Catch up Selenium 2.43.1.
