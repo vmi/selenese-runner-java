@@ -112,7 +112,7 @@ public class StopWatch {
      */
 
     public String getStartTimeString() {
-        return new Date(startTime).toString();
+        return new Date(startTimeOfUTC).toString();
     }
 
     /**
@@ -122,6 +122,6 @@ public class StopWatch {
      */
 
     public String getEndTimeString() {
-        return new Date(endTime).toString();
+        return new Date(endTimeOfUTC).toString();
     }
 }
