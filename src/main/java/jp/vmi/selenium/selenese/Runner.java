@@ -87,8 +87,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private PageInformation latestPageInformation = PageInformation.EMPTY;
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
-    private int countForDefault = 0;
-
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
 
@@ -552,7 +550,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 break;
             case TEST_CASE:
                 if (defaultTestSuite == null) {
-                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++));
+                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%s", selenese.getName()));
                     testSuiteList.add(defaultTestSuite);
                 }
                 defaultTestSuite.addSelenese(selenese);
@@ -586,7 +584,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
-            testSuite = Binder.newTestSuite(null, String.format("default-%02d", countForDefault++));
+            testSuite = Binder.newTestSuite(null, String.format("default-%s", selenese.getName()));
             testSuite.addSelenese(selenese);
             break;
         case TEST_SUITE:
