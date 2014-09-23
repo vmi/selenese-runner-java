@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.ui.Duration;
@@ -102,5 +103,25 @@ public class StopWatch {
             ds.append('/');
         ds.append(String.format("%.3fsec", s + ms));
         return ds.toString();
+    }
+
+    /**
+     * Get human readable start time string.
+     * 
+     * @return start time string
+     */
+
+    public String getStartTimeString() {
+        return new Date(startTimeOfUTC).toString();
+    }
+
+    /**
+     * Get human readable end time string.
+     * 
+     * @return end time string
+     */
+
+    public String getEndTimeString() {
+        return new Date(endTimeOfUTC).toString();
     }
 }
