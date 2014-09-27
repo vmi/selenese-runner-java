@@ -1,8 +1,8 @@
-See https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide
+See OSSRH Guide: http://central.sonatype.org/pages/ossrh-guide.html
 
 ### Prerequirement
 - add "servers" entry to "~/.m2/settings.xml".
-  See https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-7a.1.POMandsettingsconfig
+  See http://central.sonatype.org/pages/apache-maven.html#distribution-management-and-authentication
 - register PGP key.
   PGP uid needs to be the same as "developers" entry in "pom.xml".
 
