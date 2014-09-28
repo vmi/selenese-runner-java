@@ -1,10 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 1.5.4
+### 1.5.5
 
 * Add start time to HTML result. (PR #132)
 * Add system information and command line arguments to HTML/JUnit result.
+
+### 1.5.4
+
+* Missing number.
 
 ### 1.5.3
 
