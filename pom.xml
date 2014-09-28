@@ -435,7 +435,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.floreysoft</groupId>
       <artifactId>jmte</artifactId>
-      <version>3.0</version>
+      <version>3.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
