@@ -539,7 +539,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public Result run(String... filenames) {
         Result totalResult = UNEXECUTED;
-        TestSuite defaultTestSuite = null;
         List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
         for (String filename : filenames) {
             Selenese selenese = Parser.parse(filename, commandFactory);
@@ -554,11 +553,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 testSuiteList.add((TestSuite) selenese);
                 break;
             case TEST_CASE:
-                if (defaultTestSuite == null) {
-                    defaultTestSuite = Binder.newTestSuite(null, String.format("default-%s", selenese.getName()));
-                    testSuiteList.add(defaultTestSuite);
-                }
-                defaultTestSuite.addSelenese(selenese);
+                TestSuite testSuite = Binder.newTestSuite(null, selenese.getName());
+                testSuite.addSelenese(selenese);
+                testSuiteList.add(testSuite);
+                break;
             }
         }
         if (totalResult != UNEXECUTED)
@@ -589,7 +587,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
-            testSuite = Binder.newTestSuite(null, String.format("default-%s", selenese.getName()));
+            testSuite = Binder.newTestSuite(null, selenese.getName());
             testSuite.addSelenese(selenese);
             break;
         case TEST_SUITE:
