@@ -103,6 +103,11 @@ public class JUnitResultTest {
             private final StopWatch stopWatch = new StopWatch();
 
             @Override
+            public String getBaseName() {
+                return getName();
+            }
+
+            @Override
             public String getName() {
                 return "test-suite";
             }
@@ -123,6 +128,11 @@ public class JUnitResultTest {
             testCases[i] = new ITestCase() {
                 private final StopWatch stopWatch = new StopWatch();
                 private final LogRecorder logRecorder = new LogRecorder(System.out);
+
+                @Override
+                public String getBaseName() {
+                    return getName();
+                }
 
                 @Override
                 public String getName() {

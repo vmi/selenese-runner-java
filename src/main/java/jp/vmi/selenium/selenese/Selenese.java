@@ -23,6 +23,15 @@ public interface Selenese {
     Type getType();
 
     /**
+     * Get file base name.
+     *
+     * For example, return "def" when file name is "/abc/def.html".
+     *
+     * @return file base name.
+     */
+    String getBaseName();
+
+    /**
      * Get script name.
      *
      * @return script name.

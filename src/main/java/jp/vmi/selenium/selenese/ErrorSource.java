@@ -14,6 +14,7 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 public abstract class ErrorSource implements Selenese, ITestTarget {
 
     private String filename;
+    private String baseName;
     private InvalidSeleneseException e;
 
     private final StopWatch stopWatch = new StopWatch();
@@ -27,6 +28,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
      */
     public ErrorSource initialize(String filename, InvalidSeleneseException e) {
         this.filename = PathUtils.normalize(filename);
+        this.baseName = FilenameUtils.getBaseName(filename);
         this.e = e;
         return this;
     }
@@ -53,6 +55,11 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
      */
     public String getFilename() {
         return filename;
+    }
+
+    @Override
+    public String getBaseName() {
+        return baseName;
     }
 
     @Override

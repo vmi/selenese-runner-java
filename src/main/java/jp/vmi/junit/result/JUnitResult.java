@@ -105,7 +105,7 @@ public final class JUnitResult {
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            File file = new File(xmlResultDir, "TEST-" + suiteResult.getName() + ".xml");
+            File file = new File(xmlResultDir, "TEST-" + suiteResult.getBaseName() + ".xml");
             marshaller.marshal(suiteResult, file);
             log.info("Generated JUnit result: {}", file);
         } catch (JAXBException e) {

@@ -553,7 +553,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 testSuiteList.add((TestSuite) selenese);
                 break;
             case TEST_CASE:
-                TestSuite testSuite = Binder.newTestSuite(null, selenese.getName());
+                TestSuite testSuite = Binder.newTestSuite(filename, selenese.getName());
                 testSuite.addSelenese(selenese);
                 testSuiteList.add(testSuite);
                 break;
@@ -587,7 +587,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
-            testSuite = Binder.newTestSuite(null, selenese.getName());
+            testSuite = Binder.newTestSuite(filename, selenese.getName());
             testSuite.addSelenese(selenese);
             break;
         case TEST_SUITE:
