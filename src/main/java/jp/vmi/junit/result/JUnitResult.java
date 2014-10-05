@@ -200,7 +200,7 @@ public final class JUnitResult {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
             marshaller.marshal(failsafeSummary, file);
-            log.info("Generated failsafe summary: ", file);
+            log.info("Generated failsafe summary: {}", file);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
