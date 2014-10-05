@@ -1,9 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.6.0
+
+* [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by patchpump & vmi)
+* Update dependency versions.
+
 ### 1.5.5
 
-* Add start time to HTML result. (PR #132)
+* Add start time to HTML result. (PR #132 by patchpump)
 * Add system information and command line arguments to HTML/JUnit result.
 
 ### 1.5.4
