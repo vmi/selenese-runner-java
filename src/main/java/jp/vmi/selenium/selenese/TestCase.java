@@ -37,8 +37,9 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 public class TestCase implements Selenese, ITestCase {
 
     private String filename = null;
-    private String baseName = "nofile";
+    private String baseName = null;
     private String name = null;
+
     private String baseURL = null;
 
     private StartLoop currentStartLoop = NO_START_LOOP;
@@ -77,9 +78,12 @@ public class TestCase implements Selenese, ITestCase {
      * @return this.
      */
     public TestCase initialize(String filename, String name, String baseURL) {
-        this.filename = PathUtils.normalize(filename);
-        if (filename != null)
-            this.baseName = FilenameUtils.getBaseName(filename);
+        filename = PathUtils.normalize(filename);
+        String baseName = filename != null ? FilenameUtils.getBaseName(filename) : name;
+        if (name == null)
+            name = baseName;
+        this.filename = filename;
+        this.baseName = baseName;
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
         return this;
@@ -114,11 +118,7 @@ public class TestCase implements Selenese, ITestCase {
         return filename;
     }
 
-    /**
-     * Get base name for screenshot file name.
-     *
-     * @return base name
-     */
+    @Override
     public String getBaseName() {
         return baseName;
     }
