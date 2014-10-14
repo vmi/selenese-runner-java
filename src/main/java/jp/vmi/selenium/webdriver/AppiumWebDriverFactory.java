@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -18,6 +19,22 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 public class AppiumWebDriverFactory extends WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(AppiumWebDriverFactory.class);
+
+    /**
+     * Appium driver.
+     */
+    public static class AppiumDriver extends RemoteWebDriver {
+
+        /**
+         * Constructor.
+         *
+         * @param url remote url.
+         * @param caps capabilities.
+         */
+        public AppiumDriver(URL url, Capabilities caps) {
+            super(url, caps);
+        }
+    }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
@@ -41,7 +58,7 @@ public class AppiumWebDriverFactory extends WebDriverFactory {
             throw new IllegalArgumentException("Require --remote-url to know where to connect to");
         }
         caps.merge(driverOptions.getCapabilities());
-        RemoteWebDriver driver = new RemoteWebDriver(url, caps);
+        RemoteWebDriver driver = new AppiumDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
         return driver;
     }

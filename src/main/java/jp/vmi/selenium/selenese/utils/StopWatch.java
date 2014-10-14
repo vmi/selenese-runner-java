@@ -2,12 +2,15 @@ package jp.vmi.selenium.selenese.utils;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.support.ui.Duration;
 
 /**
  * Record log message.
  */
 public class StopWatch {
+
+    private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss.SSS ZZ");
 
     private long startTimeOfUTC;
 
@@ -102,5 +105,25 @@ public class StopWatch {
             ds.append('/');
         ds.append(String.format("%.3fsec", s + ms));
         return ds.toString();
+    }
+
+    /**
+     * Get human readable start time string.
+     *
+     * @return start time string
+     */
+
+    public String getStartTimeString() {
+        return DATE_TIME_FORMAT.format(startTimeOfUTC);
+    }
+
+    /**
+     * Get human readable end time string.
+     *
+     * @return end time string
+     */
+
+    public String getEndTimeString() {
+        return DATE_TIME_FORMAT.format(endTimeOfUTC);
     }
 }

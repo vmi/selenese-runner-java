@@ -25,9 +25,12 @@ public class TestSuite implements Selenese, ITestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
-    private String filename;
+    private String filename = null;
+    private String baseName = null;
+    private String name = null;
+
     private String parentDir = null;
-    private String name;
+    private String webDriverName = null;
     private final List<Selenese> seleneseList = new ArrayList<Selenese>();
 
     private final StopWatch stopWatch = new StopWatch();
@@ -41,13 +44,19 @@ public class TestSuite implements Selenese, ITestSuite {
      * @return this.
      */
     public TestSuite initialize(String filename, String name) {
-        this.filename = filename = PathUtils.normalize(filename);
-        if (filename != null)
+        filename = PathUtils.normalize(filename);
+        String baseName;
+        if (filename != null) {
+            baseName = FilenameUtils.getBaseName(filename);
             this.parentDir = FilenameUtils.getFullPathNoEndSeparator(filename);
-        if (name != null)
-            this.name = name;
-        else if (filename != null)
-            this.name = FilenameUtils.getBaseName(filename);
+        } else {
+            baseName = name;
+        }
+        if (name == null)
+            name = baseName;
+        this.filename = filename;
+        this.baseName = baseName;
+        this.name = name;
         return this;
     }
 
@@ -64,6 +73,29 @@ public class TestSuite implements Selenese, ITestSuite {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getBaseName() {
+        return baseName;
+    }
+
+    /**
+     * Get WebDriver name.
+     *
+     * @return WebDriver name.
+     */
+    public String getWebDriverName() {
+        return webDriverName;
+    }
+
+    /**
+     * Set WebDriver name.
+     *
+     * @param webDriverName WebDriver name.
+     */
+    public void setWebDriverName(String webDriverName) {
+        this.webDriverName = webDriverName;
     }
 
     /**

@@ -90,13 +90,14 @@ public interface ICommand {
      * Add screenshot image.
      *
      * @param path image path.
+     * @param label image label.
      */
-    void addScreenshot(String path);
+    void addScreenshot(String path, String label);
 
     /**
      * Get list of screenshot images.
      *
      * @return list of image path of sreenshot.
      */
-    List<String> getScreenshots();
+    List<Screenshot> getScreenshots();
 }

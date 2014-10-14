@@ -1,6 +1,7 @@
 package jp.vmi.junit.result;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -20,6 +21,16 @@ public abstract class TestResult<T extends ITestTarget> {
      */
     public void setTestTarget(T testTarget) {
         this.testTarget = testTarget;
+    }
+
+    /**
+     * Get test file base name.
+     *
+     * @return test file base name.
+     */
+    @XmlTransient
+    public String getBaseName() {
+        return testTarget.getBaseName();
     }
 
     /**

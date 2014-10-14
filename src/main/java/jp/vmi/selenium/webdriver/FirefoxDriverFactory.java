@@ -27,11 +27,15 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         // Validate "webdriver.firefox.bin" value bacause FirefoxBinary only ignore invalid it.
         String path = System.getProperty(WEBDRIVER_FIREFOX_BIN);
+        // Override by command line option.
+        if (driverOptions.has(FIREFOX)) {
+            path = driverOptions.get(FIREFOX);
+            System.setProperty(WEBDRIVER_FIREFOX_BIN, path);
+        }
         if (path != null) {
             File file = new File(path);
             if (!file.isFile() || !file.canExecute())
-                throw new IllegalArgumentException("Executable file does not exist: " + path
-                    + " defined by \"" + WEBDRIVER_FIREFOX_BIN + "\"");
+                throw new IllegalArgumentException("Missing Firefox binary: " + path);
         }
         FirefoxBinary binary;
         try {

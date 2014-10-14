@@ -13,6 +13,7 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
+import jp.vmi.selenium.selenese.utils.SystemInformation;
 
 /**
  * Interceptor for logging and recoding test-suite result.
@@ -25,10 +26,19 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestSuiteInterceptor.class);
 
+    private void initTestSuiteResult(JUnitResult jUnitResult, TestSuite testSuite) {
+        jUnitResult.startTestSuite(testSuite);
+        SystemInformation sysInfo = SystemInformation.getInstance();
+        jUnitResult.addProperty(testSuite, "seleneseRunner.version", sysInfo.getSeleneseRunnerVersion());
+        jUnitResult.addProperty(testSuite, "selenium.version", sysInfo.getSeleniumVersion());
+        jUnitResult.addProperty(testSuite, "selenium.webDriver.name", testSuite.getWebDriverName());
+    }
+
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         TestSuite testSuite = (TestSuite) invocation.getThis();
         Context context = (Context) invocation.getArguments()[CONTEXT];
+        testSuite.setWebDriverName(context.getWrappedDriver().getClass().getSimpleName());
         JUnitResult jUnitResult = (context instanceof JUnitResultHolder) ? ((JUnitResultHolder) context).getJUnitResult() : null;
         HtmlResult htmlResult = (context instanceof HtmlResultHolder) ? ((HtmlResultHolder) context).getHtmlResult() : null;
         StopWatch sw = testSuite.getStopWatch();
@@ -39,7 +49,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
             log.info(msg);
             slr.info(msg);
         }
-        jUnitResult.startTestSuite(testSuite);
+        initTestSuiteResult(jUnitResult, testSuite);
         try {
             return invocation.proceed();
         } catch (Throwable t) {

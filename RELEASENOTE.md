@@ -1,12 +1,35 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 1.5.1
+### 1.5.5
+
+* Add start time to HTML result. (PR #132)
+* Add system information and command line arguments to HTML/JUnit result.
+
+### 1.5.4
+
+* Missing number.
+
+### 1.5.3
+
+* Catch up Selenium 2.43.1.
+* Add hardcoded UTF-8 encoding for HTML result. (PR #130 by patchpump)
+* Add screenshot link for "captureEntirePageScreenshot" in HTML result.
+* Add screenshot label in HTML result.
+
+### 1.5.2
 
 * Ignore the expiry when comparing old/new cookie information. (issue #125)
 * Add links to screenshot image to HTML result.
 * Add new commands: "keyDownNative", "keyUpNative", and "keyPressNative". (on Selenium 2.40 or later)
 * Add the feature in which "javascript{...}" can be used in any arguments.
+* Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
+* Add initial width and height for remote driver. (PR #129 by patchpump)
+* Add new option "--firefox", it specifies firefox binary path. (issue #127)
+
+### 1.5.1
+
+* Missing number.
 
 ### 1.5.0
 

@@ -74,7 +74,7 @@ public abstract class TestCaseTestBase extends TestBase {
             if (testSuites.isEmpty()) {
                 xmlResult = null;
             } else {
-                String xmlFile = String.format("TEST-%s.xml", testSuites.get(0).getName());
+                String xmlFile = String.format("TEST-%s.xml", testSuites.get(0).getBaseName());
                 xmlResult = FileUtils.readFileToString(new File(xmlResultDir.getRoot(), xmlFile), "UTF-8");
             }
         } catch (IOException e) {
