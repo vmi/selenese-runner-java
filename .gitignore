@@ -18,3 +18,5 @@ release.properties
 /gh-pages
 \#*
 .\#*
+.idea/
+selenese-runner-java.iml
