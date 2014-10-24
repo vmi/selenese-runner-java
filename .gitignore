@@ -19,4 +19,4 @@ release.properties
 \#*
 .\#*
 .idea/
-selenese-runner-java.iml
+*.iml
