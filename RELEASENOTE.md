@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 1.6.0
 
 * [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by patchpump & vmi)
+* Catch up Selenium 2.44.0.
 * Update dependency versions.
 
 ### 1.5.5
