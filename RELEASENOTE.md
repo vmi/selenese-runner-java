@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.6.1
+
+* Fix failed to load test-case file without Base URL. (#135)
+
 ### 1.6.0
 
 * [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by patchpump & vmi)

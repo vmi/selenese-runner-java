@@ -25,6 +25,9 @@ import static org.apache.xerces.impl.Constants.*;
  */
 public abstract class Parser {
 
+    private static final String TEST_CASE_PROFILE = "http://selenium-ide.openqa.org/profiles/test-case";
+    private static final String DEFAULT_BASE_URL = "about:blank";
+
     protected static class NodeIterator implements Iterator<Node> {
         private final NodeList nodeList;
         private int index = 0;
@@ -97,6 +100,10 @@ public abstract class Parser {
             if (seleniumBase != null) {
                 String baseURL = seleniumBase.getNodeValue();
                 return new TestCaseParser(filename, document, baseURL).parse(commandFactory);
+            }
+            Node profile = XPathAPI.selectSingleNode(document, "/HTML/HEAD/@profile");
+            if (profile != null && TEST_CASE_PROFILE.equals(profile.getNodeValue())) {
+                return new TestCaseParser(filename, document, DEFAULT_BASE_URL).parse(commandFactory);
             }
             Node suiteTable = XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
             if (suiteTable != null) {
