@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 1.6.1
 
 * Fix failed to load test-case file without Base URL. (#135)
+* Add new option "--cli-args", it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
 
 ### 1.6.0
 

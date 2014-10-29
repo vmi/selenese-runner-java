@@ -43,6 +43,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         } catch (WebDriverException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
+        if (driverOptions.has(CLI_ARGS))
+            binary.addCommandLineOptions(driverOptions.getCliArgs());
         for (Map.Entry<String, String> entry : driverOptions.getEnvVars().entrySet())
             binary.setEnvironmentProperty(entry.getKey(), entry.getValue());
         String profileName = driverOptions.get(PROFILE);

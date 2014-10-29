@@ -112,6 +112,10 @@ public class Main {
             .hasArg().withArgName("no-proxy")
             .withDescription("no-proxy hosts")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("cli-args")
+            .hasArg().withArgName("cli-args")
+            .withDescription("add command line arguments at starting up driver (multiple)")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("remote-url")
             .hasArg().withArgName("url")
             .withDescription("Remote test runner URL (Remote only)")

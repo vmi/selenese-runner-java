@@ -39,6 +39,7 @@ Usage
         --proxy-user <user>                  proxy username (HtmlUnit only *)
         --proxy-password <password>          proxy password (HtmlUnit only *)
         --no-proxy <no-proxy>                no-proxy hosts
+        --cli-args <cli-args>                add command line arguments at starting up driver (multiple)
         --remote-url <url>                   Remote test runner URL (Remote only)
         --remote-platform <platform>         Desired remote platform (Remote only)
         --remote-browser <browser>           Desired remote browser (Remote only)
@@ -88,19 +89,34 @@ That will create the *selenese-runner.jar* file within the 'target' directory.
 Options
 -------
 
-### PhantomJS driver
+### Firefox, Chrome and PhantomJS driver
 
-If you want to add command line options to PhantomJS binary, add following options:
+If you want to add command line options to above driver's binary, add following options:
 
-    java -jar selenese-runner.jar --driver phantomjs \
-      --define phantomjs.cli.args+=ARG1 \
-      --define phantomjs.cli.args+=ARG2 \
+    java -jar selenese-runner.jar --driver DRIVER_NAME \
+      --cli-args ARG1 \
+      --cli-args ARG2 \
       ...
 
 Example:
 
+* Firefox
+
+    java -jar selenese-runner.jar --driver firefox \
+      --cli-args -jsconsole \
+      ...
+
+* Chrome
+
+    java -jar selenese-runner.jar --driver chrome \
+      --cli-args --incognito \
+      --cli-args --ignore-certificate-errors \
+      ...
+
+* PhanotomJS
+
     java -jar selenese-runner.jar --driver phantomjs \
-      --define phantomjs.cli.args+=--ssl-certificates-path=/path/to/certs-dir/
+      --cli-args --ssl-certificates-path=/PATH/TO/CERTS-DIR/ \
       ...
 
 ### Rollup
