@@ -47,23 +47,10 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             binary.addCommandLineOptions(driverOptions.getCliArgs());
         for (Map.Entry<String, String> entry : driverOptions.getEnvVars().entrySet())
             binary.setEnvironmentProperty(entry.getKey(), entry.getValue());
-        String profileName = driverOptions.get(PROFILE);
-        String dir = driverOptions.get(PROFILE_DIR);
-        FirefoxProfile profile;
-        if (profileName != null) {
-            if (dir != null)
-                throw new IllegalArgumentException("Can't specify both '--profile' and '--profile-dir' at once");
-            // see http://code.google.com/p/selenium/wiki/TipsAndTricks
-            ProfilesIni allProfiles = new ProfilesIni();
-            profile = allProfiles.getProfile(profileName);
-        } else if (dir != null) {
-            File file = new File(dir);
-            if (!file.isDirectory())
-                throw new IllegalArgumentException("Missing profile directory: " + dir);
-            profile = new FirefoxProfile(new File(dir));
-        } else {
+
+        FirefoxProfile profile = (FirefoxProfile) driverOptions.getCapabilities().getCapability(FirefoxDriver.PROFILE);
+        if (profile == null)
             profile = new FirefoxProfile();
-        }
 
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.firefox(), driverOptions);
         caps.merge(driverOptions.getCapabilities());
