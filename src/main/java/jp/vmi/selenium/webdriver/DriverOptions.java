@@ -89,7 +89,8 @@ public class DriverOptions {
                 addDefinitions(cli.getOptionValues("define"));
                 break;
             case CLI_ARGS:
-                cliArgs = cli.getOptionValues(key);
+                if (cli.hasOption(key))
+                    cliArgs = cli.getOptionValues(key);
                 break;
             default:
                 set(opt, cli.getOptionValue(key));
