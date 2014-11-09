@@ -81,7 +81,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<CommandListIterator>();
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
-    private RollupRules rollupRules; // lazy initialization
+    private RollupRules rollupRules = null; // lazy initialization
     private final Deque<HighlightStyleBackup> styleBackups;
 
     private PageInformation latestPageInformation = PageInformation.EMPTY;
@@ -484,9 +484,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public RollupRules getRollupRules() {
-        if (rollupRules == null) {
+        if (rollupRules == null)
             rollupRules = new RollupRules();
-        }
         return rollupRules;
     }
 
