@@ -1,8 +1,9 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 1.6.1
+### 1.7.0
 
+* Adopt semantic versioning 2.0.0. see: http://semver.org/spec/v2.0.0.html
 * Fix failed to load test-case file without Base URL. (#135)
 * Add new option "--cli-args", it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
 * Add new option "--command-factory", it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
