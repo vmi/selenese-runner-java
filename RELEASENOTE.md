@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Fix failed to load test-case file without Base URL. (#135)
 * Add new option "--cli-args", it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
 * Add new option "--command-factory", it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
+* Don't create RollupRules until necessary to be able to work with some Java installations that lack Javascript ScriptEngine support. (#138 by koichirok)
 
 ### 1.6.0
 

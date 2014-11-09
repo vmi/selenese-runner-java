@@ -48,6 +48,9 @@ public class RollupRules {
      */
     public RollupRules() {
         engine = new ScriptEngineManager().getEngineByExtension("js");
+        // some OpenJDK7 installations have lack of JavaScript support
+        if (engine == null)
+            throw new SeleniumException("Script engine not found for js");
         String engineName = engine.getFactory().getEngineName();
         EngineType engineType = null;
         for (EngineType et : EngineType.values()) {
