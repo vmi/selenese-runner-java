@@ -17,10 +17,12 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Result;
@@ -42,12 +44,16 @@ public class Main {
 
     private static final String HEADER = "Selenese script interpreter implemented by Java.";
 
-    private static final String FOOTER = "*note: If you want to use basic and/or proxy authentication on Firefox, "
+    private static final String FOOTER = "[Note]" + SystemUtils.LINE_SEPARATOR
+        + "* If you want to use basic and/or proxy authentication on Firefox, "
         + "then create new profile, "
         + "install AutoAuth plugin, "
         + "configure all settings, "
         + "access test site with the profile, "
-        + "and specify the profile by --profile option.";
+        + "and specify the profile by --profile option."
+        + SystemUtils.LINE_SEPARATOR
+        + "** Use \"java -cp ..." + SystemUtils.PATH_SEPARATOR + "selenese-runner.jar Main --command-factory ...\". "
+        + "Because \"java\" command ignores all class path settings, when using \"-jar\" option.";
 
     private static final String DEFAULT_TIMEOUT_MILLISEC = "30000";
 
@@ -206,6 +212,10 @@ public class Main {
             .hasArg().withArgName("+RE|-RE")
             .withDescription("filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is ignoring)")
             .create());
+        options.addOption(OptionBuilder.withLongOpt("command-factory")
+            .hasArg().withArgName("FQCN")
+            .withDescription("register user defined command factory. (See Note **)")
+            .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
             .create('h'));
@@ -319,6 +329,19 @@ public class Main {
             manager.setWebDriverFactory(driverName);
             manager.setDriverOptions(driverOptions);
             Runner runner = new Runner();
+            if (cli.hasOption("command-factory")) {
+                String factoryName = cli.getOptionValue("command-factory");
+                ICommandFactory factory;
+                try {
+                    Class<?> factoryClass = Class.forName(factoryName);
+                    factory = (ICommandFactory) factoryClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new IllegalArgumentException("invalid user defined command factory: " + factoryName);
+                }
+                runner.getCommandFactory().registerCommandFactory(factory);
+                log.info("Registered: {}", factoryName);
+            }
             runner.setCommandLineArgs(args);
             runner.setDriver(manager.get());
             runner.setWebDriverPreparator(manager);
