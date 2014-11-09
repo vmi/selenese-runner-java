@@ -63,6 +63,7 @@ Usage
      -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
         --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
+        --command-factory <FQCN>             register user defined command factory. (See Note **)
      -h,--help                               show this message.
 
 Requirements
@@ -151,6 +152,16 @@ Example:
 * don't logging the cookie whose name contains "__utm":
 
     java -jar selenese-runner.jar --cookie-filter -__utm ...
+
+### User defined command factory
+
+You can register user defined command factory:
+
+    java -cp YOUR_CLASS_PATH:selenese-runner.jar Main \
+      --command-factory your.command.factory.ClassName ...
+
+Note: Use the above command line instead of "java -jar ...".
+Because "java" command ignores all class path settings, when using "-jar" option.
 
 License
 -------
