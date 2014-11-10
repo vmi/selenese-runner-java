@@ -165,10 +165,10 @@ Note:
 * Use the above command line instead of "java -jar ...".
 Because "java" command ignores all class path settings, when using "-jar" option.
 
-** Top-level Main class is contained ONLY in stand-alone "selenese-runner.jar",
-and is not contained in selenese-runner-java-X.Y.Z.jar in maven repository.
+* Top-level Main class is contained ONLY in stand-alone "selenese-runner.jar",
+and is not contained in "selenese-runner-java-X.Y.Z.jar" in maven repository.
 Please use "jp.vmi.selenium.selenese.Main" instead of "Main"
-if you want to use this feature with the jars in maven repository.
+if you want to use this feature with the jar in maven repository.
 
 License
 -------
