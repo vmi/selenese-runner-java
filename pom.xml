@@ -50,6 +50,8 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <selenium.version>2.44.0</selenium.version>
     <slf4j.version>1.7.7</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
+    <shade.java.srcdir>src/shade/java</shade.java.srcdir>
+    <shade.java.destdir>target/shade-classes</shade.java.destdir>
   </properties>
 
   <!--
@@ -113,6 +115,10 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                   <manifestEntries>
                     <Main-Class>jp.vmi.selenium.selenese.Main</Main-Class>
                   </manifestEntries>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                  <resource>Main.class</resource>
+                  <file>${shade.java.destdir}/Main.class</file>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                   <resource>logback.xml</resource>
@@ -200,21 +206,34 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                     <ignore />
                   </action>
                 </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.7,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
-	<plugin>
-	  <groupId>org.sonatype.plugins</groupId>
-	  <artifactId>nexus-staging-maven-plugin</artifactId>
-	  <version>1.6.3</version>
-	  <extensions>true</extensions>
-	  <configuration>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.6.3</version>
+          <extensions>true</extensions>
+          <configuration>
             <serverId>ossrh</serverId>
             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
             <autoReleaseAfterClose>true</autoReleaseAfterClose>
-	  </configuration>
-	</plugin>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
@@ -226,6 +245,41 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>main</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="build.compiler" value="extJavac"/>
+                <mkdir dir="${shade.java.destdir}"/>
+                <javac srcdir="${shade.java.srcdir}" destdir="${shade.java.destdir}">
+                  <classpath refid="maven.dependency.classpath"/>
+                </javac>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>1.4.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-commons-net</artifactId>
+            <version>1.8.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
