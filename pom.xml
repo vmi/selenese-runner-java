@@ -46,6 +46,8 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <source.version>1.6</source.version>
+    <target.version>1.6</target.version>
     <skipTests>true</skipTests>
     <selenium.version>2.44.0</selenium.version>
     <slf4j.version>1.7.7</slf4j.version>
@@ -260,7 +262,15 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
               <target>
                 <property name="build.compiler" value="extJavac"/>
                 <mkdir dir="${shade.java.destdir}"/>
-                <javac srcdir="${shade.java.srcdir}" destdir="${shade.java.destdir}">
+                <javac
+                  srcdir="${shade.java.srcdir}"
+                  destdir="${shade.java.destdir}"
+                  target="${target.version}"
+                  source="${source.version}"
+                  encoding="${project.build.sourceEncoding}"
+                  debug="true"
+                  nowarn="true"
+                  includeantruntime="false">
                   <classpath refid="maven.dependency.classpath"/>
                 </javac>
               </target>
@@ -285,8 +295,8 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>${source.version}</source>
+          <target>${target.version}</target>
         </configuration>
       </plugin>
       <plugin>
