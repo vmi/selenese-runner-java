@@ -1,6 +1,5 @@
 package jp.vmi.selenium.webdriver;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,9 +12,6 @@ import java.util.Map.Entry;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.collect.Maps;
@@ -101,28 +97,6 @@ public class DriverOptions {
                 break;
             }
         }
-
-        if (has(DriverOption.PROFILE) || has(DriverOption.PROFILE_DIR)) {
-            // Create FirefoxProfile and set to DesiredCapabilities.
-            // (FirefoxProfile object can work with both local and remote FirefoxDriver
-            //  see: https://code.google.com/p/selenium/wiki/DesiredCapabilities#Firefox_specific)
-            String profileName = get(DriverOption.PROFILE);
-            String dir = get(DriverOption.PROFILE_DIR);
-            FirefoxProfile profile;
-            if (profileName != null) {
-                if (dir != null)
-                    throw new IllegalArgumentException("Can't specify both '--profile' and '--profile-dir' at once");
-                // see http://code.google.com/p/selenium/wiki/TipsAndTricks
-                ProfilesIni allProfiles = new ProfilesIni();
-                profile = allProfiles.getProfile(profileName);
-            } else  {
-                File file = new File(dir);
-                if (!file.isDirectory())
-                    throw new IllegalArgumentException("Missing profile directory: " + dir);
-                profile = new FirefoxProfile(new File(dir));
-            }
-            caps.setCapability(FirefoxDriver.PROFILE, profile);
-        }
     }
 
     /**
@@ -188,13 +162,10 @@ public class DriverOptions {
         default:
             if (values.length != 1)
                 throw new IllegalArgumentException("Need to pass only a single value for " + opt);
-            if (values[0] != null) {
+            if (values[0] != null)
                 map.put(opt, values[0]);
-                if (opt == DriverOption.FIREFOX)
-                    caps.setCapability(FirefoxDriver.BINARY, values[0]);
-            } else {
+            else
                 map.remove(opt);
-            }
             break;
         }
         return this;
