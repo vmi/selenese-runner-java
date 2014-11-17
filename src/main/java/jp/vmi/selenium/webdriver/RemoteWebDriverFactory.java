@@ -21,13 +21,26 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = setupProxy(DesiredCapabilities.htmlUnit(), driverOptions);
-        if (driverOptions.has(REMOTE_BROWSER))
-            caps.setBrowserName(driverOptions.get(REMOTE_BROWSER));
-        if (driverOptions.has(REMOTE_PLATFORM))
-            caps.setCapability(CapabilityType.PLATFORM, driverOptions.get(REMOTE_PLATFORM));
-        if (driverOptions.has(REMOTE_VERSION))
-            caps.setCapability(CapabilityType.VERSION, driverOptions.get(REMOTE_VERSION));
+        DesiredCapabilities caps = DesiredCapabilities.htmlUnit();
+        setupProxy(caps, driverOptions);
+        caps.merge(driverOptions.getCapabilities());
+        if (driverOptions.has(REMOTE_BROWSER)) {
+            String browser = driverOptions.get(REMOTE_BROWSER);
+            caps.setBrowserName(browser);
+            log.info("Remote browser: {}", browser);
+            if ("firefox".equalsIgnoreCase(browser))
+                FirefoxDriverFactory.setDriverSpecificCapabilities(caps, driverOptions, true);
+        }
+        if (driverOptions.has(REMOTE_PLATFORM)) {
+            String platform = driverOptions.get(REMOTE_PLATFORM);
+            caps.setCapability(CapabilityType.PLATFORM, platform);
+            log.info("Remote platform: {}", platform);
+        }
+        if (driverOptions.has(REMOTE_VERSION)) {
+            String version = driverOptions.get(REMOTE_VERSION);
+            caps.setCapability(CapabilityType.VERSION, version);
+            log.info("Remote version: {}", version);
+        }
         URL url;
         if (driverOptions.has(REMOTE_URL)) {
             try {
@@ -38,7 +51,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         } else {
             throw new IllegalArgumentException("Require --remote-url to know where to connect to");
         }
-        caps.merge(driverOptions.getCapabilities());
+        log.info("Remote URL: {}", url);
         RemoteWebDriver driver = new RemoteWebDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
         setInitialWindowSize(driver, driverOptions);
