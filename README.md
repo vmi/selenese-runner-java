@@ -33,11 +33,11 @@ Usage
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
      -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
-     -p,--profile <name>                     profile name (Firefox only)
-     -P,--profile-dir <dir>                  profile directory (Firefox only)
+     -p,--profile <name>                     profile name (Firefox only *1)
+     -P,--profile-dir <dir>                  profile directory (Firefox only *1)
         --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
-        --proxy-user <user>                  proxy username (HtmlUnit only *)
-        --proxy-password <password>          proxy password (HtmlUnit only *)
+        --proxy-user <user>                  proxy username (HtmlUnit only *2)
+        --proxy-password <password>          proxy password (HtmlUnit only *2)
         --no-proxy <no-proxy>                no-proxy hosts
         --cli-args <cli-args>                add command line arguments at starting up driver (multiple)
         --remote-url <url>                   Remote test runner URL (Remote only)
@@ -63,8 +63,16 @@ Usage
      -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
         --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
-        --command-factory <FQCN>             register user defined command factory. (See Note **)
+        --command-factory <FQCN>             register user defined command factory. (See Note *3)
      -h,--help                               show this message.
+
+[Note]
+
+*1 It is available if using "--driver remote --remote-browser firefox".
+
+*2 If you want to use basic and/or proxy authentication on Firefox, then create new profile, install AutoAuth plugin, configure all settings, access test site with the profile, and specify the profile by --profile option.
+
+*3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option.
 
 Requirements
 ------------

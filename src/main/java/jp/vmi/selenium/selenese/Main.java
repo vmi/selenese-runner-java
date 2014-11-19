@@ -44,15 +44,18 @@ public class Main {
 
     private static final String HEADER = "Selenese script interpreter implemented by Java.";
 
-    private static final String FOOTER = "[Note]" + SystemUtils.LINE_SEPARATOR
-        + "* If you want to use basic and/or proxy authentication on Firefox, "
+    private static final String FOOTER = "[Note]"
+        + SystemUtils.LINE_SEPARATOR
+        + "*1 It is available if using \"--driver remote --remote-browser firefox\"."
+        + SystemUtils.LINE_SEPARATOR
+        + "*2 If you want to use basic and/or proxy authentication on Firefox, "
         + "then create new profile, "
         + "install AutoAuth plugin, "
         + "configure all settings, "
         + "access test site with the profile, "
         + "and specify the profile by --profile option."
         + SystemUtils.LINE_SEPARATOR
-        + "** Use \"java -cp ..." + SystemUtils.PATH_SEPARATOR + "selenese-runner.jar Main --command-factory ...\". "
+        + "*3 Use \"java -cp ..." + SystemUtils.PATH_SEPARATOR + "selenese-runner.jar Main --command-factory ...\". "
         + "Because \"java\" command ignores all class path settings, when using \"-jar\" option.";
 
     private static final String DEFAULT_TIMEOUT_MILLISEC = "30000";
@@ -96,11 +99,11 @@ public class Main {
             .create('d'));
         options.addOption(OptionBuilder.withLongOpt("profile")
             .hasArg().withArgName("name")
-            .withDescription("profile name (Firefox only)")
+            .withDescription("profile name (Firefox only *1)")
             .create('p'));
         options.addOption(OptionBuilder.withLongOpt("profile-dir")
             .hasArg().withArgName("dir")
-            .withDescription("profile directory (Firefox only)")
+            .withDescription("profile directory (Firefox only *1)")
             .create('P'));
         options.addOption(OptionBuilder.withLongOpt("proxy")
             .hasArg().withArgName("proxy")
@@ -108,11 +111,11 @@ public class Main {
             .create());
         options.addOption(OptionBuilder.withLongOpt("proxy-user")
             .hasArg().withArgName("user")
-            .withDescription("proxy username (HtmlUnit only *)")
+            .withDescription("proxy username (HtmlUnit only *2)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("proxy-password")
             .hasArg().withArgName("password")
-            .withDescription("proxy password (HtmlUnit only *)")
+            .withDescription("proxy password (HtmlUnit only *2)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("no-proxy")
             .hasArg().withArgName("no-proxy")
@@ -214,7 +217,7 @@ public class Main {
             .create());
         options.addOption(OptionBuilder.withLongOpt("command-factory")
             .hasArg().withArgName("FQCN")
-            .withDescription("register user defined command factory. (See Note **)")
+            .withDescription("register user defined command factory. (See Note *3)")
             .create());
         options.addOption(OptionBuilder.withLongOpt("help")
             .withDescription("show this message.")
