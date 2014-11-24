@@ -90,10 +90,8 @@ public class Main {
      */
     @SuppressWarnings("static-access")
     public Main() {
-        options.addOption(OptionBuilder
-            .withLongOpt("driver")
-            .hasArg()
-            .withArgName("driver")
+        options.addOption(OptionBuilder.withLongOpt("driver")
+            .hasArg().withArgName("driver")
             .withDescription(
                 "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
             .create('d'));
