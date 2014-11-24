@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.0
+
+* Add new option "--config", it reads option information from configuration file.
+
 ### 1.7.0
 
 * Adopt semantic versioning 2.0.0. see: http://semver.org/spec/v2.0.0.html

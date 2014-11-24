@@ -16,6 +16,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.collect.Maps;
 
+import jp.vmi.selenium.selenese.config.DefaultConfig;
+import jp.vmi.selenium.selenese.config.IConfig;
+
 /**
  * Options for WebDriver.
  */
@@ -81,19 +84,29 @@ public class DriverOptions {
      *
      * @param cli parsed command line information.
      */
+    @Deprecated
     public DriverOptions(CommandLine cli) {
+        this(new DefaultConfig(cli, null));
+    }
+
+    /**
+     * Constructs driver options specified by command line.
+     *
+     * @param config configuration information.
+     */
+    public DriverOptions(IConfig config) {
         for (DriverOption opt : DriverOption.values()) {
             String key = opt.name().toLowerCase().replace('_', '-');
             switch (opt) {
             case DEFINE:
-                addDefinitions(cli.getOptionValues("define"));
+                addDefinitions(config.getOptionValues(IConfig.DEFINE));
                 break;
             case CLI_ARGS:
-                if (cli.hasOption(key))
-                    cliArgs = cli.getOptionValues(key);
+                if (config.hasOption(key))
+                    cliArgs = config.getOptionValues(key);
                 break;
             default:
-                set(opt, cli.getOptionValue(key));
+                set(opt, config.getOptionValue(key));
                 break;
             }
         }
