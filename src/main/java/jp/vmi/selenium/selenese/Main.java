@@ -375,12 +375,18 @@ public class Main {
         }
         runner.setDriver(manager.get());
         runner.setWebDriverPreparator(manager);
-        runner.setHighlight(config.getOptionValueAsBoolean(HIGHLIGHT));
-        runner.setScreenshotDir(config.getOptionValue(SCREENSHOT_DIR));
-        runner.setScreenshotAllDir(config.getOptionValue(SCREENSHOT_ALL));
-        runner.setScreenshotOnFailDir(config.getOptionValue(SCREENSHOT_ON_FAIL));
-        runner.setOverridingBaseURL(config.getOptionValue(BASEURL));
-        runner.setIgnoredScreenshotCommand(config.getOptionValueAsBoolean(IGNORE_SCREENSHOT_COMMAND));
+        if (config.getOptionValueAsBoolean(HIGHLIGHT))
+            runner.setHighlight(true);
+        if (config.hasOption(SCREENSHOT_DIR))
+            runner.setScreenshotDir(config.getOptionValue(SCREENSHOT_DIR));
+        if (config.hasOption(SCREENSHOT_ALL))
+            runner.setScreenshotAllDir(config.getOptionValue(SCREENSHOT_ALL));
+        if (config.hasOption(SCREENSHOT_ON_FAIL))
+            runner.setScreenshotOnFailDir(config.getOptionValue(SCREENSHOT_ON_FAIL));
+        if (config.hasOption(BASEURL))
+            runner.setOverridingBaseURL(config.getOptionValue(BASEURL));
+        if (config.getOptionValueAsBoolean(IGNORE_SCREENSHOT_COMMAND))
+            runner.setIgnoredScreenshotCommand(true);
         if (config.hasOption(ROLLUP)) {
             String[] rollups = config.getOptionValues(ROLLUP);
             for (String rollup : rollups)
@@ -404,8 +410,10 @@ public class Main {
             String pattern = cookieFilter.substring(1);
             runner.setCookieFilter(new CookieFilter(filterType, pattern));
         }
-        runner.setJUnitResultDir(config.getOptionValue(XML_RESULT));
-        runner.setHtmlResultDir(config.getOptionValue(HTML_RESULT));
+        if (config.hasOption(XML_RESULT))
+            runner.setJUnitResultDir(config.getOptionValue(XML_RESULT));
+        if (config.hasOption(HTML_RESULT))
+            runner.setHtmlResultDir(config.getOptionValue(HTML_RESULT));
         int timeout = NumberUtils.toInt(config.getOptionValue(TIMEOUT, DEFAULT_TIMEOUT_MILLISEC));
         if (timeout <= 0)
             throw new IllegalArgumentException("Invalid timeout value. (" + config.getOptionValue(TIMEOUT) + ")");

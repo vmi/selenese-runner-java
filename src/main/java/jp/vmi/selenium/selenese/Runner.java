@@ -266,6 +266,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (screenshotDir != null && !new File(screenshotDir).isDirectory())
             throw new IllegalArgumentException(screenshotDir + " is not directory.");
         this.screenshotDir = screenshotDir;
+        log.info("Screenshot directory: {}", screenshotDir);
     }
 
     /**
@@ -278,6 +279,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (screenshotAllDir != null && !new File(screenshotAllDir).isDirectory())
             throw new IllegalArgumentException(screenshotAllDir + " is not directory.");
         this.screenshotAllDir = screenshotAllDir;
+        log.info("Screenshot for all commands directory: {}", screenshotAllDir);
     }
 
     /**
@@ -289,6 +291,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (screenshotOnFailDir != null && !new File(screenshotOnFailDir).isDirectory())
             throw new IllegalArgumentException(screenshotOnFailDir + " is not directory.");
         this.screenshotOnFailDir = screenshotOnFailDir;
+        log.info("Screenshot on fail directory: {}", screenshotOnFailDir);
     }
 
     /**
@@ -325,6 +328,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setOverridingBaseURL(String overridingBaseURL) {
         this.overridingBaseURL = overridingBaseURL;
+        log.info("Override base URL: {}", overridingBaseURL);
     }
 
     @Override
@@ -351,6 +355,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setIgnoredScreenshotCommand(boolean isIgnoredScreenshotCommand) {
         this.isIgnoredScreenshotCommand = isIgnoredScreenshotCommand;
+        log.info("Screenshot command: {}", isIgnoredScreenshotCommand ? "ignored" : "enabled");
     }
 
     /**
@@ -382,6 +387,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setHighlight(boolean isHighlight) {
         this.isHighlight = isHighlight;
+        log.info("Highlight mode: {}", isHighlight ? "enabled" : "disabled");
     }
 
     @Override
@@ -392,6 +398,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+        log.info("Timeout: {} ms", timeout);
     }
 
     /**
@@ -415,6 +422,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void resetSpeed() {
         speed = initialSpeed;
+        log.info("Current speed: {} ms/command", speed);
     }
 
     @Override
@@ -425,6 +433,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setSpeed(long speed) {
         this.speed = speed;
+        log.info("Current speed: {} ms/command", speed);
     }
 
     @Override
@@ -614,6 +623,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setJUnitResultDir(String dir) {
         jUnitResult.setDir(dir);
+        log.info("JUnit result directory: {}", dir);
     }
 
     @Override
@@ -628,6 +638,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setHtmlResultDir(String dir) {
         htmlResult.setDir(dir);
+        log.info("HTML result directory: {}", dir);
     }
 
     @Override
