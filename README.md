@@ -32,14 +32,15 @@ Usage
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
+     -c,--config <file>                      load option information from file.
      -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
      -p,--profile <name>                     profile name (Firefox only *1)
      -P,--profile-dir <dir>                  profile directory (Firefox only *1)
         --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
         --proxy-user <user>                  proxy username (HtmlUnit only *2)
         --proxy-password <password>          proxy password (HtmlUnit only *2)
-        --no-proxy <no-proxy>                no-proxy hosts
-        --cli-args <cli-args>                add command line arguments at starting up driver (multiple)
+        --no-proxy <hosts>                   no-proxy hosts
+        --cli-args <arg>                     add command line arguments at starting up driver (multiple)
         --remote-url <url>                   Remote test runner URL (Remote only)
         --remote-platform <platform>         Desired remote platform (Remote only)
         --remote-browser <browser>           Desired remote browser (Remote only)
@@ -97,6 +98,59 @@ That will create the *selenese-runner.jar* file within the 'target' directory.
 
 Options
 -------
+
+### Configuration file (1.8.0 or later)
+
+You can read option information from the following configuration file by using "--config" option.
+
+You can overwrite the information by additional command line options.
+
+    # configuration file format.
+    
+    driver: DRIVER_NAME
+    profile: PROFILE_NAME
+    profile-dir: /PATH/TO/PROFILE/DIRECTORY
+    proxy: PROXY_HOST
+    proxy-user: PROXY_USER
+    proxy-password: PROXY_PASSWORD
+    no-proxy: NO_PROXY_HOSTS
+    cli-args: DRIVER_CLI_ARG1
+      DRIVER_CLI_ARG2
+      DRIVER_CLI_ARG3
+    remote-url: http://remote.example.com:4444/wd/hub
+    remote-platform: REMOTE_PLATFORM
+    remote-browser: REMOTE_BROWSER
+    remote-version: REMOTE_VERSION
+    # "highlight" parameter is "true" or "false".
+    highlight: true
+    screenshot-dir: /PATH/TO/SCREENSHOT/DIRECTORY
+    screenshot-all: /PATH/TO/SCREENSHOT/DIRECTORY/ALL
+    screenshot-on-fail: /PATH/TO/SCREENSHOT/DIRECTORY/ON/FAIL
+    # "ignore-screenshot-command" parameter is "true" or "false".
+    ignore-screenshot-command: true
+    baseurl: http://baseurl.example.com/
+    firefox: /PATH/TO/FIREFOX/BINARY
+    chromedriver: /PATH/TO/CHROMEDRIVER/BINARY
+    iedriver: /PATH/TO/IEDRIVER/BINARY
+    phantomjs: /PATH/TO/PHANTOMJS/BINARY
+    xml-result: /PATH/TO/XML/RESULT/DIRECTORY
+    html-result: /PATH/TO/HTML/RESULT/DIRECTORY
+    # The unit of "timeout" parameter is millisecounds.
+    timeout: 30000
+    # The unit of "set-speed" parameter is millisecounds.
+    set-speed: 100
+    # The unit of "height" parameter is pixcels.
+    height: 1024
+    # The unit of "width" parameter is pixcels.
+    width: 768
+    define: CAPABILITY_KEY1=CAPABILITY_VALUE1
+       CAPABILITY_KEY2=CAPABILITY_VALUE2
+       CAPABILITY_KEY3+=CAPABILITY_VALUE31
+       CAPABILITY_KEY3+=CAPABILITY_VALUE32
+       CAPABILITY_KEY3+=CAPABILITY_VALUE33
+    rollup: /PATH/TO/ROLLUP/FILE
+    cookie-filter: COOKIE_FILTER_REGEXP
+    command-factory: full.qualify.class.Name
 
 ### Firefox, Chrome and PhantomJS driver
 

@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.command.ICommandFactory;
+import jp.vmi.selenium.selenese.config.DefaultConfig;
+import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Result;
@@ -30,6 +32,8 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
+
+import static jp.vmi.selenium.selenese.config.IConfig.*;
 
 /**
  * Provide command line interface.
@@ -90,136 +94,138 @@ public class Main {
      */
     @SuppressWarnings("static-access")
     public Main() {
-        options.addOption(OptionBuilder
-            .withLongOpt("driver")
-            .hasArg()
-            .withArgName("driver")
+        options.addOption(OptionBuilder.withLongOpt(CONFIG)
+            .hasArg().withArgName("file")
+            .withDescription("load option information from file.")
+            .create("c"));
+        options.addOption(OptionBuilder.withLongOpt(DRIVER)
+            .hasArg().withArgName("driver")
             .withDescription(
                 "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
             .create('d'));
-        options.addOption(OptionBuilder.withLongOpt("profile")
+        options.addOption(OptionBuilder.withLongOpt(PROFILE)
             .hasArg().withArgName("name")
             .withDescription("profile name (Firefox only *1)")
             .create('p'));
-        options.addOption(OptionBuilder.withLongOpt("profile-dir")
+        options.addOption(OptionBuilder.withLongOpt(PROFILE_DIR)
             .hasArg().withArgName("dir")
             .withDescription("profile directory (Firefox only *1)")
             .create('P'));
-        options.addOption(OptionBuilder.withLongOpt("proxy")
+        options.addOption(OptionBuilder.withLongOpt(PROXY)
             .hasArg().withArgName("proxy")
             .withDescription("proxy host and port (HOST:PORT) (excepting IE)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("proxy-user")
+        options.addOption(OptionBuilder.withLongOpt(PROXY_USER)
             .hasArg().withArgName("user")
             .withDescription("proxy username (HtmlUnit only *2)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("proxy-password")
+        options.addOption(OptionBuilder.withLongOpt(PROXY_PASSWORD)
             .hasArg().withArgName("password")
             .withDescription("proxy password (HtmlUnit only *2)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("no-proxy")
-            .hasArg().withArgName("no-proxy")
+        options.addOption(OptionBuilder.withLongOpt(NO_PROXY)
+            .hasArg().withArgName("hosts")
             .withDescription("no-proxy hosts")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("cli-args")
-            .hasArg().withArgName("cli-args")
+        options.addOption(OptionBuilder.withLongOpt(CLI_ARGS)
+            .hasArg().withArgName("arg")
             .withDescription("add command line arguments at starting up driver (multiple)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("remote-url")
+        options.addOption(OptionBuilder.withLongOpt(REMOTE_URL)
             .hasArg().withArgName("url")
             .withDescription("Remote test runner URL (Remote only)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("remote-platform")
+        options.addOption(OptionBuilder.withLongOpt(REMOTE_PLATFORM)
             .hasArg().withArgName("platform")
             .withDescription("Desired remote platform (Remote only)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("remote-browser")
+        options.addOption(OptionBuilder.withLongOpt(REMOTE_BROWSER)
             .hasArg().withArgName("browser")
             .withDescription("Desired remote browser (Remote only)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("remote-version")
+        options.addOption(OptionBuilder.withLongOpt(REMOTE_VERSION)
             .hasArg().withArgName("browser-version")
             .withDescription("Desired remote browser version (Remote only)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("highlight")
+        options.addOption(OptionBuilder.withLongOpt(HIGHLIGHT)
             .withDescription("highlight locator always.")
             .create('H'));
-        options.addOption(OptionBuilder.withLongOpt("screenshot-dir")
+        options.addOption(OptionBuilder.withLongOpt(SCREENSHOT_DIR)
             .hasArg().withArgName("dir")
             .withDescription("override captureEntirePageScreenshot directory.")
             .create('s'));
-        options.addOption(OptionBuilder.withLongOpt("screenshot-all")
+        options.addOption(OptionBuilder.withLongOpt(SCREENSHOT_ALL)
             .hasArg().withArgName("dir")
             .withDescription("take screenshot at all commands to specified directory.")
             .create('S'));
-        options.addOption(OptionBuilder.withLongOpt("screenshot-on-fail")
+        options.addOption(OptionBuilder.withLongOpt(SCREENSHOT_ON_FAIL)
             .hasArg().withArgName("dir")
             .withDescription("take screenshot on fail commands to specified directory.")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("ignore-screenshot-command")
+        options.addOption(OptionBuilder.withLongOpt(IGNORE_SCREENSHOT_COMMAND)
             .withDescription("ignore captureEntirePageScreenshot command.")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("baseurl")
+        options.addOption(OptionBuilder.withLongOpt(BASEURL)
             .hasArg().withArgName("baseURL")
             .withDescription("override base URL set in selenese.")
             .create('b'));
-        options.addOption(OptionBuilder.withLongOpt("firefox")
+        options.addOption(OptionBuilder.withLongOpt(FIREFOX)
             .hasArg().withArgName("path")
             .withDescription("path to 'firefox' binary. (implies '--driver firefox')")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("chromedriver")
+        options.addOption(OptionBuilder.withLongOpt(CHROMEDRIVER)
             .hasArg().withArgName("path")
             .withDescription("path to 'chromedriver' binary. (implies '--driver chrome')")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("iedriver")
+        options.addOption(OptionBuilder.withLongOpt(IEDRIVER)
             .hasArg().withArgName("path")
             .withDescription("path to 'IEDriverServer' binary. (implies '--driver ie')")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("phantomjs")
+        options.addOption(OptionBuilder.withLongOpt(PHANTOMJS)
             .hasArg().withArgName("path")
             .withDescription("path to 'phantomjs' binary. (implies '--driver phantomjs')")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("xml-result")
+        options.addOption(OptionBuilder.withLongOpt(XML_RESULT)
             .hasArg().withArgName("dir")
             .withDescription("output XML JUnit results to specified directory.")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("html-result")
+        options.addOption(OptionBuilder.withLongOpt(HTML_RESULT)
             .hasArg().withArgName("dir")
             .withDescription("output HTML results to specified directory.")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("timeout")
+        options.addOption(OptionBuilder.withLongOpt(TIMEOUT)
             .hasArg().withArgName("timeout")
             .withDescription("set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC + " ms)")
             .create('t'));
-        options.addOption(OptionBuilder.withLongOpt("set-speed")
+        options.addOption(OptionBuilder.withLongOpt(SET_SPEED)
             .hasArg().withArgName("speed")
             .withDescription("same as executing setSpeed(ms) command first.")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("height")
+        options.addOption(OptionBuilder.withLongOpt(HEIGHT)
             .hasArg().withArgName("height")
             .withDescription("set initial height. (excluding mobile)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("width")
+        options.addOption(OptionBuilder.withLongOpt(WIDTH)
             .hasArg().withArgName("width")
             .withDescription("set initial width. (excluding mobile)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("define")
+        options.addOption(OptionBuilder.withLongOpt(DEFINE)
             .hasArg().withArgName("key=value or key+=value")
             .withDescription("define parameters for capabilities. (multiple)")
             .create('D'));
-        options.addOption(OptionBuilder.withLongOpt("rollup")
+        options.addOption(OptionBuilder.withLongOpt(ROLLUP)
             .hasArg().withArgName("file")
             .withDescription("define rollup rule by JavaScript. (multiple)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("cookie-filter")
+        options.addOption(OptionBuilder.withLongOpt(COOKIE_FILTER)
             .hasArg().withArgName("+RE|-RE")
             .withDescription("filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is ignoring)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("command-factory")
+        options.addOption(OptionBuilder.withLongOpt(COMMAND_FACTORY)
             .hasArg().withArgName("FQCN")
             .withDescription("register user defined command factory. (See Note *3)")
             .create());
-        options.addOption(OptionBuilder.withLongOpt("help")
+        options.addOption(OptionBuilder.withLongOpt(HELP)
             .withDescription("show this message.")
             .create('h'));
     }
@@ -316,78 +322,10 @@ public class Main {
             if (filenames.length == 0)
                 help();
             log.info("Start: " + PROG_TITLE + " {}", getVersion());
-            String driverName = cli.getOptionValue("driver");
-            DriverOptions driverOptions = new DriverOptions(cli);
-            if (driverName == null) {
-                if (driverOptions.has(DriverOption.FIREFOX))
-                    driverName = WebDriverManager.FIREFOX;
-                else if (driverOptions.has(DriverOption.CHROMEDRIVER))
-                    driverName = WebDriverManager.CHROME;
-                else if (driverOptions.has(DriverOption.IEDRIVER))
-                    driverName = WebDriverManager.IE;
-                else if (driverOptions.has(DriverOption.PHANTOMJS))
-                    driverName = WebDriverManager.PHANTOMJS;
-            }
-            WebDriverManager manager = WebDriverManager.getInstance();
-            manager.setWebDriverFactory(driverName);
-            manager.setDriverOptions(driverOptions);
+            IConfig config = new DefaultConfig(cli, cli.getOptionValue(CONFIG));
             Runner runner = new Runner();
-            if (cli.hasOption("command-factory")) {
-                String factoryName = cli.getOptionValue("command-factory");
-                ICommandFactory factory;
-                try {
-                    Class<?> factoryClass = Class.forName(factoryName);
-                    factory = (ICommandFactory) factoryClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new IllegalArgumentException("invalid user defined command factory: " + factoryName);
-                }
-                runner.getCommandFactory().registerCommandFactory(factory);
-                log.info("Registered: {}", factoryName);
-            }
             runner.setCommandLineArgs(args);
-            runner.setDriver(manager.get());
-            runner.setWebDriverPreparator(manager);
-            runner.setHighlight(cli.hasOption("highlight"));
-            runner.setScreenshotDir(cli.getOptionValue("screenshot-dir"));
-            runner.setScreenshotAllDir(cli.getOptionValue("screenshot-all"));
-            runner.setScreenshotOnFailDir(cli.getOptionValue("screenshot-on-fail"));
-            runner.setOverridingBaseURL(cli.getOptionValue("baseurl"));
-            runner.setIgnoredScreenshotCommand(cli.hasOption("ignore-screenshot-command"));
-            if (cli.hasOption("rollup")) {
-                String[] rollups = cli.getOptionValues("rollup");
-                for (String rollup : rollups)
-                    runner.getRollupRules().load(rollup);
-            }
-            if (cli.hasOption("cookie-filter")) {
-                String cookieFilter = cli.getOptionValue("cookie-filter");
-                if (cookieFilter.length() < 2)
-                    throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
-                FilterType filterType;
-                switch (cookieFilter.charAt(0)) {
-                case '+':
-                    filterType = FilterType.PASS;
-                    break;
-                case '-':
-                    filterType = FilterType.SKIP;
-                    break;
-                default:
-                    throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
-                }
-                String pattern = cookieFilter.substring(1);
-                runner.setCookieFilter(new CookieFilter(filterType, pattern));
-            }
-            runner.setJUnitResultDir(cli.getOptionValue("xml-result"));
-            runner.setHtmlResultDir(cli.getOptionValue("html-result"));
-            int timeout = NumberUtils.toInt(cli.getOptionValue("timeout", DEFAULT_TIMEOUT_MILLISEC));
-            if (timeout <= 0)
-                throw new IllegalArgumentException("Invalid timeout value. (" + cli.getOptionValue("timeout") + ")");
-            runner.setTimeout(timeout);
-            int speed = NumberUtils.toInt(cli.getOptionValue("set-speed", "0"));
-            if (speed < 0)
-                throw new IllegalArgumentException("Invalid speed value. (" + cli.getOptionValue("set-speed") + ")");
-            runner.setInitialSpeed(speed);
-            runner.setPrintStream(System.out);
+            setupRunner(runner, config, filenames);
             Result totalResult = runner.run(filenames);
             runner.finish();
             exitCode = totalResult.getLevel().exitCode;
@@ -397,6 +335,86 @@ public class Main {
             t.printStackTrace();
         }
         exit(exitCode);
+    }
+
+    /**
+     * Setup Runner by configuration.
+     *
+     * @param runner Runner object.
+     * @param config configuration.
+     * @param filenames filenames of test-suites/test-cases.
+     */
+    public void setupRunner(Runner runner, IConfig config, String... filenames) {
+        String driverName = config.getOptionValue(DRIVER);
+        DriverOptions driverOptions = new DriverOptions(config);
+        if (driverName == null) {
+            if (driverOptions.has(DriverOption.FIREFOX))
+                driverName = WebDriverManager.FIREFOX;
+            else if (driverOptions.has(DriverOption.CHROMEDRIVER))
+                driverName = WebDriverManager.CHROME;
+            else if (driverOptions.has(DriverOption.IEDRIVER))
+                driverName = WebDriverManager.IE;
+            else if (driverOptions.has(DriverOption.PHANTOMJS))
+                driverName = WebDriverManager.PHANTOMJS;
+        }
+        WebDriverManager manager = WebDriverManager.getInstance();
+        manager.setWebDriverFactory(driverName);
+        manager.setDriverOptions(driverOptions);
+        if (config.hasOption(COMMAND_FACTORY)) {
+            String factoryName = config.getOptionValue(COMMAND_FACTORY);
+            ICommandFactory factory;
+            try {
+                Class<?> factoryClass = Class.forName(factoryName);
+                factory = (ICommandFactory) factoryClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new IllegalArgumentException("invalid user defined command factory: " + factoryName);
+            }
+            runner.getCommandFactory().registerCommandFactory(factory);
+            log.info("Registered: {}", factoryName);
+        }
+        runner.setDriver(manager.get());
+        runner.setWebDriverPreparator(manager);
+        runner.setHighlight(config.getOptionValueAsBoolean(HIGHLIGHT));
+        runner.setScreenshotDir(config.getOptionValue(SCREENSHOT_DIR));
+        runner.setScreenshotAllDir(config.getOptionValue(SCREENSHOT_ALL));
+        runner.setScreenshotOnFailDir(config.getOptionValue(SCREENSHOT_ON_FAIL));
+        runner.setOverridingBaseURL(config.getOptionValue(BASEURL));
+        runner.setIgnoredScreenshotCommand(config.getOptionValueAsBoolean(IGNORE_SCREENSHOT_COMMAND));
+        if (config.hasOption(ROLLUP)) {
+            String[] rollups = config.getOptionValues(ROLLUP);
+            for (String rollup : rollups)
+                runner.getRollupRules().load(rollup);
+        }
+        if (config.hasOption(COOKIE_FILTER)) {
+            String cookieFilter = config.getOptionValue(COOKIE_FILTER);
+            if (cookieFilter.length() < 2)
+                throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
+            FilterType filterType;
+            switch (cookieFilter.charAt(0)) {
+            case '+':
+                filterType = FilterType.PASS;
+                break;
+            case '-':
+                filterType = FilterType.SKIP;
+                break;
+            default:
+                throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
+            }
+            String pattern = cookieFilter.substring(1);
+            runner.setCookieFilter(new CookieFilter(filterType, pattern));
+        }
+        runner.setJUnitResultDir(config.getOptionValue(XML_RESULT));
+        runner.setHtmlResultDir(config.getOptionValue(HTML_RESULT));
+        int timeout = NumberUtils.toInt(config.getOptionValue(TIMEOUT, DEFAULT_TIMEOUT_MILLISEC));
+        if (timeout <= 0)
+            throw new IllegalArgumentException("Invalid timeout value. (" + config.getOptionValue(TIMEOUT) + ")");
+        runner.setTimeout(timeout);
+        int speed = NumberUtils.toInt(config.getOptionValue(SET_SPEED, "0"));
+        if (speed < 0)
+            throw new IllegalArgumentException("Invalid speed value. (" + config.getOptionValue(SET_SPEED) + ")");
+        runner.setInitialSpeed(speed);
+        runner.setPrintStream(System.out);
     }
 
     protected void exit(int exitCode) {
