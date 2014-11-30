@@ -111,22 +111,22 @@ Example:
 
 * Firefox
 
-    java -jar selenese-runner.jar --driver firefox \
-      --cli-args -jsconsole \
-      ...
+        java -jar selenese-runner.jar --driver firefox \
+          --cli-args -jsconsole \
+          ...
 
 * Chrome
 
-    java -jar selenese-runner.jar --driver chrome \
-      --cli-args --incognito \
-      --cli-args --ignore-certificate-errors \
-      ...
+        java -jar selenese-runner.jar --driver chrome \
+          --cli-args --incognito \
+          --cli-args --ignore-certificate-errors \
+          ...
 
 * PhanotomJS
 
-    java -jar selenese-runner.jar --driver phantomjs \
-      --cli-args --ssl-certificates-path=/PATH/TO/CERTS-DIR/ \
-      ...
+        java -jar selenese-runner.jar --driver phantomjs \
+          --cli-args --ssl-certificates-path=/PATH/TO/CERTS-DIR/ \
+          ...
 
 ### Rollup
 
@@ -155,11 +155,11 @@ Example:
 
 * logging the cookie whose name ends with "ID":
 
-    java -jar selenese-runner.jar --cookie-filter +'ID$' ...
+        java -jar selenese-runner.jar --cookie-filter +'ID$' ...
 
 * don't logging the cookie whose name contains "__utm":
 
-    java -jar selenese-runner.jar --cookie-filter -__utm ...
+        java -jar selenese-runner.jar --cookie-filter -__utm ...
 
 ### User defined command factory
 
