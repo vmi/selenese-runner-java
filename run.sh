@@ -27,8 +27,5 @@ do_script() {
 }
 
 do_script logs/$log_file java -jar target/selenese-runner.jar \
-  --screenshot-dir tmp/img \
-  --screenshot-on-fail tmp/img/failed \
-  --xml-result tmp/xml \
-  --html-result tmp/html \
+  --config tools/run.config \
   "$@"
