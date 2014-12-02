@@ -3,44 +3,14 @@ package jp.vmi.selenium.selenese.config;
 /**
  * Configuration information.
  */
-@SuppressWarnings("javadoc")
 public interface IConfig {
 
-    // List of option name.
-    public static final String CONFIG = "config";
-    public static final String DRIVER = "driver";
-    public static final String PROFILE = "profile";
-    public static final String PROFILE_DIR = "profile-dir";
-    public static final String PROXY = "proxy";
-    public static final String PROXY_USER = "proxy-user";
-    public static final String PROXY_PASSWORD = "proxy-password";
-    public static final String NO_PROXY = "no-proxy";
-    public static final String CLI_ARGS = "cli-args";
-    public static final String REMOTE_URL = "remote-url";
-    public static final String REMOTE_PLATFORM = "remote-platform";
-    public static final String REMOTE_BROWSER = "remote-browser";
-    public static final String REMOTE_VERSION = "remote-version";
-    public static final String HIGHLIGHT = "highlight";
-    public static final String SCREENSHOT_DIR = "screenshot-dir";
-    public static final String SCREENSHOT_ALL = "screenshot-all";
-    public static final String SCREENSHOT_ON_FAIL = "screenshot-on-fail";
-    public static final String IGNORE_SCREENSHOT_COMMAND = "ignore-screenshot-command";
-    public static final String BASEURL = "baseurl";
-    public static final String FIREFOX = "firefox";
-    public static final String CHROMEDRIVER = "chromedriver";
-    public static final String IEDRIVER = "iedriver";
-    public static final String PHANTOMJS = "phantomjs";
-    public static final String XML_RESULT = "xml-result";
-    public static final String HTML_RESULT = "html-result";
-    public static final String TIMEOUT = "timeout";
-    public static final String SET_SPEED = "set-speed";
-    public static final String HEIGHT = "height";
-    public static final String WIDTH = "width";
-    public static final String DEFINE = "define";
-    public static final String ROLLUP = "rollup";
-    public static final String COOKIE_FILTER = "cookie-filter";
-    public static final String COMMAND_FACTORY = "command-factory";
-    public static final String HELP = "help";
+    /**
+     * Get command line arguments without parsed options.
+     *
+     * @return command line arguments.
+     */
+    String[] getArgs();
 
     /**
      * Test whether the option exists or not.
