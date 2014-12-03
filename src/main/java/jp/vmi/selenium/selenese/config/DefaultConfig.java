@@ -32,8 +32,16 @@ public class DefaultConfig implements IConfig {
      * @param args command line arguments.
      */
     public DefaultConfig(String... args) {
-        SeleneseRunnerOptions options = new SeleneseRunnerOptions();
-        this.cli = options.parseCommandLine(args);
+        this(new SeleneseRunnerOptions().parseCommandLine(args));
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param cli parsed command line.
+     */
+    public DefaultConfig(CommandLine cli) {
+        this.cli = cli;
         String file = cli.getOptionValue(SeleneseRunnerOptions.CONFIG);
         if (file != null)
             loadFrom(file);

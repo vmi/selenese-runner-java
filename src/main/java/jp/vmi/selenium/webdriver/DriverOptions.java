@@ -18,6 +18,7 @@ import com.google.common.collect.Maps;
 
 import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
+import jp.vmi.selenium.selenese.config.SeleneseRunnerOptions;
 
 /**
  * Options for WebDriver.
@@ -86,7 +87,7 @@ public class DriverOptions {
      */
     @Deprecated
     public DriverOptions(CommandLine cli) {
-        this(new DefaultConfig(cli, null));
+        this(new DefaultConfig(cli));
     }
 
     /**
@@ -99,7 +100,7 @@ public class DriverOptions {
             String key = opt.name().toLowerCase().replace('_', '-');
             switch (opt) {
             case DEFINE:
-                addDefinitions(config.getOptionValues(IConfig.DEFINE));
+                addDefinitions(config.getOptionValues(SeleneseRunnerOptions.DEFINE));
                 break;
             case CLI_ARGS:
                 if (config.hasOption(key))

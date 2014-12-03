@@ -1,11 +1,9 @@
 package jp.vmi.selenium.selenese.config;
 
-import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 
-import jp.vmi.selenium.selenese.Main;
-
-import static jp.vmi.selenium.selenese.config.IConfig.*;
+import static jp.vmi.selenium.selenese.config.SeleneseRunnerOptions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -52,9 +50,8 @@ public class DefaultConfigTest {
 
     @Test
     public void testConfigFile() {
-        CommandLine cli = new Main().parseCommandLine();
         String file = DefaultConfigTest.class.getResource("/config/test.config").getPath();
-        IConfig config = new DefaultConfig(cli, file);
+        IConfig config = new DefaultConfig(new String[] { "--config", file });
         assertThat(config.getOptionValue(DRIVER), is("firefox"));
         assertThat(config.getOptionValue(PROFILE), is("selenium"));
         assertThat(config.getOptionValue(PROFILE_DIR), is("/path/to/profile/directory"));
@@ -91,9 +88,9 @@ public class DefaultConfigTest {
 
     @Test
     public void testCommandLine() {
-        CommandLine cli = new Main().parseCommandLine(args);
         String file = DefaultConfigTest.class.getResource("/config/test.config").getPath();
-        IConfig config = new DefaultConfig(cli, file);
+        String[] newArgs = ArrayUtils.addAll(args, "--config", file);
+        IConfig config = new DefaultConfig(newArgs);
         assertThat(config.getOptionValue(DRIVER), is("opt-firefox"));
         assertThat(config.getOptionValue(PROFILE), is("opt-selenium"));
         assertThat(config.getOptionValue(PROFILE_DIR), is("/opt/path/to/profile/directory"));

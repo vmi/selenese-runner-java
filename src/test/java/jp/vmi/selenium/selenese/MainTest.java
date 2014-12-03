@@ -1,9 +1,10 @@
 package jp.vmi.selenium.selenese;
 
-import org.apache.commons.cli.CommandLine;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import jp.vmi.selenium.selenese.config.DefaultConfig;
+import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.webdriver.DriverOptions;
 
 import static org.hamcrest.MatcherAssert.*;
@@ -14,18 +15,18 @@ public class MainTest {
 
     @Test
     public void testOptions() {
-        CommandLine cli = new Main().parseCommandLine(
+        IConfig config = new DefaultConfig(
             "-D", "key1=value1",
             "-D", "key2+=value2",
             "-D", "key3=value31", "-D", "key3+=value32",
             "-D", "key4+=value41", "-D", "key4+=value42");
-        String[] defines = cli.getOptionValues("define");
+        String[] defines = config.getOptionValues("define");
         assertThat(defines, is(arrayContaining(
             "key1=value1",
             "key2+=value2",
             "key3=value31", "key3+=value32",
             "key4+=value41", "key4+=value42")));
-        DriverOptions driverOptions = new DriverOptions(cli);
+        DriverOptions driverOptions = new DriverOptions(config);
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.merge(driverOptions.getCapabilities());
         assertThat((String) caps.getCapability("key1"), is(equalTo("value1")));

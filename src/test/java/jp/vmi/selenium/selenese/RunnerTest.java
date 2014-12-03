@@ -3,12 +3,13 @@ package jp.vmi.selenium.selenese;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.cli.CommandLine;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import jp.vmi.selenium.selenese.config.DefaultConfig;
+import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -26,8 +27,8 @@ public class RunnerTest {
     @Test
     public void proxyOption() throws IllegalArgumentException, IOException {
         File tmp = File.createTempFile("aaa", "test.html");
-        CommandLine cli = new Main().parseCommandLine(new String[] { "--proxy", "proxy.example.com", tmp.getAbsolutePath() });
-        DriverOptions opt = new DriverOptions(cli);
+        IConfig config = new DefaultConfig("--proxy", "proxy.example.com", tmp.getAbsolutePath());
+        DriverOptions opt = new DriverOptions(config);
         assertThat(opt.get(DriverOption.PROXY), is("proxy.example.com"));
     }
 
