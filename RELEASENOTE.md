@@ -3,7 +3,8 @@ Selenese Runner Java Relase Note
 
 ### 1.8.0
 
-* Add new option "--config", it reads option information from configuration file.
+* Add new option "--config", it reads option information from configuration file. (#140)
+* Clean up the implementation of handling command line options.
 
 ### 1.7.0
 
