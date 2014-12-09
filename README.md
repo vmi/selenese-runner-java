@@ -176,7 +176,7 @@ Example:
           --cli-args --ignore-certificate-errors \
           ...
 
-* PhanotomJS
+* PhantomJS
 
         java -jar selenese-runner.jar --driver phantomjs \
           --cli-args --ssl-certificates-path=/PATH/TO/CERTS-DIR/ \
