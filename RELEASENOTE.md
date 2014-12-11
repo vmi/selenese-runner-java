@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.1
+
+* Fix invalid links to each test-case report in "index.html" of html-result.
+
 ### 1.8.0
 
 * Add new option "--config", it reads option information from configuration file. (#140)
