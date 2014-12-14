@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 1.8.1
 
 * Fix invalid links to each test-case report in "index.html" of html-result.
+* Fix error if use command "clickAt" without coordinates parameter. (#144)
 
 ### 1.8.0
 
