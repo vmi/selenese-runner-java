@@ -166,6 +166,13 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Test
+    public void clickableImage() {
+        assumeNot(HtmlUnitDriver.class);
+        execute("clickable_image_test");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void rollup() {
         assumeNot(HtmlUnitDriver.class);
         runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));

@@ -32,6 +32,8 @@ public class ChromeDriverFactory extends WebDriverFactory {
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));
+        if (driverOptions.has(CLI_ARGS))
+            options.addArguments(driverOptions.getCliArgs());
         caps.setCapability(ChromeOptions.CAPABILITY, options);
         caps.merge(driverOptions.getCapabilities());
         ChromeDriver driver = new ChromeDriver(service, caps);

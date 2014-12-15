@@ -74,7 +74,7 @@ public class SubCommandMap {
         // can't handle the result:
         // register(new CaptureScreenshotToString(), "captureScreenshotToString");
         register(new Click(alertOverride, elementFinder), "click", LOCATOR);
-        register(new ClickAt(alertOverride, elementFinder), "clickAt", LOCATOR, VALUE);
+        register(new jp.vmi.selenium.selenese.subcommand.ClickAt(alertOverride, elementFinder), "clickAt", LOCATOR, VALUE);
         register(new Check(alertOverride, elementFinder), "check", LOCATOR);
         register(new SetNextConfirmationState(false), "chooseCancelOnNextConfirmation");
         register(new SetNextConfirmationState(true), "chooseOkOnNextConfirmation");

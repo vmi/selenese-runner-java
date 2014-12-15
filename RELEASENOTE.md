@@ -1,9 +1,35 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.1
+
+* Fix invalid links to each test-case report in "index.html" of html-result.
+* Fix error if use command "clickAt" without coordinates parameter. (#144)
+
+### 1.8.0
+
+* Add new option "--config", it reads option information from configuration file. (#140)
+* Clean up the implementation of handling command line options.
+
+### 1.7.0
+
+* Adopt semantic versioning 2.0.0. see: http://semver.org/spec/v2.0.0.html
+* Fix failed to load test-case file without Base URL. (#135)
+* Add new option "--cli-args", it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
+* Add new option "--command-factory", it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
+* Don't create RollupRules until necessary to be able to work with some Java installations that lack Javascript ScriptEngine support. (#138 by koichirok)
+* Use firefox options for capabilities if remote browser is "firefox". (#136 by koichirok & vmi)
+* Add IntelliJ IDEA's project files to .gitignore. (#139 by koichirok)
+
+### 1.6.0
+
+* [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by patchpump & vmi)
+* Catch up Selenium 2.44.0.
+* Update dependency versions.
+
 ### 1.5.5
 
-* Add start time to HTML result. (PR #132)
+* Add start time to HTML result. (PR #132 by patchpump)
 * Add system information and command line arguments to HTML/JUnit result.
 
 ### 1.5.4

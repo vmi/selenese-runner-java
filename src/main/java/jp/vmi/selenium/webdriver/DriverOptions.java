@@ -16,6 +16,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.collect.Maps;
 
+import jp.vmi.selenium.selenese.config.DefaultConfig;
+import jp.vmi.selenium.selenese.config.IConfig;
+import jp.vmi.selenium.selenese.config.SeleneseRunnerOptions;
+
 /**
  * Options for WebDriver.
  */
@@ -61,10 +65,13 @@ public class DriverOptions {
         HEIGHT,
         /** --define */
         DEFINE,
+        /** --cli-args */
+        CLI_ARGS,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
+    private String[] cliArgs = ArrayUtils.EMPTY_STRING_ARRAY;
     private final HashMap<String, String> envVars = Maps.newHashMap();
 
     /**
@@ -78,13 +85,31 @@ public class DriverOptions {
      *
      * @param cli parsed command line information.
      */
+    @Deprecated
     public DriverOptions(CommandLine cli) {
+        this(new DefaultConfig(cli));
+    }
+
+    /**
+     * Constructs driver options specified by command line.
+     *
+     * @param config configuration information.
+     */
+    public DriverOptions(IConfig config) {
         for (DriverOption opt : DriverOption.values()) {
             String key = opt.name().toLowerCase().replace('_', '-');
-            if (opt != DriverOption.DEFINE)
-                set(opt, cli.getOptionValue(key));
-            else
-                addDefinitions(cli.getOptionValues("define"));
+            switch (opt) {
+            case DEFINE:
+                addDefinitions(config.getOptionValues(SeleneseRunnerOptions.DEFINE));
+                break;
+            case CLI_ARGS:
+                if (config.hasOption(key))
+                    cliArgs = config.getOptionValues(key);
+                break;
+            default:
+                set(opt, config.getOptionValue(key));
+                break;
+            }
         }
     }
 
@@ -96,6 +121,7 @@ public class DriverOptions {
     public DriverOptions(DriverOptions other) {
         map.putAll(other.map);
         caps.merge(other.caps);
+        cliArgs = other.cliArgs;
         envVars.putAll(other.envVars);
     }
 
@@ -106,9 +132,14 @@ public class DriverOptions {
      * @return option value.
      */
     public String get(DriverOption opt) {
-        if (opt == DriverOption.DEFINE)
+        switch (opt) {
+        case DEFINE:
             throw new IllegalArgumentException("Need to use DriverOptions#getCapabilities() instead of get(DriverOption.DEFINE).");
-        return map.get(opt);
+        case CLI_ARGS:
+            throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CLI_ARGS).");
+        default:
+            return map.get(opt);
+        }
     }
 
     /**
@@ -118,29 +149,38 @@ public class DriverOptions {
      * @return true if has specified option.
      */
     public boolean has(DriverOption opt) {
-        if (opt != DriverOption.DEFINE)
-            return map.containsKey(opt);
-        else
+        switch (opt) {
+        case DEFINE:
             return !caps.asMap().isEmpty();
+        case CLI_ARGS:
+            return cliArgs.length != 0;
+        default:
+            return map.containsKey(opt);
+        }
     }
 
     /**
      * Set option key and value.
      *
      * @param opt option key.
-     * @param values option values. (multiple values are accepted by DEFINE only)
+     * @param values option values. (multiple values are accepted by DEFINE and CLI_ARGS only)
      * @return this.
      */
     public DriverOptions set(DriverOption opt, String... values) {
-        if (opt != DriverOption.DEFINE) {
+        switch (opt) {
+        case DEFINE:
+            addDefinitions(values);
+            break;
+        case CLI_ARGS:
+            cliArgs = ArrayUtils.addAll(cliArgs, values);
+        default:
             if (values.length != 1)
                 throw new IllegalArgumentException("Need to pass only a single value for " + opt);
             if (values[0] != null)
                 map.put(opt, values[0]);
             else
                 map.remove(opt);
-        } else {
-            addDefinitions(values);
+            break;
         }
         return this;
     }
@@ -181,6 +221,15 @@ public class DriverOptions {
     }
 
     /**
+     * Get CLI arguments for starting up driver.
+     *
+     * @return CLI arguments.
+     */
+    public String[] getCliArgs() {
+        return cliArgs;
+    }
+
+    /**
      * Get environment variables map.
      *
      * @return environment variables map.
@@ -202,9 +251,25 @@ public class DriverOptions {
         StringBuilder result = new StringBuilder("[");
         String sep = "";
         if (!map.isEmpty()) {
-            for (DriverOption opt : DriverOption.values())
-                if (opt != DriverOption.DEFINE && map.containsKey(opt))
-                    result.append(opt.name()).append('=').append(map.get(opt)).append('|');
+            for (DriverOption opt : DriverOption.values()) {
+                switch (opt) {
+                case DEFINE:
+                    // skip
+                    break;
+                case CLI_ARGS:
+                    if (cliArgs.length != 0) {
+                        result.append(opt.name()).append('=');
+                        for (String extraOption : cliArgs)
+                            result.append(extraOption).append(',');
+                        result.setCharAt(result.length() - 1, '|');
+                    }
+                    break;
+                default:
+                    if (map.containsKey(opt))
+                        result.append(opt.name()).append('=').append(map.get(opt)).append('|');
+                    break;
+                }
+            }
             result.deleteCharAt(result.length() - 1);
             sep = "|";
         }

@@ -32,13 +32,15 @@ Usage
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
+     -c,--config <file>                      load option information from file.
      -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
-     -p,--profile <name>                     profile name (Firefox only)
-     -P,--profile-dir <dir>                  profile directory (Firefox only)
+     -p,--profile <name>                     profile name (Firefox only *1)
+     -P,--profile-dir <dir>                  profile directory (Firefox only *1)
         --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
-        --proxy-user <user>                  proxy username (HtmlUnit only *)
-        --proxy-password <password>          proxy password (HtmlUnit only *)
-        --no-proxy <no-proxy>                no-proxy hosts
+        --proxy-user <user>                  proxy username (HtmlUnit only *2)
+        --proxy-password <password>          proxy password (HtmlUnit only *2)
+        --no-proxy <hosts>                   no-proxy hosts
+        --cli-args <arg>                     add command line arguments at starting up driver (multiple)
         --remote-url <url>                   Remote test runner URL (Remote only)
         --remote-platform <platform>         Desired remote platform (Remote only)
         --remote-browser <browser>           Desired remote browser (Remote only)
@@ -62,7 +64,16 @@ Usage
      -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
         --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
+        --command-factory <FQCN>             register user defined command factory. (See Note *3)
      -h,--help                               show this message.
+
+[Note]
+
+*1 It is available if using "--driver remote --remote-browser firefox".
+
+*2 If you want to use basic and/or proxy authentication on Firefox, then create new profile, install AutoAuth plugin, configure all settings, access test site with the profile, and specify the profile by --profile option.
+
+*3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option.
 
 Requirements
 ------------
@@ -88,20 +99,88 @@ That will create the *selenese-runner.jar* file within the 'target' directory.
 Options
 -------
 
-### PhantomJS driver
+### Configuration file (1.8.0 or later)
 
-If you want to add command line options to PhantomJS binary, add following options:
+You can read option information from the following configuration file by using "--config" option.
 
-    java -jar selenese-runner.jar --driver phantomjs \
-      --define phantomjs.cli.args+=ARG1 \
-      --define phantomjs.cli.args+=ARG2 \
+You can overwrite the information by additional command line options.
+
+    # configuration file format.
+    
+    driver: DRIVER_NAME
+    profile: PROFILE_NAME
+    profile-dir: /PATH/TO/PROFILE/DIRECTORY
+    proxy: PROXY_HOST
+    proxy-user: PROXY_USER
+    proxy-password: PROXY_PASSWORD
+    no-proxy: NO_PROXY_HOSTS
+    cli-args: DRIVER_CLI_ARG1
+      DRIVER_CLI_ARG2
+      DRIVER_CLI_ARG3
+    remote-url: http://remote.example.com:4444/wd/hub
+    remote-platform: REMOTE_PLATFORM
+    remote-browser: REMOTE_BROWSER
+    remote-version: REMOTE_VERSION
+    # "highlight" parameter is "true" or "false".
+    highlight: true
+    screenshot-dir: /PATH/TO/SCREENSHOT/DIRECTORY
+    screenshot-all: /PATH/TO/SCREENSHOT/DIRECTORY/ALL
+    screenshot-on-fail: /PATH/TO/SCREENSHOT/DIRECTORY/ON/FAIL
+    # "ignore-screenshot-command" parameter is "true" or "false".
+    ignore-screenshot-command: true
+    baseurl: http://baseurl.example.com/
+    firefox: /PATH/TO/FIREFOX/BINARY
+    chromedriver: /PATH/TO/CHROMEDRIVER/BINARY
+    iedriver: /PATH/TO/IEDRIVER/BINARY
+    phantomjs: /PATH/TO/PHANTOMJS/BINARY
+    xml-result: /PATH/TO/XML/RESULT/DIRECTORY
+    html-result: /PATH/TO/HTML/RESULT/DIRECTORY
+    # The unit of "timeout" parameter is millisecounds.
+    timeout: 30000
+    # The unit of "set-speed" parameter is millisecounds.
+    set-speed: 100
+    # The unit of "height" parameter is pixcels.
+    height: 1024
+    # The unit of "width" parameter is pixcels.
+    width: 768
+    define: CAPABILITY_KEY1=CAPABILITY_VALUE1
+       CAPABILITY_KEY2=CAPABILITY_VALUE2
+       CAPABILITY_KEY3+=CAPABILITY_VALUE31
+       CAPABILITY_KEY3+=CAPABILITY_VALUE32
+       CAPABILITY_KEY3+=CAPABILITY_VALUE33
+    rollup: /PATH/TO/ROLLUP/FILE
+    cookie-filter: COOKIE_FILTER_REGEXP
+    command-factory: full.qualify.class.Name
+
+### Firefox, Chrome and PhantomJS driver
+
+If you want to add command line options to above driver's binary, add following options:
+
+    java -jar selenese-runner.jar --driver DRIVER_NAME \
+      --cli-args ARG1 \
+      --cli-args ARG2 \
       ...
 
 Example:
 
-    java -jar selenese-runner.jar --driver phantomjs \
-      --define phantomjs.cli.args+=--ssl-certificates-path=/path/to/certs-dir/
-      ...
+* Firefox
+
+        java -jar selenese-runner.jar --driver firefox \
+          --cli-args -jsconsole \
+          ...
+
+* Chrome
+
+        java -jar selenese-runner.jar --driver chrome \
+          --cli-args --incognito \
+          --cli-args --ignore-certificate-errors \
+          ...
+
+* PhantomJS
+
+        java -jar selenese-runner.jar --driver phantomjs \
+          --cli-args --ssl-certificates-path=/PATH/TO/CERTS-DIR/ \
+          ...
 
 ### Rollup
 
@@ -130,11 +209,28 @@ Example:
 
 * logging the cookie whose name ends with "ID":
 
-    java -jar selenese-runner.jar --cookie-filter +'ID$' ...
+        java -jar selenese-runner.jar --cookie-filter +'ID$' ...
 
 * don't logging the cookie whose name contains "__utm":
 
-    java -jar selenese-runner.jar --cookie-filter -__utm ...
+        java -jar selenese-runner.jar --cookie-filter -__utm ...
+
+### User defined command factory
+
+You can register user defined command factory:
+
+    java -cp YOUR_CLASS_PATH:selenese-runner.jar Main \
+      --command-factory your.command.factory.ClassName ...
+
+Note:
+
+* Use the above command line instead of "java -jar ...".
+Because "java" command ignores all class path settings, when using "-jar" option.
+
+* Top-level Main class is contained ONLY in stand-alone "selenese-runner.jar",
+and is not contained in "selenese-runner-java-X.Y.Z.jar" in maven repository.
+Please use "jp.vmi.selenium.selenese.Main" instead of "Main"
+if you want to use this feature with the jar in maven repository.
 
 License
 -------

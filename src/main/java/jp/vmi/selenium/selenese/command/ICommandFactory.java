@@ -11,7 +11,7 @@ public interface ICommandFactory {
      * @param index index in selenese script file.
      * @param name command name.
      * @param args command arguments.
-     * @return ICommand instance.
+     * @return ICommand instance or null.
      */
     ICommand newCommand(int index, String name, String... args);
 }

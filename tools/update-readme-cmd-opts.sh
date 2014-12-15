@@ -6,7 +6,7 @@ sed '/^Usage$/,$d' README.md
 echo 'Usage'
 echo '-----'
 echo ''
-COLUMNS=256 java -jar target/selenese-runner.jar --help | perl -ne '
+COLUMNS=256 java -cp target/classes:target/selenese-runner.jar Main --help | perl -ne '
 while (<>) {
   s/\s+\z//s;
   if (/^Usage:\s*(.*)$/) {
@@ -18,6 +18,11 @@ while (<>) {
   s/\s+\z//s;
   print "    $_\n";
   last if (/--help/);
+}
+while (<>) {
+  s/\s+\z//s;
+  s/^\*/\n*/;
+  print "$_\n";
 }
 '
 echo ''
