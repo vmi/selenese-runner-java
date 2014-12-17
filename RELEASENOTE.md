@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.2
+
+* Fix an issue wuth CSS locator recorded by the Selenium IDE. Still the IDE successfuly replays the badly recorded CSS selector by fixing it before the actual execution. (#145 by lukian-tabandzhov)
+
 ### 1.8.1
 
 * Fix invalid links to each test-case report in "index.html" of html-result.
