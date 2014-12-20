@@ -9,10 +9,6 @@ import org.openqa.selenium.support.ui.Duration;
  */
 public class StopWatch {
 
-    private long startTimeOfUTC;
-
-    private long endTimeOfUTC;
-
     private long startTime;
 
     private long endTime;
@@ -21,36 +17,32 @@ public class StopWatch {
      * Start time.
      */
     public void start() {
-        start(System.nanoTime(), System.currentTimeMillis());
+        start(System.currentTimeMillis());
     }
 
     /**
      * Start time.
      *
-     * @param nanoTime System.nanoTime()
      * @param currentTimeMillis System.currentTimeMillis()
      */
-    public void start(long nanoTime, long currentTimeMillis) {
-        startTime = endTime = nanoTime;
-        startTimeOfUTC = endTimeOfUTC = currentTimeMillis;
+    public void start(long currentTimeMillis) {
+        startTime = endTime = currentTimeMillis;
     }
 
     /**
      * End time.
      */
     public void end() {
-        end(System.nanoTime(), System.currentTimeMillis());
+        end(System.currentTimeMillis());
     }
 
     /**
      * End time.
      *
-     * @param nanoTime System.nanoTime()
      * @param currentTimeMillis System.currentTimeMillis()
      */
-    public void end(long nanoTime, long currentTimeMillis) {
-        endTime = nanoTime;
-        endTimeOfUTC = currentTimeMillis;
+    public void end(long currentTimeMillis) {
+        endTime = currentTimeMillis;
     }
 
     /**
@@ -58,8 +50,8 @@ public class StopWatch {
      *
      * @return start time.
      */
-    public long getStartTimeOfUTC() {
-        return startTimeOfUTC;
+    public long getStartTime() {
+        return startTime;
     }
 
     /**
@@ -67,16 +59,16 @@ public class StopWatch {
      *
      * @return end time.
      */
-    public long getEndTimeOfUTC() {
-        return endTimeOfUTC;
+    public long getEndTime() {
+        return endTime;
     }
 
     /**
-     * Get nano-second of duration.
+     * Get milli-second of duration.
      *
-     * @return duration (ns)
+     * @return duration (ms)
      */
-    public long getDurationNanoSec() {
+    public long getDuration() {
         return endTime - startTime;
     }
 
@@ -87,7 +79,7 @@ public class StopWatch {
      */
     public String getDurationString() {
         StringBuilder ds = new StringBuilder();
-        Duration d = new Duration(endTime - startTime, TimeUnit.NANOSECONDS);
+        Duration d = new Duration(endTime - startTime, TimeUnit.MILLISECONDS);
         long h = d.in(TimeUnit.HOURS);
         if (h > 0)
             ds.append(h).append("hour");
@@ -111,7 +103,7 @@ public class StopWatch {
      */
 
     public String getStartTimeString() {
-        return DateTimeUtils.formatWithMS(startTimeOfUTC);
+        return DateTimeUtils.formatWithMS(startTime);
     }
 
     /**
@@ -121,6 +113,6 @@ public class StopWatch {
      */
 
     public String getEndTimeString() {
-        return DateTimeUtils.formatWithMS(endTimeOfUTC);
+        return DateTimeUtils.formatWithMS(endTime);
     }
 }
