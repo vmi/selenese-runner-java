@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.time.FastDateFormat;
-
 /**
  * Record log message.
  */
@@ -42,11 +40,9 @@ public class LogRecorder {
 
         @Override
         public String toString() {
-            return DATE_TIME_FORMAT.format(date) + "[" + level + "] " + message;
+            return "[" + DateTimeUtils.formatWithMS(date) + "] [" + level + "] " + message;
         }
     }
-
-    private static final FastDateFormat DATE_TIME_FORMAT = FastDateFormat.getInstance("[yyyy-MM-dd HH:mm:ss.SSS] ");
 
     private final PrintStream ps;
 

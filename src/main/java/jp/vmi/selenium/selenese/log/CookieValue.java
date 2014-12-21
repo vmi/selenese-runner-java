@@ -3,15 +3,14 @@ package jp.vmi.selenium.selenese.log;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
+
+import jp.vmi.selenium.selenese.utils.DateTimeUtils;
 
 /**
  * Value of Cookie.
  */
 @SuppressWarnings("javadoc")
 public class CookieValue {
-
-    private static final FastDateFormat expiryFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
 
     public final CookieKey key;
     public final String value;
@@ -35,7 +34,7 @@ public class CookieValue {
 
     @Override
     public String toString() {
-        String expiryString = (expiry != null) ? expiryFormat.format(expiry) : "*";
+        String expiryString = (expiry != null) ? DateTimeUtils.formatWithoutMS(expiry.getTime()) : "*";
         return key.name + "=[" + value + "]"
             + " (domain=" + key.domain + ", path=" + key.path + ", expire=" + expiryString + ")";
     }
