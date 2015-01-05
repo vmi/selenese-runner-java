@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.result.CommandResult;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command list.
@@ -112,26 +112,44 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
     /**
      * Execute command list.
      *
+     * @deprecated Use {@link #execute(Context, CommandResultList)}.
+     *
      * @param context Selenese Runner context.
      * @return result of command list execution.
      */
+    @Deprecated
     public Result execute(Context context) {
-        Result result = SUCCESS;
+        return execute(context, new CommandResultList());
+    }
+
+    /**
+     * Execute command list.
+     *
+     * @param context Selenese Runner context.
+     * @param cresultList command result list for keeping all command results.
+     * @return result of command list execution.
+     */
+    public Result execute(Context context, CommandResultList cresultList) {
         CommandListIterator commandListIterator = listIterator();
         context.pushCommandListIterator(commandListIterator);
+        boolean isContinued = true;
         try {
-            while (commandListIterator.hasNext()) {
+            while (isContinued && commandListIterator.hasNext()) {
                 ICommand command = commandListIterator.next();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
                 evalCurArgs(context, curArgs);
-                result = result.update(doCommand(context, command, curArgs));
+                Result result = doCommand(context, command, curArgs);
                 if (result.isAborted())
-                    break;
-                context.waitSpeed();
+                    isContinued = false;
+                else
+                    context.waitSpeed();
+                CommandResult cresult = new CommandResult(command, result, cresultList.getEndTime(), System.currentTimeMillis());
+                cresultList.add(cresult);
+
             }
         } finally {
             context.popCommandListIterator();
         }
-        return result;
+        return cresultList.getResult();
     }
 }
