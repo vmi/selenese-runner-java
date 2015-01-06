@@ -201,26 +201,23 @@ ${end}
       <div>
         <table id="suiteTable" class="selenium">
           <tr class="title status_${testSuite.result}"><th>${testSuite.name}</th></tr>
-${@set index 0}
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_SUITE"}
           <tr class="status_${selenese.result}"><td><a href="TEST-${selenese.name}.html">${selenese.name;h}</a> (test-suite)</td></tr>
   ${end}
   ${if selenese.type="TEST_CASE"}
-          <tr class="status_${selenese.result}"><td><a href="#testCase${index}">${selenese.name;h}</a></td></tr>
+          <tr class="status_${selenese.result}"><td><a href="#testCase${index_selenese}">${selenese.name;h}</a></td></tr>
   ${end}
-  ${@inc index}
 ${end}
         </table>
       </div>
     </div>
 
-${@set index 0}
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_CASE"}
     <br>
     <div>
-      <a name="testCase${index}">${selenese.filename;h}</a><br>
+      <a name="testCase${index_selenese}">${selenese.filename;h}</a><br>
       <table cellpadding="1" cellspacing="1" border="1">
         <thead>
           <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Screenshot</td></tr>
@@ -232,7 +229,7 @@ ${foreach seleneseList selenese}
       ${foreach command.source item}
             <td>${item;h}</td>
       ${end}
-            <td>${@set imgIndex 1}${foreach command.screenshots screenshot}${if !imgIndex=1}, ${end}<a href="${screenshot.path;relpath}">${imgIndex}:${screenshot.label;h}</a>${@inc imgIndex}${end}</td>
+            <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
           </tr>
     ${end}
         </tbody>
@@ -243,7 +240,6 @@ ${foreach seleneseList selenese}
 ${end}</pre>
   ${end}
   <p>[<a href="#">Top</a>]</p>
-  ${@inc index}
 ${end}
   </body>
 </html>
