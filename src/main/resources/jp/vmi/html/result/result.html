@@ -123,6 +123,10 @@ ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">
         background-color: #cccccc;
         border: 1px solid black;
       }
+
+      .number {
+        text-align: right;
+      }
     </style>${end}
 ${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${end}
   </head>
@@ -220,7 +224,7 @@ ${foreach seleneseList selenese}
       <a name="testCase${index_selenese}">${selenese.filename;h}</a><br>
       <table cellpadding="1" cellspacing="1" border="1">
         <thead>
-          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Screenshot</td></tr>
+          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Duration(ms)</td><td>Screenshot</td></tr>
         </thead>
         <tbody>
     ${foreach selenese.commandList command}
@@ -229,6 +233,7 @@ ${foreach seleneseList selenese}
       ${foreach command.source item}
             <td>${item;h}</td>
       ${end}
+            <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
             <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
           </tr>
     ${end}

@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import jp.vmi.selenium.selenese.command.ICommand;
+
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
@@ -16,6 +18,7 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     private final List<ICommandResult> list = new ArrayList<ICommandResult>();
     private Result result = UNEXECUTED;
     private long endTime = System.currentTimeMillis();
+    private CommandResultMap map = null;
 
     @Override
     public int size() {
@@ -98,6 +101,18 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     @Override
     public long getEndTime() {
         return endTime;
+    }
+
+    /**
+     * Get results of the command.
+     *
+     * @param command command.
+     * @return results.
+     */
+    public List<CommandResult> getResults(ICommand command) {
+        if (map == null)
+            map = new CommandResultMap(this);
+        return map.get(command);
     }
 
     /**
