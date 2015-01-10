@@ -153,6 +153,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         driver.switchTo().defaultContent();
         File tmp = tss.getScreenshotAs(OutputType.FILE);
         try {
+            File dir = file.getParentFile();
+            if (!dir.exists()) {
+                dir.mkdirs();
+                log.info("Make the directory for screenshot: {}", dir);
+            }
             FileUtils.moveFile(tmp, file);
         } catch (IOException e) {
             throw new RuntimeException("failed to rename captured screenshot image: " + file, e);

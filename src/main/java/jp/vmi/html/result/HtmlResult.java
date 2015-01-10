@@ -198,8 +198,13 @@ public class HtmlResult {
         model.put("numCommandErrors", summary.numCommandErrors);
         model.put("commandLine", commandLineArgs);
         String html = getEngine().transform(getTemplate("result.html"), model);
-        File file = new File(htmlResultDir, "TEST-" + testSuite.getBaseName() + ".html");
+        File dir = new File(htmlResultDir);
+        File file = new File(dir, "TEST-" + testSuite.getBaseName() + ".html");
         try {
+            if (!dir.exists()) {
+                dir.mkdirs();
+                log.info("Make the directory for HTML resut: {}", dir);
+            }
             FileUtils.write(file, html, "UTF-8");
             log.info("Generated HTML result: {}", file);
         } catch (IOException e) {

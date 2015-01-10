@@ -77,6 +77,14 @@ public final class JUnitResult {
         this.xmlResultDir = dir;
     }
 
+    protected void mkdirs() {
+        File dir = new File(xmlResultDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+            log.info("Make the directory for XML result: {}", dir);
+        }
+    }
+
     /**
      * Start test-suite.
      *
@@ -105,6 +113,7 @@ public final class JUnitResult {
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            mkdirs();
             File file = new File(xmlResultDir, "TEST-" + suiteResult.getBaseName() + ".xml");
             marshaller.marshal(suiteResult, file);
             log.info("Generated JUnit result: {}", file);
@@ -198,6 +207,7 @@ public final class JUnitResult {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            mkdirs();
             File file = new File(xmlResultDir, FAILSAFE_SUMMARY_FILENAME);
             marshaller.marshal(failsafeSummary, file);
             log.info("Generated failsafe summary: {}", file);
