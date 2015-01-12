@@ -239,7 +239,7 @@ public class JUnitResultTest {
         // test-case 0 test.
         caseResult = (Element) caseResults.item(0);
         assertThat("test-case[0]:name", caseResult.getAttribute("name"), is("test-case0"));
-        assertThat("test-case[0]:time", Double.parseDouble(caseResult.getAttribute("time")), lessThan(0.5));
+        assertThat("test-case[0]:time", Double.parseDouble(caseResult.getAttribute("time")), lessThan(1.0));
 
         error = getChild(caseResult, "error", NODE);
         failure = getChild(caseResult, "failure", NODE);
