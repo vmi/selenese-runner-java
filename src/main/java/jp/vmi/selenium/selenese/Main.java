@@ -34,6 +34,9 @@ public class Main {
 
     private static final String PROG_TITLE = "Selenese Runner";
 
+    private boolean noExit = false;
+    private Integer exitCode = null;
+
     /**
      * Get version of Selenese Runner.
      * <p>
@@ -177,11 +180,26 @@ public class Main {
         if (speed < 0)
             throw new IllegalArgumentException("Invalid speed value. (" + config.getOptionValue(SET_SPEED) + ")");
         runner.setInitialSpeed(speed);
+        if (config.hasOption(NO_EXIT))
+            noExit = true;
         runner.setPrintStream(System.out);
     }
 
     protected void exit(int exitCode) {
-        System.exit(exitCode);
+        this.exitCode = exitCode;
+        log.info("Exit code: {}", exitCode);
+        WebDriverManager.getInstance().quitAllDrivers();
+        if (!noExit)
+            System.exit(exitCode);
+    }
+
+    /**
+     * Get exit code.
+     *
+     * @return exit code, or null if don't end.
+     */
+    public Integer getExitCode() {
+        return exitCode;
     }
 
     /**

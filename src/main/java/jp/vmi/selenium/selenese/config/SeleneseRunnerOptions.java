@@ -62,6 +62,7 @@ public class SeleneseRunnerOptions extends Options {
     public static final String ROLLUP = "rollup";
     public static final String COOKIE_FILTER = "cookie-filter";
     public static final String COMMAND_FACTORY = "command-factory";
+    public static final String NO_EXIT = "no-exit";
     public static final String HELP = "help";
 
     // default values.
@@ -223,6 +224,9 @@ public class SeleneseRunnerOptions extends Options {
         addOption(OptionBuilder.withLongOpt(COMMAND_FACTORY)
             .hasArg().withArgName("FQCN")
             .withDescription("register user defined command factory. (See Note *3)")
+            .create());
+        addOption(OptionBuilder.withLongOpt(NO_EXIT)
+            .withDescription("don't call System.exit at end.")
             .create());
         addOption(OptionBuilder.withLongOpt(HELP)
             .withDescription("show this message.")
