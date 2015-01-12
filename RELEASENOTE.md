@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.3
+
+* Make the directory for HTML result, XML result, and screenshot if missing.
+* Add new option "--no-exit" for Maven. (#146)
+
 ### 1.8.2
 
 * Fix an issue wuth CSS locator recorded by the Selenium IDE. Still the IDE successfuly replays the badly recorded CSS selector by fixing it before the actual execution. (#145 by lukian-tabandzhov)

@@ -65,6 +65,7 @@ Usage
         --rollup <file>                      define rollup rule by JavaScript. (multiple)
         --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
         --command-factory <FQCN>             register user defined command factory. (See Note *3)
+        --no-exit                            don't call System.exit at end.
      -h,--help                               show this message.
 
 [Note]
