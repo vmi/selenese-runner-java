@@ -149,8 +149,13 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private String takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
         file = file.getAbsoluteFile();
-        // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
-        driver.switchTo().defaultContent();
+        try {
+            // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
+            driver.switchTo().defaultContent();
+        } catch (Exception e) {
+            // some times switching to default context throws exceptions like:
+            // Method threw 'org.openqa.selenium.UnhandledAlertException' exception.
+        }
         File tmp = tss.getScreenshotAs(OutputType.FILE);
         try {
             File dir = file.getParentFile();
