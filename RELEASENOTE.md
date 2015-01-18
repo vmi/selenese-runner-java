@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.8.4
+
+* Ignore exceptions on taking a screenshot. (#147 by lukian-tabandzhov)
+
 ### 1.8.3
 
 * Make the directory for HTML result, XML result, and screenshot if missing.
