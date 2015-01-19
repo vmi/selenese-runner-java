@@ -4,6 +4,11 @@ Selenese Runner Java Relase Note
 ### 1.9.0
 
 * Update dependency versions.
+* Replace OptionBuilder for thread-safety and avoiding deprecated. (#148)
+* Turn WebDriverManager into non-singleton object if use newInstance() method. (#148)
+* Remove the following deprecated methods:
+    * WebDriverFactory#getEnvironmentVariables()
+    * WebDriverManager#getEnvironmentVariables()
 
 ### 1.8.4
 
