@@ -20,5 +20,10 @@
         <ignoreVersion type="regex">.*-dev</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="io.netty" artifactId="netty">
+      <ignoreVersions>
+        <ignoreVersion type="exact">3.10.0.Final</ignoreVersion>
+      </ignoreVersions>
+    </rule>
   </rules>
 </ruleset>

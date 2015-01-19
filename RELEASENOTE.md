@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.9.0
+
+* Update dependency versions.
+
 ### 1.8.4
 
 * Ignore exceptions on taking a screenshot. (#147 by lukian-tabandzhov)

@@ -50,7 +50,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <target.version>1.6</target.version>
     <skipTests>true</skipTests>
     <selenium.version>2.44.0</selenium.version>
-    <slf4j.version>1.7.7</slf4j.version>
+    <slf4j.version>1.7.10</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -481,7 +481,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty</artifactId>
-      <version>3.9.5.Final</version>
+      <version>3.9.6.Final</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -501,7 +501,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
