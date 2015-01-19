@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -85,6 +84,53 @@ public class SeleneseRunnerOptions extends Options {
         + "*3 Use \"java -cp ..." + SystemUtils.PATH_SEPARATOR + "selenese-runner.jar Main --command-factory ...\". "
         + "Because \"java\" command ignores all class path settings, when using \"-jar\" option.";
 
+    // org.apache.commons.cli.OptionBuilder is not thread-safe, and will be deprecated on 1.3.
+    private static class OptionBuilder {
+
+        private final String longOpt;
+        private boolean hasArg = false;
+        private String argName = null;
+        private String description;
+
+        private OptionBuilder(String longOpt) {
+            this.longOpt = longOpt;
+        }
+
+        public static OptionBuilder withLongOpt(String longOpt) {
+            return new OptionBuilder(longOpt);
+        }
+
+        public OptionBuilder hasArg() {
+            hasArg = true;
+            return this;
+        }
+
+        public OptionBuilder withArgName(String argName) {
+            this.argName = argName;
+            return this;
+        }
+
+        public OptionBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Option create(String shortOpt) {
+            Option opt = new Option(shortOpt, longOpt, hasArg, description);
+            if (argName != null)
+                opt.setArgName(argName);
+            return opt;
+        }
+
+        public Option create(char shortOpt) {
+            return create(String.valueOf(shortOpt));
+        }
+
+        public Option create() {
+            return create(null);
+        }
+    }
+
     private int i = 0;
 
     private final Map<Option, Integer> optionOrder = new HashMap<Option, Integer>();
@@ -92,7 +138,6 @@ public class SeleneseRunnerOptions extends Options {
     /**
      * Constructor.
      */
-    @SuppressWarnings("static-access")
     public SeleneseRunnerOptions() {
         addOption(OptionBuilder.withLongOpt(CONFIG)
             .hasArg().withArgName("file")
