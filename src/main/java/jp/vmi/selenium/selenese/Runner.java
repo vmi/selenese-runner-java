@@ -254,7 +254,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void prepareWebDriver() {
         if (preparator == null)
             return;
-        setDriver(driver == null ? preparator.get() : preparator.reprepare(driver));
+        setDriver(preparator.get());
     }
 
     /**

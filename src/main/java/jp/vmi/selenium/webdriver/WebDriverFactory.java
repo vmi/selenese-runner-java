@@ -1,8 +1,5 @@
 package jp.vmi.selenium.webdriver;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
@@ -25,9 +22,6 @@ public abstract class WebDriverFactory {
     protected static final int DEFAULT_WIDTH = 1024;
 
     protected static final int DEFAULT_HEIGHT = 768;
-
-    @Deprecated
-    Map<String, String> environmentVariables = new HashMap<String, String>();
 
     /**
      * Is proxy supported?
@@ -56,16 +50,6 @@ public abstract class WebDriverFactory {
             caps.setCapability(CapabilityType.PROXY, proxy);
         }
         return caps;
-    }
-
-    /**
-     * Get environmnent variable map.
-     *
-     * @return environment variable map.
-     */
-    @Deprecated
-    public Map<String, String> getEnvironmentVariables() {
-        return environmentVariables;
     }
 
     /**
@@ -101,5 +85,10 @@ public abstract class WebDriverFactory {
     @Override
     public String toString() {
         return getClass().getSimpleName();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj || getClass() == obj.getClass();
     }
 }

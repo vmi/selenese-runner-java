@@ -115,7 +115,7 @@ public class Main {
             else if (driverOptions.has(DriverOption.PHANTOMJS))
                 driverName = WebDriverManager.PHANTOMJS;
         }
-        WebDriverManager manager = WebDriverManager.getInstance();
+        WebDriverManager manager = WebDriverManager.newInstance();
         manager.setWebDriverFactory(driverName);
         manager.setDriverOptions(driverOptions);
         if (config.hasOption(COMMAND_FACTORY)) {
@@ -188,7 +188,7 @@ public class Main {
     protected void exit(int exitCode) {
         this.exitCode = exitCode;
         log.info("Exit code: {}", exitCode);
-        WebDriverManager.getInstance().quitAllDrivers();
+        WebDriverManager.quitDriversOnAllManagers();
         if (!noExit)
             System.exit(exitCode);
     }

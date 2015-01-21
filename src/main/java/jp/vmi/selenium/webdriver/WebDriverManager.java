@@ -1,9 +1,8 @@
 package jp.vmi.selenium.webdriver;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collections;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchWindowException;
@@ -70,23 +69,23 @@ public class WebDriverManager implements WebDriverPreparator {
     public static final String ANDROID = "android";
 
     private static class Builder {
+
         private final WebDriverFactory factory;
         private final DriverOptions driverOptions;
-        public WebDriver driver;
 
         public Builder(WebDriverFactory factory, DriverOptions driverOptions) {
             this.factory = factory;
-            this.driverOptions = driverOptions;
+            this.driverOptions = new DriverOptions(driverOptions);
         }
 
-        public String getKey() {
-            return factory.getClass().getCanonicalName() + driverOptions.toString();
+        public boolean isParameterChanged(WebDriverFactory factory, DriverOptions driverOptions) {
+            return !this.factory.equals(factory) || !this.driverOptions.toString().equals(driverOptions.toString());
         }
 
-        public Builder build() {
-            driver = factory.newInstance(driverOptions);
-            return this;
+        public WebDriver build() {
+            return factory.newInstance(driverOptions);
         }
+
     }
 
     /**
@@ -94,25 +93,60 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
 
-    private static final WebDriverManager manager = new WebDriverManager();
+    // for backward compatibility.
+    private static WebDriverManager manager = null;
 
-    private boolean isSingleInstance = true;
+    private static final Set<WebDriverManager> managers = Collections.newSetFromMap(new WeakHashMap<WebDriverManager, Boolean>());
 
     private WebDriverFactory factory;
 
     private DriverOptions driverOptions = new DriverOptions();
 
-    private final Map<String, Builder> driverMap = new HashMap<String, Builder>();
+    private Builder builder = null;
 
-    @Deprecated
-    private final Map<String, String> environmentVariables = new HashMap<String, String>();
+    private WebDriver driver = null;
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                quitDriversOnAllManagers();
+            }
+        });
+    }
+
+    private static String getDriverName(WebDriver driver) {
+        String name = driver.getClass().getSimpleName();
+        if (StringUtils.isNotBlank(name))
+            return name;
+        else
+            return driver.getClass().getName();
+    }
 
     /**
      * Get WebDriverManager instance. (singleton)
      *
+     * @deprecated Use {@link #newInstance()} instead of this.
+     *
      * @return WebDriverMangaer.
      */
-    public static WebDriverManager getInstance() {
+    @Deprecated
+    public static synchronized WebDriverManager getInstance() {
+        if (manager == null)
+            manager = newInstance();
+        return manager;
+    }
+
+    /**
+     * Construct WebDriverManager instance.
+     *
+     * @return WebDriverMangaer.
+     */
+    public static WebDriverManager newInstance() {
+        WebDriverManager manager = new WebDriverManager();
+        synchronized (managers) {
+            managers.add(manager);
+        }
         return manager;
     }
 
@@ -120,32 +154,31 @@ public class WebDriverManager implements WebDriverPreparator {
      * Constructor.
      */
     private WebDriverManager() {
-        String factoryName = System.getProperty(WEBDRIVER_FACTORY, FIREFOX);
-        setWebDriverFactory(factoryName);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                quitAllDrivers();
-            }
-        });
+        setWebDriverFactory(System.getProperty(WEBDRIVER_FACTORY, FIREFOX));
     }
 
     /**
      * Is single instance of WebDriver?
      *
-     * @return true if
+     * @deprecated This does not work. Please just remove it.
+     *
+     * @return true if the number of WebDriver instance is only 1.
      */
+    @Deprecated
     public boolean isSingleInstance() {
-        return isSingleInstance;
+        return true;
     }
 
     /**
      * Set single instance of WebDriver.
      *
+     * @deprecated This does not work. Please just remove it.
+     *
      * @param isSingleInstance if true, the number of WebDriver instance is only 1.
      */
+    @Deprecated
     public void setSingleInstance(boolean isSingleInstance) {
-        this.isSingleInstance = isSingleInstance;
+        // no operation.
     }
 
     /**
@@ -224,26 +257,6 @@ public class WebDriverManager implements WebDriverPreparator {
         this.driverOptions = driverOptions;
     }
 
-    private String getDriverName(WebDriver driver) {
-        String name = driver.getClass().getSimpleName();
-        if (StringUtils.isNotBlank(name))
-            return name;
-        else
-            return driver.getClass().getName();
-    }
-
-    /**
-     * Get environment variable map.
-     *
-     * @return environment variable map.
-     *
-     * @deprecated use {@link DriverOptions#getEnvVars()}.
-     */
-    @Deprecated
-    public Map<String, String> getEnvironmentVariables() {
-        return environmentVariables;
-    }
-
     private boolean isBrowserUnreachable(Throwable t) {
         if (t instanceof UnreachableBrowserException)
             return true;
@@ -254,15 +267,15 @@ public class WebDriverManager implements WebDriverPreparator {
         return false;
     }
 
-    private boolean reprepare(WebDriver driver, String message) {
+    private boolean isDriverReusable() {
+        if (driver == null)
+            return false;
         try {
             driver.getWindowHandle();
             // ChromeDriver does not send UnreachableBrowserException.
             // TODO fix me when ChromeDriver is fixed.
             if (driver instanceof ChromeDriver)
                 driver.getTitle();
-            if (message != null)
-                log.info(message);
             return true;
         } catch (NoSuchWindowException e) {
             log.info("No focused window.");
@@ -286,55 +299,62 @@ public class WebDriverManager implements WebDriverPreparator {
         return false;
     }
 
-    private synchronized WebDriver get(Builder builder) throws IllegalArgumentException {
-        String key = builder.getKey();
-        Builder prevBuilder = driverMap.get(key);
-        if (prevBuilder != null) {
-            WebDriver driver = prevBuilder.driver;
-            if (reprepare(driver, "Existing driver found."))
+    @Override
+    public synchronized WebDriver get() throws IllegalArgumentException {
+        if (builder == null || builder.isParameterChanged(factory, driverOptions)) {
+            builder = new Builder(factory, driverOptions);
+        } else {
+            if (isDriverReusable()) {
+                log.info("Existing driver found.");
                 return driver;
-        }
-        if (isSingleInstance)
-            quitAllDrivers();
-        driverMap.put(builder.getKey(), builder.build());
-        log.info("Initialized: {}", getDriverName(builder.driver));
-        return builder.driver;
-    }
-
-    @Override
-    public WebDriver get() throws IllegalArgumentException {
-        DriverOptions dopts = new DriverOptions(driverOptions);
-        dopts.getEnvVars().putAll(environmentVariables); // for backward compaitibility.
-        return get(new Builder(factory, dopts));
-    }
-
-    @Override
-    public WebDriver reprepare(WebDriver driver) {
-        if (reprepare(driver, null))
-            return driver;
-        for (Entry<String, Builder> entry : driverMap.entrySet()) {
-            Builder builder = entry.getValue();
-            if (driver == builder.driver) {
+            } else {
                 log.info("Restart driver.");
-                return builder.build().driver;
             }
         }
-        throw new IllegalArgumentException("The driver is not managed by WebDriverManager: " + driver);
+        quitDriver();
+        driver = builder.build();
+        log.info("Initialized: {}", getDriverName(driver));
+        return driver;
+    }
+
+    /**
+     * Quit WebDriver instance.
+     */
+    public synchronized void quitDriver() {
+        if (driver == null)
+            return;
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        } finally {
+            log.info("Quit: {}", getDriverName(driver));
+        }
+        driver = null;
     }
 
     /**
      * Quit all WebDriver instances.
+     *
+     * @deprecated use {@link #quitDriver()} instead of this.
      */
-    public synchronized void quitAllDrivers() {
-        for (Builder builder : driverMap.values()) {
-            try {
-                builder.driver.quit();
-            } catch (Exception e) {
-                log.warn(e.getMessage());
-            } finally {
-                log.info("Quit: {}", getDriverName(builder.driver));
-            }
+    @Deprecated
+    public void quitAllDrivers() {
+        quitDriver();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        quitDriver();
+    }
+
+    /**
+     * Quit WebDriver instances on all WebDriverManager instances.
+     */
+    public static synchronized void quitDriversOnAllManagers() {
+        synchronized (managers) {
+            for (WebDriverManager manager : managers)
+                manager.quitDriver();
         }
-        driverMap.clear();
     }
 }
