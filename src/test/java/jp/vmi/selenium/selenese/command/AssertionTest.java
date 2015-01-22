@@ -27,6 +27,7 @@ public class AssertionTest extends TestBase {
      */
     @Test
     public void userFriendlyAssertionMessage() throws IOException {
+        @SuppressWarnings("deprecation")
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         wdm.setDriverOptions(new DriverOptions());

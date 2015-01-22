@@ -29,6 +29,7 @@ public class BuiltInCommandTest extends TestBase {
     @Test
     @Ignore("test fail on buildhive....")
     public void userFriendlyErrorMessage() throws IOException {
+        @SuppressWarnings("deprecation")
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         wdm.setDriverOptions(new DriverOptions());

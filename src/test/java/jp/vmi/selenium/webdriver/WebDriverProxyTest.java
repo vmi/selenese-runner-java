@@ -46,6 +46,7 @@ public class WebDriverProxyTest {
 
     @Test
     public void testProxy() {
+        @SuppressWarnings("deprecation")
         WebDriverManager manager = WebDriverManager.getInstance();
         WebDriverFactory factory = manager.lookupWebDriverFactory(factoryName);
         assumeTrue("Proxy is not supported.", factory.isProxySupported());

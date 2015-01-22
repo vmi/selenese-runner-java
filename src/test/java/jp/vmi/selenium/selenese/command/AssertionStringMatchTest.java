@@ -107,6 +107,7 @@ public class AssertionStringMatchTest extends TestBase {
      */
     @Test
     public void stringMatchPattern() throws IOException {
+        @SuppressWarnings("deprecation")
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         wdm.setDriverOptions(new DriverOptions());

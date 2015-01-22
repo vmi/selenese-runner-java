@@ -60,6 +60,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Override
     protected void initDriver() {
+        @SuppressWarnings("deprecation")
         WebDriverManager manager = WebDriverManager.getInstance();
         manager.setWebDriverFactory(factoryName);
         manager.setDriverOptions(new DriverOptions());

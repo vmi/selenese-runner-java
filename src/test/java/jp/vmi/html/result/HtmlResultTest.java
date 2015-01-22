@@ -79,6 +79,7 @@ public class HtmlResultTest {
         new File(root, "html").mkdir();
         new File(root, "img").mkdir();
         Runner runner = new Runner();
+        @SuppressWarnings("deprecation")
         WebDriverManager wdm = WebDriverManager.getInstance();
         wdm.setWebDriverFactory(WebDriverManager.PHANTOMJS);
         WebDriver driver = null;
