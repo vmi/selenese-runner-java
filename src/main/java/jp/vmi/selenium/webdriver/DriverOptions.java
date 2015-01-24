@@ -173,6 +173,7 @@ public class DriverOptions {
             break;
         case CLI_ARGS:
             cliArgs = ArrayUtils.addAll(cliArgs, values);
+            break;
         default:
             if (values.length != 1)
                 throw new IllegalArgumentException("Need to pass only a single value for " + opt);
