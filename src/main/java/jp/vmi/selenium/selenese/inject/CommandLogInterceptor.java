@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.command.CommandSequence;
 import jp.vmi.selenium.selenese.command.ICommand;
-import jp.vmi.selenium.selenese.command.LogIndentLevelHolder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
@@ -64,15 +64,16 @@ public class CommandLogInterceptor implements MethodInterceptor {
      */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        LogIndentLevelHolder holder = (LogIndentLevelHolder) invocation.getThis();
         Object[] args = invocation.getArguments();
         Context context = (Context) args[CONTEXT];
+        CommandSequence commandSequence = context.getCommandListIterator().getCommandSequence();
         ICommand command = (ICommand) args[COMMAND];
         LogRecorder clr = context.getCurrentTestCase().getLogRecorder();
-        String indent = StringUtils.repeat("  ", holder.getLogIndentLevel());
+        String indent = StringUtils.repeat("  ", commandSequence.getLevel() - 1);
         String cmdStr = command.toString();
-        log.info(indent + cmdStr);
-        clr.info(indent + cmdStr);
+        String firstMsg = indent + "|" + commandSequence + "|" + cmdStr;
+        log.info(firstMsg);
+        clr.info(firstMsg);
         try {
             Result result = (Result) invocation.proceed();
             logResult(clr, indent, cmdStr, result, context);

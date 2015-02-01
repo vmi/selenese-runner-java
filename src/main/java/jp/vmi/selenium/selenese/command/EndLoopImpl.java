@@ -6,7 +6,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- *
+ * Default implementation for EndLoop.
  */
 public abstract class EndLoopImpl extends AbstractCommand implements EndLoop {
 
@@ -22,7 +22,6 @@ public abstract class EndLoopImpl extends AbstractCommand implements EndLoop {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         StartLoop startLoop = getStartLoop();
-        startLoop.incrementReachedCount();
         context.getCommandListIterator().jumpTo(startLoop);
         return SUCCESS;
     }

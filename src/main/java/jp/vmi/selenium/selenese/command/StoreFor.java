@@ -29,7 +29,6 @@ public class StoreFor extends StartLoopImpl {
     protected Result executeImpl(Context context, String... curArgs) {
         String value = context.getCollectionMap().pollFromCollection(curArgs[ARG_COLLECTION_NAME]);
         if (value == null) {
-            resetReachedCount();
             context.getCommandListIterator().jumpToNextOf(endLoop);
             return new Success("Break");
         } else {

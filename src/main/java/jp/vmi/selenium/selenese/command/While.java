@@ -27,7 +27,6 @@ public class While extends StartLoopImpl {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         if (!context.isTrue(curArgs[ARG_CONDITION])) {
-            resetReachedCount();
             context.getCommandListIterator().jumpToNextOf(endLoop);
             return new Success("Break");
         } else {

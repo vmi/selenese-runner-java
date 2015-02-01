@@ -68,7 +68,6 @@ public class Rollup extends AbstractCommand {
         if (rollupRule == null)
             return new Error("No such rollup rule: " + rollupName);
         CommandList commandList = rollupRule.getExpandedCommands(context, kwArgsMap);
-        commandList.setLogIndentLevel(context.getCommandListIterator().getLogIndentLevel() + 1);
         Result result = commandList.execute(context, new CommandResultList());
         return result == SUCCESS ? new Success("Success: " + rollupRule.getName()) : result;
     }

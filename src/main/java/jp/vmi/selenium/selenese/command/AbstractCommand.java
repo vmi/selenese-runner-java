@@ -176,10 +176,8 @@ public abstract class AbstractCommand implements ICommand {
         return screenshots;
     }
 
-    static String toString(int index, String suffix, String name, String[] args) {
+    static String toString(int index, String name, String[] args) {
         StringBuilder s = new StringBuilder("Command#").append(index);
-        if (!suffix.isEmpty())
-            s.append('@').append(suffix);
         s.append(": ").append(name).append("(");
         boolean sep = false;
         for (String arg : args) {
@@ -195,6 +193,6 @@ public abstract class AbstractCommand implements ICommand {
 
     @Override
     public String toString() {
-        return toString(index, startLoop.getReachedCounts(), name, args);
+        return toString(index, name, args);
     }
 }

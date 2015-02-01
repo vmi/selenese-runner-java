@@ -7,20 +7,28 @@ import org.apache.commons.lang3.time.FastDateFormat;
  */
 public final class DateTimeUtils {
 
-    private static String defaultWithMS = "yyyy-MM-dd HH:mm:ss.SSS ZZ";
-    private static String defaultWithoutMS = "yyyy-MM-dd HH:mm:ss ZZ";
-    private static FastDateFormat formatWithMS = FastDateFormat.getInstance(defaultWithMS);
-    private static FastDateFormat formatWithoutMS = FastDateFormat.getInstance(defaultWithoutMS);
+    private static FastDateFormat formatWithMS;
+    private static FastDateFormat formatWithoutMS;
+    private static FastDateFormat formatTimeWithMS;
+
+    static {
+        setFormat("yyyy-MM-dd", " ", "HH:mm:ss", ".SSS", " ", "ZZ");
+    }
 
     /**
      * Set date and time format.
      *
-     * @param withMS date and time format with milli secconds. (= years to milli seconds)
-     * @param withoutMS date and time format without milli seconds. (= years to seconds)
+     * @param ymd format of year, month and day.
+     * @param sep1 separator between ymd and hms.
+     * @param hms format of hour, minulte and second.
+     * @param ms format of millisecond.
+     * @param sep2 separator between hms and tz.
+     * @param tz timezone.
      */
-    public static void setFormat(String withMS, String withoutMS) {
-        formatWithMS = FastDateFormat.getInstance(withMS);
-        formatWithoutMS = FastDateFormat.getInstance(withoutMS);
+    public static void setFormat(String ymd, String sep1, String hms, String ms, String sep2, String tz) {
+        formatWithMS = FastDateFormat.getInstance(ymd + sep1 + hms + ms + sep2 + tz);
+        formatWithoutMS = FastDateFormat.getInstance(ymd + sep1 + hms + sep2 + tz);
+        formatTimeWithMS = FastDateFormat.getInstance(hms + ms);
     }
 
     /**
@@ -41,5 +49,15 @@ public final class DateTimeUtils {
      */
     public static String formatWithoutMS(long time) {
         return formatWithoutMS.format(time);
+    }
+
+    /**
+     * Format time (hour, minute, second and millisecond).
+     *
+     * @param time time of UTC.
+     * @return formatted time.
+     */
+    public static String formatTimeWithMS(long time) {
+        return formatTimeWithMS.format(time);
     }
 }

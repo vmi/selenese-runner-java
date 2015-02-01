@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -17,22 +18,11 @@ import jp.vmi.selenium.selenese.result.Result;
 /**
  * Command list.
  */
-public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHolder {
+public class CommandList extends ArrayList<ICommand> {
 
     private static final long serialVersionUID = 1L;
 
     private final Map<Object, Integer> indexCache = new HashMap<Object, Integer>();
-    private int logIndentLevel = 0;
-
-    @Override
-    public int getLogIndentLevel() {
-        return logIndentLevel;
-    }
-
-    @Override
-    public void setLogIndentLevel(int logIndentLevel) {
-        this.logIndentLevel = logIndentLevel;
-    }
 
     @Override
     public boolean add(ICommand command) {
@@ -67,23 +57,41 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
      * @param index start index.
      * @return ListIterator.
      */
-    public ListIterator<ICommand> originalListIterator(int index) {
+    protected ListIterator<ICommand> originalListIterator(int index) {
         return super.listIterator(index);
     }
 
+    /**
+     * DO NOT USE THIS METHOD.
+     */
+    @Deprecated
     @Override
     public CommandListIterator listIterator(int index) {
-        return new CommandListIterator(this);
+        throw new UnsupportedOperationException(new Object() {
+        }.getClass().getEnclosingMethod().toString());
     }
 
+    @Deprecated
     @Override
     public CommandListIterator listIterator() {
-        return listIterator(0);
+        throw new UnsupportedOperationException(new Object() {
+        }.getClass().getEnclosingMethod().toString());
     }
 
     @Override
     public CommandListIterator iterator() {
-        return listIterator();
+        return iterator(null);
+    }
+
+    /**
+     * Create the iterator of this command list.
+     *
+     * @param parentIterator parent iterator.
+     *
+     * @return iterator.
+     */
+    public CommandListIterator iterator(CommandListIterator parentIterator) {
+        return new CommandListIterator(this, parentIterator);
     }
 
     @DoCommand
@@ -130,12 +138,17 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
      * @return result of command list execution.
      */
     public Result execute(Context context, CommandResultList cresultList) {
-        CommandListIterator commandListIterator = listIterator();
+        CommandListIterator parentIterator = context.getCommandListIterator();
+        CommandListIterator commandListIterator = iterator(parentIterator);
         context.pushCommandListIterator(commandListIterator);
+        CommandSequence sequence = commandListIterator.getCommandSequence();
         boolean isContinued = true;
         try {
             while (isContinued && commandListIterator.hasNext()) {
                 ICommand command = commandListIterator.next();
+                sequence.increment(command);
+                List<Screenshot> ss = command.getScreenshots();
+                int prevSSIndex = (ss == null) ? 0 : ss.size();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
                 evalCurArgs(context, curArgs);
                 Result result = doCommand(context, command, curArgs);
@@ -143,7 +156,13 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
                     isContinued = false;
                 else
                     context.waitSpeed();
-                CommandResult cresult = new CommandResult(command, result, cresultList.getEndTime(), System.currentTimeMillis());
+                ss = command.getScreenshots();
+                List<Screenshot> newSS;
+                if (ss == null || prevSSIndex == ss.size())
+                    newSS = null;
+                else
+                    newSS = new ArrayList<Screenshot>(ss.subList(prevSSIndex, ss.size()));
+                CommandResult cresult = new CommandResult(sequence.toString(), command, newSS, result, cresultList.getEndTime(), System.currentTimeMillis());
                 cresultList.add(cresult);
 
             }
