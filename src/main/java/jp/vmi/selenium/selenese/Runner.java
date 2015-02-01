@@ -266,6 +266,20 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.preparator = preparator;
     }
 
+    private static void mkdirsForScreenshot(String dirStr, String msg) {
+        if (dirStr == null)
+            return;
+        File dir = new File(dirStr);
+        if (dir.exists()) {
+            if (dir.isDirectory())
+                return;
+            else
+                throw new IllegalArgumentException(dirStr + " is not directory.");
+        }
+        dir.mkdirs();
+        log.info("Make the directory for {}: {}", msg, dirStr);
+    }
+
     /**
      * Set directory for storing screenshots.
      *
@@ -273,10 +287,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @exception IllegalArgumentException throws if screenshotDir is not directory.
      */
     public void setScreenshotDir(String screenshotDir) throws IllegalArgumentException {
-        if (screenshotDir != null && !new File(screenshotDir).isDirectory())
-            throw new IllegalArgumentException(screenshotDir + " is not directory.");
+        mkdirsForScreenshot(screenshotDir, "screenshot");
         this.screenshotDir = screenshotDir;
-        log.info("Screenshot directory: {}", screenshotDir);
+        log.info("Screenshot directory: {}", StringUtils.defaultString(screenshotDir, "-"));
     }
 
     /**
@@ -286,10 +299,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @exception IllegalArgumentException throws if screenshotAllDir is not directory.
      */
     public void setScreenshotAllDir(String screenshotAllDir) throws IllegalArgumentException {
-        if (screenshotAllDir != null && !new File(screenshotAllDir).isDirectory())
-            throw new IllegalArgumentException(screenshotAllDir + " is not directory.");
+        mkdirsForScreenshot(screenshotAllDir, "screenshot-all");
         this.screenshotAllDir = screenshotAllDir;
-        log.info("Screenshot for all commands directory: {}", screenshotAllDir);
+        log.info("Screenshot for all commands directory: {}", StringUtils.defaultString(screenshotAllDir, "-"));
     }
 
     /**
@@ -298,10 +310,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @param screenshotOnFailDir directory.
      */
     public void setScreenshotOnFailDir(String screenshotOnFailDir) {
-        if (screenshotOnFailDir != null && !new File(screenshotOnFailDir).isDirectory())
-            throw new IllegalArgumentException(screenshotOnFailDir + " is not directory.");
+        mkdirsForScreenshot(screenshotOnFailDir, "screenshot-on-fail");
         this.screenshotOnFailDir = screenshotOnFailDir;
-        log.info("Screenshot on fail directory: {}", screenshotOnFailDir);
+        log.info("Screenshot on fail directory: {}", StringUtils.defaultString(screenshotOnFailDir, "-"));
     }
 
     /**
