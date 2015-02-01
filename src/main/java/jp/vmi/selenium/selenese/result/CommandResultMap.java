@@ -32,9 +32,9 @@ public class CommandResultMap implements Map<ICommand, List<CommandResult>> {
      * @param cresult command result.
      */
     @SuppressWarnings("unchecked")
-    public void put(ICommandResult cresult) {
+    public void put(CommandResult cresult) {
         if (cresult instanceof List) {
-            putAll((List<ICommandResult>) cresult);
+            putAll((List<CommandResult>) cresult);
             return;
         }
         ICommand command = ((CommandResult) cresult).getCommand();
@@ -49,8 +49,8 @@ public class CommandResultMap implements Map<ICommand, List<CommandResult>> {
      *
      * @param cresultList command result list.
      */
-    public void putAll(List<ICommandResult> cresultList) {
-        for (ICommandResult cresult : cresultList)
+    public void putAll(List<CommandResult> cresultList) {
+        for (CommandResult cresult : cresultList)
             put(cresult);
     }
 

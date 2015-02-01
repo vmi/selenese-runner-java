@@ -13,9 +13,9 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 /**
  * List of command result.
  */
-public class CommandResultList implements ICommandResult, List<ICommandResult> {
+public class CommandResultList implements List<CommandResult> {
 
-    private final List<ICommandResult> list = new ArrayList<ICommandResult>();
+    private final List<CommandResult> list = new ArrayList<CommandResult>();
     private Result result = UNEXECUTED;
     private long endTime = System.currentTimeMillis();
     private CommandResultMap map = null;
@@ -31,7 +31,7 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     }
 
     @Override
-    public boolean add(ICommandResult cresult) {
+    public boolean add(CommandResult cresult) {
         if (result.compareTo(cresult.getResult()) < 0)
             result = cresult.getResult();
         list.add(cresult);
@@ -42,14 +42,14 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends ICommandResult> cresults) {
-        for (ICommandResult cresult : cresults)
+    public boolean addAll(Collection<? extends CommandResult> cresults) {
+        for (CommandResult cresult : cresults)
             add(cresult);
         return true;
     }
 
     @Override
-    public ICommandResult get(int index) {
+    public CommandResult get(int index) {
         return list.get(index);
     }
 
@@ -63,28 +63,32 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
         return this.result = result;
     }
 
-    @Override
+    /**
+     * Get latest result.
+     *
+     * @return latest result.
+     */
     public Result getResult() {
         return result;
     }
 
     @Override
-    public Iterator<ICommandResult> iterator() {
+    public Iterator<CommandResult> iterator() {
         return list.iterator();
     }
 
     @Override
-    public ListIterator<ICommandResult> listIterator() {
+    public ListIterator<CommandResult> listIterator() {
         return list.listIterator();
     }
 
     @Override
-    public ListIterator<ICommandResult> listIterator(int index) {
+    public ListIterator<CommandResult> listIterator(int index) {
         return list.listIterator(index);
     }
 
     @Override
-    public List<ICommandResult> subList(int fromIndex, int toIndex) {
+    public List<CommandResult> subList(int fromIndex, int toIndex) {
         return list.subList(fromIndex, toIndex);
     }
 
@@ -98,7 +102,11 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
         return list.toArray(a);
     }
 
-    @Override
+    /**
+     * Get end time of last command.
+     *
+     * @return end time. (ms)
+     */
     public long getEndTime() {
         return endTime;
     }
@@ -127,13 +135,13 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     // The following methods are not implemented.
 
     @Override
-    public ICommandResult set(int index, ICommandResult element) {
+    public CommandResult set(int index, CommandResult element) {
         throw new UnsupportedOperationException(new Object() {
         }.getClass().getEnclosingMethod().toString());
     }
 
     @Override
-    public void add(int index, ICommandResult element) {
+    public void add(int index, CommandResult element) {
         throw new UnsupportedOperationException(new Object() {
         }.getClass().getEnclosingMethod().toString());
 
@@ -164,7 +172,7 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends ICommandResult> c) {
+    public boolean addAll(int index, Collection<? extends CommandResult> c) {
         throw new UnsupportedOperationException(new Object() {
         }.getClass().getEnclosingMethod().toString());
     }
@@ -176,7 +184,7 @@ public class CommandResultList implements ICommandResult, List<ICommandResult> {
     }
 
     @Override
-    public ICommandResult remove(int index) {
+    public CommandResult remove(int index) {
         throw new UnsupportedOperationException(new Object() {
         }.getClass().getEnclosingMethod().toString());
     }

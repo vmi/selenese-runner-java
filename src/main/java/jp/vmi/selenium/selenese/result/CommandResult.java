@@ -1,13 +1,17 @@
 package jp.vmi.selenium.selenese.result;
 
+import java.util.List;
+
 import jp.vmi.selenium.selenese.command.ICommand;
+import jp.vmi.selenium.selenese.command.Screenshot;
 
 /**
  * Pair of command and result.
  */
-public class CommandResult implements ICommandResult {
+public class CommandResult {
 
     private final ICommand command;
+    private final List<Screenshot> screenshots;
     private final Result result;
     private final long startTime; // ms
     private final long endTime; // ms
@@ -16,12 +20,14 @@ public class CommandResult implements ICommandResult {
      * Constructor.
      *
      * @param command command.
+     * @param screenshots list of screenshot information.
      * @param result the result of above command.
      * @param startTime start time.
      * @param endTime end time.
      */
-    public CommandResult(ICommand command, Result result, long startTime, long endTime) {
+    public CommandResult(ICommand command, List<Screenshot> screenshots, Result result, long startTime, long endTime) {
         this.command = command;
+        this.screenshots = screenshots;
         this.result = result;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -37,11 +43,19 @@ public class CommandResult implements ICommandResult {
     }
 
     /**
+     * Get list of screenshot information.
+     *
+     * @return list of screenshot information.
+     */
+    public List<Screenshot> getScreenshots() {
+        return screenshots;
+    }
+
+    /**
      * Get result.
      *
      * @return result.
      */
-    @Override
     public Result getResult() {
         return result;
     }
@@ -60,7 +74,6 @@ public class CommandResult implements ICommandResult {
      *
      * @return end time. (ms)
      */
-    @Override
     public long getEndTime() {
         return endTime;
     }
