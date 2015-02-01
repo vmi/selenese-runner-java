@@ -2,8 +2,9 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
     <title>${title;h}</title>
-${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">${else}<style type='text/css'>
+    ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">${else}<style type='text/css'>
       body, table {
         font-family: Verdana, Arial, sans-serif;
         font-size: 12px;
@@ -24,6 +25,7 @@ ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">
 
       div, pre {
         display: table;
+        margin: 0;
       }
 
       pre {
@@ -127,8 +129,108 @@ ${if externalCSS}<link rel="stylesheet" type="text/css" href="${externalCSS;u}">
       .number {
         text-align: right;
       }
+
+      .tabs {
+          position: relative;
+          padding: 0;
+      }
+      
+      .tabs ul {
+          margin: 0;
+          padding: 0;
+      }
+      
+      .tabs li {
+          list-style: none;
+          display: inline-block;
+      }
+      
+      .tabs input[type=radio] {
+          display: none;
+      }
+      
+      .tabs label {
+          z-index: 2;
+          position: absolute;
+          top: 0;
+          display: block;
+          background-color: #999;
+          color: #fff;
+          border-style: solid solid none;
+          border-width: 1px;
+          border-color: black;
+          width: 6em;
+          height: 2.5ex;
+          padding: 0.5ex 0.5em;
+          text-align: center;
+      }
+      
+      .tabs label:hover {
+          cursor: pointer;
+          background-color: #ccc;
+          color: #000;
+      }
+      
+      .tabs input[type=radio]:checked + label {
+          background-color: #fff;
+          color: #000;
+      }
+      
+      .tab_source {
+          left: 0;
+      }
+      
+      .tab_sequence {
+          left: 7.5em;
+      }
+      
+      .tab_log {
+          left: 15em;
+      }
+      
+      .tabs .contents {
+          z-index: 1;
+          display: none;
+          background: #fff;
+          border: solid 1px black;
+          margin-top: 3.5ex;
+          padding: 0.5em;
+          min-width: 22.5em;
+      }
+      
+      .tabs input[type=radio]:checked + label + .contents {
+          display: block;
+      }
+      
+      .tabs p {
+        margin: 0;
+        line-height: 180%;
+      }
+
+      .info {
+        margin-bottom: 0.5ex;
+      }
+
+      .info th {
+        text-align: right;
+      }
     </style>${end}
-${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${end}
+    ${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${else}<script type="text/javascript"><!--
+      // for Safari broken css handling.
+      function selectTab(label) {
+        var selConts = label.parentNode.getElementsByClassName('contents')[0];
+        var forId = label.htmlFor;
+        var tabId = document.getElementById(forId).name;
+        var contents = document.getElementById(tabId).getElementsByClassName('contents');
+        for (var i = 0; i < contents.length; i++) {
+          var c = contents[i];
+          if (c == selConts)
+            c.style.display = 'block';
+          else
+            c.style.display = 'none';
+        }
+      }
+ --></script>${end}
   </head>
   <body>
     <h1>${title;h}</h1>
@@ -146,22 +248,22 @@ ${if externalJS}<script type="text/javascript" src="${externalJS;u}"></script>${
             <th>Total Time:</th><td>${testSuite.stopWatch.durationString;h}</td>
           </tr>
           <tr>
-            <th>Number of Test Total:</th><td>${numTestTotal}</td>
+            <th>Number of Test Total:</th><td>${numTestTotal;n}</td>
           </tr>
           <tr>
-            <th>Number of Test Passes:</th><td>${numTestPasses}</td>
+            <th>Number of Test Passes:</th><td>${numTestPasses;n}</td>
           </tr>
           <tr>
-            <th>Number of Test Failures:</th><td>${numTestFailures}</td>
+            <th>Number of Test Failures:</th><td>${numTestFailures;n}</td>
           </tr>
           <tr>
-            <th>Number of Command Passes:</th><td>${numCommandPasses}</td>
+            <th>Number of Command Passes:</th><td>${numCommandPasses;n}</td>
           </tr>
           <tr>
-            <th>Number of Command Failures:</th><td>${numCommandFailures}</td>
+            <th>Number of Command Failures:</th><td>${numCommandFailures;n}</td>
           </tr>
           <tr>
-            <th>Number of Command Errors:</th><td>${numCommandErrors}</td>
+            <th>Number of Command Errors:</th><td>${numCommandErrors;n}</td>
           </tr>
         </table>
         <table class="rbox">
@@ -220,56 +322,74 @@ ${end}
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_CASE"}
     <br>
-    <div>
-      <a name="testCase${index_selenese}">${selenese.filename;h}</a><br>
-      <br>
-      Source<br>
-      <table cellpadding="1" cellspacing="1" border="1">
-        <thead>
-          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
-        </thead>
-        <tbody>
+    <div class="tabs" id="tab${index_selenese}">
+      <ul>
+        <li>
+          <input name="tab${index_selenese}" id="tab${index_selenese}_source" type="radio" checked>
+          <label for="tab${index_selenese}_source" class="tab_source" onclick="selectTab(this)"><a name="testCase${index_selenese}">Source</a></label>
+          <div class="contents">
+            <table class="info"><tr><th>Source:</th><td>${selenese.filename;h}</td></tr></table>
+            <table cellpadding="1" cellspacing="1" border="1">
+              <thead>
+                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
+              </thead>
+              <tbody>
     ${foreach selenese.commandList command}
-          <tr class="cmd_status_${command.result}" style="cursor: pointer;">
-            <td class="index">${command.index;i}</td>
+                <tr class="cmd_status_${command.result}">
+                  <td class="index">${command.index;i}</td>
       ${foreach command.source item}
-            <td>${item;h}</td>
+                  <td>${item;h}</td>
       ${end}
-            <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
-            <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
-          </tr>
+                  <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
+                  <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
+                </tr>
     ${end}
-        </tbody>
-      </table>
-      <br>
-      Time<br>
-      Start Time: ${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss ZZ)}
-      <table cellpadding="1" cellspacing="1" border="1">
-        <thead>
-          <tr class="title status_${selenese.result}"><td>Time</td><td>&Delta;t(ms)</td><td>Seq.</td><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Result</td><td>Screenshot</td></tr>
-        </thead>
-        <tbody>
+              </tbody>
+            </table>
+          </div><!-- contents -->
+        </li><!-- no white spaces between LI tags.
+     --><li>
+          <input name="tab${index_selenese}" id="tab${index_selenese}_sequence" type="radio">
+          <label for="tab${index_selenese}_sequence" class="tab_sequence" onclick="selectTab(this)">Sequence</label>
+          <div class="contents">
+            <table class="info">
+              <tr><th>Start Time:</th><td>${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss ZZ)}</td></tr>
+              <tr><th>End Time:</th><td>${selenese.stopWatch.endTime;t(yyyy-MM-dd HH:mm:ss ZZ)}</td></tr>
+              <tr><th>Duration:</th><td>${selenese.stopWatch.duration;n} ms</td></tr>
+            </table>
+            <table cellpadding="1" cellspacing="1" border="1">
+              <thead>
+                <tr class="title status_${selenese.result}"><td>Time</td><td>&Delta;t(ms)</td><td>Seq.</td><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Result</td><td>Screenshot</td></tr>
+              </thead>
+              <tbody>
     ${foreach selenese.resultList result}
-          <tr class="cmd_status_${result.result}" style="cursor: pointer;">
-            <td>${result.startTime;t(HH:mm:ss.SSS)}</td>
-            <td class="number">${result.duration;n}</td>
-            <td>${result.sequence}</td>
-            <td class="index">${result.command.index;i}</td>
+                <tr class="cmd_status_${result.result}">
+                  <td>${result.startTime;t(HH:mm:ss.SSS)}</td>
+                  <td class="number">${result.duration;n}</td>
+                  <td>${result.sequence}</td>
+                  <td class="index">${result.command.index;i}</td>
       ${foreach result.command.source item}
-            <td>${item;h}</td>
+                  <td>${item;h}</td>
       ${end}
-            <td>${result.result;s}</td>
-            <td>${foreach result.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
-          </tr>
+                  <td>${result.result;s}</td>
+                  <td>${foreach result.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
+                </tr>
     ${end}
-        </tbody>
-      </table>
-    </div>
-
-    <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
+              </tbody>
+            </table>
+          </div><!-- contents -->
+        </li><!-- no white spaces between LI tags.
+     --><li>
+          <input name="tab${index_selenese}" id="tab${index_selenese}_log" type="radio">
+          <label for="tab${index_selenese}_log" class="tab_log" onclick="selectTab(this)">Log</label>
+          <div class="contents">
+            <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
 ${end}</pre>
   ${end}
-  <p>[<a href="#">Top</a>]</p>
+        </li>
+      </ul>
+    </div><!-- tabs -->
+    <p>[<a href="#">Top</a>]</p>
 ${end}
   </body>
 </html>
