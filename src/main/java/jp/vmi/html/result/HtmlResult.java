@@ -107,6 +107,8 @@ public class HtmlResult {
             engine.registerNamedRenderer(new IndexRenderer());
             engine.registerNamedRenderer(new RelativePathRenderer(this));
             engine.registerNamedRenderer(new NumberRenderer());
+            engine.registerNamedRenderer(new TimeRenderer());
+            engine.registerNamedRenderer(new StringRenderer());
             engine.registerRenderer(Result.class, new ResultRenderer());
             engine.registerRenderer(Node.class, new NodeRenderer(engine, getTemplate("index-node.html")));
             engine.registerAnnotationProcessor(new AnnoCommandResults());

@@ -1,15 +1,14 @@
 package jp.vmi.html.result;
 
-import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
 
 /**
- * Number with separator renderer for JMTE.
+ * String renderer for JMTE.
  */
-public class NumberRenderer implements NamedRenderer {
+public class StringRenderer implements NamedRenderer {
 
     @Override
     public RenderFormatInfo getFormatInfo() {
@@ -18,17 +17,16 @@ public class NumberRenderer implements NamedRenderer {
 
     @Override
     public String getName() {
-        return "n";
+        return "s";
     }
 
     @Override
     public Class<?>[] getSupportedClasses() {
-        return new Class[] { long.class, Long.class, int.class, Integer.class };
+        return new Class[] { Object.class };
     }
 
     @Override
     public String render(Object o, String format, Locale locale) {
-        long value = ((Number) o).longValue();
-        return NumberFormat.getInstance(locale).format(value);
+        return o.toString();
     }
 }

@@ -222,9 +222,11 @@ ${foreach seleneseList selenese}
     <br>
     <div>
       <a name="testCase${index_selenese}">${selenese.filename;h}</a><br>
+      <br>
+      Source<br>
       <table cellpadding="1" cellspacing="1" border="1">
         <thead>
-          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Duration(ms)</td><td>Screenshot</td></tr>
+          <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
         </thead>
         <tbody>
     ${foreach selenese.commandList command}
@@ -235,6 +237,29 @@ ${foreach seleneseList selenese}
       ${end}
             <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
             <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
+          </tr>
+    ${end}
+        </tbody>
+      </table>
+      <br>
+      Time<br>
+      Start Time: ${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss ZZ)}
+      <table cellpadding="1" cellspacing="1" border="1">
+        <thead>
+          <tr class="title status_${selenese.result}"><td>Time</td><td>&Delta;t(ms)</td><td>Seq.</td><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Result</td><td>Screenshot</td></tr>
+        </thead>
+        <tbody>
+    ${foreach selenese.resultList result}
+          <tr class="cmd_status_${result.result}" style="cursor: pointer;">
+            <td>${result.startTime;t(HH:mm:ss.SSS)}</td>
+            <td class="number">${result.duration;n}</td>
+            <td>${result.sequence}</td>
+            <td class="index">${result.command.index;i}</td>
+      ${foreach result.command.source item}
+            <td>${item;h}</td>
+      ${end}
+            <td>${result.result;s}</td>
+            <td>${foreach result.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
           </tr>
     ${end}
         </tbody>
