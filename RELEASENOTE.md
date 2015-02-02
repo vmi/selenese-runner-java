@@ -9,7 +9,7 @@ Selenese Runner Java Relase Note
 * Remove the following deprecated methods:
     * WebDriverFactory#getEnvironmentVariables()
     * WebDriverManager#getEnvironmentVariables()
-* Add the following feature for HTML result:
+* Add the following feature for HTML result: (#143)
     * You can select information of test-case by tabs.
     * Add each command information (start time, duration, sequence number, and result) ordered by time sequence.
 
