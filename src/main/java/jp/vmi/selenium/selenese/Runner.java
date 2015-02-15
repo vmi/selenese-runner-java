@@ -480,7 +480,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public CommandListIterator getCommandListIterator() {
-        return commandListIteratorStack.getFirst();
+        return commandListIteratorStack.peekFirst();
     }
 
     @Override

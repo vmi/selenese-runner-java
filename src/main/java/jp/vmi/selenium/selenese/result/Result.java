@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * Result of command execution.
  */
-public abstract class Result {
+public abstract class Result implements Comparable<Result> {
 
     /**
      * Result Level.
@@ -155,6 +155,11 @@ public abstract class Result {
      */
     public Result update(Result newResult) {
         return newResult.getLevel().value > this.getLevel().value ? newResult : this;
+    }
+
+    @Override
+    public int compareTo(Result result) {
+        return getLevel().compareTo(result.getLevel());
     }
 
     @Override

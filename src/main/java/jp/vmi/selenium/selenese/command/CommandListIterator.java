@@ -11,14 +11,16 @@ public class CommandListIterator implements ListIterator<ICommand> {
 
     private final CommandList commandList;
     private ListIterator<ICommand> iterator;
+    private final CommandSequence commandSequence;
 
     private String unsupportedMessage(String methodName) {
         return getClass().getSimpleName() + "#" + methodName + " is not supported.";
     }
 
-    CommandListIterator(CommandList commandList) {
+    CommandListIterator(CommandList commandList, CommandListIterator parentIterator) {
         this.commandList = commandList;
         this.iterator = commandList.originalListIterator(0);
+        this.commandSequence = new CommandSequence((parentIterator != null) ? parentIterator.getCommandSequence() : null);
     }
 
     @Override
@@ -101,12 +103,7 @@ public class CommandListIterator implements ListIterator<ICommand> {
         iterator = commandList.originalListIterator(index);
     }
 
-    /**
-     * Get log indent level of command list.
-     *
-     * @return log indent level.
-     */
-    public int getLogIndentLevel() {
-        return commandList.getLogIndentLevel();
+    public CommandSequence getCommandSequence() {
+        return commandSequence;
     }
 }

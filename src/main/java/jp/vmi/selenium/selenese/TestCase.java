@@ -17,6 +17,7 @@ import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
@@ -25,7 +26,6 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.command.StartLoop.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * test-case object for execution.
@@ -45,10 +45,10 @@ public class TestCase implements Selenese, ITestCase {
     private StartLoop currentStartLoop = NO_START_LOOP;
     private final Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
     private final CommandList commandList = Binder.newCommandList();
+    private final CommandResultList cresultList = new CommandResultList();
 
     private final StopWatch stopWatch = new StopWatch();
     private LogRecorder logRecorder = null;
-    private Result result = UNEXECUTED;
 
     @Deprecated
     private Context context = null;
@@ -194,7 +194,16 @@ public class TestCase implements Selenese, ITestCase {
      * @return test-case result.
      */
     public Result getResult() {
-        return result;
+        return cresultList.getResult();
+    }
+
+    /**
+     * Get test-case result list.
+     *
+     * @return test-case result list.
+     */
+    public CommandResultList getResultList() {
+        return cresultList;
     }
 
     /**
@@ -283,10 +292,11 @@ public class TestCase implements Selenese, ITestCase {
     @Override
     public Result execute(Selenese parent, Context context) {
         if (commandList.isEmpty())
-            return result = SUCCESS;
+            return cresultList.setResult(SUCCESS);
         context.setCurrentTestCase(this);
         context.getCollectionMap().clear();
-        return result = commandList.execute(context);
+        cresultList.setEndTime(System.currentTimeMillis());
+        return commandList.execute(context, cresultList);
     }
 
     @Override

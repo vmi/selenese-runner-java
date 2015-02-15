@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +22,8 @@ import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.ICommand;
+import jp.vmi.selenium.selenese.result.CommandResult;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
 
@@ -33,33 +34,22 @@ public class HtmlResult {
 
     private static final Logger log = LoggerFactory.getLogger(HtmlResult.class);
 
-    private static class AnnoSet implements AnnotationProcessor<String> {
+    // Usage: ${@commandResults VAR RESULT_LIST COMMAND}
+    private static class AnnoCommandResults implements AnnotationProcessor<String> {
 
         @Override
         public String getType() {
-            return "set";
+            return "commandResults";
         }
 
         @Override
         public String eval(AnnotationToken token, TemplateContext context) {
             String[] args = token.getArguments().split("\\s+");
-            context.model.put(args[0], args[1]);
-            return null;
-        }
-    }
-
-    private static class AnnoInc implements AnnotationProcessor<String> {
-
-        @Override
-        public String getType() {
-            return "inc";
-        }
-
-        @Override
-        public String eval(AnnotationToken token, TemplateContext context) {
-            String key = token.getArguments();
-            int value = NumberUtils.toInt(context.model.get(key).toString());
-            context.model.put(key, value + 1);
+            TestCase testCase = (TestCase) context.model.get(args[1]);
+            CommandResultList cresultList = testCase.getResultList();
+            ICommand command = (ICommand) context.model.get(args[2]);
+            List<CommandResult> results = cresultList.getResults(command);
+            context.model.put(args[0], results);
             return null;
         }
     }
@@ -116,10 +106,12 @@ public class HtmlResult {
             engine.registerNamedRenderer(new LogRenderer(this));
             engine.registerNamedRenderer(new IndexRenderer());
             engine.registerNamedRenderer(new RelativePathRenderer(this));
+            engine.registerNamedRenderer(new NumberRenderer());
+            engine.registerNamedRenderer(new TimeRenderer());
+            engine.registerNamedRenderer(new StringRenderer());
             engine.registerRenderer(Result.class, new ResultRenderer());
             engine.registerRenderer(Node.class, new NodeRenderer(engine, getTemplate("index-node.html")));
-            engine.registerAnnotationProcessor(new AnnoSet());
-            engine.registerAnnotationProcessor(new AnnoInc());
+            engine.registerAnnotationProcessor(new AnnoCommandResults());
         }
         return engine;
     }

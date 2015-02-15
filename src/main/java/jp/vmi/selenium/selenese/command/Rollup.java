@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import jp.vmi.selenium.rollup.IRollupRule;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -67,8 +68,7 @@ public class Rollup extends AbstractCommand {
         if (rollupRule == null)
             return new Error("No such rollup rule: " + rollupName);
         CommandList commandList = rollupRule.getExpandedCommands(context, kwArgsMap);
-        commandList.setLogIndentLevel(context.getCommandListIterator().getLogIndentLevel() + 1);
-        Result result = commandList.execute(context);
+        Result result = commandList.execute(context, new CommandResultList());
         return result == SUCCESS ? new Success("Success: " + rollupRule.getName()) : result;
     }
 }

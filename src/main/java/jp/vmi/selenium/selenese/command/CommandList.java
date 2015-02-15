@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -9,30 +10,19 @@ import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.inject.DoCommand;
+import jp.vmi.selenium.selenese.result.CommandResult;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command list.
  */
-public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHolder {
+public class CommandList extends ArrayList<ICommand> {
 
     private static final long serialVersionUID = 1L;
 
     private final Map<Object, Integer> indexCache = new HashMap<Object, Integer>();
-    private int logIndentLevel = 0;
-
-    @Override
-    public int getLogIndentLevel() {
-        return logIndentLevel;
-    }
-
-    @Override
-    public void setLogIndentLevel(int logIndentLevel) {
-        this.logIndentLevel = logIndentLevel;
-    }
 
     @Override
     public boolean add(ICommand command) {
@@ -67,23 +57,41 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
      * @param index start index.
      * @return ListIterator.
      */
-    public ListIterator<ICommand> originalListIterator(int index) {
+    protected ListIterator<ICommand> originalListIterator(int index) {
         return super.listIterator(index);
     }
 
+    /**
+     * DO NOT USE THIS METHOD.
+     */
+    @Deprecated
     @Override
     public CommandListIterator listIterator(int index) {
-        return new CommandListIterator(this);
+        throw new UnsupportedOperationException(new Object() {
+        }.getClass().getEnclosingMethod().toString());
     }
 
+    @Deprecated
     @Override
     public CommandListIterator listIterator() {
-        return listIterator(0);
+        throw new UnsupportedOperationException(new Object() {
+        }.getClass().getEnclosingMethod().toString());
     }
 
     @Override
     public CommandListIterator iterator() {
-        return listIterator();
+        return iterator(null);
+    }
+
+    /**
+     * Create the iterator of this command list.
+     *
+     * @param parentIterator parent iterator.
+     *
+     * @return iterator.
+     */
+    public CommandListIterator iterator(CommandListIterator parentIterator) {
+        return new CommandListIterator(this, parentIterator);
     }
 
     @DoCommand
@@ -112,26 +120,55 @@ public class CommandList extends ArrayList<ICommand> implements LogIndentLevelHo
     /**
      * Execute command list.
      *
+     * @deprecated Use {@link #execute(Context, CommandResultList)}.
+     *
      * @param context Selenese Runner context.
      * @return result of command list execution.
      */
+    @Deprecated
     public Result execute(Context context) {
-        Result result = SUCCESS;
-        CommandListIterator commandListIterator = listIterator();
+        return execute(context, new CommandResultList());
+    }
+
+    /**
+     * Execute command list.
+     *
+     * @param context Selenese Runner context.
+     * @param cresultList command result list for keeping all command results.
+     * @return result of command list execution.
+     */
+    public Result execute(Context context, CommandResultList cresultList) {
+        CommandListIterator parentIterator = context.getCommandListIterator();
+        CommandListIterator commandListIterator = iterator(parentIterator);
         context.pushCommandListIterator(commandListIterator);
+        CommandSequence sequence = commandListIterator.getCommandSequence();
+        boolean isContinued = true;
         try {
-            while (commandListIterator.hasNext()) {
+            while (isContinued && commandListIterator.hasNext()) {
                 ICommand command = commandListIterator.next();
+                sequence.increment(command);
+                List<Screenshot> ss = command.getScreenshots();
+                int prevSSIndex = (ss == null) ? 0 : ss.size();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
                 evalCurArgs(context, curArgs);
-                result = result.update(doCommand(context, command, curArgs));
+                Result result = doCommand(context, command, curArgs);
                 if (result.isAborted())
-                    break;
-                context.waitSpeed();
+                    isContinued = false;
+                else
+                    context.waitSpeed();
+                ss = command.getScreenshots();
+                List<Screenshot> newSS;
+                if (ss == null || prevSSIndex == ss.size())
+                    newSS = null;
+                else
+                    newSS = new ArrayList<Screenshot>(ss.subList(prevSSIndex, ss.size()));
+                CommandResult cresult = new CommandResult(sequence.toString(), command, newSS, result, cresultList.getEndTime(), System.currentTimeMillis());
+                cresultList.add(cresult);
+
             }
         } finally {
             context.popCommandListIterator();
         }
-        return result;
+        return cresultList.getResult();
     }
 }

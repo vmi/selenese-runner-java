@@ -206,7 +206,7 @@ public abstract class Command implements ICommand {
 
     @Override
     public String toString() {
-        return AbstractCommand.toString(index, startLoop.getReachedCounts(), name, args);
+        return AbstractCommand.toString(index, name, args);
     }
 
     @Override

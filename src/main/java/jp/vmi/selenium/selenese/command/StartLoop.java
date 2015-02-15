@@ -14,18 +14,8 @@ public interface StartLoop {
         }
 
         @Override
-        public void resetReachedCount() {
-            // no operation.
-        }
-
-        @Override
-        public void incrementReachedCount() {
-            // no operation.
-        }
-
-        @Override
-        public String getReachedCounts() {
-            return "";
+        public String toString() {
+            return "NO_START_LOOP";
         }
     };
 
@@ -38,21 +28,4 @@ public interface StartLoop {
      * @param endLoop end-of-loop command.
      */
     void setEndLoop(EndLoop endLoop);
-
-    /**
-     * Reset reached count.
-     */
-    void resetReachedCount();
-
-    /**
-     * Increment reached count.
-     */
-    void incrementReachedCount();
-
-    /**
-     * Get nested reached counts separated by REACHED_COUNT_SEPARATOR.
-     *
-     * @return reached counts.
-     */
-    String getReachedCounts();
 }

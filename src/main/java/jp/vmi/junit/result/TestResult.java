@@ -50,7 +50,7 @@ public abstract class TestResult<T extends ITestTarget> {
      */
     @XmlAttribute
     public String getTimestamp() {
-        return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTimeOfUTC());
+        return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTime());
     }
 
     /**
@@ -60,6 +60,6 @@ public abstract class TestResult<T extends ITestTarget> {
      */
     @XmlAttribute
     public String getTime() {
-        return String.format("%.3f", testTarget.getStopWatch().getDurationNanoSec() / 1000000000.0 /* ns -> sec */);
+        return String.format("%.3f", testTarget.getStopWatch().getDuration() / 1000.0 /* ms -> sec */);
     }
 }
