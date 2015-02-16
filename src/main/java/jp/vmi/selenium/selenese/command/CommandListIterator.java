@@ -103,6 +103,11 @@ public class CommandListIterator implements ListIterator<ICommand> {
         iterator = commandList.originalListIterator(index);
     }
 
+    /**
+     * Get command sequence.
+     *
+     * @return command sequence.
+     */
     public CommandSequence getCommandSequence() {
         return commandSequence;
     }
