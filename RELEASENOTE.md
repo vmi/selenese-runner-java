@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.9.1
+
+* Catch up Selenium 2.45.0.
+
 ### 1.9.0
 
 * Update dependency versions.
