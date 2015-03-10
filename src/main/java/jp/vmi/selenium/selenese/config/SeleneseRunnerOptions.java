@@ -62,6 +62,7 @@ public class SeleneseRunnerOptions extends Options {
     public static final String COOKIE_FILTER = "cookie-filter";
     public static final String COMMAND_FACTORY = "command-factory";
     public static final String NO_EXIT = "no-exit";
+    public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String HELP = "help";
 
     // default values.
@@ -272,6 +273,9 @@ public class SeleneseRunnerOptions extends Options {
             .create());
         addOption(OptionBuilder.withLongOpt(NO_EXIT)
             .withDescription("don't call System.exit at end.")
+            .create());
+        addOption(OptionBuilder.withLongOpt(STRICT_EXIT_CODE)
+            .withDescription("return strict exit code, reflected by selenese command results at end.")
             .create());
         addOption(OptionBuilder.withLongOpt(HELP)
             .withDescription("show this message.")

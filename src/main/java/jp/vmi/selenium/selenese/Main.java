@@ -35,6 +35,7 @@ public class Main {
     private static final String PROG_TITLE = "Selenese Runner";
 
     private boolean noExit = false;
+    private boolean exitStrictly = false;
     private Integer exitCode = null;
 
     /**
@@ -86,7 +87,10 @@ public class Main {
             setupRunner(runner, config, filenames);
             Result totalResult = runner.run(filenames);
             runner.finish();
-            exitCode = totalResult.getLevel().exitCode;
+            if (exitStrictly)
+                exitCode = totalResult.getLevel().strictExitCode;
+            else
+                exitCode = totalResult.getLevel().exitCode;
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
         } catch (Throwable t) {
@@ -182,6 +186,8 @@ public class Main {
         runner.setInitialSpeed(speed);
         if (config.hasOption(NO_EXIT))
             noExit = true;
+        if (config.hasOption(STRICT_EXIT_CODE))
+            exitStrictly = true;
         runner.setPrintStream(System.out);
     }
 
