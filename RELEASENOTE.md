@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.10.0
+
+* Add strict-exit-code option to isolate selenese results. (#157 by uchida)
+
 ### 1.9.1
 
 * Catch up Selenium 2.45.0.
