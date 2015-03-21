@@ -68,21 +68,21 @@ Usage
         --no-exit                            don't call System.exit at end.
         --strict-exit-code                   return strict exit code, reflected by selenese command results at end. (See Note *4)
      -h,--help                               show this message.
-
-[Note]
-
-*1 It is available if using "--driver remote --remote-browser firefox".
-
-*2 If you want to use basic and/or proxy authentication on Firefox, then create new profile, install AutoAuth plugin, configure all settings, access test site with the profile, and specify the profile by --profile option.
-
-*3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option.
-
-*4 The list of strict exit code is follows:
-- SUCCESS ...... 0
-- UNEXECUTED ... 4
-- WARNING ...... 5
-- FAILURE ...... 3
-- ERROR ........ 6
+    
+    [Note]
+    *1 It is available if using "--driver remote --remote-browser firefox".
+    
+    *2 If you want to use basic and/or proxy authentication on Firefox, then create new profile, install AutoAuth plugin, configure all settings, access test site with the profile, and specify the profile by --profile option.
+    
+    *3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...".
+       Because "java" command ignores all class path settings, when using "-jar" option.
+    
+    *4 The list of strict exit code is follows:
+       - 0: SUCCESS
+       - 2: WARNING
+       - 3: FAILURE
+       - 4: ERROR
+       - 5: UNEXECUTED
 
 Requirements
 ------------

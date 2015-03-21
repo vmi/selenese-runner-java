@@ -31,14 +31,8 @@ while (<>) {
 }
 while (<>) {
   s/\s+\z//s;
-  print "    $_\n";
-  last if (/--help/);
-}
-while (<>) {
   last if (/\[INFO\]\s+Exit\s+code:/);
-  s/\s+\z//s;
-  s/^\*/\n*/;
-  print "$_\n";
+  print "    $_\n";
 }
 '
 echo ''
