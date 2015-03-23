@@ -71,7 +71,7 @@ public class CommandLogInterceptor implements MethodInterceptor {
         LogRecorder clr = context.getCurrentTestCase().getLogRecorder();
         String indent = StringUtils.repeat("  ", commandSequence.getLevel() - 1);
         String cmdStr = command.toString();
-        String firstMsg = indent + "|" + commandSequence + "|" + cmdStr;
+        String firstMsg = indent + "<" + commandSequence + "> " + cmdStr;
         log.info(firstMsg);
         clr.info(firstMsg);
         try {
