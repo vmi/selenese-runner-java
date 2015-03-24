@@ -1,15 +1,17 @@
 package jp.vmi.selenium.selenese;
 
+import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
+import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 
 /**
- *
+ * Test-case with errrors.
  */
-public class ErrorTestCase extends ErrorSource implements ITestCase {
+public class ErrorTestCase extends ErrorSource implements ITestCase, IHtmlResultTestCase {
 
     private LogRecorder logRecorder = null;
 
@@ -44,7 +46,18 @@ public class ErrorTestCase extends ErrorSource implements ITestCase {
      *
      * @return command list.
      */
+    @Override
     public CommandList getCommandList() {
         return new CommandList();
+    }
+
+    /**
+     * Get test-case result list.
+     *
+     * @return test-case result list.
+     */
+    @Override
+    public CommandResultList getResultList() {
+        return new CommandResultList();
     }
 }

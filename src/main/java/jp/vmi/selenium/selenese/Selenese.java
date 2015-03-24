@@ -53,4 +53,11 @@ public interface Selenese {
      * @return result.
      */
     Result execute(Selenese parent, Context context) throws InvalidSeleneseException;
+
+    /**
+     * Get selenese result.
+     *
+     * @return selenese result.
+     */
+    Result getResult();
 }

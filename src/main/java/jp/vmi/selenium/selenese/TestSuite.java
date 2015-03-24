@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.html.result.IHtmlResultTestSuite;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
@@ -21,7 +22,7 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 /**
  * test-suite object for execution.
  */
-public class TestSuite implements Selenese, ITestSuite {
+public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
@@ -140,11 +141,7 @@ public class TestSuite implements Selenese, ITestSuite {
         return stopWatch;
     }
 
-    /**
-     * Get test-suite result.
-     *
-     * @return test-suite result.
-     */
+    @Override
     public Result getResult() {
         return result;
     }

@@ -1,13 +1,14 @@
 package jp.vmi.selenium.selenese;
 
+import jp.vmi.html.result.IHtmlResultTestSuite;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
- *
+ * Test-suite with errors.
  */
-public class ErrorTestSuite extends ErrorSource implements ITestSuite {
+public class ErrorTestSuite extends ErrorSource implements ITestSuite, IHtmlResultTestSuite {
 
     @Override
     public ErrorTestSuite initialize(String filename, InvalidSeleneseException e) {

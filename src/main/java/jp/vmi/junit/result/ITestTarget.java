@@ -8,16 +8,16 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 public interface ITestTarget {
 
     /**
-     * Get test-case file base name.
+     * Get test-target file base name.
      *
-     * @return test-case file base name.
+     * @return test-target file base name.
      */
     String getBaseName();
 
     /**
-     * Get test-case name.
+     * Get test-target name.
      *
-     * @return test-case name.
+     * @return test-target name.
      */
     String getName();
 

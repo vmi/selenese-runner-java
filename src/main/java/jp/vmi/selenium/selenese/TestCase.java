@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.thoughtworks.selenium.SeleniumException;
 
+import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
@@ -34,7 +35,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  * </p>
  * @see <a href="https://github.com/davehunt/selenium-ide-flowcontrol">A flow control plugin for Selenium IDE</a>
  */
-public class TestCase implements Selenese, ITestCase {
+public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
 
     private String filename = null;
     private String baseName = null;
@@ -114,6 +115,7 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @return filename.
      */
+    @Override
     public String getFilename() {
         return filename;
     }
@@ -162,6 +164,7 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @return command list.
      */
+    @Override
     public CommandList getCommandList() {
         return commandList;
     }
@@ -188,11 +191,7 @@ public class TestCase implements Selenese, ITestCase {
         return logRecorder;
     }
 
-    /**
-     * Get test-case result.
-     *
-     * @return test-case result.
-     */
+    @Override
     public Result getResult() {
         return cresultList.getResult();
     }
@@ -202,6 +201,7 @@ public class TestCase implements Selenese, ITestCase {
      *
      * @return test-case result list.
      */
+    @Override
     public CommandResultList getResultList() {
         return cresultList;
     }
