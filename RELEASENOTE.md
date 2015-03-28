@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.11.0
+
+* Refine log format.
+* Update dependency versions. Note: Cannot update netty's version to 3.10.x because unit tests crashed.
+
 ### 1.10.0
 
 * Add strict-exit-code option to isolate selenese results. (#157 by uchida)
