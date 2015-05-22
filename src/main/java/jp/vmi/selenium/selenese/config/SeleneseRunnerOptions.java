@@ -36,7 +36,7 @@ public class SeleneseRunnerOptions extends Options {
     public static final String DRIVER = "driver";
     public static final String PROFILE = "profile";
     public static final String PROFILE_DIR = "profile-dir";
-    public static final String CHROME_EXTENSIONS = "chrome-extensions";
+    public static final String CHROME_EXTENSION = "chrome-extension";
     public static final String CHROME_EXPERIMENTAL_OPTIONS = "chrome-experimental-options";
     public static final String PROXY = "proxy";
     public static final String PROXY_USER = "proxy-user";
@@ -179,7 +179,7 @@ public class SeleneseRunnerOptions extends Options {
             .hasArg().withArgName("file")
             .withDescription("path to json file specify experimental options for chrome (Chrome only *1)")
             .create());
-        addOption(OptionBuilder.withLongOpt(CHROME_EXTENSIONS)
+        addOption(OptionBuilder.withLongOpt(CHROME_EXTENSION)
             .hasArg().withArgName("file")
             .withDescription("chrome extension file (Chrome only *1)")
             .create());

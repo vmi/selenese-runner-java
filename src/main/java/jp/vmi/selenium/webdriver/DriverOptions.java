@@ -68,8 +68,8 @@ public class DriverOptions {
         DEFINE,
         /** --cli-args */
         CLI_ARGS,
-        /** --chrome-extensions */
-        CHROME_EXTENSIONS,
+        /** --chrome-extension */
+        CHROME_EXTENSION,
         /** --chrome-experimental-options */
         CHROME_EXPERIMENTAL_OPTIONS,
     }
@@ -112,7 +112,7 @@ public class DriverOptions {
                 if (config.hasOption(key))
                     cliArgs = config.getOptionValues(key);
                 break;
-            case CHROME_EXTENSIONS:
+            case CHROME_EXTENSION:
                 if (config.hasOption(key)) {
                     for (String ext : config.getOptionValues(key)) {
                         chromeExtensions.add(new File(ext));
@@ -151,8 +151,8 @@ public class DriverOptions {
             throw new IllegalArgumentException("Need to use DriverOptions#getCapabilities() instead of get(DriverOption.DEFINE).");
         case CLI_ARGS:
             throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CLI_ARGS).");
-        case CHROME_EXTENSIONS:
-            throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CHROME_EXTENSIONS).");
+        case CHROME_EXTENSION:
+            throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CHROME_EXTENSION).");
         default:
             return map.get(opt);
         }
@@ -170,7 +170,7 @@ public class DriverOptions {
             return !caps.asMap().isEmpty();
         case CLI_ARGS:
             return cliArgs.length != 0;
-        case CHROME_EXTENSIONS:
+        case CHROME_EXTENSION:
             return !chromeExtensions.isEmpty();
         default:
             return map.containsKey(opt);
@@ -192,7 +192,7 @@ public class DriverOptions {
         case CLI_ARGS:
             cliArgs = ArrayUtils.addAll(cliArgs, values);
             break;
-        case CHROME_EXTENSIONS:
+        case CHROME_EXTENSION:
             for (String ext : values) {
                 chromeExtensions.add(new File(ext));
             }
@@ -298,7 +298,7 @@ public class DriverOptions {
                         result.setCharAt(result.length() - 1, '|');
                     }
                     break;
-                case CHROME_EXTENSIONS:
+                case CHROME_EXTENSION:
                     if (!chromeExtensions.isEmpty()) {
                         result.append(opt.name()).append('=');
                         for (File extraOption : chromeExtensions)
