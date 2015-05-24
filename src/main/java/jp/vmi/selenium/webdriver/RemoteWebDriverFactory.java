@@ -30,6 +30,8 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
             log.info("Remote browser: {}", browser);
             if ("firefox".equalsIgnoreCase(browser))
                 FirefoxDriverFactory.setDriverSpecificCapabilities(caps, driverOptions, true);
+            if ("chrome".equalsIgnoreCase(browser))
+                ChromeDriverFactory.setDriverSpecificCapabilities(caps, driverOptions);
         }
         if (driverOptions.has(REMOTE_PLATFORM)) {
             String platform = driverOptions.get(REMOTE_PLATFORM);

@@ -8,6 +8,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
@@ -67,11 +68,16 @@ public class DriverOptions {
         DEFINE,
         /** --cli-args */
         CLI_ARGS,
+        /** --chrome-extension */
+        CHROME_EXTENSION,
+        /** --chrome-experimental-options */
+        CHROME_EXPERIMENTAL_OPTIONS,
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
     private String[] cliArgs = ArrayUtils.EMPTY_STRING_ARRAY;
+    private List<File> chromeExtensions = new ArrayList<File>();
     private final HashMap<String, String> envVars = Maps.newHashMap();
 
     /**
@@ -106,6 +112,13 @@ public class DriverOptions {
                 if (config.hasOption(key))
                     cliArgs = config.getOptionValues(key);
                 break;
+            case CHROME_EXTENSION:
+                if (config.hasOption(key)) {
+                    for (String ext : config.getOptionValues(key)) {
+                        chromeExtensions.add(new File(ext));
+                    }
+                }
+                break;
             default:
                 set(opt, config.getOptionValue(key));
                 break;
@@ -122,6 +135,7 @@ public class DriverOptions {
         map.putAll(other.map);
         caps.merge(other.caps);
         cliArgs = other.cliArgs;
+        chromeExtensions = other.chromeExtensions;
         envVars.putAll(other.envVars);
     }
 
@@ -137,6 +151,8 @@ public class DriverOptions {
             throw new IllegalArgumentException("Need to use DriverOptions#getCapabilities() instead of get(DriverOption.DEFINE).");
         case CLI_ARGS:
             throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CLI_ARGS).");
+        case CHROME_EXTENSION:
+            throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CHROME_EXTENSION).");
         default:
             return map.get(opt);
         }
@@ -154,6 +170,8 @@ public class DriverOptions {
             return !caps.asMap().isEmpty();
         case CLI_ARGS:
             return cliArgs.length != 0;
+        case CHROME_EXTENSION:
+            return !chromeExtensions.isEmpty();
         default:
             return map.containsKey(opt);
         }
@@ -173,6 +191,11 @@ public class DriverOptions {
             break;
         case CLI_ARGS:
             cliArgs = ArrayUtils.addAll(cliArgs, values);
+            break;
+        case CHROME_EXTENSION:
+            for (String ext : values) {
+                chromeExtensions.add(new File(ext));
+            }
             break;
         default:
             if (values.length != 1)
@@ -230,6 +253,16 @@ public class DriverOptions {
         return cliArgs;
     }
 
+
+    /**
+     * Get Chrome Extensions for starting up driver.
+     *
+     * @return Chrome Extension files.
+     */
+    public List<File> getChromeExtensions() {
+        return chromeExtensions;
+    }
+
     /**
      * Get environment variables map.
      *
@@ -262,6 +295,14 @@ public class DriverOptions {
                         result.append(opt.name()).append('=');
                         for (String extraOption : cliArgs)
                             result.append(extraOption).append(',');
+                        result.setCharAt(result.length() - 1, '|');
+                    }
+                    break;
+                case CHROME_EXTENSION:
+                    if (!chromeExtensions.isEmpty()) {
+                        result.append(opt.name()).append('=');
+                        for (File extraOption : chromeExtensions)
+                            result.append(extraOption.toString()).append(',');
                         result.setCharAt(result.length() - 1, '|');
                     }
                     break;
