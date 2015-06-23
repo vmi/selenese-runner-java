@@ -31,25 +31,9 @@ case "$OSTYPE" in
     ;;
 esac
 
-url=http://chromedriver.storage.googleapis.com/
-wget -O list.xml $url
-path="$(xmllint --pretty 1 list.xml | perl -e '
-  $os = $ARGV[0];
-  $mjv = $mnv = 0;
-  while (<STDIN>) {
-    if (m@<Key>((\d+)\.(\d+)/chromedriver_$os.zip)</Key>@) {
-      if ($mjv < $2) {
-        $mjv = $2, $mnv = $3;
-      } elsif ($mjv == $2 && $mnv < $3) {
-        $mnv = $3;
-      }
-    }
-  }
-  print "$mjv.$mnv/chromedriver_$os.zip\n";
-' $os)"
 rm -f chromedriver_*.zip
-wget $url$path
-
-unzip chromedriver_*.zip
-
-mv -v chromedriver$ext ../chromedriver-original$ext
+url=http://chromedriver.storage.googleapis.com
+version="$(curl $url/LATEST_RELEASE)"
+curl -O "$url/$version/chromedriver_$os.zip"
+unzip chromedriver_$os.zip
+mv -v chromedriver$ext ../drivers
