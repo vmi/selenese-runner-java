@@ -5,6 +5,10 @@ Selenese Runner Java Relase Note
 
 * Refine log format.
 * Update dependency versions. Note: Cannot update netty's version to 3.10.x because unit tests crashed.
+* Add command line options to support Chrome-specific capability (PR #160 by uchida):
+    * `--chrome-extension` option to specify chrome extension crx files.
+    * `--chrome-experimental-option` option to specify path to json file describe various objects in ChromeOptions.
+* Catch up Selenium 2.46.0.
 
 ### 1.10.0
 
@@ -33,7 +37,7 @@ Selenese Runner Java Relase Note
 ### 1.8.3
 
 * Make the directory for HTML result, XML result, and screenshot if missing.
-* Add new option "--no-exit" for Maven. (#146)
+* Add new option `--no-exit` for Maven. (#146)
 
 ### 1.8.2
 
@@ -46,15 +50,15 @@ Selenese Runner Java Relase Note
 
 ### 1.8.0
 
-* Add new option "--config", it reads option information from configuration file. (#140)
+* Add new option `--config`, it reads option information from configuration file. (#140)
 * Clean up the implementation of handling command line options.
 
 ### 1.7.0
 
 * Adopt semantic versioning 2.0.0. see: http://semver.org/spec/v2.0.0.html
 * Fix failed to load test-case file without Base URL. (#135)
-* Add new option "--cli-args", it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
-* Add new option "--command-factory", it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
+* Add new option `--cli-args`, it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
+* Add new option `--command-factory`, it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
 * Don't create RollupRules until necessary to be able to work with some Java installations that lack Javascript ScriptEngine support. (#138 by koichirok)
 * Use firefox options for capabilities if remote browser is "firefox". (#136 by koichirok & vmi)
 * Add IntelliJ IDEA's project files to .gitignore. (#139 by koichirok)
@@ -89,7 +93,7 @@ Selenese Runner Java Relase Note
 * Add the feature in which "javascript{...}" can be used in any arguments.
 * Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
 * Add initial width and height for remote driver. (PR #129 by patchpump)
-* Add new option "--firefox", it specifies firefox binary path. (issue #127)
+* Add new option `--firefox`, it specifies firefox binary path. (issue #127)
 
 ### 1.5.1
 
@@ -114,7 +118,7 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 2.42.2.
 * Logging cookie information only when the cookie is added, modified or deleted. (issue #117)
-* Add new option "--cookie-filter", You can filter cookies to log by the regular expression matching the name. (issue #117)
+* Add new option `--cookie-filter`, You can filter cookies to log by the regular expression matching the name. (issue #117)
 * Normalize filename separator of test-case/test-suite. (issue #122)
 
 ### 1.4.5
