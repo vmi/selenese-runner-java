@@ -1,23 +1,25 @@
-.classpath
-.project
-.settings/org.eclipse.m2e.core.prefs
 *.log
 *.jpage
 TestTest.java
 TEST-*.xml
 pom.xml.releaseBackup
 release.properties
-*.exe
 /target
 /tmp
 /logs
-/chromedriver
-/chromedriver-original
-/phantomjs
-/phantomjs-original
+/drivers
 /gh-pages
-\#*
-.\#*
-#IntelliJ
+
+# Eclipse
+.classpath
+.project
+.settings/org.eclipse.m2e.core.prefs
+
+# IntelliJ
 .idea/
 *.iml
+
+# Emacs
+*~
+\#*
+.\#*
