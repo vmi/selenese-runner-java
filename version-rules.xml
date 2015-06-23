@@ -22,7 +22,12 @@
     </rule>
     <rule groupId="io.netty" artifactId="netty">
       <ignoreVersions>
-        <ignoreVersion type="exact">3.10.0.Final</ignoreVersion>
+        <ignoreVersion type="regex">3\.10\..*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="com.google.inject" artifactId="guice">
+      <ignoreVersions>
+        <ignoreVersion type="regex">4\..*</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>
