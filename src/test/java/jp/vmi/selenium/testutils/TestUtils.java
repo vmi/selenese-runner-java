@@ -69,7 +69,7 @@ public final class TestUtils {
                 CHROME,
                 PHANTOMJS,
                 IE,
-                // SAFARI, // FIXME: On Selenium 2.44.0, SafariDriver does not work.
+                // SAFARI, // FIXME: On Selenium 2.46.0, SafariDriver does not work.
             };
         } else {
             System.err.println("### Test Drivers: " + prop);
