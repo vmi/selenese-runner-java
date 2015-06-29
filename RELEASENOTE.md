@@ -9,6 +9,7 @@ Selenese Runner Java Relase Note
     * `--chrome-extension` option to specify chrome extension crx files.
     * `--chrome-experimental-option` option to specify path to json file describe various objects in ChromeOptions.
 * Catch up Selenium 2.46.0.
+* Optimize the handler of `link` locator. (#162)
 
 ### 1.10.0
 
