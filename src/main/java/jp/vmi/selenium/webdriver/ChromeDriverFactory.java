@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
-import com.google.common.io.Files;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import com.google.common.io.Files;
 
 import jp.vmi.selenium.selenese.utils.PathUtils;
 
@@ -31,7 +32,7 @@ public class ChromeDriverFactory extends WebDriverFactory {
      * @param caps desired capabilities.
      * @param driverOptions driver options.
      */
-    public static void setDriverSpecificCapabilities(DesiredCapabilities caps, DriverOptions driverOptions) throws RuntimeException{
+    public static void setDriverSpecificCapabilities(DesiredCapabilities caps, DriverOptions driverOptions) {
         ChromeOptions options = new ChromeOptions();
         if (driverOptions.has(PROXY))
             options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));

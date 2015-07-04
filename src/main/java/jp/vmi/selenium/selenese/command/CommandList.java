@@ -42,8 +42,6 @@ public class CommandList extends ArrayList<ICommand> {
         Integer index = indexCache.get(key);
         if (index == null) {
             index = super.indexOf(key);
-            if (index == null)
-                return -1;
             indexCache.put(key, index);
         }
         return index;
