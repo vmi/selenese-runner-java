@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Utililities for Selenium.
@@ -132,5 +134,18 @@ public class SeleniumUtils {
             return StringUtils.join((Iterator<?>) result, ',');
         else
             return result.toString();
+    }
+
+    /**
+     * Test current JVM version 7 or later.
+     *
+     * @return true if JVM version is 7 or later.
+     */
+    public static boolean isJava7orLater() {
+        String[] version = SystemUtils.JAVA_VERSION.split("[._]");
+        int major = NumberUtils.toInt(version[0]);
+        if (version.length < 2 || major == 0)
+            throw new UnsupportedOperationException("Can't parse Java version string: " + SystemUtils.JAVA_VERSION);
+        return major >= 2 || NumberUtils.toInt(version[1]) >= 7;
     }
 }

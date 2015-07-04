@@ -5,10 +5,21 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
+
 /**
  * Factory of {@link HtmlUnitDriver}.
  */
 public class HtmlUnitDriverFactory extends WebDriverFactory {
+
+    /**
+     * Constructor.
+     */
+    public HtmlUnitDriverFactory() {
+        super();
+        if (!SeleniumUtils.isJava7orLater())
+            throw new UnsupportedOperationException("HtmlUnit requires Java 7 or later.");
+    }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {

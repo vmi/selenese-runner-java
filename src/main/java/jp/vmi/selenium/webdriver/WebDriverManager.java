@@ -213,17 +213,17 @@ public class WebDriverManager implements WebDriverPreparator {
         else
             factoryName = factoryName.toLowerCase();
         WebDriverFactory factory;
-        if (FIREFOX.equals(factoryName))
+        if (FIREFOX.equals(factoryName)) {
             factory = new FirefoxDriverFactory();
-        else if (CHROME.equals(factoryName))
+        } else if (CHROME.equals(factoryName)) {
             factory = new ChromeDriverFactory();
-        else if (IE.equals(factoryName))
+        } else if (IE.equals(factoryName)) {
             factory = new IEDriverFactory();
-        else if (SAFARI.equals(factoryName))
+        } else if (SAFARI.equals(factoryName)) {
             factory = new SafariDriverFactory();
-        else if (HTMLUNIT.equals(factoryName))
+        } else if (HTMLUNIT.equals(factoryName)) {
             factory = new HtmlUnitDriverFactory();
-        else if (REMOTE.equals(factoryName)) {
+        } else if (REMOTE.equals(factoryName)) {
             factory = new RemoteWebDriverFactory();
         } else if (APPIUM.equals(factoryName)) {
             factory = new AppiumWebDriverFactory();
