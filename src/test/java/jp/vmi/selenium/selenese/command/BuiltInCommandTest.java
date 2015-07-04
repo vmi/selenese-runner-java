@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese.command;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
@@ -27,14 +26,10 @@ public class BuiltInCommandTest extends TestBase {
      * @throws IOException exception.
      */
     @Test
-    @Ignore("test fail on buildhive....")
     public void userFriendlyErrorMessage() throws IOException {
-        @SuppressWarnings("deprecation")
-        WebDriverManager wdm = WebDriverManager.getInstance();
-        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        wdm.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
-        runner.setDriver(wdm.get());
+        runner.setDriver(manager.get());
         runner.setOverridingBaseURL(wsr.getBaseURL());
         CommandFactory cf = runner.getCommandFactory();
         TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());

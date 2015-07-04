@@ -2,6 +2,7 @@ package jp.vmi.selenium.webdriver;
 
 import java.util.List;
 
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +13,9 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.testutils.WebProxyResource;
-import jp.vmi.selenium.testutils.WebServerResouce;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import static org.hamcrest.Matchers.*;
@@ -26,7 +27,7 @@ import static org.junit.Assume.*;
  */
 @RunWith(Parameterized.class)
 @SuppressWarnings("javadoc")
-public class WebDriverProxyTest {
+public class WebDriverProxyTest extends TestBase {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverProxyTest.class);
 
@@ -35,20 +36,21 @@ public class WebDriverProxyTest {
         return TestUtils.getWebDriverFactories();
     }
 
-    @Rule
-    public final WebServerResouce wsr = new WebServerResouce();
+    @Parameter
+    public String currentFactoryName;
 
     @Rule
     public final WebProxyResource wpr = new WebProxyResource();
 
-    @Parameter
-    public String factoryName;
-
     @Test
     public void testProxy() {
-        @SuppressWarnings("deprecation")
-        WebDriverManager manager = WebDriverManager.getInstance();
-        WebDriverFactory factory = manager.lookupWebDriverFactory(factoryName);
+        WebDriverFactory factory;
+        try {
+            factory = manager.lookupWebDriverFactory(currentFactoryName);
+        } catch (UnsupportedOperationException e) {
+            Assume.assumeNoException(e);
+            return; // not reached.
+        }
         assumeTrue("Proxy is not supported.", factory.isProxySupported());
         manager.setWebDriverFactory(factory);
         DriverOptions options = new DriverOptions();

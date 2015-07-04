@@ -27,12 +27,9 @@ public class AssertionTest extends TestBase {
      */
     @Test
     public void userFriendlyAssertionMessage() throws IOException {
-        @SuppressWarnings("deprecation")
-        WebDriverManager wdm = WebDriverManager.getInstance();
-        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        wdm.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
-        runner.setDriver(wdm.get());
+        runner.setDriver(manager.get());
         runner.setOverridingBaseURL(wsr.getBaseURL());
         CommandFactory cf = runner.getCommandFactory();
 

@@ -53,21 +53,12 @@ public class AssertionStringMatchTest extends TestBase {
     @Parameters(name = "{index}: {0}({1}) => {2}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-            { "assertTitle", "as*", Success.class }
-            , { "assertTitle", "glob:as*", Success.class }
-            , { "assertTitle", "regexp:as.+", Success.class }
-            , { "assertTitle", "regexpi:AS.+", Success.class }
-            , { "assertTitle", "exact:assertion test", Success.class }
-            , { "assertTitle", "as*s", Failure.class }
-            , { "assertTitle", "glob:as*s", Failure.class }
-            , { "assertTitle", "regexp:as.+s$", Failure.class }
-            , { "assertTitle", "regexpi:AS.+S$", Failure.class }
-            , { "assertTitle", "exact:assertion", Failure.class }
-            , { "assertNotTitle", "as*", Failure.class }
-            , { "assertNotTitle", "glob:as*", Failure.class }
-            , { "assertNotTitle", "regexp:as.+", Failure.class }
-            , { "assertNotTitle", "regexpi:AS.+", Failure.class }
-            , { "assertNotTitle", "exact:assertion test", Failure.class }
+            { "assertTitle", "as*", Success.class }, { "assertTitle", "glob:as*", Success.class }, { "assertTitle", "regexp:as.+", Success.class },
+            { "assertTitle", "regexpi:AS.+", Success.class }, { "assertTitle", "exact:assertion test", Success.class },
+            { "assertTitle", "as*s", Failure.class }, { "assertTitle", "glob:as*s", Failure.class }, { "assertTitle", "regexp:as.+s$", Failure.class },
+            { "assertTitle", "regexpi:AS.+S$", Failure.class }, { "assertTitle", "exact:assertion", Failure.class }, { "assertNotTitle", "as*", Failure.class },
+            { "assertNotTitle", "glob:as*", Failure.class }, { "assertNotTitle", "regexp:as.+", Failure.class },
+            { "assertNotTitle", "regexpi:AS.+", Failure.class }, { "assertNotTitle", "exact:assertion test", Failure.class }
             // for issue 56
             // FIXME: The following command does not work on "selenium-2.32.0".
             // , { "assertText", "test", "something*" }, "assert", "getText", false, false, Success.class }
@@ -85,10 +76,8 @@ public class AssertionStringMatchTest extends TestBase {
     @Test
     public void stringMatchPatternOld() throws IOException {
         Runner runner = new Runner();
-        WebDriverManager wdm = WebDriverManager.getInstance();
-        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        wdm.setDriverOptions(new DriverOptions());
-        runner.setDriver(wdm.get());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
+        runner.setDriver(manager.get());
         TestCase testCase = Binder.newTestCase("dummy", "dummy", runner, wsr.getBaseURL());
         CommandFactory commandFactory = runner.getCommandFactory();
         commandFactory.setProc(testCase.getProc());
@@ -107,12 +96,9 @@ public class AssertionStringMatchTest extends TestBase {
      */
     @Test
     public void stringMatchPattern() throws IOException {
-        @SuppressWarnings("deprecation")
-        WebDriverManager wdm = WebDriverManager.getInstance();
-        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        wdm.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
-        runner.setDriver(wdm.get());
+        runner.setDriver(manager.get());
         CommandFactory cf = runner.getCommandFactory();
         TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
         testCase.addCommand(cf, "open", "/assertion.html");

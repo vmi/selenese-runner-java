@@ -14,13 +14,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.openqa.selenium.safari.SafariDriver;
 
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
@@ -30,8 +24,8 @@ import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
@@ -49,7 +43,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     }
 
     @Parameter
-    public String factoryName;
+    public String currentFactoryName;
 
     protected final FilenameFilter pngFilter = new FilenameFilter() {
         @Override
@@ -60,10 +54,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Override
     protected void initDriver() {
-        @SuppressWarnings("deprecation")
-        WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(factoryName);
-        manager.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(currentFactoryName, new DriverOptions());
         try {
             driver = manager.get();
         } catch (UnreachableBrowserException e) {
@@ -73,13 +64,14 @@ public class DriverDependentTest extends TestCaseTestBase {
         }
     }
 
-    public void assumeNot(Class<? extends WebDriver> driverClass) {
-        assumeThat(driver, is(not(instanceOf(driverClass))));
+    public void assumeNot(String... factoryNames) {
+        for (String factoryName : factoryNames)
+            assumeThat(currentFactoryName, is(not(factoryName)));
     }
 
     @Test
     public void testSimple() {
-        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
+        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("simple");
         assertThat(result, is(instanceOf(Success.class)));
         assertThat(xmlResult, containsString("Command#4"));
@@ -94,7 +86,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void testAssertFail() {
-        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
+        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("assertFail");
         assertThat(result, is(instanceOf(Failure.class)));
         assertThat(result.getMessage(), containsString("Result: [selenium] / Expected: [no such text]"));
@@ -123,9 +115,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Ignore
     @Test
     public void basicAuth() {
-        assumeNot(InternetExplorerDriver.class);
-        assumeNot(HtmlUnitDriver.class);
-
+        assumeNot(HTMLUNIT, IE);
         execute("basicAuth");
         runner.setOverridingBaseURL("http://user:pass@" + wsr.getServerNameString() + "/");
         assertThat(result.isSuccess(), is(true));
@@ -133,7 +123,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void highlight() {
-        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
+        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         runner.setHighlight(true);
         runner.setOverridingBaseURL(wsr.getBaseURL());
         execute("highlight");
@@ -143,8 +133,7 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Test
     public void locator() {
         // don't work this test-case on SafariDriver and HtmlUnitDriver.
-        assumeNot(HtmlUnitDriver.class);
-        assumeNot(SafariDriver.class);
+        assumeNot(HTMLUNIT, SAFARI);
         execute("locator");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -152,30 +141,28 @@ public class DriverDependentTest extends TestCaseTestBase {
     @Test
     public void iframe() {
         // don't work this test-case on SafariDriver and HtmlUnitDriver.
-        assumeNot(HtmlUnitDriver.class);
-        assumeNot(SafariDriver.class);
+        assumeNot(HTMLUNIT, SAFARI);
         execute("iframe");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void sendkeys() {
-        assumeNot(HtmlUnitDriver.class);
-        assumeNot(FirefoxDriver.class);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("sendkeys");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void clickableImage() {
-        assumeNot(HtmlUnitDriver.class);
+        assumeNot(HTMLUNIT);
         execute("clickable_image_test");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void rollup() {
-        assumeNot(HtmlUnitDriver.class);
+        assumeNot(HTMLUNIT);
         runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         execute("rollup");
         assertThat(result, is(instanceOf(Success.class)));
@@ -282,7 +269,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void issue48() {
-        assumeNot(SafariDriver.class); // FIXME don't work this test on SafariDriver.
+        assumeNot(SAFARI); // FIXME don't work this test on SafariDriver.
         execute("issue48");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -295,14 +282,14 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void issue55() {
-        assumeNot(HtmlUnitDriver.class); // don't work this test on HtmlUnitDriver.
+        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("issue55");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void issue76() {
-        assumeNot(SafariDriver.class); // FIXME don't work this test on SafariDriver.
+        assumeNot(SAFARI); // FIXME don't work this test on SafariDriver.
         execute("issue76");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -328,8 +315,7 @@ public class DriverDependentTest extends TestCaseTestBase {
 
     @Test
     public void issue99() {
-        assumeNot(HtmlUnitDriver.class);
-        assumeNot(PhantomJSDriver.class);
+        assumeNot(HTMLUNIT, PHANTOMJS);
         execute("issue99");
         assertThat(result, is(instanceOf(Success.class)));
     }

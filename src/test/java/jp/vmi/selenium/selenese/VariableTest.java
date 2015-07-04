@@ -29,9 +29,7 @@ public class VariableTest extends TestBase {
      */
     @Before
     public void initialize() {
-        WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        manager.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         runner.setDriver(manager.get());
     }
 

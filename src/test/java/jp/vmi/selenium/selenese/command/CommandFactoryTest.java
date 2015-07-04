@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
@@ -12,9 +13,8 @@ import jp.vmi.selenium.webdriver.WebDriverManager;
  * Test for {@link CommandFactory}.
  */
 @SuppressWarnings("deprecation")
-public class CommandFactoryTest {
+public class CommandFactoryTest extends TestBase {
 
-    private final WebDriverManager manager = WebDriverManager.getInstance();
     private final Runner runner = new Runner();
 
     /**
@@ -22,8 +22,7 @@ public class CommandFactoryTest {
      */
     @Before
     public void setupWebDriverManager() {
-        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        manager.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         runner.setDriver(manager.get());
     }
 

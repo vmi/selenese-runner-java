@@ -18,10 +18,7 @@ public class TestSuiteTest extends TestBase {
     @Test
     public void testTestSuite() {
         String script = TestUtils.getScriptFile("testSuite");
-        @SuppressWarnings("deprecation")
-        WebDriverManager manager = WebDriverManager.getInstance();
-        manager.setWebDriverFactory(WebDriverManager.HTMLUNIT);
-        manager.setDriverOptions(new DriverOptions());
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
         runner.setDriver(manager.get());
         runner.setOverridingBaseURL(wsr.getBaseURL());
