@@ -8,19 +8,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 /**
  * HTML result test.
  */
-public class HtmlResultTest {
+public class HtmlResultTest extends TestBase {
 
     @SuppressWarnings("javadoc")
     @Rule
@@ -46,10 +47,11 @@ public class HtmlResultTest {
     @Ignore
     @Test
     public void generateHtmlResultOld() throws Exception {
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         File root = getTmpRoot();
         Runner runner = new Runner();
         CommandFactory cf = runner.getCommandFactory();
-        runner.setDriver(new HtmlUnitDriver(true));
+        runner.setDriver(manager.get());
         String s1name = "suite1";
         TestSuite s1 = Binder.newTestSuite(filename(root, s1name), s1name, runner);
         String s2name = "suite2";

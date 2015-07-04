@@ -1,7 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.junit.Test;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
@@ -9,6 +8,9 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 import static org.hamcrest.Matchers.*;
@@ -18,7 +20,7 @@ import static org.junit.Assert.*;
  * User defined command factoryName test.
  */
 @SuppressWarnings("deprecation")
-public class UserDefinedCommandFactoryTest {
+public class UserDefinedCommandFactoryTest extends TestBase {
 
     private static class TestCommand extends Command {
 
@@ -44,6 +46,7 @@ public class UserDefinedCommandFactoryTest {
      */
     @Test
     public void registerUDCFOld() {
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
         // runner.setBaseURL("http://localhost/");
         // runner.setDriver(new HtmlUnitDriver(true));
@@ -61,7 +64,7 @@ public class UserDefinedCommandFactoryTest {
         // runner.run(...);
 
         // only for test.
-        cf.setProc(new CustomCommandProcessor("http://localhost/", new HtmlUnitDriver(true)));
+        cf.setProc(new CustomCommandProcessor("http://localhost/", manager.get()));
         assertThat(cf.newCommand(1, "test"), is(instanceOf(TestCommand.class)));
         assertThat(cf.newCommand(2, "echo", "test"), is(instanceOf(Echo.class)));
     }

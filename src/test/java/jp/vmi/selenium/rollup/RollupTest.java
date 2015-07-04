@@ -4,16 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.command.CommandList;
+import jp.vmi.selenium.testutils.TestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 @SuppressWarnings("javadoc")
-public class RollupTest {
+public class RollupTest extends TestBase {
 
     private static final String EXPECTED = "["
         + "Command#1: open(\"/rollup01.html\"), "
@@ -24,8 +26,9 @@ public class RollupTest {
 
     @Test
     public void registerRollup() throws Exception {
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
         Runner runner = new Runner();
-        runner.setDriver(new HtmlUnitDriver(true));
+        runner.setDriver(manager.get());
         RollupRules rollupRules = runner.getRollupRules();
         rollupRules.load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         IRollupRule rule = rollupRules.get("do_login");

@@ -5,13 +5,14 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
+import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -24,7 +25,8 @@ public class DriverIndependentTest extends TestCaseTestBase {
 
     @Override
     protected void initDriver() {
-        driver = new HtmlUnitDriver(true);
+        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
+        driver = manager.get();
     }
 
     @Test
