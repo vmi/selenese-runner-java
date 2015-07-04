@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -324,7 +324,7 @@ public class SeleneseRunnerOptions extends Options {
     public CommandLine parseCommandLine(String... args) throws IllegalArgumentException {
         CommandLine cli = null;
         try {
-            cli = new PosixParser().parse(this, args);
+            cli = new DefaultParser().parse(this, args);
             log.debug("Specified options:");
             for (Option opt : cli.getOptions())
                 log.debug("[{}]=[{}]", opt.getLongOpt(), opt.getValue());
