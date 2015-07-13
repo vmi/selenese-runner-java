@@ -3,7 +3,7 @@
 
   <groupId>jp.vmi</groupId>
   <artifactId>selenese-runner-java</artifactId>
-  <version>1.11.0-SNAPSHOT</version>
+  <version>1.11.0</version>
   <packaging>jar</packaging>
 
   <name>selenese-runner-java</name>
@@ -23,7 +23,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <connection>scm:git:git@github.com:vmi/selenese-runner-java.git</connection>
     <developerConnection>scm:git:git@github.com:vmi/selenese-runner-java.git</developerConnection>
     <url>git@github.com:vmi/selenese-runner-java.git</url>
-    <tag>HEAD</tag>
+    <tag>selenese-runner-java-1.11.0</tag>
   </scm>
 
   <developers>
