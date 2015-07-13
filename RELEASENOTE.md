@@ -4,12 +4,14 @@ Selenese Runner Java Relase Note
 ### 1.11.0
 
 * Refine log format.
+* Refine code.
 * Update dependency versions. Note: Cannot update netty's version to 3.10.x because unit tests crashed.
 * Add command line options to support Chrome-specific capability (PR #160 by uchida):
     * `--chrome-extension` option to specify chrome extension crx files.
     * `--chrome-experimental-option` option to specify path to json file describe various objects in ChromeOptions.
 * Catch up Selenium 2.46.0.
 * Optimize the handler of `link` locator. (#162)
+* Change dependency to PhantomJSDriver (workaround). see https://github.com/detro/ghostdriver/issues/397
 
 ### 1.10.0
 
