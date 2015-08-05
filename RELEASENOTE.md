@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 1.12.0
+
+* Catch up Selenium 2.47.1.
+* Update dependency versions.
+
 ### 1.11.0
 
 * Refine log format.
