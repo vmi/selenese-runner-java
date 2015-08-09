@@ -120,4 +120,10 @@ public class DriverIndependentTest extends TestCaseTestBase {
         runner.execute(testCase);
         assertThat(runner.getVarsMap().get("a").toString(), equalTo("x"));
     }
+
+    @Test
+    public void issue163() {
+        execute("issue163");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

@@ -7,6 +7,7 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 2.47.1.
 * Update dependency versions.
 * Refine travis-ci configuration.
+* Fix the bug failed in GLOB matching. (issue #163)
 
 ### 1.11.0
 

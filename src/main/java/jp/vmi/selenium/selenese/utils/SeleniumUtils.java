@@ -71,7 +71,13 @@ public class SeleniumUtils {
                 // see http://stackoverflow.com/a/3619098
                 StringBuilder re = new StringBuilder("\\A\\Q");
                 re.append(pattern.replace("*", "\\E.*\\Q").replace("?", "\\E.\\Q"));
-                re.setCharAt(re.length() - 1, 'z');
+                if (re.length() >= 6 && re.charAt(4) == '\\' && re.charAt(5) == 'E')
+                    re.delete(2, 6);
+                int len = re.length();
+                if (re.charAt(len - 2) == '\\' && re.charAt(len - 1) == 'Q')
+                    re.setCharAt(re.length() - 1, 'z');
+                else
+                    re.append("\\E\\z");
                 this.regexpPattern = Pattern.compile(re.toString(), Pattern.DOTALL);
             } else {
                 this.type = Type.EXACT;
