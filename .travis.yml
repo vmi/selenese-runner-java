@@ -5,11 +5,11 @@ jdk:
   - openjdk7
 before_install:
   - date +"[%Y-%m-%d %H:%M:%S] before_install"
-  - echo "installing PhantomJS 1.9.2"
-  - wget http://phantomjs.googlecode.com/files/phantomjs-1.9.2-linux-x86_64.tar.bz2
-  - tar xvf phantomjs-1.9.2-linux-x86_64.tar.bz2
+  - echo "installing PhantomJS 1.9.8"
+  - curl -LO https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+  - tar xvf phantomjs-1.9.8-linux-x86_64.tar.bz2
   - mkdir bin
-  - sudo mv phantomjs-1.9.2-linux-x86_64/bin/phantomjs bin/phantomjs
+  - mv phantomjs-1.9.8-linux-x86_64/bin/phantomjs bin/phantomjs
   - bin/phantomjs --version
   - export PATH="bin:$PATH"
   - ls -la bin/phantomjs
@@ -17,3 +17,4 @@ before_script:
   - "phantomjs --version"
 install: /bin/true
 script: mvn -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs clean test
+sudo: false
