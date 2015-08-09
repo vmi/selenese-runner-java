@@ -1,10 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 1.12.0
+### 2.0.0
 
+* Change the supported Java version to 7.0 or later, because Selenium 2.47.1 changed one.
 * Catch up Selenium 2.47.1.
 * Update dependency versions.
+* Refine travis-ci configuration.
 
 ### 1.11.0
 
