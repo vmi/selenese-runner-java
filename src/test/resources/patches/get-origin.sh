@@ -30,5 +30,5 @@ java=org/openqa/selenium/phantomjs/PhantomJSDriverService.java
 f=${java##*/}
 
 if [ ! -f "$f" ]; then
-  wget https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/$java
+  curl -LO https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/$java
 fi
