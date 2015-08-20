@@ -185,7 +185,7 @@ public abstract class AbstractCommand implements ICommand {
                 s.append(", ");
             else
                 sep = true;
-            s.append(LoggerUtils.quote(arg));
+            LoggerUtils.quote(s, arg);
         }
         s.append(')');
         return s.toString();

@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
@@ -18,18 +21,60 @@ public final class LoggerUtils {
         SLF4JBridgeHandler.install();
     }
 
+    private static final Pattern META_CHAR_RE = Pattern.compile("[\u0000-\u001F\u0080\\\\\"]");
+
     /**
-     * quote backslash and doublequote.
+     * quote control code, backslash and doublequote.
+     *
+     * @param buffer result buffer.
+     * @param str raw string.
+     * @return same as buffer.
+     */
+    public static StringBuilder quote(StringBuilder buffer, String str) {
+        buffer.append('"');
+        Matcher matcher = META_CHAR_RE.matcher(str);
+        int start;
+        for (start = 0; matcher.find(start); start = matcher.end()) {
+            int end = matcher.start();
+            if (start < end)
+                buffer.append(str.substring(start, end));
+            buffer.append('\\');
+            char ch = matcher.group().charAt(0);
+            switch (ch) {
+            case '\\':
+            case '"':
+                buffer.append(ch);
+                break;
+            case '\t':
+                buffer.append('t');
+                break;
+            case '\r':
+                buffer.append('r');
+                break;
+            case '\n':
+                buffer.append('n');
+                break;
+            default:
+                buffer.append(String.format("x%02X", ch));
+                break;
+            }
+        }
+        buffer.append(str.substring(start));
+        return buffer.append('"');
+    }
+
+    /**
+     * quote control code, backslash and doublequote.
      *
      * @param str raw string.
      * @return quoted string.
      */
     public static String quote(String str) {
-        return "\"" + str.replaceAll("([\\\\\"])", "\\\\$1") + "\"";
+        return quote(new StringBuilder(str.length() + 8), str).toString();
     }
 
     /**
-     * quote backslash and doublequote for each strings.
+     * quote control code, backslash and doublequote for each strings.
      *
      * @param strs raw strings.
      * @return quoted strings.
