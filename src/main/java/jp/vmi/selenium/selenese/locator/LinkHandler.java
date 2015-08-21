@@ -53,7 +53,7 @@ class LinkHandler implements LocatorHandler {
                 continue;
             if (and)
                 xpath.append(" and ");
-            xpath.append("contains(text(),");
+            xpath.append("contains(.,");
             appendXPathString(xpath, ss);
             xpath.append(")]");
             and = true;
@@ -63,7 +63,7 @@ class LinkHandler implements LocatorHandler {
     }
 
     private List<WebElement> findByExactString(WebDriver driver, SeleniumPattern sp) {
-        StringBuilder xpath = new StringBuilder("//a[text()=");
+        StringBuilder xpath = new StringBuilder("//a[.=");
         appendXPathString(xpath, sp.stringPattern);
         xpath.append(']');
         return driver.findElements(By.xpath(xpath.toString()));
