@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assume;
@@ -41,6 +43,39 @@ public class LinkHandlerTest extends TestBase {
     private final String argument;
     private final Class<? extends Result> resultClass;
 
+    private static final Pattern RE = Pattern.compile("\\\\(.)", Pattern.DOTALL);
+
+    private static String unquote(String s) {
+        if (!s.contains("\\"))
+            return s;
+        StringBuilder b = new StringBuilder();
+        Matcher m = RE.matcher(s);
+        int f;
+        for (f = 0; m.find(f); f = m.end()) {
+            int t = m.start();
+            if (f < t)
+                b.append(s.substring(f, t));
+            char ch = m.group(1).charAt(0);
+            switch (ch) {
+            case 't':
+                ch = '\t';
+                break;
+            case 'r':
+                ch = '\r';
+                break;
+            case 'n':
+                ch = '\n';
+                break;
+            default:
+                break;
+            }
+            b.append(ch);
+        }
+        if (f < s.length())
+            b.append(s.substring(f));
+        return b.toString();
+    }
+
     /**
      * Construct testcase by parameters.
      *
@@ -65,7 +100,7 @@ public class LinkHandlerTest extends TestBase {
             }
         }
         this.commandName = commandName;
-        this.argument = argument;
+        this.argument = unquote(argument);
         this.resultClass = resultClass;
     }
 
@@ -73,13 +108,22 @@ public class LinkHandlerTest extends TestBase {
     public static Collection<Object[]> data() {
         List<Object[]> factories = TestUtils.getWebDriverFactories();
         Object[][] argss = new Object[][] {
-            { "assertElementPresent", "as*", Success.class }, { "assertElementPresent", "glob:as*", Success.class },
-            { "assertElementPresent", "regexp:as.+", Success.class }, { "assertElementPresent", "regexpi:AS.+", Success.class },
-            { "assertElementPresent", "exact:assertion test", Success.class }, { "assertElementPresent", "as*s", Failure.class },
-            { "assertElementPresent", "glob:as*s", Failure.class }, { "assertElementPresent", "regexp:as.+s$", Failure.class },
-            { "assertElementPresent", "regexpi:AS.+S$", Failure.class }, { "assertElementPresent", "exact:assertion", Failure.class },
-            { "assertElementNotPresent", "as*", Failure.class }, { "assertElementNotPresent", "glob:as*", Failure.class },
-            { "assertElementNotPresent", "regexp:as.+", Failure.class }, { "assertElementNotPresent", "regexpi:AS.+", Failure.class },
+            { "assertElementPresent", "as*", Success.class },
+            { "assertElementPresent", "glob:as*", Success.class },
+            { "assertElementPresent", "regexp:as.+", Success.class },
+            { "assertElementPresent", "regexpi:AS.+", Success.class },
+            { "assertElementPresent", "exact:assertion test", Success.class },
+            { "assertElementPresent", "exact:anchor with nested elements", Success.class },
+            { "assertElementPresent", "glob:*with nested*", Success.class },
+            { "assertElementPresent", "as*s", Failure.class },
+            { "assertElementPresent", "glob:as*s", Failure.class },
+            { "assertElementPresent", "regexp:as.+s$", Failure.class },
+            { "assertElementPresent", "regexpi:AS.+S$", Failure.class },
+            { "assertElementPresent", "exact:assertion", Failure.class },
+            { "assertElementNotPresent", "as*", Failure.class },
+            { "assertElementNotPresent", "glob:as*", Failure.class },
+            { "assertElementNotPresent", "regexp:as.+", Failure.class },
+            { "assertElementNotPresent", "regexpi:AS.+", Failure.class },
             { "assertElementNotPresent", "exact:assertion test", Failure.class }
         };
         ArrayList<Object[]> data = new ArrayList<Object[]>();
