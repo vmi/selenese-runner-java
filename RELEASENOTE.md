@@ -7,7 +7,8 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 2.47.1.
 * Update dependency versions.
 * Refine travis-ci configuration.
-* Fix the bug failed in GLOB matching. (issue #163)
+* Fix a bug failed in GLOB matching. (issue #163)
+* Fix a bug of link locator in case of "a" tag with nested elements. (suggested by AndreaColoru in issue #162)
 
 ### 1.11.0
 
