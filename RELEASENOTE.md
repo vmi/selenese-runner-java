@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.0.1
+
+* Fix error on constructing xpath expression in link locator by Glob. (PR #165 by AndreaColoru)
+
 ### 2.0.0
 
 * Change the supported Java version to 7.0 or later, because Selenium 2.47.1 changed one.
