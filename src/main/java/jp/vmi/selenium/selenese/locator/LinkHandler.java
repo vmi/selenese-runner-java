@@ -55,9 +55,10 @@ class LinkHandler implements LocatorHandler {
                 xpath.append(" and ");
             xpath.append("contains(.,");
             appendXPathString(xpath, ss);
-            xpath.append(")]");
+            xpath.append(")");
             and = true;
         }
+        xpath.append("]");
         By by = and ? By.xpath(xpath.toString()) : By.tagName("a");
         return findByRegexp(driver, by, sp.regexpPattern);
     }
