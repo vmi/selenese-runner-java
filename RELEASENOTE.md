@@ -1,9 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.0.2
+
+* Manage leading and trailing whitespaces in link_handler in both "exact" and "glob" features. (PR #166 by AndreaColoru)
+
 ### 2.0.1
 
-* Fix error on constructing xpath expression in link locator by Glob. (PR #165 by AndreaColoru)
+* Fix error on constructing xpath expression in link locator by "glob". (PR #165 by AndreaColoru)
 
 ### 2.0.0
 
