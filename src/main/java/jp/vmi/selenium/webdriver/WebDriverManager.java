@@ -210,33 +210,30 @@ public class WebDriverManager implements WebDriverPreparator {
     public WebDriverFactory lookupWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;
-        else
-            factoryName = factoryName.toLowerCase();
-        WebDriverFactory factory;
-        if (FIREFOX.equals(factoryName)) {
-            factory = new FirefoxDriverFactory();
-        } else if (CHROME.equals(factoryName)) {
-            factory = new ChromeDriverFactory();
-        } else if (IE.equals(factoryName)) {
-            factory = new IEDriverFactory();
-        } else if (SAFARI.equals(factoryName)) {
-            factory = new SafariDriverFactory();
-        } else if (HTMLUNIT.equals(factoryName)) {
-            factory = new HtmlUnitDriverFactory();
-        } else if (REMOTE.equals(factoryName)) {
-            factory = new RemoteWebDriverFactory();
-        } else if (APPIUM.equals(factoryName)) {
-            factory = new AppiumWebDriverFactory();
-        } else if (PHANTOMJS.equals(factoryName)) {
-            factory = new PhantomJSDriverFactory();
-        } else {
+        switch (factoryName.toLowerCase()) {
+        case FIREFOX:
+            return new FirefoxDriverFactory();
+        case CHROME:
+            return new ChromeDriverFactory();
+        case IE:
+            return new IEDriverFactory();
+        case SAFARI:
+            return new SafariDriverFactory();
+        case HTMLUNIT:
+            return new HtmlUnitDriverFactory();
+        case REMOTE:
+            return new RemoteWebDriverFactory();
+        case APPIUM:
+            return new AppiumWebDriverFactory();
+        case PHANTOMJS:
+            return new PhantomJSDriverFactory();
+        default:
             try {
-                factory = (WebDriverFactory) Class.forName(factoryName).newInstance();
+                return (WebDriverFactory) Class.forName(factoryName).newInstance();
             } catch (Exception e) {
                 throw new IllegalArgumentException("Invalid WebDriverFactory class name: " + factoryName, e);
             }
         }
-        return factory;
     }
 
     /**
