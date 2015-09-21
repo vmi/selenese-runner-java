@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.0.3
+
+* Fix ClassNotFoundException when use user-defined WebDriver factory. (#167)
+
 ### 2.0.2
 
 * Manage leading and trailing whitespaces in link_handler in both "exact" and "glob" features. (PR #166 by AndreaColoru)
