@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.script.JSList;
+import jp.vmi.script.JSList.JSMapList;
 import jp.vmi.script.JSMap;
 
 /**
@@ -51,8 +52,12 @@ public class RollupManager {
         log.info("- Description: {}", ruleMap.get("description"));
         List<Object> args = JSList.toList(engine, ruleMap.get("args"));
         if (args != null && args.size() > 0) {
+            JSMapList<Object> jsMap = (JSMapList<Object>) args;
+            Map<Object, Object> mapa = (Map<Object, Object>) (jsMap.unwrap());
+
             log.info("- Arguments:");
-            for (Object arg : args) {
+            for (Object key : mapa.keySet()) {
+                Object arg = mapa.get(key);
                 Map<?, ?> argMap = JSMap.toMap(engine, arg);
                 log.info("  + {}: {}", argMap.get("name"), argMap.get("description"));
             }
