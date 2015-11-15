@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.1.0
+
+* Catch up Selenium 2.48.2.
+* Update dependency versions.
+* Fix RollupManager crash on latest Java 8. (#168)
+
 ### 2.0.3
 
 * Fix ClassNotFoundException when use user-defined WebDriver factory. (#167)

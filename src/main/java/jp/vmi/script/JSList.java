@@ -34,7 +34,7 @@ public abstract class JSList<E> extends AbstractList<E> {
 
         @Override
         public E get(int index) {
-            return map.get(index);
+            return map.get(Integer.toString(index));
         }
 
         @Override

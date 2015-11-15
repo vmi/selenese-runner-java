@@ -54,7 +54,6 @@ public class ChromeDriverFactory extends WebDriverFactory {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            @SuppressWarnings("unchecked")
             Iterator<String> keys = jsonObject.keys();
             while (keys.hasNext()) {
                 String key = keys.next();
