@@ -5,7 +5,8 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 2.48.2.
 * Update dependency versions.
-* Fix RollupManager crash on latest Java 8. (#168)
+* Fix RollupManager crash on latest Java 8. (#168, #170)
+* Add command "gotoLabel" which is same as "gotolabel". (#169)
 
 ### 2.0.3
 
