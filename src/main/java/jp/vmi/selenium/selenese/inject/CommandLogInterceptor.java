@@ -32,15 +32,21 @@ public class CommandLogInterceptor implements MethodInterceptor {
         if (result.isFailed()) {
             String resStr = info.getFirstMessage(prevInfo, indent, cmdStr, "=>", result.toString());
             log.error(resStr);
-            clr.error(resStr);
+            if (clr != null) {
+                clr.error(resStr);
+            }
             for (String message : info.cookieMap.allMessages(cookieFilter)) {
                 log.error(prefix + message);
-                clr.error(prefix + message);
+                if (clr != null) {
+                    clr.error(prefix + message);
+                }
             }
         } else {
             String resStr = info.getFirstMessage(prevInfo, indent, "-", result.toString());
             log.info(resStr);
-            clr.info(resStr);
+            if (clr != null) {
+                clr.info(resStr);
+            }
             List<String> messages;
             if (info.isSameOrigin(prevInfo))
                 messages = info.cookieMap.diffMessages(cookieFilter, prevInfo.cookieMap);
@@ -48,7 +54,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
                 messages = info.cookieMap.allMessages(cookieFilter);
             for (String message : messages) {
                 log.info(prefix + message);
-                clr.info(prefix + message);
+                if (clr != null) {
+                    clr.info(prefix + message);
+                }
             }
         }
         if (info.origin != null)
@@ -73,7 +81,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         String cmdStr = command.toString();
         String firstMsg = indent + "<" + commandSequence + "> " + cmdStr;
         log.info(firstMsg);
-        clr.info(firstMsg);
+        if (clr != null) {
+            clr.info(firstMsg);
+        }
         try {
             Result result = (Result) invocation.proceed();
             logResult(clr, indent, cmdStr, result, context);
@@ -81,7 +91,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
         } catch (Exception e) {
             String msg = cmdStr + " => " + e.getMessage();
             log.error(indent + msg);
-            clr.error(indent + msg);
+            if (clr != null) {
+                clr.error(indent + msg);
+            }
             if (context instanceof JUnitResultHolder)
                 ((JUnitResultHolder) context).getJUnitResult().setError(context.getCurrentTestCase(), e.getMessage(), e.toString());
             throw e;
