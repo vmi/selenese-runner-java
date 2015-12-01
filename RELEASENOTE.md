@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Refine code. (PR #185, #187 by AymanDF)
 * Update dependency versions.
 * Add utility script.
+* Replace command line arguments parser from commons-cli to args4j. Note: There are too many changes in `IConfig`, `DefaultConfig`, and `SeleneseRunnerOptions` classes.
 
 ### 2.4.0
 

@@ -20,7 +20,7 @@ public class MainTest {
             "-D", "key2+=value2",
             "-D", "key3=value31", "-D", "key3+=value32",
             "-D", "key4+=value41", "-D", "key4+=value42");
-        String[] defines = config.getOptionValues("define");
+        String[] defines = config.getDefine();
         assertThat(defines, is(arrayContaining(
             "key1=value1",
             "key2+=value2",

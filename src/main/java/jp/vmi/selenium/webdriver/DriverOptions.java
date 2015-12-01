@@ -1,5 +1,6 @@
 package jp.vmi.selenium.webdriver;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,18 +9,14 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.io.File;
 
-import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.collect.Maps;
 
-import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
-import jp.vmi.selenium.selenese.config.SeleneseRunnerOptions;
 
 /**
  * Options for WebDriver.
@@ -71,7 +68,16 @@ public class DriverOptions {
         /** --chrome-extension */
         CHROME_EXTENSION,
         /** --chrome-experimental-options */
-        CHROME_EXPERIMENTAL_OPTIONS,
+        CHROME_EXPERIMENTAL_OPTIONS,;
+
+        /**
+         * Get option name as "word-word-word".
+         *
+         * @return option name.
+         */
+        public String optionName() {
+            return name().toLowerCase().replace('_', '-');
+        }
     }
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
@@ -89,38 +95,20 @@ public class DriverOptions {
     /**
      * Constructs driver options specified by command line.
      *
-     * @param cli parsed command line information.
-     */
-    @Deprecated
-    public DriverOptions(CommandLine cli) {
-        this(new DefaultConfig(cli));
-    }
-
-    /**
-     * Constructs driver options specified by command line.
-     *
      * @param config configuration information.
      */
     public DriverOptions(IConfig config) {
         for (DriverOption opt : DriverOption.values()) {
-            String key = opt.name().toLowerCase().replace('_', '-');
             switch (opt) {
             case DEFINE:
-                addDefinitions(config.getOptionValues(SeleneseRunnerOptions.DEFINE));
-                break;
             case CLI_ARGS:
-                if (config.hasOption(key))
-                    cliArgs = config.getOptionValues(key);
-                break;
             case CHROME_EXTENSION:
-                if (config.hasOption(key)) {
-                    for (String ext : config.getOptionValues(key)) {
-                        chromeExtensions.add(new File(ext));
-                    }
-                }
+                String[] values = config.get(opt.optionName());
+                if (values != null)
+                    set(opt, values);
                 break;
             default:
-                set(opt, config.getOptionValue(key));
+                set(opt, (String) config.get(opt.optionName()));
                 break;
             }
         }
@@ -193,9 +181,8 @@ public class DriverOptions {
             cliArgs = ArrayUtils.addAll(cliArgs, values);
             break;
         case CHROME_EXTENSION:
-            for (String ext : values) {
+            for (String ext : values)
                 chromeExtensions.add(new File(ext));
-            }
             break;
         default:
             if (values.length != 1)
@@ -253,7 +240,6 @@ public class DriverOptions {
         return cliArgs;
     }
 
-
     /**
      * Get Chrome Extensions for starting up driver.
      *
@@ -292,7 +278,7 @@ public class DriverOptions {
                     break;
                 case CLI_ARGS:
                     if (cliArgs.length != 0) {
-                        result.append(opt.name()).append('=');
+                        result.append(opt.optionName()).append('=');
                         for (String extraOption : cliArgs)
                             result.append(extraOption).append(',');
                         result.setCharAt(result.length() - 1, '|');
@@ -300,7 +286,7 @@ public class DriverOptions {
                     break;
                 case CHROME_EXTENSION:
                     if (!chromeExtensions.isEmpty()) {
-                        result.append(opt.name()).append('=');
+                        result.append(opt.optionName()).append('=');
                         for (File extraOption : chromeExtensions)
                             result.append(extraOption.toString()).append(',');
                         result.setCharAt(result.length() - 1, '|');
@@ -308,7 +294,7 @@ public class DriverOptions {
                     break;
                 default:
                     if (map.containsKey(opt))
-                        result.append(opt.name()).append('=').append(map.get(opt)).append('|');
+                        result.append(opt.optionName()).append('=').append(map.get(opt)).append('|');
                     break;
                 }
             }
