@@ -132,11 +132,23 @@ public class FirefoxDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = DesiredCapabilities.firefox();
-        setupProxy(caps, driverOptions);
+        DesiredCapabilities caps = DesiredCapabilities.firefox(); 
+        FirefoxProfile fp = null;
+        if (driverOptions.has(PROXY) && (!driverOptions.has(PROFILE)) && (!driverOptions.has(PROFILE_DIR))) {
+        	fp = new FirefoxProfile();
+        	String ps = driverOptions.get(PROXY);
+    		fp.setPreference("network.proxy.type", 1);
+    		fp.setPreference("network.proxy.http", ps.split(":")[0]);
+    		fp.setPreference("network.proxy.http_port", ps.split(":")[1]);
+    		fp.setPreference("browser.startup.homepage", "about:blank");
+    		fp.setPreference("startup.homepage_welcome_url", "about:blank");
+    		fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
+        } else {
+        	setupProxy(caps, driverOptions);
+        }         
         caps.merge(driverOptions.getCapabilities());
         setDriverSpecificCapabilities(caps, driverOptions, false);
-        FirefoxDriver driver = new FirefoxDriver(caps);
+        FirefoxDriver driver = new FirefoxDriver(null, fp, caps);
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }
