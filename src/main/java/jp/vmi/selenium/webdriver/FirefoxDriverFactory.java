@@ -130,22 +130,22 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         }
     }
 
-    @Override
-    public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = DesiredCapabilities.firefox(); 
-        FirefoxProfile fp = null;
-        if (driverOptions.has(PROXY) && (!driverOptions.has(PROFILE)) && (!driverOptions.has(PROFILE_DIR))) {
-        	fp = generateBlankProxyProfile(driverOptions);
-        } else {
-        	setupProxy(caps, driverOptions);
-        }         
-        caps.merge(driverOptions.getCapabilities());
-        setDriverSpecificCapabilities(caps, driverOptions, false);
-        FirefoxDriver driver = new FirefoxDriver(null, fp, caps);
-        setInitialWindowSize(driver, driverOptions);
-        return driver;
-    }
-
+	@Override
+	public WebDriver newInstance(DriverOptions driverOptions) {
+		DesiredCapabilities caps = DesiredCapabilities.firefox();
+		FirefoxProfile fp = null;
+		if (driverOptions.has(PROXY) && (!driverOptions.has(PROFILE)) && (!driverOptions.has(PROFILE_DIR))) {
+			fp = generateBlankProxyProfile(driverOptions);
+		} else {
+			setupProxy(caps, driverOptions);
+		}
+		caps.merge(driverOptions.getCapabilities());
+		setDriverSpecificCapabilities(caps, driverOptions, false);
+		FirefoxDriver driver = new FirefoxDriver(getBinary(caps), fp, caps);
+		setInitialWindowSize(driver, driverOptions);
+		return driver;
+	}
+	
 	private FirefoxProfile generateBlankProxyProfile(DriverOptions driverOptions) {
 		FirefoxProfile fp;
 		fp = new FirefoxProfile();
@@ -161,9 +161,22 @@ public class FirefoxDriverFactory extends WebDriverFactory {
 		fp.setPreference("network.proxy.ftp_port", port);
 		fp.setPreference("network.proxy.socks", host);
 		fp.setPreference("network.proxy.socks_port", port);
+		fp.setPreference("network.proxy.no_proxies_on", " ");
 		fp.setPreference("browser.startup.homepage", "about:blank");
 		fp.setPreference("startup.homepage_welcome_url", "about:blank");
 		fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
 		return fp;
+	}
+	
+	private static FirefoxBinary getBinary(DesiredCapabilities capabilities) {
+		if (capabilities != null && capabilities.getCapability(FirefoxDriver.BINARY) != null) {
+			Object raw = capabilities.getCapability(FirefoxDriver.BINARY);
+			if (raw instanceof FirefoxBinary) {
+				return (FirefoxBinary) raw;
+			}
+			File file = new File((String) raw);
+			return new FirefoxBinary(file);
+		}
+		return new FirefoxBinary();
 	}
 }
