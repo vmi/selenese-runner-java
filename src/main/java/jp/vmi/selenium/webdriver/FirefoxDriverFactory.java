@@ -135,14 +135,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         DesiredCapabilities caps = DesiredCapabilities.firefox(); 
         FirefoxProfile fp = null;
         if (driverOptions.has(PROXY) && (!driverOptions.has(PROFILE)) && (!driverOptions.has(PROFILE_DIR))) {
-        	fp = new FirefoxProfile();
-        	String ps = driverOptions.get(PROXY);
-    		fp.setPreference("network.proxy.type", 1);
-    		fp.setPreference("network.proxy.http", ps.split(":")[0]);
-    		fp.setPreference("network.proxy.http_port", ps.split(":")[1]);
-    		fp.setPreference("browser.startup.homepage", "about:blank");
-    		fp.setPreference("startup.homepage_welcome_url", "about:blank");
-    		fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
+        	fp = generateBlankProxyProfile(driverOptions);
         } else {
         	setupProxy(caps, driverOptions);
         }         
@@ -152,4 +145,23 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }
+
+	private FirefoxProfile generateBlankProxyProfile(DriverOptions driverOptions) {
+		FirefoxProfile fp;
+		fp = new FirefoxProfile();
+		String ps = driverOptions.get(PROXY);
+		fp.setPreference("network.proxy.type", 1);
+		fp.setPreference("network.proxy.http", ps.split(":")[0]);
+		fp.setPreference("network.proxy.http_port", ps.split(":")[1]);
+		fp.setPreference("network.proxy.ssl", ps.split(":")[0]);
+		fp.setPreference("network.proxy.ssl_port", ps.split(":")[1]);
+		fp.setPreference("network.proxy.ftp", ps.split(":")[0]);
+		fp.setPreference("network.proxy.ftp_port", ps.split(":")[1]);
+		fp.setPreference("network.proxy.socks", ps.split(":")[0]);
+		fp.setPreference("network.proxy.socks_port", ps.split(":")[1]);
+		fp.setPreference("browser.startup.homepage", "about:blank");
+		fp.setPreference("startup.homepage_welcome_url", "about:blank");
+		fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
+		return fp;
+	}
 }
