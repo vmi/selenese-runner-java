@@ -94,13 +94,13 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     }
 
     private static void setFirefoxProfile(DesiredCapabilities caps, DriverOptions driverOptions, boolean isRemote) {
+        FirefoxProfile profile;
         if (driverOptions.has(PROFILE) || driverOptions.has(PROFILE_DIR)) {
             // Create FirefoxProfile and set to DesiredCapabilities.
             // (FirefoxProfile object can work with both local and remote FirefoxDriver
             //  see: https://code.google.com/p/selenium/wiki/DesiredCapabilities#Firefox_specific)
             String profileName = driverOptions.get(PROFILE);
             String profileDir = driverOptions.get(PROFILE_DIR);
-            FirefoxProfile profile;
             if (profileName != null) {
                 if (profileDir != null)
                     throw new IllegalArgumentException("Can't specify both '--profile' and '--profile-dir' at once");
@@ -115,68 +115,55 @@ public class FirefoxDriverFactory extends WebDriverFactory {
                 profile = new FirefoxProfile(dir);
                 log.info("Firefox profile directory: {}", profileDir);
             }
-            if (isRemote) {
-                String json;
-                try {
-                    json = profile.toJson();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                caps.setCapability(FirefoxDriver.PROFILE, json);
-                log.info("Convert Firefox profile to JSON: {} bytes", json.length());
+        } else {
+            profile = new FirefoxProfile();
+            profile.setPreference("browser.startup.homepage", "about:blank");
+            profile.setPreference("startup.homepage_welcome_url", "about:blank");
+            profile.setPreference("startup.homepage_welcome_url.additional", "about:blank");
+        }
+        if (driverOptions.has(PROXY)) {
+            String[] pss = driverOptions.get(PROXY).split(":");
+            if (pss.length == 2) {
+                String host = pss[0];
+                int port = Integer.parseInt(pss[1]);
+                String noProxy = driverOptions.has(NO_PROXY) ? driverOptions.get(NO_PROXY) : " ";
+                // see https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Mozilla_networking_preferences#Proxy
+                profile.setPreference("network.proxy.type", 1); // 1 = MANUAL
+                profile.setPreference("network.proxy.http", host);
+                profile.setPreference("network.proxy.http_port", port);
+                profile.setPreference("network.proxy.ssl", host);
+                profile.setPreference("network.proxy.ssl_port", port);
+                profile.setPreference("network.proxy.ftp", host);
+                profile.setPreference("network.proxy.ftp_port", port);
+                profile.setPreference("network.proxy.socks", host);
+                profile.setPreference("network.proxy.socks_port", port);
+                profile.setPreference("network.proxy.no_proxies_on", noProxy);
             } else {
-                caps.setCapability(FirefoxDriver.PROFILE, profile);
+                log.warn("Invalid proxy format (\"HOST:PORT\" required): {}", driverOptions.get(PROXY));
             }
+        }
+        if (isRemote) {
+            String json;
+            try {
+                json = profile.toJson();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            caps.setCapability(FirefoxDriver.PROFILE, json);
+            log.info("Convert Firefox profile to JSON: {} bytes", json.length());
+        } else {
+            caps.setCapability(FirefoxDriver.PROFILE, profile);
         }
     }
 
-	@Override
-	public WebDriver newInstance(DriverOptions driverOptions) {
-		DesiredCapabilities caps = DesiredCapabilities.firefox();
-		FirefoxProfile fp = null;
-		if (driverOptions.has(PROXY) && (!driverOptions.has(PROFILE)) && (!driverOptions.has(PROFILE_DIR))) {
-			fp = generateBlankProxyProfile(driverOptions);
-		} else {
-			setupProxy(caps, driverOptions);
-		}
-		caps.merge(driverOptions.getCapabilities());
-		setDriverSpecificCapabilities(caps, driverOptions, false);
-		FirefoxDriver driver = new FirefoxDriver(getBinary(caps), fp, caps);
-		setInitialWindowSize(driver, driverOptions);
-		return driver;
-	}
-	
-	private FirefoxProfile generateBlankProxyProfile(DriverOptions driverOptions) {
-		FirefoxProfile fp;
-		fp = new FirefoxProfile();
-		String ps = driverOptions.get(PROXY);
-		String host = ps.split(":")[0];
-		int port = Integer.parseInt(ps.split(":")[1]);
-		fp.setPreference("network.proxy.type", 1);
-		fp.setPreference("network.proxy.http", host);
-		fp.setPreference("network.proxy.http_port", port);
-		fp.setPreference("network.proxy.ssl", host);
-		fp.setPreference("network.proxy.ssl_port", port);
-		fp.setPreference("network.proxy.ftp", host);
-		fp.setPreference("network.proxy.ftp_port", port);
-		fp.setPreference("network.proxy.socks", host);
-		fp.setPreference("network.proxy.socks_port", port);
-		fp.setPreference("network.proxy.no_proxies_on", " ");
-		fp.setPreference("browser.startup.homepage", "about:blank");
-		fp.setPreference("startup.homepage_welcome_url", "about:blank");
-		fp.setPreference("startup.homepage_welcome_url.additional", "about:blank");
-		return fp;
-	}
-	
-	private static FirefoxBinary getBinary(DesiredCapabilities capabilities) {
-		if (capabilities != null && capabilities.getCapability(FirefoxDriver.BINARY) != null) {
-			Object raw = capabilities.getCapability(FirefoxDriver.BINARY);
-			if (raw instanceof FirefoxBinary) {
-				return (FirefoxBinary) raw;
-			}
-			File file = new File((String) raw);
-			return new FirefoxBinary(file);
-		}
-		return new FirefoxBinary();
-	}
+    @Override
+    public WebDriver newInstance(DriverOptions driverOptions) {
+        DesiredCapabilities caps = DesiredCapabilities.firefox();
+        setupProxy(caps, driverOptions);
+        caps.merge(driverOptions.getCapabilities());
+        setDriverSpecificCapabilities(caps, driverOptions, false);
+        FirefoxDriver driver = new FirefoxDriver(caps);
+        setInitialWindowSize(driver, driverOptions);
+        return driver;
+    }
 }
