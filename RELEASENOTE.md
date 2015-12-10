@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.3.0
+
+* Avoid NPE if TestCase has no LogRecorder. (PR #176 by deki)
+* Add new API to register custom interceptors for test-case/test-suite execution. (#175)
+* Add "class" locator type. (#173, PR #177 by deki)
+
 ### 2.2.0
 
 * Change default behaviour of FirefoxDriver: (#172, PR #174 by Harinus)
