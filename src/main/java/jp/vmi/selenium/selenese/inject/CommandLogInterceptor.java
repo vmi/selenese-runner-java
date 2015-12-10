@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese.inject;
 
 import java.util.List;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
 /**
  * Interceptor for logging each command execution.
  */
-public class CommandLogInterceptor implements MethodInterceptor {
+public class CommandLogInterceptor extends AbstractDoCommandInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(CommandLogInterceptor.class);
 
@@ -59,19 +58,9 @@ public class CommandLogInterceptor implements MethodInterceptor {
             context.setLatestPageInformation(info);
     }
 
-    private static final int CONTEXT = 0;
-    private static final int COMMAND = 1;
-
-    /*
-     * target signature:
-     * Result LogIndentLevelHolder#doCommand(Context context, ICommand command, String... curArgs)
-     */
     @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        Object[] args = invocation.getArguments();
-        Context context = (Context) args[CONTEXT];
+    protected Result invoke(MethodInvocation invocation, Context context, ICommand command, String[] curArgs) throws Throwable {
         CommandSequence commandSequence = context.getCommandListIterator().getCommandSequence();
-        ICommand command = (ICommand) args[COMMAND];
         LogRecorder clr = context.getCurrentTestCase().getLogRecorder();
         String indent = StringUtils.repeat("  ", commandSequence.getLevel() - 1);
         String cmdStr = command.toString();

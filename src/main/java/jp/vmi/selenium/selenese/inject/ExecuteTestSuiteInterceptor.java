@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.inject;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,9 @@ import jp.vmi.html.result.HtmlResultHolder;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestSuite;
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
@@ -18,11 +19,7 @@ import jp.vmi.selenium.selenese.utils.SystemInformation;
 /**
  * Interceptor for logging and recoding test-suite result.
  */
-public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
-
-    @SuppressWarnings("unused")
-    private static final int PARENT = 0;
-    private static final int CONTEXT = 1;
+public class ExecuteTestSuiteInterceptor extends AbstractExecuteTestSuiteInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestSuiteInterceptor.class);
 
@@ -35,9 +32,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        TestSuite testSuite = (TestSuite) invocation.getThis();
-        Context context = (Context) invocation.getArguments()[CONTEXT];
+    protected Result invoke(MethodInvocation invocation, TestSuite testSuite, Selenese parent, Context context) throws Throwable {
         testSuite.setWebDriverName(context.getWrappedDriver().getClass().getSimpleName());
         JUnitResult jUnitResult = (context instanceof JUnitResultHolder) ? ((JUnitResultHolder) context).getJUnitResult() : null;
         HtmlResult htmlResult = (context instanceof HtmlResultHolder) ? ((HtmlResultHolder) context).getHtmlResult() : null;
@@ -51,7 +46,7 @@ public class ExecuteTestSuiteInterceptor implements MethodInterceptor {
         }
         initTestSuiteResult(jUnitResult, testSuite);
         try {
-            return invocation.proceed();
+            return (Result) invocation.proceed();
         } catch (Throwable t) {
             String msg = t.getMessage();
             log.error(msg);

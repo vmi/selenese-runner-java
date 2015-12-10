@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.inject;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.openqa.selenium.WebDriverException;
 
@@ -12,20 +11,10 @@ import jp.vmi.selenium.selenese.result.Result;
 /**
  * Interceptor for screenshot.
  */
-public class ScreenshotInterceptor implements MethodInterceptor {
+public class ScreenshotInterceptor extends AbstractDoCommandInterceptor {
 
-    private static final int CONTEXT = 0;
-    private static final int COMMAND = 1;
-
-    /*
-     * target signature:
-     * Result doCommand(Context context, ICommand command, String... curArgs)
-     */
     @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        Object[] args = invocation.getArguments();
-        Context context = (Context) args[CONTEXT];
-        ICommand command = (ICommand) args[COMMAND];
+    protected Result invoke(MethodInvocation invocation, Context context, ICommand command, String[] curArgs) throws Throwable {
         Result result = (Result) invocation.proceed();
         if (context instanceof ScreenshotHandler && command.mayUpdateScreen()) {
             ScreenshotHandler handler = (ScreenshotHandler) context;

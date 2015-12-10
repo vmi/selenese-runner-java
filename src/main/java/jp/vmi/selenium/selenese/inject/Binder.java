@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese.inject;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.matcher.Matchers;
 
 import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
@@ -17,33 +15,18 @@ import jp.vmi.selenium.selenese.command.CommandList;
  * Apply aspect.
  */
 public class Binder {
-    private static Injector injector;
 
-    static {
-        injector = Guice.createInjector(
-            new AbstractModule() {
-                @Override
-                protected void configure() {
-                    bindInterceptor(
-                        Matchers.any(),
-                        Matchers.annotatedWith(DoCommand.class),
-                        new CommandLogInterceptor(), /* 1st */
-                        new HighlightInterceptor(), /* 2nd */
-                        new ScreenshotInterceptor() /* 3rd */
-                    );
-                    bindInterceptor(
-                        Matchers.any(),
-                        Matchers.annotatedWith(ExecuteTestCase.class),
-                        new ExecuteTestCaseInterceptor()
-                    );
-                    bindInterceptor(
-                        Matchers.any(),
-                        Matchers.annotatedWith(ExecuteTestSuite.class),
-                        new ExecuteTestSuiteInterceptor()
-                    );
-                }
-            }
-            );
+    private static Injector injector = Guice.createInjector(new BindModule());
+
+    /**
+     * Replace customized BindModule.
+     *
+     * You need call this before instanciate TestCase/TestSuite.
+     *
+     * @param module BindModule instance.
+     */
+    public static void replaceBindModule(BindModule module) {
+        injector = Guice.createInjector(module);
     }
 
     /**

@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.inject;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
@@ -19,22 +19,16 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 /**
  * Interceptor for logging and recoding test-case result.
  */
-public class ExecuteTestCaseInterceptor implements MethodInterceptor {
+public class ExecuteTestCaseInterceptor extends AbstractExecuteTestCaseInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(ExecuteTestCaseInterceptor.class);
 
-    private static final int PARENT = 0;
-    private static final int CONTEXT = 1;
-
     @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        ITestCase testCase = (ITestCase) invocation.getThis();
-        Object[] args = invocation.getArguments();
-        Context context = (Context) args[CONTEXT];
+    protected Result invoke(MethodInvocation invocation, ITestCase testCase, Selenese parent, Context context) throws Throwable {
         JUnitResult jUnitResult;
         if (context instanceof JUnitResultHolder) {
             jUnitResult = ((JUnitResultHolder) context).getJUnitResult();
-            jUnitResult.startTestCase((ITestSuite) args[PARENT], testCase);
+            jUnitResult.startTestCase((ITestSuite) parent, testCase);
         } else {
             jUnitResult = null;
         }
