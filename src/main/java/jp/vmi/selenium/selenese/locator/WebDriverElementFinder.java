@@ -66,6 +66,7 @@ public class WebDriverElementFinder extends ElementFinder {
         registerHandler(new XPathHandler());
         registerHandler(new LinkHandler());
         registerHandler(new CSSHandler());
+        registerHandler(new ClassHandler());
         registerOptionHandler(new OptionLabelHandler());
         registerOptionHandler(new OptionIdHandler());
         registerOptionHandler(new OptionIndexHandler());
