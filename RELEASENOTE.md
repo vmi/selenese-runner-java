@@ -1,6 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.2.0
+
+* Change default behaviour of FirefoxDriver: (#172, PR #174 by Harinus)
+    * Don't show default welcome page. (show "about:blank" instead)
+    * Empty "no proxy" hosts by default. (Firefox default is "localhost, 127.0.0.1")  
+      https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Mozilla_networking_preferences#Proxy
+
 ### 2.1.0
 
 * Catch up Selenium 2.48.2.
