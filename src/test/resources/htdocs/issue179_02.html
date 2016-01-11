@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #179 Logged in</title>
+    <script type="text/javascript">
+      function $(id) {
+        return document.getElementById(id);
+      }
+      function onLoad() {
+      $('nav-item-1').addEventListener('mouseover', function() {
+        $('nav-menu-1').style.display = '';
+      });
+      }
+    </script>
+  </head>
+  <body onload="onLoad()">
+    <div>
+      User: ${id} (Logged in)
+    </div>
+    <hr>
+    <div>
+      <span id="nav-item-1">[MENU]</span>
+      <div id="nav-menu-1" style="display: none">
+        <ul>
+          <li><a id="menu-item-1" href="issue179_03.html#1">item-1</a></li>
+          <li><a id="menu-item-2" href="issue179_03.html#2">item-2</a></li>
+          <li><a id="menu-item-3" href="issue179_03.html#3">item-3</a></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
