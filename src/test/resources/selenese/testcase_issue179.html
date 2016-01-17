@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Issue #179</title>
+<title>Testcase for #179</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Issue #179</td></tr>
+<tr><td rowspan="1" colspan="3">Testcase for #179</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -42,18 +42,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>id=menu-item-1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=menu-item-1</td>
-	<td></td>
-</tr>
-<tr>
 	<td>waitForElementPresent</td>
-	<td>name=q</td>
+	<td>id=menu-item-1-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=menu-item-1-link</td>
 	<td></td>
 </tr>
 <tr>
@@ -66,11 +61,6 @@
 	<td>css=input[type=&quot;submit&quot;]</td>
 	<td></td>
 </tr>
-<tr>
-	<td>assertText</td>
-	<td>id=query</td>
-	<td>selenium</td>
-</tr>
-<tbody></table>
+</tbody></table>
 </body>
 </html>

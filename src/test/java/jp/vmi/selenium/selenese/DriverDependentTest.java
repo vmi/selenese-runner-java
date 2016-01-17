@@ -325,4 +325,18 @@ public class DriverDependentTest extends TestCaseTestBase {
         execute("issue114_2");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void mouseEvent() {
+        assumeNot(HTMLUNIT);
+        execute("testsuite_mouse");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void issue179() {
+        assumeNot(HTMLUNIT);
+        execute("testcase_issue179");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }
