@@ -5,7 +5,6 @@ import java.util.Locale;
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
 
-import jp.vmi.selenium.selenese.utils.EscapeUtils;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 
 /**
@@ -41,7 +40,7 @@ public class RelativePathRenderer implements NamedRenderer {
 
     @Override
     public String render(Object o, String format, Locale locale) {
-        String relPath = PathUtils.relativize(htmlResult.getDir(), o.toString());
-        return EscapeUtils.encodeUri(relPath);
+        // Relativize already URI escapes the paths so don't do it twice
+        return PathUtils.relativize(htmlResult.getDir(), o.toString());
     }
 }
