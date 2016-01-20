@@ -74,6 +74,7 @@ public class SubCommandMap {
         // can't handle the result:
         // register(new CaptureScreenshotToString(), "captureScreenshotToString");
         register(new Click(alertOverride, elementFinder), "click", LOCATOR);
+        register(new jp.vmi.selenium.selenese.subcommand.MoveToElement(elementFinder), "mouseOver", LOCATOR, VALUE);
         register(new jp.vmi.selenium.selenese.subcommand.ClickAt(alertOverride, elementFinder), "clickAt", LOCATOR, VALUE);
         register(new Check(alertOverride, elementFinder), "check", LOCATOR);
         register(new SetNextConfirmationState(false), "chooseCancelOnNextConfirmation");
@@ -148,7 +149,7 @@ public class SubCommandMap {
         register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
         register(new MetaKeyDown(keyState), "metaKeyDown");
         register(new MetaKeyUp(keyState), "metaKeyUp");
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mouseover"), "mouseOver", LOCATOR);
+        //  register(new MouseEvent(elementFinder, javascriptLibrary, "mouseover"), "mouseOver", LOCATOR);
         register(new MouseEvent(elementFinder, javascriptLibrary, "mouseout"), "mouseOut", LOCATOR);
         register(new MouseEvent(elementFinder, javascriptLibrary, "mousedown"), "mouseDown", LOCATOR);
         register(new MouseEventAt(elementFinder, javascriptLibrary, "mousedown"), "mouseDownAt", LOCATOR, VALUE);
