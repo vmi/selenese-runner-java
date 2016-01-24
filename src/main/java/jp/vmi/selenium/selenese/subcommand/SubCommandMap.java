@@ -11,6 +11,7 @@ import com.thoughtworks.selenium.webdriven.commands.*;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -148,14 +149,8 @@ public class SubCommandMap {
         register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
         register(new MetaKeyDown(keyState), "metaKeyDown");
         register(new MetaKeyUp(keyState), "metaKeyUp");
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mouseover"), "mouseOver", LOCATOR);
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mouseout"), "mouseOut", LOCATOR);
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mousedown"), "mouseDown", LOCATOR);
-        register(new MouseEventAt(elementFinder, javascriptLibrary, "mousedown"), "mouseDownAt", LOCATOR, VALUE);
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mousemove"), "mouseMove", LOCATOR);
-        register(new MouseEventAt(elementFinder, javascriptLibrary, "mousemove"), "mouseMoveAt", LOCATOR, VALUE);
-        register(new MouseEvent(elementFinder, javascriptLibrary, "mouseup"), "mouseUp", LOCATOR);
-        register(new MouseEventAt(elementFinder, javascriptLibrary, "mouseup"), "mouseUpAt", LOCATOR, VALUE);
+        for (MouseEventType type : MouseEventType.values())
+            register(new MouseEventHandler(elementFinder, type));
         // "open"
         // "openWindow"
         register(new Refresh(), "refresh");
