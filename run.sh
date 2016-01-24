@@ -26,6 +26,6 @@ do_script() {
   esac
 }
 
-do_script logs/$log_file java -jar target/selenese-runner.jar \
+do_script logs/$log_file java -Dsrj.log.level=DEBUG -jar target/selenese-runner.jar \
   --config tools/run.config \
   "$@"

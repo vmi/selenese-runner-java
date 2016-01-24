@@ -7,6 +7,7 @@
       <Pattern>[%fdate] [%level] %msg%n</Pattern>
     </encoder>
   </appender>
+  <logger name="jp.vmi.selenium" level="${srj.log.level:-INFO}"/>
   <logger name="jp.vmi.selenium.selenese.inject" level="OFF" />
   <root>
     <level value="INFO" />
