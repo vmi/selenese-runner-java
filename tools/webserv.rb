@@ -31,12 +31,6 @@ def esc_html(s)
   end
 end
 
-def esc_js(s)
-  s.to_s.gsub(/[\x00-\x1f\x7f\\'"]/) do
-    '\\x%02x' % $&.ord
-  end
-end
-
 class PostHandler < HTTPServlet::DefaultFileHandler
   def do_POST(req, res)
     if req.addr[2] != 'localhost'
@@ -44,23 +38,8 @@ class PostHandler < HTTPServlet::DefaultFileHandler
     end
     q = req.query
     body = IO.read(@local_path)
-    body.gsub!(/\$\{(\w+)(:\w+)?\}/) do
-      case $2
-      when nil, 'h', 'html'
+    body.gsub!(/\$\{(\w+)\}/) do
         esc_html(q[$1])
-      when 'j', 'js'
-        esc_js(q[$1])
-      when 'r', 'raw'
-        q[$1]
-      end
-    end
-    body.sub!(/([ \t]*)<!-- QUERY -->(?:[ \t]*\n?)/m) do
-      indent = $1
-      form = %{#{indent}<form id="QUERY">\n}
-      q.each do |k, v|
-        form += %{#{indent}  <input type="hidden" name="#{esc_html(k)}" value="#{esc_html(v)}">\n}
-      end
-      form + %{#{indent}</form>\n}
     end
     mtype = HTTPUtils::mime_type(@local_path, @config[:MimeTypes])
     res['content-type'] = mtype
