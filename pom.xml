@@ -50,7 +50,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <target.version>1.7</target.version>
     <skipTests>true</skipTests>
     <selenium.version>2.50.0</selenium.version>
-    <slf4j.version>1.7.13</slf4j.version>
+    <slf4j.version>1.7.14</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
