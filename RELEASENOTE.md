@@ -15,6 +15,8 @@ Selenese Runner Java Relase Note
     * `mouseDownAt`
     * `mouseUp`
     * `mouseUpAt`
+* Catch up Selenium 2.50.0. (PR # by deki)
+* Update dependency versions.
 
 ### 2.2.0
 
