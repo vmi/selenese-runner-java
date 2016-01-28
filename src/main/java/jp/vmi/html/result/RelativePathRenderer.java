@@ -40,7 +40,7 @@ public class RelativePathRenderer implements NamedRenderer {
 
     @Override
     public String render(Object o, String format, Locale locale) {
-        // Relativize already URI escapes the paths so don't do it twice
+        // NB: Relativize has URI escaped the path
         return PathUtils.relativize(htmlResult.getDir(), o.toString());
     }
 }
