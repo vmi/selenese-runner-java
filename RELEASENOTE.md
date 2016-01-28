@@ -6,6 +6,17 @@ Selenese Runner Java Relase Note
 * Avoid NPE if TestCase has no LogRecorder. (PR #176 by deki)
 * Add new API to register custom interceptors for test-case/test-suite execution. (#175)
 * Add "class" locator type. (#173, PR #177 by deki)
+* Revise implementation of mouse event commands. (#179)
+    * `mouseOver`
+    * `mouseOut`
+    * `mouseMove`
+    * `mouseMoveAt`
+    * `mouseDown`
+    * `mouseDownAt`
+    * `mouseUp`
+    * `mouseUpAt`
+* Catch up Selenium 2.50.0. (PR # by deki)
+* Update dependency versions.
 
 ### 2.2.0
 

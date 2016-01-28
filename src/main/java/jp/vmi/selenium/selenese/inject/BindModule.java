@@ -25,9 +25,10 @@ public class BindModule extends AbstractModule {
     /**
      * Prepend custom interceptors to original interceptors.
      *
+     * @param <T> subclass of {@link MethodInterceptor}.
      * @param originItcs array of original interceptors.
      * @param customItcs custom interceptors.
-     * @return
+     * @return modified array of interceptors.
      */
     @SafeVarargs
     protected static <T extends MethodInterceptor> T[] prependInterceptors(T[] originItcs, T... customItcs) {
@@ -41,9 +42,10 @@ public class BindModule extends AbstractModule {
     /**
      * Append custom interceptors to original interceptors.
      *
+     * @param <T> subclass of {@link MethodInterceptor}.
      * @param originItcs array of original interceptors.
      * @param customItcs custom interceptors.
-     * @return
+     * @return modified array of interceptors.
      */
     @SafeVarargs
     protected static <T extends MethodInterceptor> T[] appendInterceptors(T[] originItcs, T... customItcs) {

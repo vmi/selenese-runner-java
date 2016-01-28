@@ -6,6 +6,7 @@
       <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %logger{36} [%level] %msg%n</Pattern>
     </encoder>
   </appender>
+  <logger name="jp.vmi.selenium" level="${srj.log.level:-INFO}"/>
   <root>
     <level value="INFO" />
     <appender-ref ref="STDOUT" />

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mouse handling test</title>
+    <style type="text/css"><!--
+      .test {
+        position: fixed;
+        border: 1px solid black;
+      }
+      #test1 {
+        top: -4px;
+        left: -4px;
+      }
+      #test2 {
+        top: 2em;
+        left: 4em;
+      }
+      #test3 {
+        top: 4em;
+        left: -4px;
+        width: 105%;
+      }
+      #test4 {
+        top: -4px;
+        left: 8em;
+        height: 105%;
+      }
+      #test5 {
+        top: -4px;
+        left: -4px;
+        width: 105%;
+        height: 105%;
+        z-index: -1;
+      }
+      #message {
+        position: fixed;
+        bottom: 0.5em;
+        right: 0.5em;
+        padding: 0;
+        border: 1px solid gray;
+        background: white;
+      }
+      #message ul {
+        padding-left: 2em;
+        font-size: 50%;
+      }
+      #message button {
+        font-size: 50%;
+      }
+    //--></style>
+  </head>
+  <body>
+    <div id="test1" class="test" draggable="true">Test1</div>
+    <div id="test2" class="test">Test2</div>
+    <div id="test3" class="test">Test3</div>
+    <div id="test4" class="test">Test4</div>
+    <div id="test5" class="test"><span style="position: relative; left: 12em">Test5</span></div>
+    <div id="message">
+      <ul id="list"></ul>
+      <p style="margin: 0; text-align: right">
+        <button id="clear" style="test-align: right">Clear</button>
+      </p>
+    </div>
+    <script type="text/javascript"><!--
+      function $(id) {
+        return document.getElementById(id);
+      }
+      $("clear").addEventListener("click", function() {
+        var spans = $("list").getElementsByTagName("span");
+        for (var i = 0; i < spans.length; i++) {
+          spans[i].textContent = "-";
+        }
+      });
+      var mouseEvents = [
+        [ "mousedown", "button" ]
+        , [ "mouseup", "button" ]
+        , [ "mouseenter", "enter" ]
+        , [ "mouseleave", "enter" ]
+        , [ "mouseout", "over" ]
+        , [ "mouseover", "over" ]
+        , [ "mousemove", "move" ]
+        // , [ "click", "click" ]
+        // , [ "contextmenu", "click" ]
+        // , [ "dblclick", "click" ]
+        // , [ "show", "show" ]
+
+        // , [ "drag", "drag" ]
+        // , [ "dragend", "drag" ]
+        // , [ "dragenter", "drag" ]
+        // , [ "dragleave", "drag" ]
+        // , [ "dragover", "drag" ]
+        // , [ "dragstart", "drag" ]
+        // , [ "drop", "drag" ]
+        // 
+        // , [ "wheel", "wheel" ]
+      ];
+      var ul = $("list");
+      for (var i = 1; i <= 5; i++) {
+        var test = $("test" + i);
+        var li = document.createElement("li");
+        li.textContent = 'Test' + i + ': ';
+        var sep = null;
+        var idMap = {};
+        mouseEvents.forEach(function(einfo) {
+          var name = einfo[0];
+          var id = einfo[1] + i;
+          var span;
+          if (idMap[id]) {
+            span = idMap[id];
+          } else {
+            if (sep)
+              li.appendChild(document.createTextNode(sep));
+            else
+              sep = "/";
+            span = document.createElement("span");
+            span.id = id;
+            span.textContent = "-";
+            idMap[id] = span;
+          }
+          test.addEventListener(name, function(e) {
+            span.textContent = [ name, e.screenX, e.screenY, e.clientX, e.clientY ].join(",");
+          });
+          li.appendChild(span);
+        });
+        ul.appendChild(li);
+      }
+    //--></script>
+  </body>
+</html>

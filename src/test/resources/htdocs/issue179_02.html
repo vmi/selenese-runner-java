@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #179 Logged in</title>
+    <script src="jquery-1.8.3.min.js"></script>
+    <script>
+
+    $(document).ready(function () {
+        "use strict";
+
+        var enter = function () {
+            "use strict";
+            console.log("Entering nav item");
+            $(this).has(".sub").length && (
+                $(".sub").stop(!0, !0).hide(),
+                $("#nav .wrap > ul > li").removeClass("hover"),
+                $(this).addClass("hover").children(".sub").stop(!0, !0).slideDown(450),
+                $(this).children(".sub").attr("aria-expanded", "true")
+            )
+
+        }, leave = function () {
+            "use strict";
+            console.log("Leaving nav item");
+            $(".sub").stop(!0, !0).hide(),
+            $("#nav .wrap > ul > li").removeClass("hover"),
+            $("#nav .wrap > ul > li > .sub").attr("aria-expanded", "false")
+        };
+
+        $("#nav .wrap > ul > li").on("mouseenter", enter).on("mouseleave", leave);
+    });
+    </script>
+  </head>
+  <body>
+    <div>
+      User: ${id} <span id="status">(Logged in)</span>
+    </div>
+    <hr>
+    <nav id="nav" role="navigation" style="display: block;">
+      <section class="wrap cf">
+        <ul role="menubar" id="menubar">
+          <li id="nav-item-1" class="nav-item">
+            <a href="#" id="nav-item-1-link" aria-haspopup="true">Nav Item 1</a>
+            <div class="sub" role="menu" aria-expanded="false" style="display: none;">
+              <ul class="cf">
+                <li id="menu-item-1">
+                  <a href="issue179_03.html#1" id="menu-item-1-link" target="_self">Menu Item 1</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </nav>
+  </body>
+</html>
