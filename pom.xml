@@ -49,7 +49,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <source.version>1.7</source.version>
     <target.version>1.7</target.version>
     <skipTests>true</skipTests>
-    <selenium.version>2.50.0</selenium.version>
+    <selenium.version>2.50.1</selenium.version>
     <slf4j.version>1.7.14</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
