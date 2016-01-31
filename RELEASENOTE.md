@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.4.0
+
+* Replace JSON library from org.json to com.google.code.gson.
+
 ### 2.3.1
 
 * Fix problem with path relativize double URI escaping items like spaces. (PR #183 by stevenebutler)

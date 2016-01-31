@@ -3,12 +3,10 @@ package jp.vmi.selenium.selenese;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.output.StringBuilderWriter;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import com.google.gson.Gson;
 import com.thoughtworks.selenium.SeleniumException;
 
 /**
@@ -51,21 +49,17 @@ public class Eval {
     public Object eval(WebDriver driver, String script, String cast) {
         VarsMap varsMap = context.getVarsMap();
         boolean hasStoredVars = script.matches(".*\\bstoredVars\\b.*");
-        StringBuilderWriter writer = new StringBuilderWriter();
+        StringBuilder writer = new StringBuilder();
         if (hasStoredVars) {
             writer.append("return (function(){var storedVars = ");
-            try {
-                new JSONObject(varsMap).write(writer);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
+            new Gson().toJson(varsMap, writer);
             writer.append(";\n");
         }
         writer.append("return [");
         if (cast != null)
             writer.append(cast);
         writer.append("((function(){");
-        mutator.mutate(script, writer.getBuilder());
+        mutator.mutate(script, writer);
         writer.append("})())");
         if (hasStoredVars)
             writer.append(", storedVars];})();");

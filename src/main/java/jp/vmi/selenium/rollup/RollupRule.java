@@ -8,8 +8,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 
+import com.google.gson.Gson;
 import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.script.JSList;
@@ -49,7 +49,7 @@ public class RollupRule implements IRollupRule {
                 bindings.put("rule", ((JSMap<?, ?>) rule).unwrap());
             else
                 bindings.put("rule", rule);
-            String args = new JSONObject(rollupArgs).toString();
+            String args = new Gson().toJson(rollupArgs);
             try {
                 commands = JSList.toList(engine, engine.eval("rule.getExpandedCommands(" + args + ")", bindings));
             } catch (ScriptException e) {

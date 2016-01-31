@@ -3,10 +3,9 @@ package jp.vmi.selenium.webdriver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -14,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 
 import jp.vmi.selenium.selenese.utils.PathUtils;
 
@@ -48,22 +48,10 @@ public class ChromeDriverFactory extends WebDriverFactory {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            JSONObject jsonObject;
-            try {
-                jsonObject = new JSONObject(json);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
             @SuppressWarnings("unchecked")
-            Iterator<String> keys = (Iterator<String>) jsonObject.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                try {
-                    options.setExperimentalOption(key, jsonObject.get(key));
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            Map<String, Object> jsonObject = new Gson().fromJson(json, Map.class);
+            for (Entry<String, Object> entry : jsonObject.entrySet())
+                options.setExperimentalOption(entry.getKey(), entry.getValue());
         }
         caps.setCapability(ChromeOptions.CAPABILITY, options);
         caps.merge(driverOptions.getCapabilities());
