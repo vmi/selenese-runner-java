@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.3.1
+
+* Fix problem with path relativize double URI escaping items like spaces. (PR #183 by stevenebutler)
+* Catch up Selenium 2.50.1.
+
 ### 2.3.0
 
 * Avoid NPE if TestCase has no LogRecorder. (PR #176 by deki)
@@ -15,7 +20,7 @@ Selenese Runner Java Relase Note
     * `mouseDownAt`
     * `mouseUp`
     * `mouseUpAt`
-* Catch up Selenium 2.50.0. (PR # by deki)
+* Catch up Selenium 2.50.0. (PR #181 by deki)
 * Update dependency versions.
 
 ### 2.2.0
