@@ -1,5 +1,5 @@
 /*
-The original code is PhantomJSDriverService in GhostDriver <https://github.com/detro/ghostdriver> 
+The original code is PhantomJSDriverService in GhostDriver <https://github.com/detro/ghostdriver>
 
 Patched by Hayato ITO <haya10.ito@gmail.com>
 
@@ -8,7 +8,7 @@ The following copyright is copied from original.
 
 This file is part of the GhostDriver by Ivan De Marino <http://ivandemarino.me>.
 
-Copyright (c) 2012, Ivan De Marino <http://ivandemarino.me>
+Copyright (c) 2012-2014, Ivan De Marino <http://ivandemarino.me>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,6 @@ import java.util.Collection;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
-import org.openqa.selenium.browserlaunchers.Proxies;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,7 @@ public class CustomPhantomJSDriverServiceFactory {
      * Configures and returns a new {@link PhantomJSDriverService} using the default configuration without logging.
      *
      * @see PhantomJSDriverService#createDefaultService(Capabilities)
-     * 
+     *
      * @param desiredCapabilities DesiredCapabilities object.
      * @return PhantomJSDriverService object.
      */
@@ -70,7 +69,7 @@ public class CustomPhantomJSDriverServiceFactory {
         // Look for Proxy configuration within the Capabilities
         Proxy proxy = null;
         if (desiredCapabilities != null) {
-            proxy = Proxies.extractProxy(desiredCapabilities);
+            proxy = Proxy.extractFrom(desiredCapabilities);
         }
 
         // Find PhantomJS executable
@@ -80,10 +79,10 @@ public class CustomPhantomJSDriverServiceFactory {
         File ghostDriverfile = findGhostDriver(desiredCapabilities, GHOSTDRIVER_DOC_LINK, GHOSTDRIVER_DOWNLOAD_LINK);
 
         // Build & return service
-        return new Builder()
-            .usingPhantomJSExecutable(phantomjsfile)
+        return new Builder().usingPhantomJSExecutable(phantomjsfile)
             .usingGhostDriver(ghostDriverfile)
             .usingAnyFreePort()
+            // Note: remove log file option from oritinal code.
             // .withLogFile(new File(PHANTOMJS_DEFAULT_LOGFILE))
             .withProxy(proxy)
             .usingCommandLineArguments(
@@ -105,6 +104,7 @@ public class CustomPhantomJSDriverServiceFactory {
                         Collection<String> capCollection = (Collection<String>) cap;
                         return capCollection.toArray(new String[capCollection.size()]);
                     } catch (Exception e) {
+                        // Note: change logger variable name and type from original code.
                         // If casting fails, log an error and assume no CLI arguments are provided
                         log.warn(String.format(
                             "Unable to set Capability '%s' as it was neither a String[] or a Collection<String>",
