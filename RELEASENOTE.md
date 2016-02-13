@@ -4,6 +4,8 @@ Selenese Runner Java Relase Note
 ### 2.4.0
 
 * Replace JSON library from org.json to com.google.code.gson.
+* Catch up Selenium 2.52.0.
+* Update dependency versions.
 
 ### 2.3.1
 
