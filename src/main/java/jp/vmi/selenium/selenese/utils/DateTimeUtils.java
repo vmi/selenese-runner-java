@@ -15,6 +15,9 @@ public final class DateTimeUtils {
         setFormat("yyyy-MM-dd", " ", "HH:mm:ss", ".SSS", " ", "ZZ");
     }
 
+    private DateTimeUtils() {
+    }
+
     /**
      * Set date and time format.
      *

@@ -13,6 +13,9 @@ import org.openqa.selenium.Proxy;
 @SuppressWarnings("javadoc")
 public class Proxies {
 
+    private Proxies() {
+    }
+
     public static Proxy extractProxy(Capabilities desiredCapabilities) {
         return Proxy.extractFrom(desiredCapabilities);
     }

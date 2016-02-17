@@ -17,6 +17,9 @@ public class PathUtils {
     private static final String SEP_REPL = Matcher.quoteReplacement(File.separator);
     private static final String PARENT_DIR = ".." + File.separator;
 
+    private PathUtils() {
+    }
+
     private static String normalizeInternal(String filename) {
         if (filename.startsWith(PARENT_DIR))
             filename = new File(filename).getAbsolutePath();

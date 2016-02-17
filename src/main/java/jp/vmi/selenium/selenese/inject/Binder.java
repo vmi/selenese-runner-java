@@ -18,6 +18,9 @@ public class Binder {
 
     private static Injector injector = Guice.createInjector(new BindModule());
 
+    private Binder() {
+    }
+
     /**
      * Replace customized BindModule.
      *

@@ -12,6 +12,9 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class SeleniumUtils {
 
+    private SeleniumUtils() {
+    }
+
     /**
      * string-matching pattern of SeleniumIDE.
      */
