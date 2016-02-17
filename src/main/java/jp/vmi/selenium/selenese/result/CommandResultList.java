@@ -136,75 +136,63 @@ public class CommandResultList implements List<CommandResult> {
 
     @Override
     public CommandResult set(int index, CommandResult element) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public void add(int index, CommandResult element) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
 
     }
 
     @Override
     public int indexOf(Object o) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean contains(Object o) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends CommandResult> c) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public CommandResult remove(int index) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
 }

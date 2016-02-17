@@ -98,25 +98,21 @@ public class CommandResultMap implements Map<ICommand, List<CommandResult>> {
 
     @Override
     public List<CommandResult> put(ICommand key, List<CommandResult> value) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public void putAll(Map<? extends ICommand, ? extends List<CommandResult>> m) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public List<CommandResult> remove(Object key) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException(Object.class.getEnclosingMethod().toString());
     }
 }
