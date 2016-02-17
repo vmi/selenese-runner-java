@@ -71,7 +71,7 @@ public class GetSelected extends AbstractSubCommand<Object> {
         if (select == null)
             return null;
         List<WebElement> options = select.findElements(By.tagName("option"));
-        List<Object> found = new ArrayList<Object>();
+        List<Object> found = new ArrayList<>();
         int i = -1;
         for (WebElement option : options) {
             i++;

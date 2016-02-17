@@ -27,7 +27,7 @@ public class JSWrapperTest {
     @Test
     public void testMap() throws Exception {
         Object object = engine.eval("var map = {'abc': 'ABC', 'def': 'DEF', 'ghi': 'GHI'}; map");
-        JSMap<String, String> map = new JSMap<String, String>(engine, object);
+        JSMap<String, String> map = new JSMap<>(engine, object);
         assertThat(map.get("abc"), equalTo("ABC"));
         assertThat(map.keySet(), equalTo((Set<String>) Sets.newHashSet("abc", "def", "ghi")));
         assertThat(map.size(), equalTo(3));
@@ -36,7 +36,7 @@ public class JSWrapperTest {
     @Test
     public void testList() throws Exception {
         Object object = engine.eval("var list = ['abc', 'def', 'ghi']; list");
-        JSList<String> list = new JSList.JSNativeList<String>(engine, object);
+        JSList<String> list = new JSList.JSNativeList<>(engine, object);
         assertThat(list.get(1), equalTo("def"));
         assertThat(list.size(), equalTo(3));
     }

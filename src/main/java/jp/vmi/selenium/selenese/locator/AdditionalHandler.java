@@ -37,7 +37,7 @@ public class AdditionalHandler implements LocatorHandler {
 
     @Override
     public List<WebElement> handle(WebDriver driver, String arg) {
-        List<WebElement> result = new ArrayList<WebElement>();
+        List<WebElement> result = new ArrayList<>();
         if (driver instanceof JavascriptExecutor) {
             Object element = ((JavascriptExecutor) driver).executeScript(script, arg);
             if (element instanceof WebElement)

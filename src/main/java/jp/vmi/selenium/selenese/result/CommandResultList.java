@@ -15,7 +15,7 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
  */
 public class CommandResultList implements List<CommandResult> {
 
-    private final List<CommandResult> list = new ArrayList<CommandResult>();
+    private final List<CommandResult> list = new ArrayList<>();
     private Result result = UNEXECUTED;
     private long endTime = System.currentTimeMillis();
     private CommandResultMap map = null;

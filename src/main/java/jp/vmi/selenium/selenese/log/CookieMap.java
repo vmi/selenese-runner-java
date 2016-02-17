@@ -37,7 +37,7 @@ public class CookieMap extends TreeMap<CookieKey, CookieValue> {
      * @return list of cookie string.
      */
     public List<String> allMessages(CookieFilter cookieFilter) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (CookieValue value : values())
             if (cookieFilter.isPass(value.key.name))
                 list.add(value.toString());
@@ -53,7 +53,7 @@ public class CookieMap extends TreeMap<CookieKey, CookieValue> {
      * @return list of differential cookie string.
      */
     public List<String> diffMessages(CookieFilter cookieFilter, CookieMap prev) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (CookieValue value : values()) {
             if (cookieFilter.isPass(value.key.name)) {
                 CookieValue prevValue = prev.get(value.key);

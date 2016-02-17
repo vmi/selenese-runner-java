@@ -48,10 +48,10 @@ public class WebDriverElementFinder extends ElementFinder {
         return parentLocator + Locator.OPTION_LOCATOR_SEPARATOR + optionLocator;
     }
 
-    private final Map<String, LocatorHandler> handlerMap = new HashMap<String, LocatorHandler>();
-    private final Map<String, OptionLocatorHandler> optionHandlerMap = new HashMap<String, OptionLocatorHandler>();
+    private final Map<String, LocatorHandler> handlerMap = new HashMap<>();
+    private final Map<String, OptionLocatorHandler> optionHandlerMap = new HashMap<>();
 
-    private final List<Locator> currentFrameLocators = new ArrayList<Locator>();
+    private final List<Locator> currentFrameLocators = new ArrayList<>();
 
     private WebDriver noParentFrameWebDriver = null;
 
@@ -115,7 +115,7 @@ public class WebDriverElementFinder extends ElementFinder {
     private void switchToFrame(WebDriver driver, List<Locator> plocs) {
         driver.switchTo().defaultContent();
         try {
-            List<Locator> selectedFrameLocators = new ArrayList<Locator>();
+            List<Locator> selectedFrameLocators = new ArrayList<>();
             for (Locator ploc : plocs) {
                 for (int index : ploc.frameIndexList)
                     driver.switchTo().frame(index);
@@ -207,7 +207,7 @@ public class WebDriverElementFinder extends ElementFinder {
         OptionLocatorHandler handler = optionHandlerMap.get(type);
         if (handler == null)
             throw new UnsupportedOperationException("Unknown option locator type: " + option);
-        List<WebElement> result = new ArrayList<WebElement>();
+        List<WebElement> result = new ArrayList<>();
         for (WebElement element : elements)
             result.addAll(handler.handle(element, arg));
         return result;
@@ -336,6 +336,6 @@ public class WebDriverElementFinder extends ElementFinder {
      * @return current frame locators.
      */
     public List<Locator> getCurrentFrameLocators() {
-        return new ArrayList<Locator>(currentFrameLocators);
+        return new ArrayList<>(currentFrameLocators);
     }
 }

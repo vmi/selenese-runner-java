@@ -26,7 +26,7 @@ import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 @SuppressWarnings("deprecation")
 public class CommandFactory implements ICommandFactory {
 
-    private static final Map<String, Constructor<? extends ICommand>> constructorMap = new HashMap<String, Constructor<? extends ICommand>>();
+    private static final Map<String, Constructor<? extends ICommand>> constructorMap = new HashMap<>();
 
     private static void addConstructor(Class<? extends ICommand> cmdClass, String... aliases) {
         try {
@@ -86,7 +86,7 @@ public class CommandFactory implements ICommandFactory {
     private static final int IS_PRESENT_INVERSE = 4;
     private static final int PRESENT = 5;
 
-    private final List<ICommandFactory> commandFactories = new ArrayList<ICommandFactory>();
+    private final List<ICommandFactory> commandFactories = new ArrayList<>();
 
     private Context context = null;
 

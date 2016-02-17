@@ -49,8 +49,8 @@ public class CommandSequenceTest {
     private static final char E = 'e';
 
     private static List<ICommand> build(char... cmds) {
-        List<ICommand> result = new ArrayList<ICommand>();
-        Deque<StartLoop> startLoopStack = new ArrayDeque<StartLoop>();
+        List<ICommand> result = new ArrayList<>();
+        Deque<StartLoop> startLoopStack = new ArrayDeque<>();
         startLoopStack.addFirst(StartLoop.NO_START_LOOP);
         for (char cmd : cmds) {
             switch (cmd) {

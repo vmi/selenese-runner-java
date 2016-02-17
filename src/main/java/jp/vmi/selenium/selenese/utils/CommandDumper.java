@@ -93,10 +93,10 @@ public class CommandDumper {
      * @param args command line parameters.
      */
     public static void main(String[] args) {
-        Map<String, String> commandInfo = new HashMap<String, String>();
+        Map<String, String> commandInfo = new HashMap<>();
         addCommandInformationFromSubCommandMap(commandInfo);
         addCommandInformationFromCommandFactory(commandInfo);
-        List<Entry<String, String>> result = new ArrayList<Entry<String, String>>(commandInfo.entrySet());
+        List<Entry<String, String>> result = new ArrayList<>(commandInfo.entrySet());
         Collections.sort(result, new Comparator<Entry<String, String>>() {
             @Override
             public int compare(Entry<String, String> e1, Entry<String, String> e2) {

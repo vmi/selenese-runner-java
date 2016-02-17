@@ -33,7 +33,7 @@ public class RollupTest extends TestBase {
         rollupRules.load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         IRollupRule rule = rollupRules.get("do_login");
         assertThat(rule, is(instanceOf(RollupRule.class)));
-        Map<String, String> rollupArgs = new HashMap<String, String>();
+        Map<String, String> rollupArgs = new HashMap<>();
         rollupArgs.put("username", "USERNAME");
         rollupArgs.put("password", "PASSWORD");
         CommandList commandList = rule.getExpandedCommands(runner, rollupArgs);

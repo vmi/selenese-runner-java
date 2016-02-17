@@ -19,7 +19,7 @@ public class TestSuiteTree {
         public Node parent = null;
         public final TestSuite testSuite;
         public final TestSuiteSummary summary;
-        public final List<Node> children = new ArrayList<Node>();
+        public final List<Node> children = new ArrayList<>();
 
         private Node(Node parent, TestSuite testSuite, TestSuiteSummary summary) {
             this.parent = parent;
@@ -29,7 +29,7 @@ public class TestSuiteTree {
     }
 
     private final Node root = new Node(null, null, null);
-    private final Map<TestSuite, Node> map = new HashMap<TestSuite, Node>();
+    private final Map<TestSuite, Node> map = new HashMap<>();
 
     /**
      * Get test-suite result summary.

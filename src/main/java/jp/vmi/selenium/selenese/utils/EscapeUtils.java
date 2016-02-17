@@ -20,7 +20,7 @@ public class EscapeUtils {
     public static final Pattern HTML_RE = Pattern.compile("([<>&\"'\\\\])|\r?\n|\r");
 
     /** Mapping table for HTML escape. */
-    public static final Map<String, String> HTML_ESC_MAP = new HashMap<String, String>();
+    public static final Map<String, String> HTML_ESC_MAP = new HashMap<>();
 
     static {
         HTML_ESC_MAP.put("<", "&lt;");

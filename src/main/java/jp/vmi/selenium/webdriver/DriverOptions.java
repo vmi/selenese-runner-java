@@ -77,7 +77,7 @@ public class DriverOptions {
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
     private String[] cliArgs = ArrayUtils.EMPTY_STRING_ARRAY;
-    private List<File> chromeExtensions = new ArrayList<File>();
+    private List<File> chromeExtensions = new ArrayList<>();
     private final HashMap<String, String> envVars = Maps.newHashMap();
 
     /**
@@ -319,7 +319,7 @@ public class DriverOptions {
         Map<String, Object> capsMap = (Map<String, Object>) caps.asMap();
         if (!capsMap.isEmpty()) {
             result.append(sep).append("DEFINE=[\n");
-            List<Entry<String, Object>> capsList = new ArrayList<Entry<String, Object>>(capsMap.entrySet());
+            List<Entry<String, Object>> capsList = new ArrayList<>(capsMap.entrySet());
             Collections.sort(capsList, mapEntryComparator);
             for (Entry<String, Object> cap : capsList) {
                 Object value = cap.getValue();
@@ -332,7 +332,7 @@ public class DriverOptions {
         }
         if (!envVars.isEmpty()) {
             result.append(sep).append("ENV_VARS=[\n");
-            List<Entry<String, String>> envVarsList = new ArrayList<Entry<String, String>>(envVars.entrySet());
+            List<Entry<String, String>> envVarsList = new ArrayList<>(envVars.entrySet());
             Collections.sort(envVarsList, mapEntryComparator);
             for (Entry<String, String> envVar : envVarsList)
                 result.append("  ").append(envVar.getKey()).append('=').append(envVar.getValue()).append("\n");

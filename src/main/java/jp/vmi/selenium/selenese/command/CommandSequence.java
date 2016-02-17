@@ -24,7 +24,7 @@ public class CommandSequence {
     }
 
     private final CommandSequence parent;
-    private final List<Counter> counters = new ArrayList<Counter>();
+    private final List<Counter> counters = new ArrayList<>();
     private Counter tail;
 
     /**
@@ -41,7 +41,7 @@ public class CommandSequence {
         List<StartLoop> result;
         StartLoop startLoop = command.getStartLoop();
         if (startLoop == StartLoop.NO_START_LOOP)
-            result = new ArrayList<StartLoop>();
+            result = new ArrayList<>();
         else
             result = getListOfStartLoop((ICommand) startLoop);
         result.add(startLoop);

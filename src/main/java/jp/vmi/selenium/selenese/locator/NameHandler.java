@@ -30,7 +30,7 @@ class NameHandler implements LocatorHandler {
         List<WebElement> result = driver.findElements(By.name(args[0]));
         if (result.isEmpty() || args.length == 1)
             return result;
-        List<WebElement> filtered = new ArrayList<WebElement>();
+        List<WebElement> filtered = new ArrayList<>();
         Matcher matcher = FILTER_RE.matcher(args[1]);
         matcher.matches();
         String indexString = matcher.group(1);

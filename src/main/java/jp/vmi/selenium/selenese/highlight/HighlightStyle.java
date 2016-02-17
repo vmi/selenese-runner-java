@@ -53,7 +53,7 @@ public class HighlightStyle {
      * @param styles style for highlighting.
      */
     public HighlightStyle(String... styles) {
-        this.styles = new HashMap<String, String>();
+        this.styles = new HashMap<>();
         for (String style : styles) {
             String[] kv = style.split("\\s*:\\s*", 2);
             this.styles.put(kv[0], kv[1]);

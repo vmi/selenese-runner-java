@@ -53,7 +53,7 @@ public class Locator {
     public final String option;
 
     /** frame list. */
-    public final Deque<Integer> frameIndexList = new ArrayDeque<Integer>();
+    public final Deque<Integer> frameIndexList = new ArrayDeque<>();
 
     private static String formatLocator(String locator, String option) {
         return (option == null) ? locator : locator + " (" + option + ")";
