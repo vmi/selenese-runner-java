@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.5.0
+
+* Refine code. (PR #185, #187 by AymanDF)
+
 ### 2.4.0
 
 * Replace JSON library from org.json to com.google.code.gson.
