@@ -13,10 +13,6 @@ public class CommandListIterator implements ListIterator<ICommand> {
     private ListIterator<ICommand> iterator;
     private final CommandSequence commandSequence;
 
-    private String unsupportedMessage(String methodName) {
-        return getClass().getSimpleName() + "#" + methodName + " is not supported.";
-    }
-
     CommandListIterator(CommandList commandList, CommandListIterator parentIterator) {
         this.commandList = commandList;
         this.iterator = commandList.originalListIterator(0);
@@ -55,17 +51,17 @@ public class CommandListIterator implements ListIterator<ICommand> {
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException(unsupportedMessage("remove()"));
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void set(ICommand e) {
-        throw new UnsupportedOperationException(unsupportedMessage("set(ICommand)"));
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void add(ICommand e) {
-        throw new UnsupportedOperationException(unsupportedMessage("add(ICommand)"));
+        throw new UnsupportedOperationException();
     }
 
     /**

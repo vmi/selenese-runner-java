@@ -65,15 +65,13 @@ public class CommandList extends ArrayList<ICommand> {
     @Deprecated
     @Override
     public CommandListIterator listIterator(int index) {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException();
     }
 
     @Deprecated
     @Override
     public CommandListIterator listIterator() {
-        throw new UnsupportedOperationException(new Object() {
-        }.getClass().getEnclosingMethod().toString());
+        throw new UnsupportedOperationException();
     }
 
     @Override

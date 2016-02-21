@@ -134,48 +134,48 @@ public class CustomCommandProcessor extends WebDriverCommandProcessor {
     @Override
     @Deprecated
     public String getString(String commandName, String[] args) {
-        throw new UnsupportedOperationException("getString");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public String[] getStringArray(String commandName, String[] args) {
-        throw new UnsupportedOperationException("getStringArray");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public Number getNumber(String commandName, String[] args) {
-        throw new UnsupportedOperationException("getNumber");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public Number[] getNumberArray(String s, String[] strings) {
-        throw new UnsupportedOperationException("getNumberArray");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public boolean getBoolean(String commandName, String[] args) {
-        throw new UnsupportedOperationException("getBoolean");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public boolean[] getBooleanArray(String s, String[] strings) {
-        throw new UnsupportedOperationException("getBooleanArray");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public void addMethod(String methodName, SeleneseCommand<?> command) {
-        throw new UnsupportedOperationException("addMethod");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Deprecated
     public SeleneseCommand<?> getMethod(String methodName) {
-        throw new UnsupportedOperationException("getMethod");
+        throw new UnsupportedOperationException();
     }
 }
