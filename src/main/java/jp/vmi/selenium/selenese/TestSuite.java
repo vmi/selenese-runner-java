@@ -32,7 +32,7 @@ public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
 
     private String parentDir = null;
     private String webDriverName = null;
-    private final List<Selenese> seleneseList = new ArrayList<Selenese>();
+    private final List<Selenese> seleneseList = new ArrayList<>();
 
     private final StopWatch stopWatch = new StopWatch();
     private Result result = UNEXECUTED;

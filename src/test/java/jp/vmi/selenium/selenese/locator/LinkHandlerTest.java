@@ -129,7 +129,7 @@ public class LinkHandlerTest extends TestBase {
             { "assertElementNotPresent", "exact:assertion test", Failure.class }
 
         };
-        ArrayList<Object[]> data = new ArrayList<Object[]>();
+        ArrayList<Object[]> data = new ArrayList<>();
         for (Object[] factory : factories)
             for (Object[] args : argss)
                 data.add(ArrayUtils.addAll(factory, args));

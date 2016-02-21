@@ -152,7 +152,7 @@ public class SeleneseRunnerOptions extends Options {
 
     private int i = 0;
 
-    private final Map<Option, Integer> optionOrder = new HashMap<Option, Integer>();
+    private final Map<Option, Integer> optionOrder = new HashMap<>();
 
     /**
      * Constructor.

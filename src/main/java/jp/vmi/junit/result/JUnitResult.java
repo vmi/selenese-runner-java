@@ -47,7 +47,7 @@ public final class JUnitResult {
 
     private final JAXBContext context = initContext();
 
-    private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<Object, TestResult<?>>();
+    private final Map<Object, TestResult<?>> map = new ConcurrentHashMap<>();
 
     private final FailsafeSummary failsafeSummary = factory.createFailsafeSummary();
 

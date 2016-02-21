@@ -21,7 +21,7 @@ class LinkHandler implements LocatorHandler {
     }
 
     private List<WebElement> findByRegexp(WebDriver driver, By by, Pattern pattern) {
-        List<WebElement> result = new ArrayList<WebElement>();
+        List<WebElement> result = new ArrayList<>();
         List<WebElement> as = driver.findElements(by);
         for (WebElement a : as) {
             String text;

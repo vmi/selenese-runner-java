@@ -29,7 +29,7 @@ public class PageInformation {
         if (msg != null) {
             return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
         } else {
-            List<String> msgs = new ArrayList<String>();
+            List<String> msgs = new ArrayList<>();
             msgs.add(e.toString());
             String pkgName = PageInformation.class.getPackage().getName() + ".";
             for (StackTraceElement ste : e.getStackTrace()) {

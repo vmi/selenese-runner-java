@@ -78,7 +78,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final WebDriverElementFinder elementFinder;
     private final CommandFactory commandFactory;
     private TestCase currentTestCase = null;
-    private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<CommandListIterator>();
+    private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<>();
     private VarsMap varsMap = new VarsMap();
     private final CollectionMap collectionMap = new CollectionMap();
     private RollupRules rollupRules = null; // lazy initialization
@@ -100,7 +100,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.subCommandMap = new SubCommandMap(this);
         this.commandFactory = new CommandFactory(this);
         this.varsMap = new VarsMap();
-        this.styleBackups = new ArrayDeque<HighlightStyleBackup>();
+        this.styleBackups = new ArrayDeque<>();
     }
 
     /**
@@ -576,7 +576,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public Result run(String... filenames) {
         Result totalResult = UNEXECUTED;
-        List<TestSuite> testSuiteList = new ArrayList<TestSuite>();
+        List<TestSuite> testSuiteList = new ArrayList<>();
         for (String filename : filenames) {
             Selenese selenese = Parser.parse(filename, commandFactory);
             Parser.setContextForBackwardCompatibility(selenese, this);

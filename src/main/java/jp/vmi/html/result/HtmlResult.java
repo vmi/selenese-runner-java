@@ -177,7 +177,7 @@ public class HtmlResult {
                 break;
             }
         }
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
         model.put("title", testSuite.getName() + " results");
         model.put("sysInfo", SystemInformation.getInstance());
         model.put("testSuite", testSuite);
@@ -212,7 +212,7 @@ public class HtmlResult {
     public void generateIndex() {
         if (htmlResultDir == null)
             return;
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
         model.put("title", "Index of test-suite results.");
         model.put("tree", tree);
         String html = getEngine().transform(getTemplate("index.html"), model);

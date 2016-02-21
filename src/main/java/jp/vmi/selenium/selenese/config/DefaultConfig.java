@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DefaultConfig implements IConfig {
 
     private final CommandLine cli;
-    private final Map<String, List<String>> config = new HashMap<String, List<String>>();
+    private final Map<String, List<String>> config = new HashMap<>();
 
     /**
      * Constructor.
@@ -82,7 +82,7 @@ public class DefaultConfig implements IConfig {
                 String key = matcher.group(1);
                 if (key != null) {
                     currentKey = key;
-                    values = new ArrayList<String>();
+                    values = new ArrayList<>();
                     String value = matcher.group(2);
                     if (StringUtils.isNotEmpty(value))
                         values.add(value);

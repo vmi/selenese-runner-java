@@ -16,7 +16,7 @@ class DomHandler implements LocatorHandler {
 
     @Override
     public List<WebElement> handle(WebDriver driver, String arg) {
-        List<WebElement> result = new ArrayList<WebElement>();
+        List<WebElement> result = new ArrayList<>();
         String script = "return (" + arg + ");";
         Object element = ((JavascriptExecutor) driver).executeScript(script);
         if (element instanceof WebElement)

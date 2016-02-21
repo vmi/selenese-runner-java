@@ -18,7 +18,7 @@ class OptionLabelHandler implements OptionLocatorHandler {
     @Override
     public List<WebElement> handle(WebElement element, String arg) {
         List<WebElement> options = element.findElements(By.tagName("option"));
-        List<WebElement> result = new ArrayList<WebElement>(options.size());
+        List<WebElement> result = new ArrayList<>(options.size());
         for (WebElement option : options)
             if (SeleniumUtils.patternMatches(arg, option.getText()))
                 result.add(option);

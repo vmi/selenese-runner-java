@@ -20,7 +20,7 @@ class OptionIndexHandler implements OptionLocatorHandler {
         try {
             int index = Integer.parseInt(arg);
             List<WebElement> options = element.findElements(By.tagName("option"));
-            List<WebElement> result = new ArrayList<WebElement>();
+            List<WebElement> result = new ArrayList<>();
             if (index < options.size())
                 result.add(options.get(index));
             return result;

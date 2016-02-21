@@ -29,7 +29,7 @@ public class NodeRenderer implements Renderer<Node> {
 
     @Override
     public String render(Node node, Locale locale) {
-        HashMap<String, Object> model = new HashMap<String, Object>();
+        HashMap<String, Object> model = new HashMap<>();
         model.put("node", node);
         return engine.transform(template, model);
     }

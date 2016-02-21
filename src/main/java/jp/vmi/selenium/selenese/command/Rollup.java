@@ -43,7 +43,7 @@ public class Rollup extends AbstractCommand {
     }
 
     private Map<String, String> parseKwArgs(String kwArgs) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         Matcher matcher = RE_KW_ARGS.matcher(kwArgs.trim());
         while (matcher.find()) {
             String name = matcher.group(MG_NAME);

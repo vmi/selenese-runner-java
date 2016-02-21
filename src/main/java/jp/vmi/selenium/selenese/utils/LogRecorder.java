@@ -46,9 +46,9 @@ public class LogRecorder {
 
     private final PrintStream ps;
 
-    private final List<LogMessage> messages = new ArrayList<LogMessage>();
+    private final List<LogMessage> messages = new ArrayList<>();
 
-    private final List<LogMessage> errorMessages = new ArrayList<LogMessage>();
+    private final List<LogMessage> errorMessages = new ArrayList<>();
 
     /**
      * Constructor.

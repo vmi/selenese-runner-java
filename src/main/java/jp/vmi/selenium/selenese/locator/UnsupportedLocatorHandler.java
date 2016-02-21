@@ -15,6 +15,6 @@ abstract class UnsupportedLocatorHandler implements LocatorHandler {
     @Override
     public List<WebElement> handle(WebDriver driver, String arg) {
         log.warn("\"{}\" locator is not supported. It returns an empty list.", locatorType());
-        return new ArrayList<WebElement>();
+        return new ArrayList<>();
     }
 }

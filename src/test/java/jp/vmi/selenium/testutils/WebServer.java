@@ -48,7 +48,7 @@ public class WebServer {
             String html = IOUtils.toString(is, CharsetUtil.UTF_8)
                 .replaceFirst("(?s)<script[^>]*>.*?</script>", "") // remove script tag.
                 .replaceFirst("<body.*?>", "<body>"); // remove "onload" handler.
-            List<String> keys = new ArrayList<String>(request.queryParamKeys());
+            List<String> keys = new ArrayList<>(request.queryParamKeys());
             Collections.sort(keys);
             for (String key : keys) {
                 String value = request.queryParam(key);

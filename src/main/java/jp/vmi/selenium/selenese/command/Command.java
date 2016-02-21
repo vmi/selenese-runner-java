@@ -250,7 +250,7 @@ public abstract class Command implements ICommand {
         if (path == null)
             return;
         if (screenshots == null)
-            screenshots = new ArrayList<Screenshot>();
+            screenshots = new ArrayList<>();
         screenshots.add(new Screenshot(path, label));
     }
 

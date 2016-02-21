@@ -41,7 +41,7 @@ public class RollupRules {
 
     final ScriptEngine engine;
     final EngineType engineType;
-    private final Map<String, RollupRule> rollupRules = new HashMap<String, RollupRule>();
+    private final Map<String, RollupRule> rollupRules = new HashMap<>();
 
     /**
      * Constructor.

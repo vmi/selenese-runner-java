@@ -44,7 +44,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     private String baseURL = null;
 
     private StartLoop currentStartLoop = NO_START_LOOP;
-    private final Deque<StartLoop> loopCommandStack = new ArrayDeque<StartLoop>();
+    private final Deque<StartLoop> loopCommandStack = new ArrayDeque<>();
     private final CommandList commandList = Binder.newCommandList();
     private final CommandResultList cresultList = new CommandResultList();
 

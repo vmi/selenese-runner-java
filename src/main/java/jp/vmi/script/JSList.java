@@ -89,8 +89,8 @@ public abstract class JSList<E> extends AbstractList<E> {
         else if (object instanceof List)
             return (List<E>) object; // for Rhino in Java7.
         else if (object instanceof Map)
-            return new JSMapList<E>(object);
+            return new JSMapList<>(object);
         else
-            return new JSNativeList<E>(engine, object);
+            return new JSNativeList<>(engine, object);
     }
 }

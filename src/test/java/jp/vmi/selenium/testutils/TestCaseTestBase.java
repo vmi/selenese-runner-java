@@ -48,7 +48,7 @@ public abstract class TestCaseTestBase extends TestBase {
     public void initialize() {
         initDriver();
 
-        testSuites = new ArrayList<TestSuite>();
+        testSuites = new ArrayList<>();
         runner = new Runner() {
             @Override
             public Result execute(Selenese testSuite) {
@@ -89,7 +89,7 @@ public abstract class TestCaseTestBase extends TestBase {
     }
 
     protected List<String> getSystemOut(Filter filter) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         Pattern re = Pattern.compile("<system-out>(.*?)</system-out>", Pattern.DOTALL);
         Matcher m = re.matcher(xmlResult);
         if (!m.find())
@@ -104,7 +104,7 @@ public abstract class TestCaseTestBase extends TestBase {
     }
 
     protected List<String> listFilter(Filter filter, List<String> src) {
-        List<String> dst = new ArrayList<String>();
+        List<String> dst = new ArrayList<>();
         for (String line : src) {
             String filtered = filter.filter(line);
             if (filtered != null)

@@ -31,13 +31,13 @@ public class TestSuiteResult extends TestResult<ITestSuite> {
 
     @XmlElementWrapper
     @XmlElement(name = "property")
-    private final List<Property> properties = new ArrayList<Property>();
+    private final List<Property> properties = new ArrayList<>();
 
     @XmlElement
     private TestCaseResult error;
 
     @XmlElement(name = "testcase")
-    private final List<TestCaseResult> testCaseResults = new ArrayList<TestCaseResult>();
+    private final List<TestCaseResult> testCaseResults = new ArrayList<>();
 
     /**
      * Add property.

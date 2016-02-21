@@ -49,7 +49,7 @@ public final class TestUtils {
      */
     @SafeVarargs
     public static <T> List<Object[]> toParamList(T... params) {
-        List<Object[]> list = new ArrayList<Object[]>();
+        List<Object[]> list = new ArrayList<>();
         for (T param : params)
             list.add(new Object[] { param });
         return list;

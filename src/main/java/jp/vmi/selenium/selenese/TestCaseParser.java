@@ -50,14 +50,14 @@ public class TestCaseParser extends Parser {
                 List<String> cmdWithArgs;
                 switch (tr.getNodeType()) {
                 case Node.ELEMENT_NODE: // TD
-                    cmdWithArgs = new ArrayList<String>(3);
+                    cmdWithArgs = new ArrayList<>(3);
                     for (Node td : each(tr.getChildNodes())) {
                         if ("TD".equals(td.getNodeName()))
                             cmdWithArgs.add(getTdString(td));
                     }
                     break;
                 case Node.COMMENT_NODE:
-                    cmdWithArgs = new ArrayList<String>(2);
+                    cmdWithArgs = new ArrayList<>(2);
                     cmdWithArgs.add("comment");
                     cmdWithArgs.add(tr.getNodeValue().trim());
                     break;

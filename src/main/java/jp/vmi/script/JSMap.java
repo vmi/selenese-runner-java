@@ -42,7 +42,7 @@ public class JSMap<K, V> extends AbstractMap<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        final Set<Entry<K, V>> result = new HashSet<Entry<K, V>>();
+        final Set<Entry<K, V>> result = new HashSet<>();
         wrapper.eval("for (var k in " + OBJECT + ") {"
             + "  if (" + OBJECT + ".hasOwnProperty(k)) {"
             + "    " + ARGS + "[0].execute(k, " + OBJECT + "[k]);"
@@ -51,7 +51,7 @@ public class JSMap<K, V> extends AbstractMap<K, V> {
             new EntrySetCallback<K, V>() {
                 @Override
                 public void execute(K key, V value) {
-                    result.add(new SimpleEntry<K, V>(key, value));
+                    result.add(new SimpleEntry<>(key, value));
                 }
             });
         return result;
@@ -82,6 +82,6 @@ public class JSMap<K, V> extends AbstractMap<K, V> {
         else if (object instanceof Map)
             return (Map<K, V>) object; // for Rhino in Java7 and Nashorn.
         else
-            return new JSMap<K, V>(engine, object);
+            return new JSMap<>(engine, object);
     }
 }
