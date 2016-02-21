@@ -27,6 +27,9 @@ public class CommandDumper {
 
     private static final Pattern GETTER = Pattern.compile("(get|is)([A-Z].*)");
 
+    private CommandDumper() {
+    }
+
     private static String append(String s1, String s2) {
         if (StringUtils.isEmpty(s1))
             return s2;

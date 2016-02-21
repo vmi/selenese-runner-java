@@ -57,6 +57,9 @@ public class CustomPhantomJSDriverServiceFactory {
     private static final String GHOSTDRIVER_DOC_LINK = "https://github.com/detro/ghostdriver/blob/master/README.md";
     private static final String GHOSTDRIVER_DOWNLOAD_LINK = "https://github.com/detro/ghostdriver/downloads";
 
+    private CustomPhantomJSDriverServiceFactory() {
+    }
+
     /**
      * Configures and returns a new {@link PhantomJSDriverService} using the default configuration without logging.
      *
