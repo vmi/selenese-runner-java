@@ -201,6 +201,8 @@ public class DefaultConfig implements IConfig {
 
     /**
      * Constructor.
+     *
+     * @param args command line arguments.
      */
     public DefaultConfig(String... args) {
         String columns = System.getProperty("columns", System.getenv("COLUMNS"));
@@ -583,6 +585,7 @@ public class DefaultConfig implements IConfig {
      * load configuration from file.
      *
      * @param file configuration file name.
+     * @return DefaultConfig object itself.
      */
     public IConfig loadFrom(String file) {
         BufferedReader r = null;

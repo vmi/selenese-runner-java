@@ -112,15 +112,17 @@ public interface IConfig {
     /**
      * Get option value.
      *
+     * @param <T> type of option value.
      * @param opt option name.
-     * @return array of option values.
+     * @return option value.
      */
     <T> T get(String opt);
 
     /**
      * Get option value or default value.
      *
-     * @param name option name.
+     * @param <T> type of option value.
+     * @param opt option name.
      * @param defaultValue default value.
      * @return option value.
      */

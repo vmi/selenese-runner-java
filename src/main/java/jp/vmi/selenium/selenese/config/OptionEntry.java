@@ -77,10 +77,11 @@ public class OptionEntry {
     }
 
     /**
-     * Get property.
+     * Get option value.
      *
+     * @param <T> type of option value.
      * @param obj object.
-     * @return property value.
+     * @return option value.
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Object obj) {
@@ -92,10 +93,10 @@ public class OptionEntry {
     }
 
     /**
-     * Set property.
+     * Set option value.
      *
      * @param obj object.
-     * @param value property value.
+     * @param value option value.
      */
     public void set(Object obj, Object value) {
         if (setter == null)
@@ -108,10 +109,10 @@ public class OptionEntry {
     }
 
     /**
-     * Add property.
+     * Add option value.
      *
      * @param obj object.
-     * @param value property item value.
+     * @param value option value item.
      */
     public void add(Object obj, Object value) {
         if (adder == null)
