@@ -4,6 +4,8 @@ Selenese Runner Java Relase Note
 ### 2.5.0
 
 * Refine code. (PR #185, #187 by AymanDF)
+* Update dependency versions.
+* Add utility script.
 
 ### 2.4.0
 
