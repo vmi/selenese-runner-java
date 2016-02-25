@@ -1,6 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.util.Arrays;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -77,8 +79,8 @@ public class Assertion extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        String[] getterArgs;
-        String expected;
+        final String[] getterArgs;
+        final String expected;
         if (isBoolean) {
             getterArgs = curArgs;
             expected = null;
@@ -87,47 +89,68 @@ public class Assertion extends AbstractCommand {
             getterArgs = Arrays.copyOf(curArgs, newLen);
             expected = curArgs[newLen];
         }
-        boolean found = true;
-        String message = null;
         int timeout = context.getTimeout();
-        long breakAfter = System.currentTimeMillis() + timeout;
-        while (true) {
-            found = true;
-            if (isBoolean) {
-                try {
-                    boolean result = (Boolean) getterSubCommand.execute(context, getterArgs);
-                    if (result ^ isInverse)
-                        return SUCCESS;
-                    message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
-                } catch (SeleniumException e) {
-                    String error = e.getMessage();
-                    if (!error.endsWith(" not found"))
-                        throw e;
-                    message = String.format("Assertion failed (%s)", error);
-                    found = false;
+        switch (type) {
+        case WAIT_FOR:
+            final AtomicReference<String> message = new AtomicReference<String>("");
+            final Context ctx = context;
+            FutureTask<Result> future = new FutureTask<Result>(new Callable<Result>() {
+                @Override
+                public Result call() throws Exception {
+                    while (true) {
+                        Result state = executeOnceImpl(ctx, expected, getterArgs);
+                        if (state == SUCCESS)
+                            return state;
+                        else
+                            message.set(state.getMessage());
+                        Thread.sleep(RETRY_INTERVAL);
+                    }
                 }
-            } else {
-                try {
-                    String resultString = SeleniumUtils.convertToString(getterSubCommand.execute(context, getterArgs));
-                    if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
-                        return SUCCESS;
-                    message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
-                        resultString, isInverse ? "Not " : "", expected);
-                } catch (SeleniumException e) {
-                    String error = e.getMessage();
-                    if (!error.endsWith(" not found"))
-                        throw e;
-                    message = String.format("Assertion failed (%s)", error);
-                    found = false;
-                }
-            }
-            if (type != Type.WAIT_FOR || System.currentTimeMillis() > breakAfter)
-                break;
+            });
             try {
-                Thread.sleep(RETRY_INTERVAL);
+                return future.get(timeout, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
                 log.warn(e.getMessage());
-                break;
+            } catch (ExecutionException e) {
+                log.warn(e.getMessage());
+            } catch (TimeoutException e) {
+                log.warn(e.getMessage());
+            }
+            return new Warning(String.format("Timed out after %dms%s", timeout, message.get()));
+        default: // == ASSERT or VERIFY
+            return executeOnceImpl(context, expected, getterArgs);
+        }
+    }
+
+    private Result executeOnceImpl(Context context, String expected, String... getterArgs) {
+        boolean found = true;
+        String message = null;
+        if (isBoolean) {
+            try {
+                boolean result = (Boolean) getterSubCommand.execute(context, getterArgs);
+                if (result ^ isInverse)
+                    return SUCCESS;
+                message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
+            } catch (SeleniumException e) {
+                String error = e.getMessage();
+                if (!error.endsWith(" not found"))
+                    throw e;
+                message = String.format("Assertion failed (%s)", error);
+                found = false;
+            }
+        } else {
+            try {
+                String resultString = SeleniumUtils.convertToString(getterSubCommand.execute(context, getterArgs));
+                if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
+                    return SUCCESS;
+                message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
+                        resultString, isInverse ? "Not " : "", expected);
+            } catch (SeleniumException e) {
+                String error = e.getMessage();
+                if (!error.endsWith(" not found"))
+                    throw e;
+                message = String.format("Assertion failed (%s)", error);
+                found = false;
             }
         }
         switch (type) {
@@ -136,7 +159,7 @@ public class Assertion extends AbstractCommand {
         case VERIFY:
             return found ? new Warning(message) : new Failure(message);
         default: // == WAIT_FOR
-            return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
+            return new Warning(message != null ? String.format(" (%s)", message) : "");
         }
     }
 }
