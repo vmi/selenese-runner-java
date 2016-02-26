@@ -7,7 +7,7 @@ import static jp.vmi.selenium.selenese.config.SeleneseRunnerOptions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({ "javadoc", "deprecation" })
 public class DefaultConfigTest {
 
     private final String[] args = {
@@ -81,7 +81,7 @@ public class DefaultConfigTest {
         assertThat(config.getOptionValue(HEIGHT), is("1024"));
         assertThat(config.getOptionValue(WIDTH), is("768"));
         assertThat(config.getOptionValues(DEFINE), equalTo(new String[] { "key1=value1", "key2=value2", "key3=value3" }));
-        assertThat(config.getOptionValue(ROLLUP), is("/path/to/rollup"));
+        assertThat(config.getOptionValues(ROLLUP), equalTo(new String[] { "/path/to/rollup" }));
         assertThat(config.getOptionValue(COOKIE_FILTER), is("^SID"));
         assertThat(config.getOptionValue(COMMAND_FACTORY), is("full.qualify.class.Name"));
     }
@@ -120,7 +120,7 @@ public class DefaultConfigTest {
         assertThat(config.getOptionValue(HEIGHT), is("2048"));
         assertThat(config.getOptionValue(WIDTH), is("1536"));
         assertThat(config.getOptionValues(DEFINE), equalTo(new String[] { "opt-key1=opt-value1", "opt-key2=opt-value2", "opt-key3=opt-value3" }));
-        assertThat(config.getOptionValue(ROLLUP), is("/opt/path/to/rollup"));
+        assertThat(config.getOptionValues(ROLLUP), equalTo(new String[] { "/opt/path/to/rollup" }));
         assertThat(config.getOptionValue(COOKIE_FILTER), is("^OPT_SID"));
         assertThat(config.getOptionValue(COMMAND_FACTORY), is("opt.full.qualify.class.Name"));
     }

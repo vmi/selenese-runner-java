@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
-import jp.vmi.selenium.selenese.config.SeleneseRunnerOptions;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Result;
@@ -23,7 +22,7 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
-import static jp.vmi.selenium.selenese.config.SeleneseRunnerOptions.*;
+import static jp.vmi.selenium.selenese.config.DefaultConfig.*;
 
 /**
  * Provide command line interface.
@@ -65,7 +64,7 @@ public class Main {
         String progName = System.getenv("PROG_NAME");
         if (StringUtils.isBlank(progName))
             progName = "java -jar selenese-runner.jar";
-        new SeleneseRunnerOptions().showHelp(new PrintWriter(System.out), PROG_TITLE, getVersion(), progName, msgs);
+        new DefaultConfig().showHelp(new PrintWriter(System.out), PROG_TITLE, getVersion(), progName, msgs);
         exit(1);
     }
 
@@ -107,7 +106,7 @@ public class Main {
      * @param filenames filenames of test-suites/test-cases.
      */
     public void setupRunner(Runner runner, IConfig config, String... filenames) {
-        String driverName = config.getOptionValue(DRIVER);
+        String driverName = config.getDriver();
         DriverOptions driverOptions = new DriverOptions(config);
         if (driverName == null) {
             if (driverOptions.has(DriverOption.FIREFOX))
@@ -122,8 +121,8 @@ public class Main {
         WebDriverManager manager = WebDriverManager.newInstance();
         manager.setWebDriverFactory(driverName);
         manager.setDriverOptions(driverOptions);
-        if (config.hasOption(COMMAND_FACTORY)) {
-            String factoryName = config.getOptionValue(COMMAND_FACTORY);
+        if (config.getCommandFactory() != null) {
+            String factoryName = config.getCommandFactory();
             ICommandFactory factory;
             try {
                 Class<?> factoryClass = Class.forName(factoryName);
@@ -137,25 +136,25 @@ public class Main {
         }
         runner.setDriver(manager.get());
         runner.setWebDriverPreparator(manager);
-        if (config.getOptionValueAsBoolean(HIGHLIGHT))
+        if (config.isHighlight())
             runner.setHighlight(true);
-        if (config.hasOption(SCREENSHOT_DIR))
-            runner.setScreenshotDir(config.getOptionValue(SCREENSHOT_DIR));
-        if (config.hasOption(SCREENSHOT_ALL))
-            runner.setScreenshotAllDir(config.getOptionValue(SCREENSHOT_ALL));
-        if (config.hasOption(SCREENSHOT_ON_FAIL))
-            runner.setScreenshotOnFailDir(config.getOptionValue(SCREENSHOT_ON_FAIL));
-        if (config.hasOption(BASEURL))
-            runner.setOverridingBaseURL(config.getOptionValue(BASEURL));
-        if (config.getOptionValueAsBoolean(IGNORE_SCREENSHOT_COMMAND))
+        if (config.getScreenshotDir() != null)
+            runner.setScreenshotDir(config.getScreenshotDir());
+        if (config.getScreenshotAll() != null)
+            runner.setScreenshotAllDir(config.getScreenshotAll());
+        if (config.getScreenshotOnFail() != null)
+            runner.setScreenshotOnFailDir(config.getScreenshotOnFail());
+        if (config.getBaseurl() != null)
+            runner.setOverridingBaseURL(config.getBaseurl());
+        if (config.isIgnoreScreenshotCommand())
             runner.setIgnoredScreenshotCommand(true);
-        if (config.hasOption(ROLLUP)) {
-            String[] rollups = config.getOptionValues(ROLLUP);
+        if (config.getRollup() != null) {
+            String[] rollups = config.getRollup();
             for (String rollup : rollups)
                 runner.getRollupRules().load(rollup);
         }
-        if (config.hasOption(COOKIE_FILTER)) {
-            String cookieFilter = config.getOptionValue(COOKIE_FILTER);
+        if (config.getCookieFilter() != null) {
+            String cookieFilter = config.getCookieFilter();
             if (cookieFilter.length() < 2)
                 throw new IllegalArgumentException("invalid cookie filter format: " + cookieFilter);
             FilterType filterType;
@@ -172,21 +171,21 @@ public class Main {
             String pattern = cookieFilter.substring(1);
             runner.setCookieFilter(new CookieFilter(filterType, pattern));
         }
-        if (config.hasOption(XML_RESULT))
-            runner.setJUnitResultDir(config.getOptionValue(XML_RESULT));
-        if (config.hasOption(HTML_RESULT))
-            runner.setHtmlResultDir(config.getOptionValue(HTML_RESULT));
-        int timeout = NumberUtils.toInt(config.getOptionValue(TIMEOUT, DEFAULT_TIMEOUT_MILLISEC));
+        if (config.getXmlResult() != null)
+            runner.setJUnitResultDir(config.getXmlResult());
+        if (config.getHtmlResult() != null)
+            runner.setHtmlResultDir(config.getHtmlResult());
+        int timeout = NumberUtils.toInt(config.getTimeout(), DEFAULT_TIMEOUT_MILLISEC_N);
         if (timeout <= 0)
-            throw new IllegalArgumentException("Invalid timeout value. (" + config.getOptionValue(TIMEOUT) + ")");
+            throw new IllegalArgumentException("Invalid timeout value. (" + config.getTimeout() + ")");
         runner.setTimeout(timeout);
-        int speed = NumberUtils.toInt(config.getOptionValue(SET_SPEED, "0"));
+        int speed = NumberUtils.toInt(config.getSetSpeed(), 0);
         if (speed < 0)
-            throw new IllegalArgumentException("Invalid speed value. (" + config.getOptionValue(SET_SPEED) + ")");
+            throw new IllegalArgumentException("Invalid speed value. (" + config.getSetSpeed() + ")");
         runner.setInitialSpeed(speed);
-        if (config.hasOption(NO_EXIT))
+        if (config.isNoExit())
             noExit = true;
-        if (config.hasOption(STRICT_EXIT_CODE))
+        if (config.isStrictExitCode())
             exitStrictly = true;
         runner.setPrintStream(System.out);
     }
