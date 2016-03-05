@@ -9,8 +9,11 @@ import org.apache.commons.io.output.StringBuilderWriter;
 import org.junit.Test;
 import org.kohsuke.args4j.Option;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @SuppressWarnings("javadoc")
 public class NewDefaultConfigTest {
@@ -129,7 +132,7 @@ public class NewDefaultConfigTest {
         assertThat(options.isNoExit(), is(false));
         assertThat(options.isStrictExitCode(), is(false));
         assertThat(options.isHelp(), is(false));
-        assertThat(options.getArgs(), is(nullValue()));
+        assertThat(options.getArgs(), is(emptyArray()));
 
         options.parseCommandLine(testArgs);
         //assertThat(options.getConfig(), is("config-file"));
