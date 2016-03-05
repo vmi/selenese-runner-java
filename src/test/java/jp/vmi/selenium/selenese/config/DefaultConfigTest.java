@@ -4,7 +4,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 
 import static jp.vmi.selenium.selenese.config.SeleneseRunnerOptions.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings({ "javadoc", "deprecation" })
@@ -47,6 +50,44 @@ public class DefaultConfigTest {
         "--" + COOKIE_FILTER + "=^OPT_SID",
         "--" + COMMAND_FACTORY + "=opt.full.qualify.class.Name",
     };
+
+    @Test
+    public void testEmptyConfig() {
+        IConfig config = new DefaultConfig();
+        assertThat(config.getOptionValue(DRIVER), is(nullValue()));
+        assertThat(config.getOptionValue(PROFILE), is(nullValue()));
+        assertThat(config.getOptionValue(PROFILE_DIR), is(nullValue()));
+        assertThat(config.getOptionValue(PROXY), is(nullValue()));
+        assertThat(config.getOptionValue(PROXY_USER), is(nullValue()));
+        assertThat(config.getOptionValue(PROXY_PASSWORD), is(nullValue()));
+        assertThat(config.getOptionValue(NO_PROXY), is(nullValue()));
+        assertThat(config.getOptionValues(CLI_ARGS), is(nullValue()));
+        assertThat(config.getOptionValue(REMOTE_URL), is(nullValue()));
+        assertThat(config.getOptionValue(REMOTE_PLATFORM), is(nullValue()));
+        assertThat(config.getOptionValue(REMOTE_BROWSER), is(nullValue()));
+        assertThat(config.getOptionValue(REMOTE_VERSION), is(nullValue()));
+        assertThat(config.getOptionValueAsBoolean(HIGHLIGHT), is(false));
+        assertThat(config.getOptionValue(SCREENSHOT_DIR), is(nullValue()));
+        assertThat(config.getOptionValue(SCREENSHOT_ALL), is(nullValue()));
+        assertThat(config.getOptionValue(SCREENSHOT_ON_FAIL), is(nullValue()));
+        assertThat(config.getOptionValueAsBoolean(IGNORE_SCREENSHOT_COMMAND), is(false));
+        assertThat(config.getOptionValue(BASEURL), is(nullValue()));
+        assertThat(config.getOptionValue(FIREFOX), is(nullValue()));
+        assertThat(config.getOptionValue(CHROMEDRIVER), is(nullValue()));
+        assertThat(config.getOptionValue(IEDRIVER), is(nullValue()));
+        assertThat(config.getOptionValue(PHANTOMJS), is(nullValue()));
+        assertThat(config.getOptionValue(XML_RESULT), is(nullValue()));
+        assertThat(config.getOptionValue(HTML_RESULT), is(nullValue()));
+        assertThat(config.getOptionValue(TIMEOUT), is(nullValue()));
+        assertThat(config.getOptionValue(SET_SPEED), is(nullValue()));
+        assertThat(config.getOptionValue(HEIGHT), is(nullValue()));
+        assertThat(config.getOptionValue(WIDTH), is(nullValue()));
+        assertThat(config.getOptionValues(DEFINE), is(nullValue()));
+        assertThat(config.getOptionValue(ROLLUP), is(nullValue()));
+        assertThat(config.getOptionValue(COOKIE_FILTER), is(nullValue()));
+        assertThat(config.getOptionValue(COMMAND_FACTORY), is(nullValue()));
+        assertThat(config.getArgs(), is(emptyArray()));
+    }
 
     @Test
     public void testConfigFile() {
