@@ -34,42 +34,44 @@ Usage
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
-     -c,--config <file>                      load option information from file.
-     -d,--driver <driver>                    firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
-     -p,--profile <name>                     profile name (Firefox only *1)
-     -P,--profile-dir <dir>                  profile directory (Firefox only *1)
-        --proxy <proxy>                      proxy host and port (HOST:PORT) (excepting IE)
-        --proxy-user <user>                  proxy username (HtmlUnit only *2)
-        --proxy-password <password>          proxy password (HtmlUnit only *2)
-        --no-proxy <hosts>                   no-proxy hosts
-        --cli-args <arg>                     add command line arguments at starting up driver (multiple)
-        --remote-url <url>                   Remote test runner URL (Remote only)
-        --remote-platform <platform>         Desired remote platform (Remote only)
-        --remote-browser <browser>           Desired remote browser (Remote only)
-        --remote-version <browser-version>   Desired remote browser version (Remote only)
-     -H,--highlight                          highlight locator always.
-     -s,--screenshot-dir <dir>               override captureEntirePageScreenshot directory.
-     -S,--screenshot-all <dir>               take screenshot at all commands to specified directory.
-        --screenshot-on-fail <dir>           take screenshot on fail commands to specified directory.
-        --ignore-screenshot-command          ignore captureEntirePageScreenshot command.
-     -b,--baseurl <baseURL>                  override base URL set in selenese.
-        --firefox <path>                     path to 'firefox' binary. (implies '--driver firefox')
-        --chromedriver <path>                path to 'chromedriver' binary. (implies '--driver chrome')
-        --iedriver <path>                    path to 'IEDriverServer' binary. (implies '--driver ie')
-        --phantomjs <path>                   path to 'phantomjs' binary. (implies '--driver phantomjs')
-        --xml-result <dir>                   output XML JUnit results to specified directory.
-        --html-result <dir>                  output HTML results to specified directory.
-     -t,--timeout <timeout>                  set timeout (ms) for waiting. (default: 30000 ms)
-        --set-speed <speed>                  same as executing setSpeed(ms) command first.
-        --height <height>                    set initial height. (excluding mobile)
-        --width <width>                      set initial width. (excluding mobile)
-     -D,--define <key=value or key+=value>   define parameters for capabilities. (multiple)
-        --rollup <file>                      define rollup rule by JavaScript. (multiple)
-        --cookie-filter <+RE|-RE>            filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
-        --command-factory <FQCN>             register user defined command factory. (See Note *3)
-        --no-exit                            don't call System.exit at end.
-        --strict-exit-code                   return strict exit code, reflected by selenese command results at end. (See Note *4)
-     -h,--help                               show this message.
+     --config (-c) <file>                    : load option information from file.
+     --driver (-d) <driver>                  : firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
+     --profile (-p) <name>                   : profile name (Firefox only *1)
+     --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
+     --chrome-experimental-options <file>    : path to json file specify experimental options for chrome (Chrome only *1)
+     --chrome-extension <file>               : chrome extension file (multiple, Chrome only *1)
+     --proxy <proxy>                         : proxy host and port (HOST:PORT) (excepting IE)
+     --proxy-user <user>                     : proxy username (HtmlUnit only *2)
+     --proxy-password <password>             : proxy password (HtmlUnit only *2)
+     --no-proxy <hosts>                      : no-proxy hosts
+     --cli-args <arg>                        : add command line arguments at starting up driver (multiple)
+     --remote-url <url>                      : Remote test runner URL (Remote only)
+     --remote-platform <platform>            : Desired remote platform (Remote only)
+     --remote-browser <browser>              : Desired remote browser (Remote only)
+     --remote-version <browser-version>      : Desired remote browser version (Remote only)
+     --highlight (-H)                        : highlight locator always.
+     --screenshot-dir (-s) <dir>             : override captureEntirePageScreenshot directory.
+     --screenshot-all (-S) <dir>             : take screenshot at all commands to specified directory.
+     --screenshot-on-fail <dir>              : take screenshot on fail commands to specified directory.
+     --ignore-screenshot-command             : ignore captureEntirePageScreenshot command.
+     --baseurl (-b) <baseURL>                : override base URL set in selenese.
+     --firefox <path>                        : path to 'firefox' binary. (implies '--driver firefox')
+     --chromedriver <path>                   : path to 'chromedriver' binary. (implies '--driver chrome')
+     --iedriver <path>                       : path to 'IEDriverServer' binary. (implies '--driver ie')
+     --phantomjs <path>                      : path to 'phantomjs' binary. (implies '--driver phantomjs')
+     --xml-result <dir>                      : output XML JUnit results to specified directory.
+     --html-result <dir>                     : output HTML results to specified directory.
+     --timeout (-t) <timeout>                : set timeout (ms) for waiting. (default: 30000 ms)
+     --set-speed <speed>                     : same as executing setSpeed(ms) command first.
+     --height <height>                       : set initial height. (excluding mobile)
+     --width <width>                         : set initial width. (excluding mobile)
+     --define (-D) <key=value or key+=value> : define parameters for capabilities. (multiple)
+     --rollup <file>                         : define rollup rule by JavaScript. (multiple)
+     --cookie-filter <+RE|-RE>               : filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
+     --command-factory <FQCN>                : register user defined command factory. (See Note *3)
+     --no-exit                               : don't call System.exit at end.
+     --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)
+     --help (-h)                             : show this message.
     
     [Note]
     *1 It is available if using "--driver remote --remote-browser firefox".
