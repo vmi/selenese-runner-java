@@ -195,7 +195,7 @@ public class DefaultConfig implements IConfig {
     private Boolean help;
 
     @Argument
-    private String[] args;
+    private String[] args = LangUtils.EMPTY_STRING_ARRAY;
 
     private final OptionMap optionMap = new OptionMap(this);
 
