@@ -483,11 +483,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>guice</artifactId>
       <version>3.0</version>
     </dependency>
-    <dependency>
-      <groupId>org.webbitserver</groupId>
-      <artifactId>webbit</artifactId>
-      <version>0.4.15</version>
-    </dependency>
     <!--
     <dependency>
       <groupId>org.jenkins-ci.main</groupId>
