@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * System Information.
  */
@@ -29,9 +27,7 @@ public class SystemInformation {
     }
 
     public static String getVersionFromPomProperties(String pomProps) {
-        InputStream is = null;
-        try {
-            is = SystemInformation.class.getResourceAsStream(pomProps);
+        try (InputStream is = SystemInformation.class.getResourceAsStream(pomProps)) {
             if (is == null)
                 return UNKNOWN;
             Properties prop = new Properties();
@@ -39,8 +35,6 @@ public class SystemInformation {
             return prop.getProperty("version", UNKNOWN);
         } catch (IOException e) {
             return UNKNOWN;
-        } finally {
-            IOUtils.closeQuietly(is);
         }
     }
 

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -45,17 +44,14 @@ public class Main {
      * @return version string.
      */
     public String getVersion() {
-        InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties");
-        if (is != null) {
-            try {
+        try (InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties")) {
+            if (is != null) {
                 Properties prop = new Properties();
                 prop.load(is);
                 return prop.getProperty("version");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                IOUtils.closeQuietly(is);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "(missing version information)";
     }

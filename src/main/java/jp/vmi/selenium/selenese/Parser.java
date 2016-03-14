@@ -111,7 +111,6 @@ public abstract class Parser {
             }
             return Binder.newErrorTestCase(filename, new InvalidSeleneseException(
                 "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
-
         } catch (Exception e) {
             return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e));
         } finally {

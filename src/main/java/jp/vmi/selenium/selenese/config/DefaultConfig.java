@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -588,9 +587,7 @@ public class DefaultConfig implements IConfig {
      * @return DefaultConfig object itself.
      */
     public IConfig loadFrom(String file) {
-        BufferedReader r = null;
-        try {
-            r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             int cnt = 0;
             String line;
             String currentKey = null;
@@ -615,8 +612,6 @@ public class DefaultConfig implements IConfig {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(r);
         }
         return this;
     }

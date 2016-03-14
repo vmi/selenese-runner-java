@@ -88,14 +88,10 @@ public class HtmlResult {
     }
 
     private String getTemplate(String filename) {
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream(filename);
+        try (InputStream is = getClass().getResourceAsStream(filename)) {
             return IOUtils.toString(is);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(is);
         }
     }
 
