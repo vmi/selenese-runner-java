@@ -1,10 +1,9 @@
 package jp.vmi.html.result;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.Charsets;
 
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
@@ -34,7 +33,7 @@ public class UrlEncodeRenderer implements NamedRenderer {
     }
 
     private StringBuilder encode(StringBuilder sb, String s) {
-        for (byte b : s.getBytes(Charsets.UTF_8))
+        for (byte b : s.getBytes(StandardCharsets.UTF_8))
             sb.append(String.format("%%%02x", b));
         return sb;
     }
