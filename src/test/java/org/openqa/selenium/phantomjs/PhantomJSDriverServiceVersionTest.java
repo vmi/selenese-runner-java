@@ -1,6 +1,7 @@
 package org.openqa.selenium.phantomjs;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class PhantomJSDriverServiceVersionTest {
 
     @Test
     public void versionTest() throws Exception {
-        List<String> orig = split(IOUtils.toString(URI.create(ORIG_PJSDS_URL)));
-        List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(COPY_PJSDS_PATH)));
+        List<String> orig = split(IOUtils.toString(URI.create(ORIG_PJSDS_URL), StandardCharsets.UTF_8));
+        List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(COPY_PJSDS_PATH), StandardCharsets.UTF_8));
         Patch<String> patch = DiffUtils.diff(copy, orig);
         assertThat(patch.getDeltas(), is(empty()));
     }

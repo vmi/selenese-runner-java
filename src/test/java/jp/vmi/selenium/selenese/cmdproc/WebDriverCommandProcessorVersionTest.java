@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.cmdproc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,10 +56,10 @@ public class WebDriverCommandProcessorVersionTest {
         // check diff.
         File pkgDir = new File(seleniumDir, ORIG_PKG_DIR);
         for (String javaFile : ORIG_JAVA_FILES) {
-            List<String> orig = split(IOUtils.toString(new File(pkgDir, javaFile).toURI()));
+            List<String> orig = split(IOUtils.toString(new File(pkgDir, javaFile).toURI(), StandardCharsets.UTF_8));
             String[] splitted = javaFile.split("/");
             String resName = COPIED_PATH + splitted[splitted.length - 1];
-            List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(resName)));
+            List<String> copy = split(IOUtils.toString(getClass().getResourceAsStream(resName), StandardCharsets.UTF_8));
             Patch<String> patch = DiffUtils.diff(copy, orig);
             assertThat(patch.getDeltas(), is(empty()));
         }

@@ -3,6 +3,7 @@ package jp.vmi.html.result;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class HtmlResult {
 
     private String getTemplate(String filename) {
         try (InputStream is = getClass().getResourceAsStream(filename)) {
-            return IOUtils.toString(is);
+            return IOUtils.toString(is, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
