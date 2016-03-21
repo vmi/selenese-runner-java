@@ -1,6 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.6.0
+
+* Catch up Selenium 2.53.0.
+* Update dependency versions.
+* Refine code.
+* Re-implement the test web server.
+
 ### 2.5.0
 
 * Replace command line arguments parser from commons-cli to args4j. **Note:** There are too many changes in `IConfig`, `DefaultConfig`, and `SeleneseRunnerOptions` classes.
