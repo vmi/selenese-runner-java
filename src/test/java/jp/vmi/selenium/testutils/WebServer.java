@@ -19,6 +19,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.text.StrLookup;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.openqa.selenium.net.PortProber;
@@ -155,6 +156,8 @@ public class WebServer {
 
     private static class SimpleTemplateHandler implements HttpHandler {
 
+        private static final String WAIT = "wait";
+
         private final String htdocs;
 
         public SimpleTemplateHandler(String htdocs) {
@@ -175,6 +178,17 @@ public class WebServer {
                     }).replace(tmpl).getBytes(StandardCharsets.UTF_8);
                 } else {
                     content.body = Files.readAllBytes(path);
+                }
+                if (params.containsKey(WAIT)) {
+                    int wait = NumberUtils.toInt(params.get(WAIT));
+                    if (wait > 0) {
+                        try {
+                            log.debug("Waiting {} sec.", wait);
+                            Thread.sleep(wait * 1000);
+                        } catch (InterruptedException e) {
+                            // no operation.
+                        }
+                    }
                 }
                 return content;
             } catch (FileNotFoundException e) {
