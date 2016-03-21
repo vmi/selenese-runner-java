@@ -374,7 +374,7 @@ public class WebServer {
         case 0:
             break;
         default:
-            throw new IllegalArgumentException(String.join(" ", args));
+            throw new IllegalArgumentException(StringUtils.join(args, ' '));
         }
         new WebServer(port, htdocs).start();
     }
