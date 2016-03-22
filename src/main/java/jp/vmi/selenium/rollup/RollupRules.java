@@ -13,7 +13,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.commons.collections.Closure;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,9 +68,9 @@ public class RollupRules {
      * @param is InputStream object.
      */
     public void load(final InputStream is) {
-        RollupManager.rollupRulesContext(this, new Closure() {
+        RollupManager.rollupRulesContext(this, new Runnable() {
             @Override
-            public void execute(Object input) {
+            public void run() {
                 Reader r = null;
                 try {
                     String packageName = RollupManager.class.getPackage().getName();

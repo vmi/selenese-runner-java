@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.script.ScriptEngine;
 
-import org.apache.commons.collections.Closure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +26,12 @@ public class RollupManager {
      * Execute closure in the rollupRules context.
      *
      * @param rollupRules rollupRules context.
-     * @param closure closure.
+     * @param runnable runnable.
      */
-    public static synchronized void rollupRulesContext(RollupRules rollupRules, Closure closure) {
+    public static synchronized void rollupRulesContext(RollupRules rollupRules, Runnable runnable) {
         currentRollupRules = rollupRules;
         try {
-            closure.execute(null);
+            runnable.run();
         } finally {
             currentRollupRules = null;
         }
