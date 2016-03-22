@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-class DummyDriver extends HtmlUnitDriver {
+import jp.vmi.selenium.webdriver.NullDriver;
+
+class DummyDriver extends NullDriver {
 
     public By by;
 
