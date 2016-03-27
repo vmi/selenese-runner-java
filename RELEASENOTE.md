@@ -7,6 +7,7 @@ Selenese Runner Java Relase Note
 * Update dependency versions.
 * Refine code.
 * Re-implement the test web server.
+* Add initialization of pageLoadTimeout. (#190)
 * Add white space normalizing. (#191)
 
 ### 2.5.0

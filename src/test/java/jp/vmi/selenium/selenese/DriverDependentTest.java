@@ -18,6 +18,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
@@ -338,6 +339,13 @@ public class DriverDependentTest extends TestCaseTestBase {
         assumeNot(HTMLUNIT);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void issue190() {
+        runner.setTimeout(3000);
+        execute("testcase_issue190");
+        assertThat(result, is(instanceOf(Error.class)));
     }
 
     @Test

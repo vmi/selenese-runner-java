@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -248,6 +249,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setDriver(WebDriver driver) {
         this.driver = driver;
         this.initialWindowHandle = driver.getWindowHandle();
+        setDriverTimeout();
     }
 
     @Override
@@ -411,6 +413,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         log.info("Highlight mode: {}", isHighlight ? "enabled" : "disabled");
     }
 
+    private void setDriverTimeout() {
+        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
+    }
+
     @Override
     public int getTimeout() {
         return timeout;
@@ -419,6 +425,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+        if (driver != null)
+            setDriverTimeout();
         log.info("Timeout: {} ms", timeout);
     }
 
