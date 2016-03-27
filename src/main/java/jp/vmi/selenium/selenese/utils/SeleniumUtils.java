@@ -87,6 +87,27 @@ public class SeleniumUtils {
             this.stringPattern = pattern;
         }
 
+        private static final Pattern SPC_RE = Pattern.compile("[\t\r\n \u00A0]+");
+
+        /**
+         * Trim and compress spaces in string.
+         *
+         * @param input string.
+         * @return normalized string.
+         */
+        private static String normalizeSpaces(String input) {
+            String[] inputs = SPC_RE.split(input);
+            int length = inputs.length;
+            if (length == 0)
+                return "";
+            else if (length == 1)
+                return inputs[0];
+            int offset = inputs[0].isEmpty() ? 1 : 0;
+            if (offset == 1 && length == 2)
+                return inputs[1];
+            return StringUtils.join(inputs, ' ', offset, length);
+        }
+
         /**
          * Match pattern.
          *
@@ -94,6 +115,7 @@ public class SeleniumUtils {
          * @return true if matched.
          */
         public boolean matches(String input) {
+            input = normalizeSpaces(input);
             switch (type) {
             case REGEXP:
             case REGEXPI:

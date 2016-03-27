@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>testcase_issue191</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_issue191</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/issue191.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=#A</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0009 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#B</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0009*2 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#C</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0009/U+0009/U+0009 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#D</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000A -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#E</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000A*2 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#F</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000A/U+000A/U+000A -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#G</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000D -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#H</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000D*2 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#I</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+000D/U+000D/U+000D -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#J</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0020 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#K</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0020*2 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#L</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+0020/U+0020/U+0020 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#M</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+00A0 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#N</td>
+	<td>word1&#x0020;word2</td>
+</tr>
+<!-- U+00A0/U+00A0/U+00A0 -->
+
+</tbody></table>
+</body>
+</html>
