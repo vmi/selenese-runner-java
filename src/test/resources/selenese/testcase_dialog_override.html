@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>testcase_dialog_override</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_dialog_override</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/dialog_override.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=alert</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlert</td>
+	<td>open alert dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=alert_result</td>
+	<td>done.</td>
+</tr>
+<tr>
+	<td>verifyAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>answerOnNextPrompt</td>
+	<td>prompt answer.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=prompt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyPromptPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyPrompt</td>
+	<td>open prompt dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=prompt_result</td>
+	<td>prompt answer.</td>
+</tr>
+<tr>
+	<td>verifyPromptNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmationPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmation</td>
+	<td>open confirm dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=confirm_result</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyConfirmationNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseCancelOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmationPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=confirm_result</td>
+	<td>false</td>
+</tr>
+<!--verifyConfirmationNotPresent is failure here. It is the bug of Selenium IDE?-->
+
+</tbody></table>
+</body>
+</html>
