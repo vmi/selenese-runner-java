@@ -54,4 +54,9 @@ public class WDCommand extends AbstractSubCommand<Object> {
     public boolean isNoOp() {
         return seleneseCommand instanceof NoOp;
     }
+
+    @Override
+    public String toString() {
+        return "WDCommand[" + name + "]";
+    }
 }
