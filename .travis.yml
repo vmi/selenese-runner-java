@@ -5,8 +5,7 @@ jdk:
   - openjdk7
 before_install:
   - phantomjs_ver=2.1.1
-  - curl -LO https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs_ver}-linux-x86_64.tar.bz2
-  - tar xvf phantomjs-${phantomjs_ver}-linux-x86_64.tar.bz2
+  - curl -LO https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs_ver}-linux-x86_64.tar.bz2 && tar xvf phantomjs-${phantomjs_ver}-linux-x86_64.tar.bz2
   - export PATH="phantomjs-${phantomjs_ver}-linux-x86_64/bin:$PATH"
 before_script:
   - "phantomjs --version"
