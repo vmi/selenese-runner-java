@@ -12,6 +12,7 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
+import jp.vmi.selenium.selenese.utils.DialogOverride;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -21,11 +22,10 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 public class SubCommandMap {
 
     private final Map<String, ISubCommand<?>> subCommands = Maps.newHashMap();
-    private final boolean enableAlertOverrides = true;
 
     private final JavascriptLibrary javascriptLibrary;
     private final KeyState keyState;
-    private final AlertOverride alertOverride;
+    private final DialogOverride alertOverride;
     private final SeleneseRunnerWindows windows;
 
     private final Context context;
@@ -46,7 +46,7 @@ public class SubCommandMap {
         this.context = context;
         this.javascriptLibrary = new JavascriptLibrary();
         this.keyState = new KeyState();
-        this.alertOverride = new AlertOverride(enableAlertOverrides);
+        this.alertOverride = new DialogOverride();
         this.windows = new SeleneseRunnerWindows(context);
         setUpSubCommands();
     }
@@ -65,6 +65,9 @@ public class SubCommandMap {
 
     private void setUpSubCommands() {
         WebDriverElementFinder elementFinder = context.getElementFinder();
+
+        //// Selenium webdriven commands:
+
         register(new AddLocationStrategy(elementFinder), "addLocationStrategy", VALUE, VALUE);
         register(new AddSelection(javascriptLibrary, elementFinder), "addSelection", LOCATOR, OPTION_LOCATOR);
         register(new AllowNativeXPath(), "allowNativeXpath", VALUE);
@@ -178,15 +181,19 @@ public class SubCommandMap {
         register(new WindowFocus(javascriptLibrary), "windowFocus");
         // windowMaximize
 
-        // Customized methods.
+        //// Customized commands:
+
         // "openWindow"
         // "runScript"
-
         register(new GetEval());
         register(new GetCssCount());
         register(new GetSpeed());
         register(new IsSomethingSelected());
         register(new WaitForCondition());
+        register(new AnswerOnNextPrompt(alertOverride));
+        register(new GetPrompt(alertOverride));
+        register(new IsPromptPresent(alertOverride));
+
         register(new GetSelected(GetSelected.Type.LABEL, false));
         register(new GetSelected(GetSelected.Type.LABEL, true));
         register(new GetSelected(GetSelected.Type.VALUE, false));

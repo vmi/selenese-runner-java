@@ -353,4 +353,11 @@ public class DriverDependentTest extends TestCaseTestBase {
         execute("testcase_issue191");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void dialogOverride() {
+        assumeNot(HTMLUNIT);
+        execute("testcase_dialog_override");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

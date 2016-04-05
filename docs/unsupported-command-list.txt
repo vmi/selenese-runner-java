@@ -1,6 +1,5 @@
 [Unsupported command]
 addScript
-answerOnNextPrompt
 assertAllWindowIds
 assertCursorPosition
 assertErrorOnNext
@@ -11,13 +10,9 @@ assertNotCursorPosition
 assertNotErrorOnNext
 assertNotFailureOnNext
 assertNotMouseSpeed
-assertNotPrompt
 assertNotSelected
 assertNotWhetherThisFrameMatchFrameExpression
 assertNotWhetherThisWindowMatchWindowExpression
-assertPrompt
-assertPromptNotPresent
-assertPromptPresent
 assertSelected
 assertWhetherThisFrameMatchFrameExpression
 assertWhetherThisWindowMatchWindowExpression
@@ -39,8 +34,6 @@ storeCursorPosition
 storeErrorOnNext
 storeFailureOnNext
 storeMouseSpeed
-storePrompt
-storePromptPresent
 storeSelected
 storeWhetherThisFrameMatchFrameExpression
 storeWhetherThisWindowMatchWindowExpression
@@ -54,13 +47,9 @@ verifyNotCursorPosition
 verifyNotErrorOnNext
 verifyNotFailureOnNext
 verifyNotMouseSpeed
-verifyNotPrompt
 verifyNotSelected
 verifyNotWhetherThisFrameMatchFrameExpression
 verifyNotWhetherThisWindowMatchWindowExpression
-verifyPrompt
-verifyPromptNotPresent
-verifyPromptPresent
 verifySelected
 verifyWhetherThisFrameMatchFrameExpression
 verifyWhetherThisWindowMatchWindowExpression
@@ -74,13 +63,9 @@ waitForNotCursorPosition
 waitForNotErrorOnNext
 waitForNotFailureOnNext
 waitForNotMouseSpeed
-waitForNotPrompt
 waitForNotSelected
 waitForNotWhetherThisFrameMatchFrameExpression
 waitForNotWhetherThisWindowMatchWindowExpression
-waitForPrompt
-waitForPromptNotPresent
-waitForPromptPresent
 waitForSelected
 waitForWhetherThisFrameMatchFrameExpression
 waitForWhetherThisWindowMatchWindowExpression
