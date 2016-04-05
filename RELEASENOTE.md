@@ -1,6 +1,26 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.7.0
+
+* Re-enabled alert/confirm commands because Selenium supported the feature with `localStorage`. (#32)
+* Add new supported commands for prompt. (#192)
+    * `answerOnNextPrompt`
+    * `assertNotPrompt`
+    * `assertPrompt`
+    * `assertPromptNotPresent`
+    * `assertPromptPresent`
+    * `storePrompt`
+    * `storePromptPresent`
+    * `verifyNotPrompt`
+    * `verifyPrompt`
+    * `verifyPromptNotPresent`
+    * `verifyPromptPresent`
+    * `waitForNotPrompt`
+    * `waitForPrompt`
+    * `waitForPromptNotPresent`
+    * `waitForPromptPresent`
+
 ### 2.6.0
 
 * Catch up Selenium 2.53.0.
