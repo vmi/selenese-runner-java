@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese;
 
 import org.apache.commons.io.FilenameUtils;
 
-import jp.vmi.junit.result.ITestTarget;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.PathUtils;
@@ -11,7 +10,7 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 /**
  *
  */
-public abstract class ErrorSource implements Selenese, ITestTarget {
+public abstract class ErrorSource implements Selenese {
 
     private String filename;
     private String baseName;
@@ -77,6 +76,7 @@ public abstract class ErrorSource implements Selenese, ITestTarget {
      *
      * @return result.
      */
+    @Override
     public Result getResult() {
         return new Error(e);
     }

@@ -1,11 +1,12 @@
 package jp.vmi.selenium.selenese;
 
+import jp.vmi.junit.result.ITestTarget;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
  * Selenese script interface.
  */
-public interface Selenese {
+public interface Selenese extends ITestTarget {
 
     /**
      * Selenese script types.
@@ -21,29 +22,6 @@ public interface Selenese {
      * @return script type.
      */
     Type getType();
-
-    /**
-     * Get file base name.
-     *
-     * For example, return "def" when file name is "/abc/def.html".
-     *
-     * @return file base name.
-     */
-    String getBaseName();
-
-    /**
-     * Get script name.
-     *
-     * @return script name.
-     */
-    String getName();
-
-    /**
-     * Is error instance?
-     *
-     * @return true if this is error instance.
-     */
-    boolean isError();
 
     /**
      * Execute script.

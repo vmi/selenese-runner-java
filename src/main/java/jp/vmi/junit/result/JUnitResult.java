@@ -136,14 +136,14 @@ public final class JUnitResult {
 
     /**
      * Start test-case.
-     * @param testSuite test-suite instance.
+     * @param testTarget test-suite or test-case instance.
      * @param testCase test-case instance.
      */
-    public void startTestCase(ITestSuite testSuite, ITestCase testCase) {
+    public void startTestCase(ITestTarget testTarget, ITestCase testCase) {
         TestCaseResult caseResult = factory.createTestCaseResult(testCase);
         map.put(testCase, caseResult);
-        if (testSuite != null) {
-            TestSuiteResult suiteResult = (TestSuiteResult) map.get(testSuite);
+        if (testTarget != null && testTarget instanceof ITestSuite) {
+            TestSuiteResult suiteResult = (TestSuiteResult) map.get(testTarget);
             suiteResult.addTestCaseResult(caseResult);
         }
     }

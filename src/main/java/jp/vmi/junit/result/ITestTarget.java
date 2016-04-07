@@ -10,6 +10,8 @@ public interface ITestTarget {
     /**
      * Get test-target file base name.
      *
+     * For example, return "def" when file name is "/abc/def.html".
+     *
      * @return test-target file base name.
      */
     String getBaseName();
