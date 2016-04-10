@@ -245,6 +245,19 @@ and is not contained in "selenese-runner-java-X.Y.Z.jar" in maven repository.
 Please use "jp.vmi.selenium.selenese.Main" instead of "Main"
 if you want to use this feature with the jar in maven repository.
 
+Original Commands
+-----------------
+
+### `include`
+
+Usage: `include` FILENAME
+
+This command include and execute FILENAME test-case.
+
+You can use variables in FILENAME.
+
+See [the test-case example](src/test/resources/selenese/testcase_include.html).
+
 License
 -------
 

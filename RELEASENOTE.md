@@ -20,6 +20,7 @@ Selenese Runner Java Relase Note
     * `waitForPrompt`
     * `waitForPromptNotPresent`
     * `waitForPromptPresent`
+* Add new command: `include`. (PR #193 by @RLasinski)
 
 ### 2.6.0
 
