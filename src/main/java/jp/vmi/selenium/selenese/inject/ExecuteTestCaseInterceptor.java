@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.junit.result.ITestCase;
-import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.junit.result.JUnitResult;
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
@@ -28,12 +27,16 @@ public class ExecuteTestCaseInterceptor extends AbstractExecuteTestCaseIntercept
         JUnitResult jUnitResult;
         if (context instanceof JUnitResultHolder) {
             jUnitResult = ((JUnitResultHolder) context).getJUnitResult();
-            jUnitResult.startTestCase((ITestSuite) parent, testCase);
+            jUnitResult.startTestCase(parent, testCase);
         } else {
             jUnitResult = null;
         }
         StopWatch sw = testCase.getStopWatch();
-        LogRecorder clr = new LogRecorder(context.getPrintStream());
+        LogRecorder clr;
+        if (parent instanceof TestCase)
+            clr = ((TestCase) parent).getLogRecorder();
+        else
+            clr = new LogRecorder(context.getPrintStream());
         testCase.setLogRecorder(clr);
         sw.start();
         if (!testCase.isError()) {

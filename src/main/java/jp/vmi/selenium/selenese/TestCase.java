@@ -293,10 +293,19 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     public Result execute(Selenese parent, Context context) {
         if (commandList.isEmpty())
             return cresultList.setResult(SUCCESS);
-        context.setCurrentTestCase(this);
-        context.getCollectionMap().clear();
-        cresultList.setEndTime(System.currentTimeMillis());
-        return commandList.execute(context, cresultList);
+        if (parent == context.getCurrentTestCase()) {
+            try {
+                context.setCurrentTestCase(this);
+                return commandList.execute(context, ((TestCase) parent).getResultList());
+            } finally {
+                context.setCurrentTestCase((TestCase) parent);
+            }
+        } else {
+            context.setCurrentTestCase(this);
+            context.getCollectionMap().clear();
+            cresultList.setEndTime(System.currentTimeMillis());
+            return commandList.execute(context, cresultList);
+        }
     }
 
     @Override
