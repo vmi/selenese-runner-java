@@ -22,6 +22,7 @@ Selenese Runner Java Relase Note
     * `waitForPromptPresent`
 * Add new command: `include`. (PR #193 by @RLasinski)
 * Re-fix white space normalizing. (#195)
+* Update dependency versions.
 
 ### 2.6.0
 
