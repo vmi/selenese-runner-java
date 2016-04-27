@@ -11,10 +11,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Utililities for Selenium.
+ * Utilities for Selenium.
  */
 public class SeleniumUtils {
 
@@ -95,27 +96,6 @@ public class SeleniumUtils {
             this.stringPattern = pattern;
         }
 
-        private static final Pattern SPC_RE = Pattern.compile("[\t\r\n \u00A0]+");
-
-        /**
-         * Trim and compress spaces in string.
-         *
-         * @param input string.
-         * @return normalized string.
-         */
-        private static String normalizeSpaces(String input) {
-            String[] inputs = SPC_RE.split(input);
-            int length = inputs.length;
-            if (length == 0)
-                return "";
-            else if (length == 1)
-                return inputs[0];
-            int offset = inputs[0].isEmpty() ? 1 : 0;
-            if (offset == 1 && length == 2)
-                return inputs[1];
-            return StringUtils.join(inputs, ' ', offset, length);
-        }
-
         /**
          * Match pattern.
          *
@@ -130,7 +110,7 @@ public class SeleniumUtils {
             case GLOB:
                 return regexpPattern.matcher(input).find();
             case EXACT:
-                return stringPattern.equals(input);
+                return normalizeSpaces(stringPattern).equals(input);
             default:
                 throw new UnsupportedOperationException(type.toString());
             }
@@ -138,7 +118,7 @@ public class SeleniumUtils {
 
         @Override
         public String toString() {
-            return "SeleniumPattern[" + type + ":" + stringPattern + "]";
+            return "SeleniumPattern[" + type + ":" + StringEscapeUtils.escapeJava(stringPattern) + "]";
         }
     }
 
@@ -151,6 +131,37 @@ public class SeleniumUtils {
      */
     public static boolean patternMatches(String pattern, CharSequence input) {
         return new SeleniumPattern(pattern).matches(input.toString());
+    }
+
+    /**
+     * Unifty U+0020 and U+00A0, Trim, and compress spaces in string.
+     *
+     * @param str string.
+     * @return normalized string.
+     */
+    public static String normalizeSpaces(String str) {
+        int si = str.indexOf(' ');
+        int ni = str.indexOf('\u00A0');
+        if (si < 0 && ni < 0)
+            return str;
+        int len = str.length();
+        StringBuilder buf = new StringBuilder(len);
+        boolean skipSpc = true;
+        for (int i = 0; i < len; i++) {
+            char c = str.charAt(i);
+            if (c != ' ' && c != '\u00A0') {
+                buf.append(c);
+                skipSpc = false;
+            } else if (!skipSpc) {
+                buf.append(' ');
+                skipSpc = true;
+            }
+            // skip if skipSpc && (c == ' ' || c == '\u00A0)
+        }
+        int blen = buf.length();
+        if (blen > 0 && buf.charAt(blen - 1) == ' ')
+            buf.deleteCharAt(blen - 1);
+        return buf.toString();
     }
 
     /**

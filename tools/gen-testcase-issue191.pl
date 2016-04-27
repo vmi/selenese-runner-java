@@ -70,13 +70,14 @@ print $tfh $tc_header;
 my $id_cnt = "A";
 
 sub gen_code {
-  my ($html_msg1, $html_msg2, $tc_msg) = @_;
+  my ($html_msg1, $html_msg2, $tc_msg, $with_not) = @_;
+  $with_not = $with_not ? "Not" : "";
   print $hfh <<EOF;
     <tr><td>$id_cnt: $html_msg1</td><td id="$id_cnt">$html_msg2</td></tr>
 EOF
   print $tfh <<EOF;
 <tr>
-	<td>verifyText</td>
+	<td>verify${with_not}Text</td>
 	<td>css=#$id_cnt</td>
 	<td>$tc_msg</td>
 </tr>
@@ -87,12 +88,18 @@ EOF
 
 my $t_ws = '0020';
 for my $h_ws (@h_wss) {
-  gen_code("U+$h_ws", "word1&#x$h_ws;word2", "word1&#x$t_ws;word2");
+  gen_code("U+$h_ws-U+$t_ws", "word1&#x$h_ws;word2", "word1&#x$t_ws;word2");
   if ($h_ws ne '00A0') {
-    gen_code("U+$h_ws*2", "word1&#x$h_ws;&#x$h_ws;word2", "word1&#x$t_ws;word2");
+    gen_code("U+$h_ws*2-U+$t_ws", "word1&#x$h_ws;&#x$h_ws;word2", "word1&#x$t_ws;word2");
   }
-  gen_code("U+$h_ws/U+$h_ws/U+$h_ws", "&#x$h_ws;word1&#x$h_ws;word2&#x$h_ws;", "word1&#x$t_ws;word2");
-  }
+  gen_code("U+$h_ws/U+$h_ws/U+$h_ws-U+$t_ws", "&#x$h_ws;word1&#x$h_ws;word2&#x$h_ws;", "word1&#x$t_ws;word2");
+}
+gen_code("br-br", "word1<br>word2", "word1<br />word2");
+gen_code("br-LF", "word1<br>word2", "word1&#x000A;word2");
+gen_code("LF-LF(not)", "word1&#x000A;word2", "word1&#x000A;word2", 1);
+gen_code("LF-br(not)", "word1&#x000A;word2", "word1<br />word2", 1);
+gen_code("br/br-br(not)", "word1<br><br>word2", "word1<br />word2", 1);
+gen_code("br/br-br/br", "word1<br><br>word2", "word1<br /><br />word2");
 
 print $hfh $html_footer;
 print $tfh $tc_footer;
