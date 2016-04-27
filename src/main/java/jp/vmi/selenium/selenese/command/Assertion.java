@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +113,8 @@ public class Assertion extends AbstractCommand {
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
-                        resultString, isInverse ? "Not " : "", expected);
+                        StringEscapeUtils.escapeJava(resultString),
+                        isInverse ? "Not " : "", StringEscapeUtils.escapeJava(expected));
                 } catch (SeleniumException e) {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
