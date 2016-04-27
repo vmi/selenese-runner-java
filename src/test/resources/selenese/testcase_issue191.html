@@ -21,85 +21,121 @@
 	<td>css=#A</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0009 -->
+<!-- U+0009-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#B</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0009*2 -->
+<!-- U+0009*2-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#C</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0009/U+0009/U+0009 -->
+<!-- U+0009/U+0009/U+0009-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#D</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000A -->
+<!-- U+000A-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#E</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000A*2 -->
+<!-- U+000A*2-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#F</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000A/U+000A/U+000A -->
+<!-- U+000A/U+000A/U+000A-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#G</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000D -->
+<!-- U+000D-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#H</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000D*2 -->
+<!-- U+000D*2-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#I</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+000D/U+000D/U+000D -->
+<!-- U+000D/U+000D/U+000D-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#J</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0020 -->
+<!-- U+0020-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#K</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0020*2 -->
+<!-- U+0020*2-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#L</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+0020/U+0020/U+0020 -->
+<!-- U+0020/U+0020/U+0020-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#M</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+00A0 -->
+<!-- U+00A0-U+0020 -->
 <tr>
 	<td>verifyText</td>
 	<td>css=#N</td>
 	<td>word1&#x0020;word2</td>
 </tr>
-<!-- U+00A0/U+00A0/U+00A0 -->
+<!-- U+00A0/U+00A0/U+00A0-U+0020 -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#O</td>
+	<td>word1<br />word2</td>
+</tr>
+<!-- br-br -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#P</td>
+	<td>word1&#x000A;word2</td>
+</tr>
+<!-- br-LF -->
+<tr>
+	<td>verifyNotText</td>
+	<td>css=#Q</td>
+	<td>word1&#x000A;word2</td>
+</tr>
+<!-- LF-LF(not) -->
+<tr>
+	<td>verifyNotText</td>
+	<td>css=#R</td>
+	<td>word1<br />word2</td>
+</tr>
+<!-- LF-br(not) -->
+<tr>
+	<td>verifyNotText</td>
+	<td>css=#S</td>
+	<td>word1<br />word2</td>
+</tr>
+<!-- br/br-br(not) -->
+<tr>
+	<td>verifyText</td>
+	<td>css=#T</td>
+	<td>word1<br /><br />word2</td>
+</tr>
+<!-- br/br-br/br -->
 
 </tbody></table>
 </body>

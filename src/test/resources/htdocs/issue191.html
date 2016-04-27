@@ -8,20 +8,26 @@
   <h1>Issue #191</h1>
   <hr>
   <table>
-    <tr><td>A: U+0009</td><td id="A">word1&#x0009;word2</td></tr>
-    <tr><td>B: U+0009*2</td><td id="B">word1&#x0009;&#x0009;word2</td></tr>
-    <tr><td>C: U+0009/U+0009/U+0009</td><td id="C">&#x0009;word1&#x0009;word2&#x0009;</td></tr>
-    <tr><td>D: U+000A</td><td id="D">word1&#x000A;word2</td></tr>
-    <tr><td>E: U+000A*2</td><td id="E">word1&#x000A;&#x000A;word2</td></tr>
-    <tr><td>F: U+000A/U+000A/U+000A</td><td id="F">&#x000A;word1&#x000A;word2&#x000A;</td></tr>
-    <tr><td>G: U+000D</td><td id="G">word1&#x000D;word2</td></tr>
-    <tr><td>H: U+000D*2</td><td id="H">word1&#x000D;&#x000D;word2</td></tr>
-    <tr><td>I: U+000D/U+000D/U+000D</td><td id="I">&#x000D;word1&#x000D;word2&#x000D;</td></tr>
-    <tr><td>J: U+0020</td><td id="J">word1&#x0020;word2</td></tr>
-    <tr><td>K: U+0020*2</td><td id="K">word1&#x0020;&#x0020;word2</td></tr>
-    <tr><td>L: U+0020/U+0020/U+0020</td><td id="L">&#x0020;word1&#x0020;word2&#x0020;</td></tr>
-    <tr><td>M: U+00A0</td><td id="M">word1&#x00A0;word2</td></tr>
-    <tr><td>N: U+00A0/U+00A0/U+00A0</td><td id="N">&#x00A0;word1&#x00A0;word2&#x00A0;</td></tr>
+    <tr><td>A: U+0009-U+0020</td><td id="A">word1&#x0009;word2</td></tr>
+    <tr><td>B: U+0009*2-U+0020</td><td id="B">word1&#x0009;&#x0009;word2</td></tr>
+    <tr><td>C: U+0009/U+0009/U+0009-U+0020</td><td id="C">&#x0009;word1&#x0009;word2&#x0009;</td></tr>
+    <tr><td>D: U+000A-U+0020</td><td id="D">word1&#x000A;word2</td></tr>
+    <tr><td>E: U+000A*2-U+0020</td><td id="E">word1&#x000A;&#x000A;word2</td></tr>
+    <tr><td>F: U+000A/U+000A/U+000A-U+0020</td><td id="F">&#x000A;word1&#x000A;word2&#x000A;</td></tr>
+    <tr><td>G: U+000D-U+0020</td><td id="G">word1&#x000D;word2</td></tr>
+    <tr><td>H: U+000D*2-U+0020</td><td id="H">word1&#x000D;&#x000D;word2</td></tr>
+    <tr><td>I: U+000D/U+000D/U+000D-U+0020</td><td id="I">&#x000D;word1&#x000D;word2&#x000D;</td></tr>
+    <tr><td>J: U+0020-U+0020</td><td id="J">word1&#x0020;word2</td></tr>
+    <tr><td>K: U+0020*2-U+0020</td><td id="K">word1&#x0020;&#x0020;word2</td></tr>
+    <tr><td>L: U+0020/U+0020/U+0020-U+0020</td><td id="L">&#x0020;word1&#x0020;word2&#x0020;</td></tr>
+    <tr><td>M: U+00A0-U+0020</td><td id="M">word1&#x00A0;word2</td></tr>
+    <tr><td>N: U+00A0/U+00A0/U+00A0-U+0020</td><td id="N">&#x00A0;word1&#x00A0;word2&#x00A0;</td></tr>
+    <tr><td>O: br-br</td><td id="O">word1<br>word2</td></tr>
+    <tr><td>P: br-LF</td><td id="P">word1<br>word2</td></tr>
+    <tr><td>Q: LF-LF(not)</td><td id="Q">word1&#x000A;word2</td></tr>
+    <tr><td>R: LF-br(not)</td><td id="R">word1&#x000A;word2</td></tr>
+    <tr><td>S: br/br-br(not)</td><td id="S">word1<br><br>word2</td></tr>
+    <tr><td>T: br/br-br/br</td><td id="T">word1<br><br>word2</td></tr>
   </table>
 </body>
 </html>
