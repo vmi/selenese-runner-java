@@ -20,8 +20,6 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public class BuiltInCommand extends AbstractCommand {
 
-    private static final String WAIT_FOR_PAGE_TO_LOAD = "waitForPageToLoad";
-
     private static final String[] NO_UPDATE_SCREEN = {
         "createCookie",
         "deleteCookie",
@@ -50,7 +48,7 @@ public class BuiltInCommand extends AbstractCommand {
             String resultString = SeleniumUtils.convertToString(subCommand.execute(context, curArgs));
             if (andWait) {
                 int timeout = context.getTimeout();
-                context.getSubCommandMap().get(WAIT_FOR_PAGE_TO_LOAD).execute(context, Integer.toString(timeout));
+                WaitForPageToLoad.execute(context, timeout);
             }
             return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
         } catch (SeleniumException e) {

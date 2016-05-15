@@ -176,7 +176,7 @@ public class SubCommandMap {
         register(new UseXPathLibrary(), "useXpathLibrary", VALUE);
         // "waitForCondition"
         register(new NoOp(null), "waitForFrameToLoad", VALUE, VALUE);
-        register(new WaitForPageToLoad(), "waitForPageToLoad", VALUE);
+        // "waitForPageToLoad"
         register(new WaitForPopup(windows), "waitForPopUp", VALUE, VALUE);
         register(new WindowFocus(javascriptLibrary), "windowFocus");
         // windowMaximize
@@ -189,7 +189,6 @@ public class SubCommandMap {
         register(new GetCssCount());
         register(new GetSpeed());
         register(new IsSomethingSelected());
-        register(new WaitForCondition());
         register(new AnswerOnNextPrompt(alertOverride));
         register(new GetPrompt(alertOverride));
         register(new IsPromptPresent(alertOverride));
