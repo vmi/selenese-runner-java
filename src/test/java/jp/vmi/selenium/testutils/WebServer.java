@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -183,7 +184,7 @@ public class WebServer {
                     int wait = NumberUtils.toInt(params.get(WAIT));
                     if (wait > 0) {
                         try {
-                            log.debug("Waiting {} sec.", wait);
+                            log.debug("[{}] Waiting {} sec.", Thread.currentThread().getName(), wait);
                             Thread.sleep(wait * 1000);
                         } catch (InterruptedException e) {
                             // no operation.
@@ -277,7 +278,7 @@ public class WebServer {
             try (OutputStream os = he.getResponseBody()) {
                 os.write(content.body);
             }
-            log.debug("{} {} [{}] {}", he.getRequestMethod(), he.getRequestURI(), content.status, content.type);
+            log.debug("[{}] {} {} [{}] {}", Thread.currentThread().getName(), he.getRequestMethod(), he.getRequestURI(), content.status, content.type);
         }
     }
 
@@ -291,6 +292,7 @@ public class WebServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        server.setExecutor(Executors.newCachedThreadPool());
         server.createContext("/", new SimpleTemplateHandler(htdocs));
         //server.createContext("/basic", new BasicAuthenticationHandler(new InMemoryPasswords().add("user", "pass")));
         //server.createContext("/redirect", new RedirectHandler("http://" + getServerNameString() + "/index.html"));
