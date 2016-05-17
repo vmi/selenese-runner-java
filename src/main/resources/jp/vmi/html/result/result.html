@@ -353,8 +353,8 @@ ${foreach seleneseList selenese}
           <label for="tab${index_selenese}_sequence" class="tab_sequence" onclick="selectTab(this)">Sequence</label>
           <div class="contents">
             <table class="info">
-              <tr><th>Start Time:</th><td>${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss ZZ)}</td></tr>
-              <tr><th>End Time:</th><td>${selenese.stopWatch.endTime;t(yyyy-MM-dd HH:mm:ss ZZ)}</td></tr>
+              <tr><th>Start Time:</th><td>${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
+              <tr><th>End Time:</th><td>${selenese.stopWatch.endTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
               <tr><th>Duration:</th><td>${selenese.stopWatch.duration;n} ms</td></tr>
             </table>
             <table cellpadding="1" cellspacing="1" border="1">
