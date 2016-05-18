@@ -2,8 +2,11 @@ package jp.vmi.selenium.selenese;
 
 import java.util.HashMap;
 
+import org.apache.commons.lang3.text.StrLookup;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.openqa.selenium.Keys;
+
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static org.openqa.selenium.Keys.*;
 
@@ -65,7 +68,12 @@ public class VarsMap extends HashMap<String, Object> {
      * @return replaced string.
      */
     public String replaceVars(String expr) {
-        StrSubstitutor s = new StrSubstitutor(this);
+        StrSubstitutor s = new StrSubstitutor(new StrLookup<Object>() {
+            @Override
+            public String lookup(String key) {
+                return SeleniumUtils.convertToString(get(key));
+            }
+        });
         return s.replace(expr);
     }
 
