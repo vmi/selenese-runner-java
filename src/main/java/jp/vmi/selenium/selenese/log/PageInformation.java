@@ -46,9 +46,12 @@ public class PageInformation {
         String origin;
         WebDriver driver = context.getWrappedDriver();
         try {
+            // ChromeDriver may return the unavailable window handle.
+            // When getCurrentUrl() is called in this state, ChromeDriver hangs up.
+            // When switchTo().window(handle) is called, ChromeDriver throws an exception.
+            // Avoid a hang-up using this.
+            // Other WebDriver throws NoSuchWindowException when getWindowHandle() is called.
             String handle = driver.getWindowHandle();
-            if (StringUtils.isEmpty(handle))
-                throw new NotFoundException();
             driver.switchTo().window(handle);
             String url = driver.getCurrentUrl();
             String title = driver.getTitle();

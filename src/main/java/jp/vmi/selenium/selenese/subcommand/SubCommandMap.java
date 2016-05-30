@@ -26,7 +26,6 @@ public class SubCommandMap {
     private final JavascriptLibrary javascriptLibrary;
     private final KeyState keyState;
     private final DialogOverride alertOverride;
-    private final SeleneseRunnerWindows windows;
 
     private final Context context;
 
@@ -47,7 +46,6 @@ public class SubCommandMap {
         this.javascriptLibrary = new JavascriptLibrary();
         this.keyState = new KeyState();
         this.alertOverride = new DialogOverride();
-        this.windows = new SeleneseRunnerWindows(context);
         setUpSubCommands();
     }
 
@@ -88,7 +86,7 @@ public class SubCommandMap {
         register(new ControlKeyUp(keyState), "controlKeyUp");
         register(new DeleteAllVisibleCookies(), "deleteAllVisibleCookies");
         register(new DeleteCookie(), "deleteCookie", VALUE, VALUE); // 2nd parameter is optionsString.
-        register(new DeselectPopUp(windows), "deselectPopUp");
+        // "deselectPopUp"
         register(new DoubleClick(alertOverride, elementFinder), "doubleClick", LOCATOR);
         register(new DragAndDrop(elementFinder), "dragdrop", LOCATOR, VALUE);
         register(new DragAndDrop(elementFinder), "dragAndDrop", LOCATOR, VALUE);
@@ -99,7 +97,7 @@ public class SubCommandMap {
         register(new GetAllButtons(), "getAllButtons");
         register(new GetAllFields(), "getAllFields");
         register(new GetAllLinks(), "getAllLinks");
-        register(new GetAllWindowNames(), "getAllWindowNames");
+        // "getAllWindowNames"
         register(new GetAllWindowTitles(), "getAllWindowTitles");
         register(new GetAttribute(javascriptLibrary, elementFinder), "getAttribute", ATTRIBUTE_LOCATOR);
         register(new GetAttributeFromAllWindows(), "getAttributeFromAllWindows", VALUE);
@@ -162,8 +160,8 @@ public class SubCommandMap {
         // "runScript"
         register(new SelectOption(alertOverride, javascriptLibrary, elementFinder), "select", LOCATOR, OPTION_LOCATOR);
         // "selectFrame"
-        register(new SelectPopUp(windows), "selectPopUp", VALUE);
-        register(new SelectWindow(windows), "selectWindow", VALUE);
+        // "selectPopUp"
+        // "selectWindow"
         register(new NoOp(null), "setBrowserLogLevel", VALUE);
         // "setSpeed"
         // "setTimeout"
@@ -177,7 +175,7 @@ public class SubCommandMap {
         // "waitForCondition"
         register(new NoOp(null), "waitForFrameToLoad", VALUE, VALUE);
         // "waitForPageToLoad"
-        register(new WaitForPopup(windows), "waitForPopUp", VALUE, VALUE);
+        // "waitForPopUp"
         register(new WindowFocus(javascriptLibrary), "windowFocus");
         // windowMaximize
 
@@ -192,6 +190,7 @@ public class SubCommandMap {
         register(new AnswerOnNextPrompt(alertOverride));
         register(new GetPrompt(alertOverride));
         register(new IsPromptPresent(alertOverride));
+        register(new GetAllWindowNames());
 
         register(new GetSelected(GetSelected.Type.LABEL, false));
         register(new GetSelected(GetSelected.Type.LABEL, true));
