@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Window Test</title>
+  <script type="text/javascript"><!--
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function openWindow() {
+      var page = $('page').value;
+      var name = $('name').value;
+      window.open(page, name);
+    }
+  //--></script>
+</head>
+<body>
+  <h1>Window Test</h1>
+  <hr>
+  <ul>
+    <li>Page: <input id="page" type="text"></li>
+    <li>Name: <input id="name" type="text"></li>
+  </ul>
+  <button id="open" onclick="openWindow();">Open Window</button>
+</body>
+</html>
