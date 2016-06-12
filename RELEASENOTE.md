@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.8.0
+
+* Add millisecond of start/end time in sequence tab of HTML result.
+* Add extracting array/collection value in variable substitution.
+* Refine code.
+
 ### 2.7.0
 
 * Re-enabled alert/confirm commands because Selenium supported the feature with `localStorage`. (#32)
