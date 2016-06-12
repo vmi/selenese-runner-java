@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseCommandErrorException;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.result.CommandResult;
 import jp.vmi.selenium.selenese.result.CommandResultList;
@@ -94,6 +95,8 @@ public class CommandList extends ArrayList<ICommand> {
     protected Result doCommand(Context context, ICommand command, String... curArgs) {
         try {
             return command.execute(context, curArgs);
+        } catch (SeleneseCommandErrorException e) {
+            return e.getError();
         } catch (Exception e) {
             return new Error(e);
         }
