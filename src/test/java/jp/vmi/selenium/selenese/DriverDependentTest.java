@@ -1,20 +1,13 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
@@ -22,9 +15,7 @@ import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
-import jp.vmi.selenium.testutils.TestCaseTestBase;
-import jp.vmi.selenium.testutils.TestUtils;
-import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.testutils.DriverDependentTestCaseTestBase;
 
 import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 import static org.hamcrest.Matchers.*;
@@ -34,41 +25,8 @@ import static org.junit.Assume.*;
 /**
  * Driver dependent test.
  */
-@RunWith(Parameterized.class)
 @SuppressWarnings("javadoc")
-public class DriverDependentTest extends TestCaseTestBase {
-
-    @Parameters(name = "{index}: {0}")
-    public static List<Object[]> getWebDriverFactories() {
-        return TestUtils.getWebDriverFactories();
-    }
-
-    @Parameter
-    public String currentFactoryName;
-
-    protected final FilenameFilter pngFilter = new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith(".png");
-        }
-    };
-
-    @Override
-    protected void initDriver() {
-        setWebDriverFactory(currentFactoryName, new DriverOptions());
-        try {
-            driver = manager.get();
-        } catch (UnreachableBrowserException e) {
-            Assume.assumeNoException(e);
-        } catch (UnsupportedOperationException e) {
-            Assume.assumeNoException(e);
-        }
-    }
-
-    public void assumeNot(String... factoryNames) {
-        for (String factoryName : factoryNames)
-            assumeThat(currentFactoryName, is(not(factoryName)));
-    }
+public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testSimple() {
