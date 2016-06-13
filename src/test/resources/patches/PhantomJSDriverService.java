@@ -107,14 +107,14 @@ public class PhantomJSDriverService extends DriverService {
     /**
      * Set capabilities with this prefix to apply it to the PhantomJS {@code page.settings.*} object.
      * Every PhantomJS WebPage Setting can be used.
-     * See <a href="http://phantomjs.org/api/webpage/property/settings.html">PhantomJS docs/a>.
+     * See <a href="http://phantomjs.org/api/webpage/property/settings.html">PhantomJS docs</a>.
      */
     public static final String PHANTOMJS_PAGE_SETTINGS_PREFIX = "phantomjs.page.settings.";
 
     /**
      * Set capabilities with this prefix to apply it to the PhantomJS {@code page.customHeaders.*} object.
      * Any header can be used.
-     * See <a href="http://phantomjs.org/api/webpage/property/custom-headers.html">PhantomJS docs/a>.
+     * See <a href="http://phantomjs.org/api/webpage/property/custom-headers.html">PhantomJS docs</a>.
      */
     public static final String PHANTOMJS_PAGE_CUSTOMHEADERS_PREFIX = "phantomjs.page.customHeaders.";
 
@@ -399,7 +399,7 @@ public class PhantomJSDriverService extends DriverService {
 
         /**
          * Configures the service to use a specific Proxy configuration.
-         * <p/>
+         * 
          * NOTE: Usually the proxy configuration is passed to the Remote WebDriver via WireProtocol
          * Capabilities. PhantomJS doesn't yet support protocol configuration at runtime: it
          * requires it to be defined on launch.

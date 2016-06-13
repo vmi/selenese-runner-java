@@ -29,6 +29,7 @@ done
 java=org/openqa/selenium/phantomjs/PhantomJSDriverService.java
 f=${java##*/}
 
+ghostdriver_path=codeborne/ghostdriver
 if [ ! -f "$f" ]; then
-  curl -LO https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/$java
+  curl -LO https://raw.github.com/$ghostdriver_path/master/binding/java/src/main/java/$java
 fi

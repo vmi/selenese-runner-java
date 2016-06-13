@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 @SuppressWarnings("javadoc")
 public class PhantomJSDriverServiceVersionTest {
 
-    private static final String ORIG_PJSDS_URL = "https://raw.github.com/detro/ghostdriver/master/binding/java/src/main/java/org/openqa/selenium/phantomjs/PhantomJSDriverService.java";
+    private static final String ORIG_PJSDS_URL = "https://raw.github.com/codeborne/ghostdriver/master/binding/java/src/main/java/org/openqa/selenium/phantomjs/PhantomJSDriverService.java";
     private static final String COPY_PJSDS_PATH = "/patches/PhantomJSDriverService.java";
 
     private List<String> split(String s) {
