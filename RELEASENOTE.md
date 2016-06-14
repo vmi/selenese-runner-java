@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Add millisecond of start/end time in sequence tab of HTML result.
 * Add extracting array/collection value in variable substitution.
 * Refine code.
+* Re-implement `waitForPageToLoad` and `waitForCondition`. (#197)
 
 ### 2.7.0
 
