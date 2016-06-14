@@ -30,7 +30,7 @@ public class SeleneseRunnerMutator extends CompoundMutator implements ScriptMuta
         if (mutator instanceof VariableDeclaration) {
             StringBuilder mutated = new StringBuilder();
             mutator.mutate(BASE_URL, mutated);
-            if (mutated.length() > 0) {
+            if (mutated.indexOf(BASE_URL) >= 0) {
                 mutator = new VariableDeclarationWithDynamicValue(BASE_URL, new DynamicValue() {
                     @Override
                     public String getValue() {
