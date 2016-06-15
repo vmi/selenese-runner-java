@@ -325,4 +325,22 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_dialog_override");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void test197() {
+        execute("testcase_issue197");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void test197_03() {
+        execute("testcase_issue197_03");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void test197_04() {
+        execute("testcase_issue197_04");
+        assertThat(result, is(instanceOf(Error.class)));
+    }
 }

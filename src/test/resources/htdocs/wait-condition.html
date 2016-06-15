@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Wait Condition</title>
+    <script type="text/javascript"><!--
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function start() {
+        var timeout = $('timeout').value;
+        $('message').textContent = 'Start: ' + timeout;
+        setTimeout(setMessage, timeout * 1000);
+      }
+
+      function setMessage() {
+        $('message').textContent = 'End';
+      }
+    //--></script>
+  </head>
+  <body>
+    <h1>Wait Condition</h1>
+    <hr>
+    <p>[<span id="message">-</span>]</p>
+    <p><input id="timeout" type="text"> <button id="start" onclick="start()">Start</button></p>
+  </body>
+</html>
