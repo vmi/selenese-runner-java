@@ -15,11 +15,6 @@
         <ignoreVersion type="regex">.*preview.*</ignoreVersion>
       </ignoreVersions>
     </rule>
-    <rule groupId="com.github.detro.ghostdriver">
-      <ignoreVersions>
-        <ignoreVersion type="regex">.*-dev</ignoreVersion>
-      </ignoreVersions>
-    </rule>
     <rule groupId="io.netty" artifactId="netty">
       <ignoreVersions>
         <ignoreVersion type="regex">3\.10\..*</ignoreVersion>
@@ -28,6 +23,11 @@
     <rule groupId="com.google.inject" artifactId="guice">
       <ignoreVersions>
         <ignoreVersion type="regex">4\..*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="org.littleshoot" artifactId="littleproxy">
+      <ignoreVersions>
+        <ignoreVersion type="regex">1\.1\..*</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>

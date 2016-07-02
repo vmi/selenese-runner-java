@@ -5,6 +5,7 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 2.53.1.
 * Update dependency versions.
+* Refine `pom.xml`.
 
 ### 2.8.0
 
