@@ -49,8 +49,9 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <source.version>1.7</source.version>
     <target.version>1.7</target.version>
     <skipTests>true</skipTests>
-    <selenium.version>2.53.0</selenium.version>
-    <htmlunit-driver.version>2.52.0</htmlunit-driver.version>
+    <selenium.version>2.53.1</selenium.version>
+    <htmlunit-driver.version>2.21</htmlunit-driver.version>
+    <httpclient.version>4.5.2</httpclient.version>
     <slf4j.version>1.7.21</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
@@ -159,7 +160,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <dependencies>
         <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-htmlunit-driver</artifactId>
+          <artifactId>htmlunit-driver</artifactId>
         </dependency>
       </dependencies>
     </profile>
@@ -376,7 +377,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependencies>
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-htmlunit-driver</artifactId>
+        <artifactId>htmlunit-driver</artifactId>
         <version>${htmlunit-driver.version}</version>
         <exclusions>
           <exclusion>
@@ -388,6 +389,16 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
             <artifactId>selenium-support</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpclient</artifactId>
+	<version>${httpclient.version}</version>
+      </dependency>
+      <dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpmime</artifactId>
+	<version>${httpclient.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -474,13 +485,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
@@ -600,7 +604,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-htmlunit-driver</artifactId>
+      <artifactId>htmlunit-driver</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

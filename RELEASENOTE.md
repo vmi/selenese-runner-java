@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.9.0
+
+* Catch up Selenium 2.53.1.
+* Update dependency versions.
+
 ### 2.8.0
 
 * Add millisecond of start/end time in sequence tab of HTML result.
