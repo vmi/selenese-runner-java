@@ -6,6 +6,12 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 2.53.1.
 * Update dependency versions.
 * Refine `pom.xml`.
+* Re-implement the following commands: (#199)
+    * `selectWindow`
+    * `selectPopUp`
+    * `deselectPopUp`
+    * `waitForPopUp`
+    * `storeAllWindowNames`
 
 ### 2.8.0
 
@@ -17,7 +23,7 @@ Selenese Runner Java Relase Note
 ### 2.7.0
 
 * Re-enabled alert/confirm commands because Selenium supported the feature with `localStorage`. (#32)
-* Add new supported commands for prompt. (#192)
+* Add new supported commands for prompt: (#192)
     * `answerOnNextPrompt`
     * `assertNotPrompt`
     * `assertPrompt`
@@ -69,7 +75,7 @@ Selenese Runner Java Relase Note
 * Avoid NPE if TestCase has no LogRecorder. (PR #176 by deki)
 * Add new API to register custom interceptors for test-case/test-suite execution. (#175)
 * Add "class" locator type. (#173, PR #177 by deki)
-* Revise implementation of mouse event commands. (#179)
+* Revise implementation of mouse event commands: (#179)
     * `mouseOver`
     * `mouseOut`
     * `mouseMove`
