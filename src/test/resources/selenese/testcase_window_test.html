@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>testcase_window_test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_window_test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/window-test.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=page</td>
+	<td>window-test.html</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>popup01</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=open</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>popup02</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=open</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>names</td>
+	<td></td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${names}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['names'].length</td>
+	<td>eval</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${eval}</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
