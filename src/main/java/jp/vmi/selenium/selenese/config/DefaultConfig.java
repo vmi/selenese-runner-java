@@ -82,7 +82,7 @@ public class DefaultConfig implements IConfig {
     private String config;
 
     @Option(name = "--driver", aliases = "-d", metaVar = "<driver>",
-        usage = "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
+        usage = "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory | marionette")
     private String driver;
 
     @Option(name = "--profile", aliases = "-p", metaVar = "<name>", usage = "profile name (Firefox only *1)")
@@ -144,6 +144,9 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--firefox", metaVar = "<path>", usage = "path to 'firefox' binary. (implies '--driver firefox')")
     private String firefox;
+
+    @Option(name = "--marionette", metaVar = "<path>", usage = "path to 'firefox' binary. (implies '--driver firefox')")
+    private String marionette;
 
     @Option(name = "--chromedriver", metaVar = "<path>", usage = "path to 'chromedriver' binary. (implies '--driver chrome')")
     private String chromedriver;
@@ -402,6 +405,15 @@ public class DefaultConfig implements IConfig {
 
     public void setFirefox(String firefox) {
         this.firefox = firefox;
+    }
+
+    @Override
+    public String getMarionette() {
+        return marionette != null ? marionette : (parentOptions != null ? parentOptions.getMarionette() : null);
+    }
+
+    public void setMarionette(String marionette) {
+        this.marionette = marionette;
     }
 
     @Override

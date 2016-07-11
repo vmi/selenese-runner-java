@@ -113,6 +113,8 @@ public class Main {
                 driverName = WebDriverManager.IE;
             else if (driverOptions.has(DriverOption.PHANTOMJS))
                 driverName = WebDriverManager.PHANTOMJS;
+            else if (driverOptions.has(DriverOption.MARIONETTE))
+                driverName = WebDriverManager.MARIONETTE;
         }
         WebDriverManager manager = WebDriverManager.newInstance();
         manager.setWebDriverFactory(driverName);
