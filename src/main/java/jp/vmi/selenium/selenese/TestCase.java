@@ -302,7 +302,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
             }
         } else {
             context.setCurrentTestCase(this);
-            context.getCollectionMap().clear();
+            context.resetState();
             cresultList.setEndTime(System.currentTimeMillis());
             return commandList.execute(context, cresultList);
         }

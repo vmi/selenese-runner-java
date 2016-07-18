@@ -91,6 +91,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private PageInformation latestPageInformation = PageInformation.EMPTY;
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
+    private DialogOverride dialogOverride = new DialogOverride();
+    private final ModifierKeyState modifierKeyState = new ModifierKeyState();
+
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
 
@@ -560,6 +563,27 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setCookieFilter(CookieFilter cookieFilter) {
         this.cookieFilter = cookieFilter;
+    }
+
+    @Override
+    public DialogOverride getDialogOverride() {
+        return dialogOverride;
+    }
+
+    @Override
+    public void setDialogOverride(DialogOverride dialogOverride) {
+        this.dialogOverride = dialogOverride;
+    }
+
+    @Override
+    public ModifierKeyState getModifierKeyState() {
+        return modifierKeyState;
+    }
+
+    @Override
+    public void resetState() {
+        collectionMap.clear();
+        modifierKeyState.reset();
     }
 
     /**

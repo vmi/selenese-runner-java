@@ -3,12 +3,12 @@ package jp.vmi.selenium.selenese.subcommand;
 import jp.vmi.selenium.selenese.Context;
 
 /**
- * Command "getPrompt".
+ * "getAlert".
  */
-public class GetPrompt extends AbstractSubCommand<String> {
+public class GetAlert extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getDialogOverride().getNextPrompt(context.getWrappedDriver());
+        return context.getDialogOverride().getNextAlert(context.getWrappedDriver());
     }
 }

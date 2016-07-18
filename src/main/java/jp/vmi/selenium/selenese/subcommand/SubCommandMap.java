@@ -12,7 +12,6 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
-import jp.vmi.selenium.selenese.utils.DialogOverride;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -24,8 +23,6 @@ public class SubCommandMap {
     private final Map<String, ISubCommand<?>> subCommands = Maps.newHashMap();
 
     private final JavascriptLibrary javascriptLibrary;
-    private final KeyState keyState;
-    private final DialogOverride alertOverride;
 
     private final Context context;
 
@@ -44,8 +41,6 @@ public class SubCommandMap {
     public SubCommandMap(Context context) {
         this.context = context;
         this.javascriptLibrary = new JavascriptLibrary();
-        this.keyState = new KeyState();
-        this.alertOverride = new DialogOverride();
         setUpSubCommands();
     }
 
@@ -69,31 +64,31 @@ public class SubCommandMap {
         register(new AddLocationStrategy(elementFinder), "addLocationStrategy", VALUE, VALUE);
         register(new AddSelection(javascriptLibrary, elementFinder), "addSelection", LOCATOR, OPTION_LOCATOR);
         register(new AllowNativeXPath(), "allowNativeXpath", VALUE);
-        register(new AltKeyDown(keyState), "altKeyDown");
-        register(new AltKeyUp(keyState), "altKeyUp");
+        // "altKeyDown"
+        // "altKeyUp"
         register(new AssignId(javascriptLibrary, elementFinder), "assignId", LOCATOR, VALUE);
         register(new AttachFile(elementFinder), "attachFile", LOCATOR, VALUE);
         // can't handle the result:
         // register(new CaptureScreenshotToString(), "captureScreenshotToString");
-        register(new Click(alertOverride, elementFinder), "click", LOCATOR);
-        register(new jp.vmi.selenium.selenese.subcommand.ClickAt(alertOverride, elementFinder), "clickAt", LOCATOR, VALUE);
-        register(new Check(alertOverride, elementFinder), "check", LOCATOR);
+        // "click"
+        // "clickAt"
+        // "check"
         register(new SetNextConfirmationState(false), "chooseCancelOnNextConfirmation");
         register(new SetNextConfirmationState(true), "chooseOkOnNextConfirmation");
         register(new Close(), "close");
         register(new CreateCookie(), "createCookie", VALUE, VALUE);
-        register(new ControlKeyDown(keyState), "controlKeyDown");
-        register(new ControlKeyUp(keyState), "controlKeyUp");
+        // "controlKeyDown"
+        // "controlKeyUp"
         register(new DeleteAllVisibleCookies(), "deleteAllVisibleCookies");
         register(new DeleteCookie(), "deleteCookie", VALUE, VALUE); // 2nd parameter is optionsString.
         // "deselectPopUp"
-        register(new DoubleClick(alertOverride, elementFinder), "doubleClick", LOCATOR);
+        // "doubleClick"
         register(new DragAndDrop(elementFinder), "dragdrop", LOCATOR, VALUE);
         register(new DragAndDrop(elementFinder), "dragAndDrop", LOCATOR, VALUE);
         register(new DragAndDropToObject(elementFinder), "dragAndDropToObject", LOCATOR, LOCATOR);
         register(new FireEvent(elementFinder, javascriptLibrary), "fireEvent", LOCATOR, VALUE);
         register(new FireNamedEvent(elementFinder, javascriptLibrary, "focus"), "focus", LOCATOR);
-        register(new GetAlert(alertOverride), "getAlert");
+        // "getAlert"
         register(new GetAllButtons(), "getAllButtons");
         register(new GetAllFields(), "getAllFields");
         register(new GetAllLinks(), "getAllLinks");
@@ -102,7 +97,7 @@ public class SubCommandMap {
         register(new GetAttribute(javascriptLibrary, elementFinder), "getAttribute", ATTRIBUTE_LOCATOR);
         register(new GetAttributeFromAllWindows(), "getAttributeFromAllWindows", VALUE);
         register(new GetBodyText(), "getBodyText");
-        register(new GetConfirmation(alertOverride), "getConfirmation");
+        // "getConfirmation"
         register(new GetCookie(), "getCookie");
         register(new GetCookieByName(), "getCookieByName", VALUE);
         register(new GetElementHeight(elementFinder), "getElementHeight", LOCATOR);
@@ -132,9 +127,9 @@ public class SubCommandMap {
         // "getCssCount"
         register(new GoBack(), "goBack");
         // "highlight"
-        register(new IsAlertPresent(alertOverride), "isAlertPresent");
+        // "isAlertPresent"
         register(new IsChecked(elementFinder), "isChecked", LOCATOR);
-        register(new IsConfirmationPresent(alertOverride), "isConfirmationPresent");
+        // "isConfirmationPresent"
         register(new IsCookiePresent(), "isCookiePresent", VALUE);
         register(new IsEditable(elementFinder), "isEditable", LOCATOR);
         register(new IsElementPresent(elementFinder), "isElementPresent", LOCATOR);
@@ -142,14 +137,14 @@ public class SubCommandMap {
         // "isSomethingSelected"
         register(new IsTextPresent(javascriptLibrary), "isTextPresent", VALUE);
         register(new IsVisible(elementFinder), "isVisible", LOCATOR);
-        register(new KeyEvent(elementFinder, javascriptLibrary, keyState, "doKeyDown"), "keyDown", LOCATOR, VALUE);
+        // "keyDown"
         register(new KeyDownNative(), "keyDownNative", LOCATOR, VALUE);
-        register(new TypeKeys(alertOverride, elementFinder), "keyPress", LOCATOR, VALUE);
+        // "keyPress"
         register(new KeyPressNative(), "keyPressNative", LOCATOR, VALUE);
-        register(new KeyEvent(elementFinder, javascriptLibrary, keyState, "doKeyUp"), "keyUp", LOCATOR, VALUE);
+        // "keyUp"
         register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
-        register(new MetaKeyDown(keyState), "metaKeyDown");
-        register(new MetaKeyUp(keyState), "metaKeyUp");
+        // "metaKeyDown"
+        // "metaKeyUp"
         for (MouseEventType type : MouseEventType.values())
             register(new MouseEventHandler(elementFinder, type));
         // "open"
@@ -158,19 +153,19 @@ public class SubCommandMap {
         register(new RemoveAllSelections(elementFinder), "removeAllSelections", LOCATOR);
         register(new RemoveSelection(javascriptLibrary, elementFinder), "removeSelection", LOCATOR, OPTION_LOCATOR);
         // "runScript"
-        register(new SelectOption(alertOverride, javascriptLibrary, elementFinder), "select", LOCATOR, OPTION_LOCATOR);
+        // "select"
         // "selectFrame"
         // "selectPopUp"
         // "selectWindow"
         register(new NoOp(null), "setBrowserLogLevel", VALUE);
         // "setSpeed"
         // "setTimeout"
-        register(new ShiftKeyDown(keyState), "shiftKeyDown");
-        register(new ShiftKeyUp(keyState), "shiftKeyUp");
-        register(new Submit(alertOverride, elementFinder), "submit", LOCATOR);
-        register(new Type(alertOverride, javascriptLibrary, elementFinder, keyState), "type", LOCATOR, VALUE);
-        register(new TypeKeys(alertOverride, elementFinder), "typeKeys", LOCATOR, VALUE);
-        register(new Uncheck(alertOverride, elementFinder), "uncheck", LOCATOR);
+        // "shiftKeyDown"
+        // "shiftKeyUp"
+        // "submit"
+        // "type"
+        // "typeKeys"
+        // "uncheck"
         register(new UseXPathLibrary(), "useXpathLibrary", VALUE);
         // "waitForCondition"
         register(new NoOp(null), "waitForFrameToLoad", VALUE, VALUE);
@@ -187,9 +182,13 @@ public class SubCommandMap {
         register(new GetCssCount());
         register(new GetSpeed());
         register(new IsSomethingSelected());
-        register(new AnswerOnNextPrompt(alertOverride));
-        register(new GetPrompt(alertOverride));
-        register(new IsPromptPresent(alertOverride));
+        register(new AnswerOnNextPrompt());
+        register(new GetAlert());
+        register(new GetConfirmation());
+        register(new GetPrompt());
+        register(new IsAlertPresent());
+        register(new IsConfirmationPresent());
+        register(new IsPromptPresent());
         register(new GetAllWindowNames());
 
         register(new GetSelected(GetSelected.Type.LABEL, false));
@@ -200,9 +199,6 @@ public class SubCommandMap {
         register(new GetSelected(GetSelected.Type.INDEX, true));
         register(new GetSelected(GetSelected.Type.ID, false));
         register(new GetSelected(GetSelected.Type.ID, true));
-
-        // Aliases.
-        subCommands.put("sendKeys", subCommands.get("typeKeys"));
     }
 
     /**

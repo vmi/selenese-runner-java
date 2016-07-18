@@ -1,14 +1,6 @@
 package jp.vmi.selenium.selenese.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -194,43 +186,5 @@ public class SeleniumUtils {
     @Deprecated
     public static boolean isJava7orLater() {
         return true;
-    }
-
-    private static final Pattern BEGIN_RE = Pattern.compile("function\\s+(?<name>\\w+)\\(.*?\\)\\s*\\{\\s*//\\s*BEGIN\\s*");
-    private static final Pattern END_RE = Pattern.compile("\\}\\s*//\\s*END\\s*");
-
-    /**
-     * Load JavaScript and put each function to map.
-     * @param is InputStream.
-     * @return map of function name and body.
-     */
-    public static Map<String, String> loadJS(InputStream is) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-        Map<String, String> result = new HashMap<>();
-        String line;
-        String name = null;
-        StringBuilder body = null;
-        try {
-            while ((line = br.readLine()) != null) {
-                if (name == null) {
-                    Matcher matcher = BEGIN_RE.matcher(line);
-                    if (matcher.matches()) {
-                        name = matcher.group("name");
-                        body = new StringBuilder();
-                    }
-                } else {
-                    if (END_RE.matcher(line).matches()) {
-                        result.put(name, body.toString());
-                        name = null;
-                        body = null;
-                    } else {
-                        body.append(line.trim()).append('\n');
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
     }
 }

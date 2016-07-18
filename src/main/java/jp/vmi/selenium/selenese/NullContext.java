@@ -151,4 +151,22 @@ public class NullContext implements Context {
     @Override
     public void setCookieFilter(CookieFilter cookieFilter) {
     }
+
+    @Override
+    public DialogOverride getDialogOverride() {
+        return null;
+    }
+
+    @Override
+    public void setDialogOverride(DialogOverride dialogOverride) {
+    }
+
+    @Override
+    public ModifierKeyState getModifierKeyState() {
+        return null;
+    }
+
+    @Override
+    public void resetState() {
+    }
 }

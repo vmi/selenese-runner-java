@@ -3,11 +3,9 @@ package jp.vmi.selenium.selenese.command;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
@@ -44,15 +42,11 @@ public class BuiltInCommand extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        try {
-            String resultString = SeleniumUtils.convertToString(subCommand.execute(context, curArgs));
-            if (andWait) {
-                int timeout = context.getTimeout();
-                WaitForPageToLoad.execute(context, timeout);
-            }
-            return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
-        } catch (SeleniumException e) {
-            return new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
+        String resultString = SeleniumUtils.convertToString(subCommand.execute(context, curArgs));
+        if (andWait) {
+            int timeout = context.getTimeout();
+            WaitForPageToLoad.execute(context, timeout);
         }
+        return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
     }
 }

@@ -7,8 +7,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
@@ -142,7 +145,12 @@ public abstract class AbstractCommand implements ICommand {
 
     @Override
     public final Result execute(Context context, String... curArgs) {
-        return result = executeImpl(context, curArgs);
+        try {
+            result = executeImpl(context, curArgs);
+        } catch (SeleniumException e) {
+            result = new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
+        }
+        return result;
     }
 
     @Override
