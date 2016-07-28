@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -90,6 +92,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
+
+    private MaxTimeTimer maxTimeTimer = new MaxTimeTimer.NoOp();
 
     /**
      * Constructor.
@@ -583,6 +587,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @return result.
      */
     public Result run(String... filenames) {
+        maxTimeTimer.start();
         Result totalResult = UNEXECUTED;
         List<TestSuite> testSuiteList = new ArrayList<>();
         for (String filename : filenames) {
@@ -604,18 +609,20 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 break;
             }
         }
-        if (totalResult != UNEXECUTED)
-            return totalResult;
-        for (TestSuite testSuite : testSuiteList) {
-            Result result;
-            try {
-                result = execute(testSuite);
-            } catch (RuntimeException e) {
-                log.error(e.getMessage());
-                throw e;
+        if (totalResult == UNEXECUTED) {
+            for (TestSuite testSuite : testSuiteList) {
+                Result result;
+                try {
+                    result = execute(testSuite);
+                } catch (RuntimeException e) {
+                    maxTimeTimer.stop();
+                    log.error(e.getMessage());
+                    throw e;
+                }
+                totalResult = totalResult.update(result);
             }
-            totalResult = totalResult.update(result);
         }
+        maxTimeTimer.stop();
         return totalResult;
     }
 
@@ -701,5 +708,94 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
             HighlightStyleBackup backup = styleBackups.pop();
             backup.restore(driver, elementFinder);
         }
+    }
+
+    /**
+     * Setup MaxTimeTimer.
+     * @param maxTime the maxTime in milliseconds.
+     */
+    void setupMaxTimeTimer(long maxTime) {
+        this.maxTimeTimer = new MaxTimeTimer(maxTime);
+    }
+
+    /**
+     * Interrupt main thread after the seconds specified by <code>--max-time</code> option.
+     */
+    public static class MaxTimeTimer extends TimerTask implements Thread.UncaughtExceptionHandler {
+
+        private static final Logger log = LoggerFactory.getLogger(MaxTimeTimer.class);
+
+        private long startTime;
+        private long maxTime;
+        private Thread target;
+        private Timer timer;
+        // original UncaughtExceptionHandler of the "target" thread.
+        private Thread.UncaughtExceptionHandler originalUncaughtExceptionHandler;
+
+        MaxTimeTimer(long maxTime) {
+            this.timer = new Timer(getClass().getSimpleName());
+            this.target = Thread.currentThread();
+            this.startTime = System.currentTimeMillis();
+            this.maxTime = maxTime;
+            this.originalUncaughtExceptionHandler = target.getUncaughtExceptionHandler();
+        }
+
+
+        public static boolean isInterruptedByMaxTimeTimer(Thread thread) {
+            return thread.getUncaughtExceptionHandler() instanceof Runner.MaxTimeTimer
+                    && ((Runner.MaxTimeTimer)thread.getUncaughtExceptionHandler()).isTarget(thread);
+        }
+
+        private boolean isTarget(Thread thread) {
+            return target.equals(thread);
+        }
+
+        /**
+         * Schedule timer task.
+         */
+        void start() {
+            long elapsed = System.currentTimeMillis() - startTime;
+            long delay = maxTime - elapsed;
+            if (delay < 0) {
+                log.warn("Maximum execution time has already been exceeded.");
+                delay = 0;
+            }
+            timer.schedule(this, delay);
+        }
+
+        /**
+         * stop timer and remove scheduled task.
+         */
+        void stop() {
+            timer.cancel();
+            timer.purge();
+            //restore original UncaughtExceptionHandler
+            target.setUncaughtExceptionHandler(originalUncaughtExceptionHandler);
+        }
+
+        @Override
+        public void run() {
+            log.error(String.format("Maximum execution time of %d seconds exceeded.", maxTime / 1000));
+            // Use UncaughtExceptionHadler to distinguish interruption made by MaxTimeTimer or not
+            // and to avoid failing to trap interruption.
+            target.setUncaughtExceptionHandler(this);
+            target.interrupt();
+        }
+
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            // delegate to default handler. java.lang.ThreadGroup is default.
+            target.getThreadGroup().uncaughtException(t, e);
+        }
+
+        /** Null MaxTimeTimer class */
+        static class NoOp extends MaxTimeTimer {
+            NoOp () {
+                super(-1);
+            }
+            void start() { /* noop */ }
+            void stop() { /* noop */ }
+        }
+
     }
 }

@@ -16,7 +16,8 @@ public abstract class Result implements Comparable<Result> {
         SUCCESS(0, 0, 0),
         WARNING(1, 0, 2),
         FAILURE(2, 3, 3),
-        ERROR(3, 3, 4);
+        ERROR(3, 3, 4),
+        MAX_TIME_EXCEEDED(4, 3, 6);
 
         public final int value;
         public final int exitCode;

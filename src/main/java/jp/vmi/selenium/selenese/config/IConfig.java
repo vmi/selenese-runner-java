@@ -44,6 +44,7 @@ public interface IConfig {
     public static final String COMMAND_FACTORY = "command-factory";
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
+    public static final String MAX_TIME = "max-time";
     public static final String HELP = "help";
 
     /**
@@ -199,6 +200,8 @@ public interface IConfig {
     boolean isNoExit();
 
     boolean isStrictExitCode();
+
+    String getMaxTime();
 
     boolean isHelp();
 }

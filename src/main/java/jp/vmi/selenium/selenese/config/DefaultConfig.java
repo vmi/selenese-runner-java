@@ -69,7 +69,8 @@ public class DefaultConfig implements IConfig {
         statusListItem(WARNING),
         statusListItem(FAILURE),
         statusListItem(ERROR),
-        statusListItem(UNEXECUTED)
+        statusListItem(UNEXECUTED),
+        statusListItem(MAX_TIME_EXCEEDED)
     };
 
     private final CmdLineParser parser;
@@ -189,6 +190,9 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--strict-exit-code", usage = "return strict exit code, reflected by selenese command results at end. (See Note *4)")
     private Boolean strictExitCode;
+
+    @Option(name = "--max-time", metaVar = "<max-time>",usage = "Maximum time in seconds that you allow the entire operation to take.")
+    private String maxTime;
 
     @Option(name = "--help", aliases = "-h", usage = "show this message.")
     private Boolean help;
@@ -537,6 +541,15 @@ public class DefaultConfig implements IConfig {
 
     public void setStrictExitCode(boolean strictExitCode) {
         this.strictExitCode = strictExitCode;
+    }
+
+    @Override
+    public String getMaxTime() {
+        return maxTime != null ? maxTime : (parentOptions != null ? parentOptions.getMaxTime() : null);
+    }
+
+    public void setMaxTime(String maxTime) {
+        this.maxTime = maxTime;
     }
 
     @Override

@@ -102,6 +102,12 @@ public class Main {
      * @param filenames filenames of test-suites/test-cases.
      */
     public void setupRunner(Runner runner, IConfig config, String... filenames) {
+        if (config.getMaxTime() != null) {
+            long maxTime = NumberUtils.toLong(config.getMaxTime(), 0);
+            if (maxTime <= 0)
+                throw new IllegalArgumentException("Invalid max time value. (" + config.getMaxTime() + ")");
+            runner.setupMaxTimeTimer(maxTime * 1000);
+        }
         String driverName = config.getDriver();
         DriverOptions driverOptions = new DriverOptions(config);
         if (driverName == null) {

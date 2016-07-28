@@ -63,9 +63,10 @@ public class BindModule extends AbstractModule {
      */
     protected AbstractDoCommandInterceptor[] getDoCommandInterceptors() {
         return new AbstractDoCommandInterceptor[] {
-            new CommandLogInterceptor(), /* 1st */
-            new HighlightInterceptor(), /* 2nd */
-            new ScreenshotInterceptor() /* 3rd */
+            new MaxTimeInterruptInterceptor(), /* 1st */
+            new CommandLogInterceptor(), /* 2nd */
+            new HighlightInterceptor(), /* 3rd */
+            new ScreenshotInterceptor() /* 4th */
         };
     }
 
