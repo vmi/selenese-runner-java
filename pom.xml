@@ -252,6 +252,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
             <pushChanges>false</pushChanges>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>1.8</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -371,6 +376,32 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <artifactId>versions-maven-plugin</artifactId>
         <version>2.2</version>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.8</version>
+        <configuration>
+          <showWeaveInfo>true</showWeaveInfo>
+          <verbose>true</verbose>
+          <complianceLevel>${target.version}</complianceLevel>
+          <source>${source.version}</source>
+          <target>${target.version}</target>
+          <weaveDependencies>
+            <weaveDependency>
+              <groupId>org.seleniumhq.selenium</groupId>
+              <artifactId>selenium-remote-driver</artifactId>
+            </weaveDependency>
+          </weaveDependencies>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencyManagement>
@@ -450,11 +481,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
             <artifactId>selenium-support</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpclient</artifactId>
-	<version>${httpclient.version}</version>
       </dependency>
       <dependency>
 	<groupId>org.apache.httpcomponents</groupId>
@@ -544,6 +570,16 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>3.2.0</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpasyncclient</artifactId>
+      <version>4.1.2</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
@@ -591,6 +627,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>htmlunit-driver</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.8.7</version>
     </dependency>
   </dependencies>
   <reporting>
