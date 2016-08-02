@@ -379,7 +379,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.8</version>
         <configuration>
           <showWeaveInfo>true</showWeaveInfo>
           <verbose>true</verbose>
