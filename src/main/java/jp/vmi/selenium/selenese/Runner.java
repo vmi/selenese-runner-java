@@ -25,6 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.internal.ApacheHttpAsyncClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -715,6 +716,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @param maxTime the maxTime in milliseconds.
      */
     void setupMaxTimeTimer(long maxTime) {
+        try {
+            ApacheHttpAsyncClientFactory.replaceDefaultClientFactory();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.maxTimeTimer = new MaxTimeTimer(maxTime);
     }
 
@@ -725,12 +731,12 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
         private static final Logger log = LoggerFactory.getLogger(MaxTimeTimer.class);
 
-        private long startTime;
-        private long maxTime;
-        private Thread target;
-        private Timer timer;
+        private final long startTime;
+        private final long maxTime;
+        private final Thread target;
+        private final Timer timer;
         // original UncaughtExceptionHandler of the "target" thread.
-        private Thread.UncaughtExceptionHandler originalUncaughtExceptionHandler;
+        private final Thread.UncaughtExceptionHandler originalUncaughtExceptionHandler;
 
         MaxTimeTimer(long maxTime) {
             this.timer = new Timer(getClass().getSimpleName());
@@ -740,10 +746,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
             this.originalUncaughtExceptionHandler = target.getUncaughtExceptionHandler();
         }
 
-
         public static boolean isInterruptedByMaxTimeTimer(Thread thread) {
             return thread.getUncaughtExceptionHandler() instanceof Runner.MaxTimeTimer
-                    && ((Runner.MaxTimeTimer)thread.getUncaughtExceptionHandler()).isTarget(thread);
+                && ((Runner.MaxTimeTimer) thread.getUncaughtExceptionHandler()).isTarget(thread);
         }
 
         private boolean isTarget(Thread thread) {
@@ -790,11 +795,19 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
         /** Null MaxTimeTimer class */
         static class NoOp extends MaxTimeTimer {
-            NoOp () {
+            NoOp() {
                 super(-1);
             }
-            void start() { /* noop */ }
-            void stop() { /* noop */ }
+
+            @Override
+            void start() {
+                /* noop */
+            }
+
+            @Override
+            void stop() {
+                /* noop */
+            }
         }
 
     }
