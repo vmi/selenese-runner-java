@@ -31,7 +31,7 @@ public class MaxTimeTest extends TestCaseTestBase {
         sw.start();
         execute(scriptName);
         sw.stop();
-        assertThat(sw.getTime(), is(lessThanOrEqualTo(maxtime + 1000)));
+        assertThat(sw.getTime(), is(lessThanOrEqualTo(maxtime + 10000)));
     }
 
     private CommandResult getLastCommandResult() {
