@@ -43,14 +43,14 @@ public class MaxTimeTest extends TestCaseTestBase {
     public void flowControl() throws IllegalArgumentException {
         execute("maxTimeFlowControl", 1000);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("while"), is("endWhile")));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("while"), is("endWhile")));
     }
 
     @Test
     public void verifyNotText() throws IllegalArgumentException {
         execute("maxTimeVerifyNotText", 1500);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), is("verifyNotText"));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("verifyNotText")));
     }
 
     @Test
@@ -71,13 +71,13 @@ public class MaxTimeTest extends TestCaseTestBase {
     public void waitForCondition() {
         execute("maxTimeWaitForCondition", 5000);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), is("waitForCondition"));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("waitForCondition")));
     }
 
     @Test
     public void clickAndWait() {
         execute("maxTimeClickAndWait", 5000);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), is("clickAndWait"));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("clickAndWait")));
     }
 }
