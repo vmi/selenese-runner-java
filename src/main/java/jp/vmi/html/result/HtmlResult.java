@@ -151,6 +151,7 @@ public class HtmlResult {
                     break;
                 case FAILURE:
                 case ERROR:
+                case MAX_TIME_EXCEEDED:
                     summary.numTestFailures++;
                     break;
                 }
@@ -167,6 +168,7 @@ public class HtmlResult {
                         summary.numCommandFailures++;
                         break;
                     case ERROR:
+                    case MAX_TIME_EXCEEDED:
                         summary.numCommandErrors++;
                         break;
                     }
