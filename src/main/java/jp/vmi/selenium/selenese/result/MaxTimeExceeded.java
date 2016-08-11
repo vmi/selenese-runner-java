@@ -12,6 +12,7 @@ public class MaxTimeExceeded extends Result {
     public MaxTimeExceeded() {
         super("Maximum execution time exceeded");
     }
+
     /**
      * Constructor.
      *
@@ -35,4 +36,3 @@ public class MaxTimeExceeded extends Result {
         return Level.MAX_TIME_EXCEEDED;
     }
 }
-

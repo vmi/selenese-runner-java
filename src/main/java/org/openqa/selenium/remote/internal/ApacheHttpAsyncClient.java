@@ -21,6 +21,13 @@
 
 package org.openqa.selenium.remote.internal;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -35,21 +42,18 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.http.HttpClient;
 import org.openqa.selenium.remote.http.HttpMethod;
 import org.openqa.selenium.remote.http.HttpRequest;
 import org.openqa.selenium.remote.http.HttpResponse;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import static com.google.common.base.Preconditions.*;
+import static org.apache.http.protocol.HttpCoreContext.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.protocol.HttpCoreContext.HTTP_TARGET_HOST;
-
-public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.HttpClient {
+/**
+ * Replacement of ApacheHttpClient in selenium-remote-driver.
+ */
+public class ApacheHttpAsyncClient implements HttpClient {
 
     private static final int MAX_REDIRECTS = 10;
 
@@ -57,6 +61,12 @@ public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.Ht
     private final HttpHost targetHost;
     private final CloseableHttpAsyncClient client;
 
+    /**
+     * Constructor.
+     *
+     * @param client client.
+     * @param url url.
+     */
     public ApacheHttpAsyncClient(CloseableHttpAsyncClient client, URL url) {
         this.client = checkNotNull(client, "null HttpClient");
         this.url = checkNotNull(url, "null URL");
@@ -94,14 +104,14 @@ public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.Ht
                 response = followRedirects(client, context, response, /* redirect count */0);
             }
             return createResponse(response, context);
-        } catch (InterruptedException|ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             throw new WebDriverException(e);
         }
     }
 
     /** Same implementation as {@link ApacheHttpClient#createResponse(org.apache.http.HttpResponse, HttpContext)} */
     private HttpResponse createResponse(
-            org.apache.http.HttpResponse response, HttpContext context) throws IOException {
+        org.apache.http.HttpResponse response, HttpContext context) throws IOException {
         HttpResponse internalResponse = new HttpResponse();
 
         internalResponse.setStatus(response.getStatusLine().getStatusCode());
@@ -136,20 +146,20 @@ public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.Ht
     /** Same implementation as {@link ApacheHttpClient#createHttpUriRequest(HttpMethod, String)} */
     private static HttpUriRequest createHttpUriRequest(HttpMethod method, String url) {
         switch (method) {
-            case DELETE:
-                return new HttpDelete(url);
-            case GET:
-                return new HttpGet(url);
-            case POST:
-                return new HttpPost(url);
+        case DELETE:
+            return new HttpDelete(url);
+        case GET:
+            return new HttpGet(url);
+        case POST:
+            return new HttpPost(url);
         }
         throw new AssertionError("Unsupported method: " + method);
     }
 
     private org.apache.http.HttpResponse followRedirects(
-            CloseableHttpAsyncClient client,
-            HttpContext context,
-            org.apache.http.HttpResponse response, int redirectCount) {
+        CloseableHttpAsyncClient client,
+        HttpContext context,
+        org.apache.http.HttpResponse response, int redirectCount) {
         if (!isRedirect(response)) {
             return response;
         }
@@ -182,7 +192,7 @@ public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.Ht
         try {
             org.apache.http.HttpResponse newResponse = future.get();
             return followRedirects(client, context, newResponse, redirectCount + 1);
-        } catch (InterruptedException|ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             throw new WebDriverException(e);
         }
     }
@@ -201,8 +211,9 @@ public class ApacheHttpAsyncClient implements org.openqa.selenium.remote.http.Ht
         int code = response.getStatusLine().getStatusCode();
 
         return (code == 301 || code == 302 || code == 303 || code == 307)
-                && response.containsHeader("location");
+            && response.containsHeader("location");
     }
+
     @Override
     public void close() throws IOException {
         client.close();

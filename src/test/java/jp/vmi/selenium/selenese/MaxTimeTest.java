@@ -1,24 +1,23 @@
 package jp.vmi.selenium.selenese;
 
-import jp.vmi.selenium.selenese.result.*;
+import org.apache.commons.lang3.time.StopWatch;
+import org.junit.Test;
+
+import jp.vmi.selenium.selenese.result.CommandResult;
+import jp.vmi.selenium.selenese.result.CommandResultList;
+import jp.vmi.selenium.selenese.result.MaxTimeExceeded;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-import org.apache.commons.lang3.time.StopWatch;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Driver independent test.
  */
 @SuppressWarnings("javadoc")
 public class MaxTimeTest extends TestCaseTestBase {
-
-    private static final Logger log = LoggerFactory.getLogger(MaxTimeTest.class);
 
     @Override
     protected void initDriver() {
@@ -44,7 +43,7 @@ public class MaxTimeTest extends TestCaseTestBase {
     public void flowControl() throws IllegalArgumentException {
         execute("maxTimeFlowControl", 1000);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("while"),is("endWhile")));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("while"), is("endWhile")));
     }
 
     @Test

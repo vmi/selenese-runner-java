@@ -183,14 +183,14 @@ public class BinderTest extends TestBase {
                 });
                 itcs = appendInterceptors(itcs,
                     new AbstractExecuteTestSuiteInterceptor() {
-                    @Override
-                    protected Result invoke(MethodInvocation invocation, TestSuite testSuite, Selenese parent, Context context) throws Throwable {
-                        called.add("ExecuteTestSuite/Append1");
-                        Result result = (Result) invocation.proceed();
-                        called.add("ExecuteTestSuite/Append2");
-                        return result;
-                    }
-                });
+                        @Override
+                        protected Result invoke(MethodInvocation invocation, TestSuite testSuite, Selenese parent, Context context) throws Throwable {
+                            called.add("ExecuteTestSuite/Append1");
+                            Result result = (Result) invocation.proceed();
+                            called.add("ExecuteTestSuite/Append2");
+                            return result;
+                        }
+                    });
                 return itcs;
             }
 
@@ -208,14 +208,14 @@ public class BinderTest extends TestBase {
                 });
                 itcs = appendInterceptors(itcs,
                     new AbstractExecuteTestCaseInterceptor() {
-                    @Override
-                    protected Result invoke(MethodInvocation invocation, ITestCase testCase, Selenese parent, Context context) throws Throwable {
-                        called.add("ExecuteTestCase/Append1");
-                        Result result = (Result) invocation.proceed();
-                        called.add("ExecuteTestCase/Append2");
-                        return result;
-                    }
-                });
+                        @Override
+                        protected Result invoke(MethodInvocation invocation, ITestCase testCase, Selenese parent, Context context) throws Throwable {
+                            called.add("ExecuteTestCase/Append1");
+                            Result result = (Result) invocation.proceed();
+                            called.add("ExecuteTestCase/Append2");
+                            return result;
+                        }
+                    });
                 return itcs;
             }
 
@@ -233,14 +233,14 @@ public class BinderTest extends TestBase {
                 });
                 itcs = appendInterceptors(itcs,
                     new AbstractDoCommandInterceptor() {
-                    @Override
-                    protected Result invoke(MethodInvocation invocation, Context context, ICommand command, String[] curArgs) throws Throwable {
-                        called.add("DoCommand/Append1");
-                        Result result = (Result) invocation.proceed();
-                        called.add("DoCommand/Append2");
-                        return result;
-                    }
-                });
+                        @Override
+                        protected Result invoke(MethodInvocation invocation, Context context, ICommand command, String[] curArgs) throws Throwable {
+                            called.add("DoCommand/Append1");
+                            Result result = (Result) invocation.proceed();
+                            called.add("DoCommand/Append2");
+                            return result;
+                        }
+                    });
                 return itcs;
             }
         });

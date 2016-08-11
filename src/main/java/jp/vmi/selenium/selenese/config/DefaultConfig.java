@@ -191,7 +191,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--strict-exit-code", usage = "return strict exit code, reflected by selenese command results at end. (See Note *4)")
     private Boolean strictExitCode;
 
-    @Option(name = "--max-time", metaVar = "<max-time>",usage = "Maximum time in seconds that you allow the entire operation to take.")
+    @Option(name = "--max-time", metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
 
     @Option(name = "--help", aliases = "-h", usage = "show this message.")

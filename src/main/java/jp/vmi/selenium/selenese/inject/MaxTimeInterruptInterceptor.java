@@ -1,14 +1,14 @@
 package jp.vmi.selenium.selenese.inject;
 
+import org.aopalliance.intercept.MethodInvocation;
+
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.MaxTimeExceeded;
 import jp.vmi.selenium.selenese.result.Result;
-import org.aopalliance.intercept.MethodInvocation;
 
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.interrupted;
-import static jp.vmi.selenium.selenese.Runner.MaxTimeTimer.isInterruptedByMaxTimeTimer;
+import static java.lang.Thread.*;
+import static jp.vmi.selenium.selenese.Runner.MaxTimeTimer.*;
 
 /**
  * Interceptor class handles interruption made by {@link jp.vmi.selenium.selenese.Runner.MaxTimeTimer}.
@@ -26,7 +26,7 @@ public class MaxTimeInterruptInterceptor extends AbstractDoCommandInterceptor {
             result = (Result) invocation.proceed();
         } catch (Throwable t) {
             if (isInterruptedByMaxTimeTimer(currentThread())) {
-                interrupted();;
+                interrupted();
                 return new MaxTimeExceeded((Exception) t);
             }
             throw t;

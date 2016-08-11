@@ -746,6 +746,12 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
             this.originalUncaughtExceptionHandler = target.getUncaughtExceptionHandler();
         }
 
+        /**
+         * Test specified thread is interrupted.
+         *
+         * @param thread thread object.
+         * @return true if the thread is interrupted.
+         */
         public static boolean isInterruptedByMaxTimeTimer(Thread thread) {
             return thread.getUncaughtExceptionHandler() instanceof Runner.MaxTimeTimer
                 && ((Runner.MaxTimeTimer) thread.getUncaughtExceptionHandler()).isTarget(thread);

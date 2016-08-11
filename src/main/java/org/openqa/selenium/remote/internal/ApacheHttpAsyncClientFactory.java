@@ -18,14 +18,15 @@ import org.apache.http.impl.nio.reactor.DefaultConnectingIOReactor;
 import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.nio.reactor.IOReactorException;
 import org.openqa.selenium.remote.http.HttpClient;
+import org.openqa.selenium.remote.http.HttpClient.Factory;
 
 import static com.google.common.base.Preconditions.*;
 import static java.util.concurrent.TimeUnit.*;
 
 /**
- * Override {@link org.openqa.selenium.remote.internal.ApacheHttpClient.Factory#createClient(URL)} to return {@link ApacheHttpAsyncClient}
+ * Replacement of {@link org.openqa.selenium.remote.internal.ApacheHttpClient.Factory} to return {@link ApacheHttpAsyncClient}
  */
-public class ApacheHttpAsyncClientFactory implements org.openqa.selenium.remote.http.HttpClient.Factory {
+public class ApacheHttpAsyncClientFactory implements Factory {
 
     //  {@link org.openqa.selenium.remote.internal.HttpClientFactory}'s defaults
     private final int TIMEOUT_THREE_HOURS = (int) SECONDS.toMillis(60 * 60 * 3);
@@ -40,7 +41,9 @@ public class ApacheHttpAsyncClientFactory implements org.openqa.selenium.remote.
         Class<?> factoryClass = Class.forName("org.openqa.selenium.remote.HttpCommandExecutor");
         Field defaultClientFactory = factoryClass.getDeclaredField("defaultClientFactory");
         defaultClientFactory.setAccessible(true);
-        defaultClientFactory.set(null, new ApacheHttpAsyncClientFactory());
+        Factory factory = (Factory) defaultClientFactory.get(null);
+        if (factory == null || !(factory instanceof ApacheHttpAsyncClientFactory))
+            defaultClientFactory.set(null, new ApacheHttpAsyncClientFactory());
     }
 
     @Override
@@ -58,6 +61,7 @@ public class ApacheHttpAsyncClientFactory implements org.openqa.selenium.remote.
         }
 
         // same as HttpClientFactory#createRequestConfig(int, int)
+        @SuppressWarnings("deprecation")
         RequestConfig requestConfig = RequestConfig.custom()
             .setStaleConnectionCheckEnabled(true)
             .setConnectTimeout(connectionTimeout)
@@ -83,8 +87,19 @@ public class ApacheHttpAsyncClientFactory implements org.openqa.selenium.remote.
             .setDefaultRequestConfig(requestConfig)
             .setRoutePlanner(routePlanner);
 
-        if (url.getUserInfo() != null) {
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(url.getUserInfo());
+        String userInfo = url.getUserInfo();
+        if (userInfo != null) {
+            String user;
+            String password;
+            int sep = userInfo.indexOf(':');
+            if (sep >= 0) {
+                user = userInfo.substring(0, sep);
+                password = userInfo.substring(sep + 1);
+            } else {
+                user = userInfo;
+                password = null;
+            }
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user, password);
             CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(AuthScope.ANY, credentials);
             builder.setDefaultCredentialsProvider(provider);
