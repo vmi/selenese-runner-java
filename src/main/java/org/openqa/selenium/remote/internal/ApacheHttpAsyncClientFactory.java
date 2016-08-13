@@ -41,9 +41,11 @@ public class ApacheHttpAsyncClientFactory implements Factory {
         Class<?> factoryClass = Class.forName("org.openqa.selenium.remote.HttpCommandExecutor");
         Field defaultClientFactory = factoryClass.getDeclaredField("defaultClientFactory");
         defaultClientFactory.setAccessible(true);
-        Factory factory = (Factory) defaultClientFactory.get(null);
-        if (factory == null || !(factory instanceof ApacheHttpAsyncClientFactory))
-            defaultClientFactory.set(null, new ApacheHttpAsyncClientFactory());
+        synchronized (factoryClass) {
+            Factory factory = (Factory) defaultClientFactory.get(null);
+            if (factory == null || !(factory instanceof ApacheHttpAsyncClientFactory))
+                defaultClientFactory.set(null, new ApacheHttpAsyncClientFactory());
+        }
     }
 
     @Override
