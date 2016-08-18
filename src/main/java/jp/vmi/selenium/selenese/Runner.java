@@ -73,6 +73,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private String screenshotOnFailDir = null;
     private boolean isIgnoredScreenshotCommand = false;
     private boolean isHighlight = false;
+    private boolean isInteractive = false;
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
@@ -416,6 +417,21 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setHighlight(boolean isHighlight) {
         this.isHighlight = isHighlight;
         log.info("Highlight mode: {}", isHighlight ? "enabled" : "disabled");
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return isInteractive;
+    }
+
+    /**
+     * Set interactive.
+     *
+     * @param isInteractive true if Runner executes test step-by-step upon user key stroke.
+     */
+    public void setInteractive(boolean isInteractive) {
+        this.isInteractive = isInteractive;
+        log.info("Interactive mode: {}", isInteractive ? "enabled" : "disabled");
     }
 
     private void setDriverTimeout() {

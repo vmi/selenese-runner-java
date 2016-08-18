@@ -50,6 +50,7 @@ Usage
      --remote-browser <browser>              : Desired remote browser (Remote only)
      --remote-version <browser-version>      : Desired remote browser version (Remote only)
      --highlight (-H)                        : highlight locator always.
+     --interactive (-i)                      : interactive mode.
      --screenshot-dir (-s) <dir>             : override captureEntirePageScreenshot directory.
      --screenshot-all (-S) <dir>             : take screenshot at all commands to specified directory.
      --screenshot-on-fail <dir>              : take screenshot on fail commands to specified directory.

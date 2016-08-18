@@ -205,4 +205,12 @@ public interface Context extends WrapsDriver {
      * @param cookieFilter cookie filter.
      */
     void setCookieFilter(CookieFilter cookieFilter);
+
+    /**
+     * Get interactive
+     *
+     * @return interactive.
+     */
+    boolean isInteractive();
+
 }

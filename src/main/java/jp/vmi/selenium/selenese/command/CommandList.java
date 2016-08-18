@@ -94,6 +94,10 @@ public class CommandList extends ArrayList<ICommand> {
     @DoCommand
     protected Result doCommand(Context context, ICommand command, String... curArgs) {
         try {
+            if (context.isInteractive()) {
+                System.out.println(">>> Press any key to continue <<<");
+                System.in.read();
+            }
             return command.execute(context, curArgs);
         } catch (SeleneseCommandErrorException e) {
             return e.getError();

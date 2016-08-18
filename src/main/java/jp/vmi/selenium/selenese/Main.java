@@ -140,6 +140,8 @@ public class Main {
         runner.setWebDriverPreparator(manager);
         if (config.isHighlight())
             runner.setHighlight(true);
+        if (config.isInteractive())
+            runner.setInteractive(true);
         if (config.getScreenshotDir() != null)
             runner.setScreenshotDir(config.getScreenshotDir());
         if (config.getScreenshotAll() != null)

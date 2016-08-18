@@ -151,4 +151,9 @@ public class NullContext implements Context {
     @Override
     public void setCookieFilter(CookieFilter cookieFilter) {
     }
+
+    @Override
+    public boolean isInteractive() {
+        return false;
+    }
 }

@@ -128,6 +128,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--highlight", aliases = "-H", usage = "highlight locator always.")
     private Boolean highlight;
 
+    @Option(name = "--interactive", aliases = "-i", usage = "interactive mode.")
+    private Boolean interactive;
+
     @Option(name = "--screenshot-dir", aliases = "-s", metaVar = "<dir>", usage = "override captureEntirePageScreenshot directory.")
     private String screenshotDir;
 
@@ -352,6 +355,15 @@ public class DefaultConfig implements IConfig {
 
     public void setHighlight(boolean highlight) {
         this.highlight = highlight;
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return interactive != null ? interactive : (parentOptions != null ? parentOptions.isInteractive() : false);
+    }
+
+    public void setInteractive(boolean interactive) {
+        this.interactive = interactive;
     }
 
     @Override
