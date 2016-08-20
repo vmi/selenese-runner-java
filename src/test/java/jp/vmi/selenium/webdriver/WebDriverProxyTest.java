@@ -55,6 +55,7 @@ public class WebDriverProxyTest extends TestBase {
         manager.setWebDriverFactory(factory);
         DriverOptions options = new DriverOptions();
         options.set(DriverOption.PROXY, wpr.getServerNameString());
+        TestBase.setFirefoxBinary(factory, options);
         manager.setDriverOptions(options);
         WebDriver driver;
         try {
