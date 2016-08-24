@@ -4,6 +4,35 @@ Selenese Runner Java Relase Note
 ### 2.10.0
 
 * Add new option `--max-time` which limits processing time. (#207 by koichirok)
+* Re-implement the following commands for handling dialogs: (#203)
+    * `altKeyDown`
+    * `altKeyUp`
+    * `answerOnNextPrompt`
+    * `check`
+    * `click`
+    * `clickAt`
+    * `controlKeyDown`
+    * `controlKeyUp`
+    * `doubleClick`
+    * `keyDown`
+    * `keyUp`
+    * `metaKeyDown`
+    * `metaKeyUp`
+    * `select`
+    * `sendKeys`
+    * `shiftKeyDown`
+    * `shiftKeyUp`
+    * `submit`
+    * `type`
+    * `typeKeys`
+    * `uncheck`
+    * `(assert|verify|waitFor|store)Alert`
+    * `(assert|verify|waitFor|store)Confirmation`
+    * `(assert|verify|waitFor|store)Prompt`
+    * `(assert|verify|waitFor|store)AlertPresent`
+    * `(assert|verify|waitFor|store)ConfirmationPresent`
+    * `(assert|verify|waitFor|store)PromptPresent`
+* re-implement `(assert|verify|waitFor|store)TextPresent` for frame/iframe.
 
 ### 2.9.0
 
