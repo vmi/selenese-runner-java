@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.10.0
+
+* Add new option `--max-time` which limits processing time. (#207 by koichirok)
+
 ### 2.9.0
 
 * Catch up Selenium 2.53.1.

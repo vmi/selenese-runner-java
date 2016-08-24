@@ -71,6 +71,7 @@ Usage
      --command-factory <FQCN>                : register user defined command factory. (See Note *3)
      --no-exit                               : don't call System.exit at end.
      --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)
+     --max-time <max-time>                   : Maximum time in seconds that you allow the entire operation to take.
      --help (-h)                             : show this message.
     
     [Note]
@@ -87,6 +88,7 @@ Usage
        - 3: FAILURE
        - 4: ERROR
        - 5: UNEXECUTED
+       - 6: MAX_TIME_EXCEEDED
 
 Requirements
 ------------
