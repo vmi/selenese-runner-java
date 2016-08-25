@@ -135,7 +135,7 @@ public class SubCommandMap {
         register(new IsElementPresent(elementFinder), "isElementPresent", LOCATOR);
         register(new IsOrdered(elementFinder, javascriptLibrary), "isOrdered", LOCATOR, LOCATOR);
         // "isSomethingSelected"
-        register(new IsTextPresent(javascriptLibrary), "isTextPresent", VALUE);
+        // "isTextPresent"
         register(new IsVisible(elementFinder), "isVisible", LOCATOR);
         // "keyDown"
         register(new KeyDownNative(), "keyDownNative", LOCATOR, VALUE);
@@ -190,6 +190,7 @@ public class SubCommandMap {
         register(new IsConfirmationPresent());
         register(new IsPromptPresent());
         register(new GetAllWindowNames());
+        register(new IsTextPresent());
 
         register(new GetSelected(GetSelected.Type.LABEL, false));
         register(new GetSelected(GetSelected.Type.LABEL, true));
