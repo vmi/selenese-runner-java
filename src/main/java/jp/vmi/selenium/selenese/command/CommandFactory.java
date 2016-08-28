@@ -62,7 +62,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(Select.class);
         addConstructor(Submit.class);
         addConstructor(Type.class);
-        addConstructor(TypeKeys.class, "sendKeys", "keyPress");
+        addConstructor(TypeKeys.class, "sendKeys");
         addConstructor(Uncheck.class);
         addConstructor(AltKeyDown.class);
         addConstructor(AltKeyUp.class);
@@ -73,6 +73,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(ShiftKeyDown.class);
         addConstructor(ShiftKeyUp.class);
         addConstructor(KeyDown.class);
+        addConstructor(KeyPress.class);
         addConstructor(KeyUp.class);
 
         // commands unsupported by WebDriverCommandProcessor

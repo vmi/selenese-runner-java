@@ -5,7 +5,6 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import jp.vmi.selenium.selenese.ModifierKeyState;
 import jp.vmi.selenium.selenese.utils.JSFunction;
 
 /**
@@ -18,7 +17,7 @@ public class EventUtils {
      */
     @SuppressWarnings("javadoc")
     public enum EventType {
-        KEYDOWN, KEYUP;
+        KEYDOWN, KEYPRESS, KEYUP;
 
         @Override
         public String toString() {

@@ -39,12 +39,13 @@ function triggerKeyEvent(element, eventType, keyCode, controlKeyDown, altKeyDown
       evt.initKeyEvent(eventType, true, true, view, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown, keyCode, keyCode);
     } else {
       evt = document.createEvent('UIEvents');
+      evt.initUIEvent(eventType, true, true, window, 1);
       evt.shiftKey = shiftKeyDown;
       evt.metaKey = metaKeyDown;
       evt.altKey = altKeyDown;
       evt.ctrlKey = controlKeyDown;
-      evt.initUIEvent(eventType, true, true, window, 1);
       evt.keyCode = keyCode;
+      evt.charCode = eventType == "keypress" ? keyCode : 0;
       evt.which = keyCode;
     }
     element.dispatchEvent(evt);
