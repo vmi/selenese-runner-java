@@ -176,6 +176,13 @@ public class HtmlResult {
                 break;
             }
         }
+        File dir = new File(htmlResultDir);
+        if (!dir.exists()) {
+            // A HTML result is invalid when output directory does not exist.
+            // Because a result of the pathname normalization is different in a presence of a directory.
+            dir.mkdirs();
+            log.info("Make the directory for HTML resut: {}", dir);
+        }
         Map<String, Object> model = new HashMap<>();
         model.put("title", testSuite.getName() + " results");
         model.put("sysInfo", SystemInformation.getInstance());
@@ -189,13 +196,8 @@ public class HtmlResult {
         model.put("numCommandErrors", summary.numCommandErrors);
         model.put("commandLine", commandLineArgs);
         String html = getEngine().transform(getTemplate("result.html"), model);
-        File dir = new File(htmlResultDir);
         File file = new File(dir, "TEST-" + testSuite.getBaseName() + ".html");
         try {
-            if (!dir.exists()) {
-                dir.mkdirs();
-                log.info("Make the directory for HTML resut: {}", dir);
-            }
             FileUtils.write(file, html, "UTF-8");
             log.info("Generated HTML result: {}", file);
         } catch (IOException e) {
