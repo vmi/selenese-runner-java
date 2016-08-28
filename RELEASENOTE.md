@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 2.10.0
 
 * Add new option `--max-time` which limits processing time. (#207 by koichirok)
+* Fix incorrect screenshot links in HTML result if target directories do not exist. (#211)
 
 ### 2.9.0
 
