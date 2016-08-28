@@ -5,6 +5,7 @@ Selenese Runner Java Relase Note
 
 * Add new option `--max-time` which limits processing time. (#207 by koichirok)
 * Fix incorrect screenshot links in HTML result if target directories do not exist. (#211)
+* Re-implement `(assert|verify|waitFor|store)TextPresent` for frame/iframe.
 * Re-implement the following commands for handling dialogs: (#203)
     * `altKeyDown`
     * `altKeyUp`
@@ -33,7 +34,6 @@ Selenese Runner Java Relase Note
     * `(assert|verify|waitFor|store)AlertPresent`
     * `(assert|verify|waitFor|store)ConfirmationPresent`
     * `(assert|verify|waitFor|store)PromptPresent`
-* re-implement `(assert|verify|waitFor|store)TextPresent` for frame/iframe.
 
 ### 2.9.0
 
