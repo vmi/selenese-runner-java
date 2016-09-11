@@ -76,7 +76,8 @@ public class JSFunction {
      *
      * @param driver WebDriver object.
      * @param args arguments.
-     * @return function resullt.
+     * @param <T> type of function result.
+     * @return function result.
      */
     public <T> T call(WebDriver driver, Object... args) {
         @SuppressWarnings("unchecked")
