@@ -1,5 +1,6 @@
 // Following code is copied from:
-// selenium/javascript/selenium-core/scripts/htmlutils.js
+//   selenium/javascript/selenium-core/scripts/htmlutils.js
+// and modified.
 //
 // Original license:
 // ------------------------------------------------------------
@@ -31,23 +32,29 @@ function triggerKeyEvent(element, eventType, keyCode, controlKeyDown, altKeyDown
     evt.ctrlKey = controlKeyDown;
     evt.keyCode = keyCode;
     element.fireEvent('on' + eventType, evt);
-  } else {
-    if (window.KeyEvent) {
-      var doc = element.ownerDocument;
-      var view = doc.defaultView;
-      evt = doc.createEvent('KeyEvents');
-      evt.initKeyEvent(eventType, true, true, view, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown, keyCode, keyCode);
-    } else {
-      evt = document.createEvent('UIEvents');
-      evt.initUIEvent(eventType, true, true, window, 1);
-      evt.shiftKey = shiftKeyDown;
-      evt.metaKey = metaKeyDown;
-      evt.altKey = altKeyDown;
-      evt.ctrlKey = controlKeyDown;
-      evt.keyCode = keyCode;
-      evt.charCode = eventType == "keypress" ? keyCode : 0;
-      evt.which = keyCode;
-    }
-    element.dispatchEvent(evt);
+    return;
   }
+  var doc = element.ownerDocument;
+  var view = doc.defaultView;
+  if (window.KeyEvent) { // Firefox only?
+    evt = doc.createEvent('KeyEvents');
+    evt.initKeyEvent(eventType, true, true, view, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown, keyCode, keyCode);
+  } else {
+    evt = document.createEvent('Events');
+    evt.initEvent(eventType, true, true);
+    evt.view = window;
+    evt.shiftKey = shiftKeyDown;
+    evt.metaKey = metaKeyDown;
+    evt.altKey = altKeyDown;
+    evt.ctrlKey = controlKeyDown;
+    evt.keyCode = keyCode;
+    evt.which = keyCode;
+    evt.charCode = (eventType === "keypress") ? keyCode : 0;
+    console.log(keyCode + "/" + evt.keyCode);
+  }
+  element.dispatchEvent(evt);
 }
+
+if (module)
+  module.exports = triggerKeyEvent;
+

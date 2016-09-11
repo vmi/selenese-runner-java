@@ -22,9 +22,9 @@
     function kbe2s(event) {
       var k;
       var s = '';
-      for (k of [ 'code', 'key', 'keyCode', 'charCode', 'which' ]) {
+      [ 'code', 'key', 'keyCode', 'charCode', 'which' ].forEach(function(k) {
         s += k + '=[' + event[k] + '], ';
-      }
+      });
       s += 'mod=[';
       if (event.altKey)   s += 'A';
       if (event.ctrlKey)  s += 'C';
