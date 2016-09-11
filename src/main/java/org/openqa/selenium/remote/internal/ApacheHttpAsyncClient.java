@@ -138,12 +138,16 @@ public class ApacheHttpAsyncClient implements HttpClient {
         return internalResponse;
     }
 
-    /** Same implementation as {@link ApacheHttpClient#createContext()} */
+    /* (non-Javadoc)
+     * @see ApacheHttpClient#createContext()
+     */
     protected HttpContext createContext() {
         return new BasicHttpContext();
     }
 
-    /** Same implementation as {@link ApacheHttpClient#createHttpUriRequest(HttpMethod, String)} */
+    /* (non-Javadoc)
+     * see ApacheHttpClient#createHttpUriRequest(HttpMethod, String)
+     */
     private static HttpUriRequest createHttpUriRequest(HttpMethod method, String url) {
         switch (method) {
         case DELETE:
