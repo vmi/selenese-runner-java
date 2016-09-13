@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Key Event Test</title>
+  <script type="text/javascript"><!--
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+    function resetPage() {
+      $('text1').value = '';
+      $('keydown1').textContent = '-';
+      $('keypress1').textContent = '-';
+      $('keyup1').textContent = '-';
+      $('text2').value = '';
+      $('keydown2').textContent = '-';
+      $('keypress2').textContent = '-';
+      $('keyup2').textContent = '-';
+    }
+
+    function kbe2s(event) {
+      var k;
+      var s = '';
+      [ 'code', 'key', 'keyCode', 'charCode', 'which' ].forEach(function(k) {
+        s += k + '=[' + event[k] + '], ';
+      });
+      s += 'mod=[';
+      if (event.altKey)   s += 'A';
+      if (event.ctrlKey)  s += 'C';
+      if (event.metaKey)  s += 'M';
+      if (event.shiftKey) s += 'S';
+      s += ']';
+      console.log(event);
+      return s;
+    }
+
+    function num(event) {
+      return event.target.id.replace(/\D+/, '');
+    }
+
+    function keydown(event) {
+      $('keydown' + num(event)).textContent = kbe2s(event);
+    }
+
+    function keypress(event) {
+      $('keypress' + num(event)).textContent = kbe2s(event);
+    }
+
+    function keyup(event) {
+      $('keyup' + num(event)).textContent = kbe2s(event);
+    }
+
+    window.addEventListener('load', function(event) {
+      var t1 = $('text1');
+      t1.addEventListener('keydown', keydown, false);
+      t1.addEventListener('keypress', keypress, false);
+      t1.addEventListener('keyup', keyup, false);
+      var t2 = $('text2');
+      t2.addEventListener('keydown', keydown, false);
+      t2.addEventListener('keypress', keypress, false);
+      t2.addEventListener('keyup', keyup, false);
+    }, false);
+  //--></script>
+</head>
+<body>
+  <h1>Key Event Test</h1>
+  <hr>
+  <ul>
+    <li><input id="text1">
+      <ul>
+        <li>keydown: <span id="keydown1">-</span></li>
+        <li>keypress: <span id="keypress1">-</span></li>
+        <li>keyup: <span id="keyup1">-</span></li>
+      </ul>
+    </li>
+    <li><input id="text2">
+      <ul>
+        <li>keydown: <span id="keydown2">-</span></li>
+        <li>keypress: <span id="keypress2">-</span></li>
+        <li>keyup: <span id="keyup2">-</span></li>
+      </ul>
+    </li>
+    <li><button id="reset" onclick="resetPage()">Reset</button></li>
+  </ul>
+</body>
+</html>

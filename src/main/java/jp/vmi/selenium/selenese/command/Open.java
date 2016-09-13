@@ -27,6 +27,8 @@ public class Open extends AbstractCommand {
         String url = curArgs[ARG_URL];
         if (!url.contains("://")) {
             String baseURL = context.getCurrentBaseURL();
+            if (!baseURL.isEmpty() && baseURL.charAt(baseURL.length() - 1) != '/')
+                baseURL += "/";
             try {
                 url = new URI(baseURL).resolve(url).toASCIIString();
             } catch (URISyntaxException e) {

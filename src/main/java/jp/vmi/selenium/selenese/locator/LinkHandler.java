@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.utils.SeleniumUtils.SeleniumPattern;
+import jp.vmi.selenium.selenese.utils.XPathUtils;
 
 class LinkHandler implements LocatorHandler {
 
@@ -38,13 +39,6 @@ class LinkHandler implements LocatorHandler {
         return result;
     }
 
-    private void appendXPathString(StringBuilder xpath, String s) {
-        if (s.indexOf('"') >= 0)
-            xpath.append("concat(\"").append(s.replace("\"", "\",'\"',\"")).append("\")");
-        else
-            xpath.append('"').append(s).append('"');
-    }
-
     private List<WebElement> findByGlobString(WebDriver driver, SeleniumPattern sp) {
         boolean and = false;
         StringBuilder xpath = new StringBuilder("//a[");
@@ -54,7 +48,7 @@ class LinkHandler implements LocatorHandler {
             if (and)
                 xpath.append(" and ");
             xpath.append("contains(normalize-space(.),");
-            appendXPathString(xpath, ss);
+            XPathUtils.appendStringLiteral(xpath, ss);
             xpath.append(")");
             and = true;
         }
@@ -65,7 +59,7 @@ class LinkHandler implements LocatorHandler {
 
     private List<WebElement> findByExactString(WebDriver driver, SeleniumPattern sp) {
         StringBuilder xpath = new StringBuilder("//a[normalize-space(.)=");
-        appendXPathString(xpath, sp.stringPattern);
+        XPathUtils.appendStringLiteral(xpath, sp.stringPattern);
         xpath.append(']');
         return driver.findElements(By.xpath(xpath.toString()));
     }

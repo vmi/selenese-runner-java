@@ -55,6 +55,26 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(SelectPopUp.class);
         addConstructor(DeselectPopUp.class);
         addConstructor(WaitForPopUp.class);
+        addConstructor(Click.class);
+        addConstructor(ClickAt.class);
+        addConstructor(Check.class);
+        addConstructor(DoubleClick.class);
+        addConstructor(Select.class);
+        addConstructor(Submit.class);
+        addConstructor(Type.class);
+        addConstructor(TypeKeys.class, "sendKeys");
+        addConstructor(Uncheck.class);
+        addConstructor(AltKeyDown.class);
+        addConstructor(AltKeyUp.class);
+        addConstructor(ControlKeyDown.class);
+        addConstructor(ControlKeyUp.class);
+        addConstructor(MetaKeyDown.class);
+        addConstructor(MetaKeyUp.class);
+        addConstructor(ShiftKeyDown.class);
+        addConstructor(ShiftKeyUp.class);
+        addConstructor(KeyDown.class);
+        addConstructor(KeyPress.class);
+        addConstructor(KeyUp.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);

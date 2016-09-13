@@ -205,4 +205,30 @@ public interface Context extends WrapsDriver {
      * @param cookieFilter cookie filter.
      */
     void setCookieFilter(CookieFilter cookieFilter);
+
+    /**
+     * Get dialog override.
+     *
+     * @return dialog override.
+     */
+    DialogOverride getDialogOverride();
+
+    /**
+     * Set dialog override.
+     *
+     * @param dialogOverride dialog override.
+     */
+    void setDialogOverride(DialogOverride dialogOverride);
+
+    /**
+     * Get modifier key state.
+     *
+     * @return modifier key state.
+     */
+    ModifierKeyState getModifierKeyState();
+
+    /**
+     * Reset internal state.
+     */
+    void resetState();
 }
