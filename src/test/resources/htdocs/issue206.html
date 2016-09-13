@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #206</title>
+    <script type="text/javascript"><!--
+      function testConfirm() {
+        var r = confirm("Confirm?");
+        var text = r ? "OK" : "Cancel";
+        document.getElementById("msg").textContent = text;
+      }
+    //--></script>
+  </head>
+  <body>
+    <div><button id="btn" onclick="testConfirm()">Do confirm</button></div>
+    <div id="msg"></div>
+  </body>
+</html>
