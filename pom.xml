@@ -52,6 +52,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <selenium.version>2.53.1</selenium.version>
     <htmlunit-driver.version>2.21</htmlunit-driver.version>
     <httpclient.version>4.5.2</httpclient.version>
+    <httpcore.version>4.4.5</httpcore.version>
     <slf4j.version>1.7.21</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
@@ -477,6 +478,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
 	    <artifactId>commons-logging</artifactId>
 	  </exclusion>
 	</exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.4.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
