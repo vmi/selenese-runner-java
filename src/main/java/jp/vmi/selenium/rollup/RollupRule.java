@@ -10,11 +10,11 @@ import javax.script.ScriptException;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.script.JSList;
 import jp.vmi.script.JSMap;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
@@ -53,7 +53,7 @@ public class RollupRule implements IRollupRule {
             try {
                 commands = JSList.toList(engine, engine.eval("rule.getExpandedCommands(" + args + ")", bindings));
             } catch (ScriptException e) {
-                throw new SeleniumException(e);
+                throw new SeleneseRunnerRuntimeException(e);
             }
         }
         ICommandFactory factory = context.getCommandFactory();

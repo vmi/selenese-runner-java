@@ -16,7 +16,7 @@ import javax.script.ScriptException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * Set or rollup rules.
@@ -48,7 +48,7 @@ public class RollupRules {
         engine = new ScriptEngineManager().getEngineByExtension("js");
         // some OpenJDK7 installations have lack of JavaScript support
         if (engine == null)
-            throw new SeleniumException("Script engine not found for js");
+            throw new SeleneseRunnerRuntimeException("Script engine not found for js");
         String engineName = engine.getFactory().getEngineName();
         EngineType engineType = null;
         for (EngineType et : EngineType.values()) {
@@ -58,7 +58,7 @@ public class RollupRules {
             }
         }
         if (engineType == null)
-            throw new SeleniumException("Unknown script engine: " + engineName);
+            throw new SeleneseRunnerRuntimeException("Unknown script engine: " + engineName);
         this.engineType = engineType;
     }
 
@@ -80,7 +80,7 @@ public class RollupRules {
                     r = new InputStreamReader(is, StandardCharsets.UTF_8);
                     engine.eval(r);
                 } catch (ScriptException e) {
-                    throw new SeleniumException(e);
+                    throw new SeleneseRunnerRuntimeException(e);
                 } finally {
                     IOUtils.closeQuietly(r);
                 }
@@ -97,7 +97,7 @@ public class RollupRules {
         try {
             load(new FileInputStream(filename));
         } catch (FileNotFoundException e) {
-            throw new SeleniumException(e);
+            throw new SeleneseRunnerRuntimeException(e);
         }
     }
 

@@ -5,8 +5,6 @@ import java.util.Deque;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.Command;
@@ -182,7 +180,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public void setLogRecorder(LogRecorder logRecorder) {
         if (this.logRecorder != null)
-            throw new SeleniumException("The log recorder of " + this + " is already set.");
+            throw new SeleneseRunnerRuntimeException("The log recorder of " + this + " is already set.");
         this.logRecorder = logRecorder;
     }
 

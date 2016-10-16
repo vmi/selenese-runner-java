@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -117,7 +117,7 @@ public class Locator {
         try {
             return Integer.parseInt(arg);
         } catch (NumberFormatException e) {
-            throw new SeleniumException("Invalid \"" + type + "\" locator argument: " + arg, e);
+            throw new SeleneseRunnerRuntimeException("Invalid \"" + type + "\" locator argument: " + arg, e);
         }
     }
 

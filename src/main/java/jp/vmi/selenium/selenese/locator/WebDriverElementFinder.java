@@ -18,8 +18,9 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.webdriven.ElementFinder;
+
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * WebDriver Element Locator.
@@ -147,7 +148,7 @@ public class WebDriverElementFinder extends ElementFinder {
     private boolean isParentFrameUnsupported(RuntimeException e) {
         return (e instanceof UnsupportedCommandException)
             || (e instanceof WebDriverException
-            && StringUtils.contains(e.getMessage(), "switchToParentFrame"));
+                && StringUtils.contains(e.getMessage(), "switchToParentFrame"));
     }
 
     private void popFrame(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
@@ -219,7 +220,7 @@ public class WebDriverElementFinder extends ElementFinder {
             throw new UnsupportedOperationException("Unknown locator type: " + ploc);
         List<WebElement> elements = findElementsByLocator(handler, driver, ploc, selectedFrameLocators);
         if (elements == null)
-            throw new SeleniumException("Element " + ploc + " not found", new NoSuchElementException(ploc.toString()));
+            throw new SeleneseRunnerRuntimeException("Element " + ploc + " not found", new NoSuchElementException(ploc.toString()));
         return filterElementsByOptionLocator(elements, ploc.option);
     }
 
@@ -243,7 +244,7 @@ public class WebDriverElementFinder extends ElementFinder {
                 else
                     log.warn("The current selected frame is top level. \"" + ploc + "\" is ignored.");
             } else {
-                throw new SeleniumException("Invalid \"relative\" locator argument: " + ploc.arg);
+                throw new SeleneseRunnerRuntimeException("Invalid \"relative\" locator argument: " + ploc.arg);
             }
             return Arrays.asList(driver.switchTo().activeElement());
         } else if (ploc.isTypeIndex()) {
@@ -253,7 +254,7 @@ public class WebDriverElementFinder extends ElementFinder {
                 frames = driver.findElements(By.tagName("frame"));
             int index = ploc.getIndex();
             if (index < 0 || index >= frames.size())
-                throw new SeleniumException("\"index\" locator argument is out of range: " + ploc.arg);
+                throw new SeleneseRunnerRuntimeException("\"index\" locator argument is out of range: " + ploc.arg);
             return Arrays.asList(frames.get(index));
         } else {
             switchToFrame(driver, selectedFrameLocators);
@@ -310,7 +311,7 @@ public class WebDriverElementFinder extends ElementFinder {
                     log.warn("The current selected frame is top level. \"" + ploc + "\" is ignored.");
                 }
             } else { // neither "relative=top" nor "relative=parent"
-                throw new SeleniumException("Invalid frame locator: " + ploc);
+                throw new SeleneseRunnerRuntimeException("Invalid frame locator: " + ploc);
             }
         } else if (ploc.isTypeIndex()) {
             switchToFrame(driver, currentFrameLocators);
@@ -318,7 +319,7 @@ public class WebDriverElementFinder extends ElementFinder {
             try {
                 driver.switchTo().frame(index);
             } catch (NoSuchFrameException e) {
-                throw new SeleniumException(e);
+                throw new SeleneseRunnerRuntimeException(e);
             }
             ploc.frameIndexList.add(index);
             currentFrameLocators.add(ploc);

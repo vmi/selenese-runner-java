@@ -1,10 +1,10 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import com.thoughtworks.selenium.SeleniumException;
 import com.thoughtworks.selenium.webdriven.SeleneseCommand;
 import com.thoughtworks.selenium.webdriven.commands.NoOp;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 
 /**
@@ -42,7 +42,7 @@ public class WDCommand extends AbstractSubCommand<Object> {
             if (!e.getClass().getSimpleName().contains("Script"))
                 throw e;
             String message = e.getMessage().replaceFirst("\\s*\\([^()]+\\)$", "");
-            throw new SeleniumException(message, e);
+            throw new SeleneseRunnerRuntimeException(message, e);
         }
     }
 

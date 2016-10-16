@@ -5,8 +5,6 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.utils.JSFunction;
 
 /**
@@ -54,7 +52,7 @@ public class DialogOverride {
     public String getNextAlert(WebDriver driver) {
         String result = getNextAlert.call(driver);
         if (result == null)
-            throw new SeleniumException("There were no alerts");
+            throw new SeleneseRunnerRuntimeException("There were no alerts");
         return result;
     }
 
@@ -77,7 +75,7 @@ public class DialogOverride {
     public String getNextConfirmation(WebDriver driver) {
         String result = getNextConfirmation.call(driver);
         if (result == null)
-            throw new SeleniumException("There were no confirmations");
+            throw new SeleneseRunnerRuntimeException("There were no confirmations");
         return result;
     }
 
@@ -110,7 +108,7 @@ public class DialogOverride {
     public String getNextPrompt(WebDriver driver) {
         String result = getNextPrompt.call(driver);
         if (result == null)
-            throw new SeleniumException("There were no prompts");
+            throw new SeleneseRunnerRuntimeException("There were no prompts");
         return result;
     }
 

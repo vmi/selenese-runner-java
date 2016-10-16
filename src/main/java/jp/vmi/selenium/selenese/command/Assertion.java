@@ -4,10 +4,9 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -100,7 +99,7 @@ public class Assertion extends AbstractCommand {
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
-                } catch (SeleniumException e) {
+                } catch (WebDriverException e) {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
                         throw e;
@@ -117,7 +116,7 @@ public class Assertion extends AbstractCommand {
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
                         StringEscapeUtils.escapeJava(resultString),
                         isInverse ? "Not " : "", StringEscapeUtils.escapeJava(expected));
-                } catch (SeleniumException e) {
+                } catch (WebDriverException e) {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
                         throw e;

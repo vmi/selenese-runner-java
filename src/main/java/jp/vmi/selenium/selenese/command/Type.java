@@ -4,10 +4,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ModifierKeyState;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 
@@ -30,7 +29,7 @@ public class Type extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         ModifierKeyState state = context.getModifierKeyState();
         if (state.isControlKeyDown() || state.isAltKeyDown() || state.isMetaKeyDown())
-            throw new SeleniumException(
+            throw new SeleneseRunnerRuntimeException(
                 "type not supported immediately after call to controlKeyDown() or altKeyDown() or metaKeyDown()");
         String locator = curArgs[ARG_LOCATOR];
         String value = curArgs[ARG_VALUE];

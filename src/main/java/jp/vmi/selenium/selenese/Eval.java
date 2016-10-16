@@ -7,7 +7,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import com.google.gson.Gson;
-import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * Evaluator of script including "storedVars" variable.
@@ -67,7 +66,7 @@ public class Eval {
             writer.append("];");
         Object result = ((JavascriptExecutor) driver).executeScript(writer.toString());
         if (!(result instanceof List))
-            throw new SeleniumException(result.toString());
+            throw new SeleneseRunnerRuntimeException(result.toString());
         List<?> list = (List<?>) result;
         switch (list.size()) {
         case 0:

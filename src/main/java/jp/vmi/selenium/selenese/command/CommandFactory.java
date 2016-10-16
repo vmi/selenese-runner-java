@@ -13,17 +13,14 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * Factory of selenese command.
  */
-@SuppressWarnings("deprecation")
 public class CommandFactory implements ICommandFactory {
 
     private static final Map<String, Constructor<? extends ICommand>> constructorMap = new HashMap<>();
@@ -37,7 +34,7 @@ public class CommandFactory implements ICommandFactory {
             for (String alias : aliases)
                 constructorMap.put(alias, constructor);
         } catch (Exception e) {
-            throw new SeleniumException(e);
+            throw new SeleneseRunnerRuntimeException(e);
         }
     }
 
@@ -162,16 +159,6 @@ public class CommandFactory implements ICommandFactory {
     }
 
     /**
-     * Set CustomCommandProcessor instance.
-     *
-     * @param proc CustomCommandProcessor instance.
-     */
-    @Deprecated
-    public void setProc(CustomCommandProcessor proc) {
-        this.context = proc.getProc().getContext();
-    }
-
-    /**
      * Set SubCommandMap instance.
      *
      * @param proc SubCommandMap instance.
@@ -199,7 +186,7 @@ public class CommandFactory implements ICommandFactory {
             try {
                 return constructor.newInstance(index, name, args);
             } catch (Exception e) {
-                throw new SeleniumException(e);
+                throw new SeleneseRunnerRuntimeException(e);
             }
         }
 
@@ -213,7 +200,7 @@ public class CommandFactory implements ICommandFactory {
         // Assertion or Accessor
         Matcher matcher = COMMAND_PATTERN.matcher(name);
         if (!matcher.matches())
-            throw new SeleniumException("No such command: " + name);
+            throw new SeleneseRunnerRuntimeException("No such command: " + name);
         String assertion = matcher.group(ASSERTION);
         String target = matcher.group(TARGET);
         if (target == null)
@@ -227,7 +214,7 @@ public class CommandFactory implements ICommandFactory {
             getter = "is" + target;
             getterSubCommand = subCommandMap.get(getter);
             if (getterSubCommand == null)
-                throw new SeleniumException("No such command: " + name);
+                throw new SeleneseRunnerRuntimeException("No such command: " + name);
             isBoolean = true;
         }
         if (assertion != null) {

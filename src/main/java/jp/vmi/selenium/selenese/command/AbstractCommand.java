@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-
-import com.thoughtworks.selenium.SeleniumException;
+import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
@@ -147,7 +146,7 @@ public abstract class AbstractCommand implements ICommand {
     public final Result execute(Context context, String... curArgs) {
         try {
             result = executeImpl(context, curArgs);
-        } catch (SeleniumException e) {
+        } catch (WebDriverException e) {
             result = new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
         }
         return result;

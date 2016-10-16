@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.ListIterator;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * Iterator of CommandList.
@@ -76,7 +76,7 @@ public class CommandListIterator implements ListIterator<ICommand> {
         } else {
             index = commandList.indexOf(key);
             if (index == -1)
-                throw new SeleniumException("Cannot jump to " + key);
+                throw new SeleneseRunnerRuntimeException("Cannot jump to " + key);
         }
         iterator = commandList.originalListIterator(index);
     }
@@ -93,7 +93,7 @@ public class CommandListIterator implements ListIterator<ICommand> {
         } else {
             index = commandList.indexOf(key);
             if (index == -1)
-                throw new SeleniumException("Cannot jump to next of " + key);
+                throw new SeleneseRunnerRuntimeException("Cannot jump to next of " + key);
             index++;
         }
         iterator = commandList.originalListIterator(index);

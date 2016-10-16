@@ -7,13 +7,10 @@ import java.util.WeakHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * Manager of {@link WebDriver} instances.
@@ -255,13 +252,7 @@ public class WebDriverManager implements WebDriverPreparator {
     }
 
     private boolean isBrowserUnreachable(Throwable t) {
-        if (t instanceof UnreachableBrowserException)
-            return true;
-        while (t instanceof SeleniumException)
-            t = t.getCause();
-        if (t instanceof WebDriverException && StringUtils.contains(t.getMessage(), "not reachable"))
-            return true;
-        return false;
+        return t instanceof UnreachableBrowserException;
     }
 
     private boolean isDriverReusable() {

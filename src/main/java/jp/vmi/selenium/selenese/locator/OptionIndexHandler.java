@@ -6,7 +6,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 class OptionIndexHandler implements OptionLocatorHandler {
 
@@ -25,7 +25,7 @@ class OptionIndexHandler implements OptionLocatorHandler {
                 result.add(options.get(index));
             return result;
         } catch (NumberFormatException e) {
-            throw new SeleniumException("Invalid index: " + arg);
+            throw new SeleneseRunnerRuntimeException("Invalid index: " + arg);
         }
     }
 }
