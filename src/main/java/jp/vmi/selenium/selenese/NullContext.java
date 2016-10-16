@@ -169,4 +169,9 @@ public class NullContext implements Context {
     @Override
     public void resetState() {
     }
+
+    @Override
+    public boolean isInteractive() {
+        return false;
+    }
 }

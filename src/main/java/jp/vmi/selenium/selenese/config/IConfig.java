@@ -23,6 +23,7 @@ public interface IConfig {
     public static final String REMOTE_BROWSER = "remote-browser";
     public static final String REMOTE_VERSION = "remote-version";
     public static final String HIGHLIGHT = "highlight";
+    public static final String INTERACTIVE = "interactive";
     public static final String SCREENSHOT_DIR = "screenshot-dir";
     public static final String SCREENSHOT_ALL = "screenshot-all";
     public static final String SCREENSHOT_ON_FAIL = "screenshot-on-fail";
@@ -158,6 +159,8 @@ public interface IConfig {
     String getRemoteVersion();
 
     boolean isHighlight();
+
+    boolean isInteractive();
 
     String getScreenshotDir();
 
