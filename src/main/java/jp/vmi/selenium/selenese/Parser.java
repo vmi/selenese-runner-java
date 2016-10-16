@@ -68,23 +68,6 @@ public abstract class Parser {
      *
      * @param filename selenese script file. (not open. used for label or generating output filename)
      * @param is input stream of script file. (test-case or test-suite)
-     * @param runner Runner object.
-     * @return TestCase or TestSuite.
-     *
-     * @deprecated Replaced by {@link #parse(String, InputStream, ICommandFactory)}
-     */
-    @Deprecated
-    public static Selenese parse(String filename, InputStream is, Runner runner) {
-        Selenese selenese = parse(filename, is, runner.getCommandFactory());
-        setContextForBackwardCompatibility(selenese, runner);
-        return selenese;
-    }
-
-    /**
-     * Parse input stream.
-     *
-     * @param filename selenese script file. (not open. used for label or generating output filename)
-     * @param is input stream of script file. (test-case or test-suite)
      * @param commandFactory command factory.
      * @return TestCase or TestSuite.
      */
@@ -122,22 +105,6 @@ public abstract class Parser {
      * Parse file.
      *
      * @param filename selenese script file. (test-case or test-suite)
-     * @param runner Runner object.
-     * @return TestCase or TestSuite.
-     *
-     * @deprecated {@link #parse(String, ICommandFactory)}
-     */
-    @Deprecated
-    public static Selenese parse(String filename, Runner runner) {
-        Selenese selenese = parse(filename, runner.getCommandFactory());
-        setContextForBackwardCompatibility(selenese, runner);
-        return selenese;
-    }
-
-    /**
-     * Parse file.
-     *
-     * @param filename selenese script file. (test-case or test-suite)
      * @param commandFactory command factory.
      * @return TestCase or TestSuite.
      */
@@ -147,24 +114,6 @@ public abstract class Parser {
         } catch (FileNotFoundException e) {
             return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e.getMessage()));
         }
-    }
-
-    /**
-     * Set context to selenese for backward compatibility.
-     *
-     * @param selenese Selenese object.
-     * @param context Selenese Runner context.
-     * @return selenese itself.
-     */
-    @Deprecated
-    public static Selenese setContextForBackwardCompatibility(Selenese selenese, Context context) {
-        if (selenese instanceof TestSuite) {
-            for (Selenese child : ((TestSuite) selenese).getSeleneseList())
-                setContextForBackwardCompatibility(child, context);
-        } else if (selenese instanceof TestCase) {
-            ((TestCase) selenese).setContext(context);
-        }
-        return selenese;
     }
 
     protected final String filename;

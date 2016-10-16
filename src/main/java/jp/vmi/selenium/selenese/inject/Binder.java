@@ -6,7 +6,6 @@ import com.google.inject.Injector;
 import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
-import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandList;
@@ -33,21 +32,6 @@ public class Binder {
     }
 
     /**
-     * Constructs TestCase applied aspect. (old style)
-     *
-     * @param filename selenese script file.
-     * @param name test-case name.
-     * @param runner Runner instance.
-     * @param baseURL base URL in script.
-     * @return TestCase instance.
-     */
-    @Deprecated
-    public static TestCase newTestCase(String filename, String name, Runner runner, String baseURL) {
-        TestCase testCase = injector.getInstance(TestCase.class);
-        return testCase.initialize(filename, name, runner, baseURL);
-    }
-
-    /**
      * Constructs TestCase applied aspect.
      *
      * @param filename Selenese script file.
@@ -57,20 +41,6 @@ public class Binder {
      */
     public static TestCase newTestCase(String filename, String name, String baseURL) {
         return injector.getInstance(TestCase.class).initialize(filename, name, baseURL);
-    }
-
-    /**
-     * Constructs TestSuite applied aspect. (old style)
-     *
-     * @param filename Selenese script file.
-     * @param name test-suite name.
-     * @param runner Runner instance.
-     * @return TestSuite instance.
-     */
-    @Deprecated
-    public static TestSuite newTestSuite(String filename, String name, Runner runner) {
-        TestSuite testSuite = injector.getInstance(TestSuite.class);
-        return testSuite.initialize(filename, name);
     }
 
     /**

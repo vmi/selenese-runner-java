@@ -3,8 +3,6 @@ package jp.vmi.selenium.selenese.command;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -14,7 +12,7 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Commands implemented by {@link WebDriverCommandProcessor} or ISubCommand.
+ * Commands implemented by WebDriverCommandProcessor or ISubCommand.
  */
 public class BuiltInCommand extends AbstractCommand {
 

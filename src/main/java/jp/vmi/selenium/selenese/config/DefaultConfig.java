@@ -695,32 +695,6 @@ public class DefaultConfig implements IConfig {
         optionMap.get(name).add(this, value);
     }
 
-    @Override
-    public boolean hasOption(String opt) {
-        Object value = get(opt);
-        return (value instanceof Boolean) ? (boolean) value : value != null;
-    }
-
-    @Override
-    public String getOptionValue(String opt) {
-        return get(opt);
-    }
-
-    @Override
-    public String getOptionValue(String opt, String defaultValue) {
-        return get(opt, defaultValue);
-    }
-
-    @Override
-    public String[] getOptionValues(String opt) {
-        return get(opt);
-    }
-
-    @Override
-    public boolean getOptionValueAsBoolean(String opt) {
-        return get(opt);
-    }
-
     private static final Pattern NOTE_RE = Pattern.compile("(\\*\\d+\\s+)(.*)");
 
     /**

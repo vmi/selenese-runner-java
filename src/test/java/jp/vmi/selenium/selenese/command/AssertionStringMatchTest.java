@@ -78,28 +78,6 @@ public class AssertionStringMatchTest extends TestBase {
     }
 
     /**
-     * test for string-match (old style)
-     *
-     * @see "http://release.seleniumhq.org/selenium-core/1.0.1/reference.html#patterns"
-     *
-     * @throws IOException exception.
-     */
-    @SuppressWarnings("deprecation")
-    @Test
-    public void stringMatchPatternOld() throws IOException {
-        Runner runner = new Runner();
-        setWebDriverFactory(WebDriverManager.HTMLUNIT, new DriverOptions());
-        runner.setDriver(manager.get());
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", runner, wsr.getBaseURL());
-        CommandFactory commandFactory = runner.getCommandFactory();
-        commandFactory.setProc(testCase.getProc());
-        testCase.addCommand(commandFactory.newCommand(0, "open", "/assertion.html"));
-        testCase.addCommand(commandFactory.newCommand(1, commandName, locator, pattern));
-        Result result = testCase.execute(null, runner);
-        assertThat(result, is(instanceOf(resultClass)));
-    }
-
-    /**
      * test for string-match
      *
      * @see "http://release.seleniumhq.org/selenium-core/1.0.1/reference.html#patterns"

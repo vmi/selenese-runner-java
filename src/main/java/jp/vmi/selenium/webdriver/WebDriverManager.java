@@ -59,12 +59,6 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     public static final String PHANTOMJS = "phantomjs";
 
-    /**
-     * AndroidDriver
-     */
-    @Deprecated
-    public static final String ANDROID = "android";
-
     private static class Builder {
 
         private final WebDriverFactory factory;
@@ -89,9 +83,6 @@ public class WebDriverManager implements WebDriverPreparator {
      * System property name for user defined {@link WebDriverFactory}.
      */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
-
-    // for backward compatibility.
-    private static WebDriverManager manager = null;
 
     private static final Set<WebDriverManager> managers = Collections.newSetFromMap(new WeakHashMap<WebDriverManager, Boolean>());
 
@@ -121,20 +112,6 @@ public class WebDriverManager implements WebDriverPreparator {
     }
 
     /**
-     * Get WebDriverManager instance. (singleton)
-     *
-     * @deprecated Use {@link #newInstance()} instead of this.
-     *
-     * @return WebDriverMangaer.
-     */
-    @Deprecated
-    public static synchronized WebDriverManager getInstance() {
-        if (manager == null)
-            manager = newInstance();
-        return manager;
-    }
-
-    /**
      * Construct WebDriverManager instance.
      *
      * @return WebDriverMangaer.
@@ -152,30 +129,6 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     private WebDriverManager() {
         setWebDriverFactory(System.getProperty(WEBDRIVER_FACTORY, FIREFOX));
-    }
-
-    /**
-     * Is single instance of WebDriver?
-     *
-     * @deprecated This does not work. Please just remove it.
-     *
-     * @return true if the number of WebDriver instance is only 1.
-     */
-    @Deprecated
-    public boolean isSingleInstance() {
-        return true;
-    }
-
-    /**
-     * Set single instance of WebDriver.
-     *
-     * @deprecated This does not work. Please just remove it.
-     *
-     * @param isSingleInstance if true, the number of WebDriver instance is only 1.
-     */
-    @Deprecated
-    public void setSingleInstance(boolean isSingleInstance) {
-        // no operation.
     }
 
     /**
@@ -319,16 +272,6 @@ public class WebDriverManager implements WebDriverPreparator {
             log.info("Quit: {}", getDriverName(driver));
         }
         driver = null;
-    }
-
-    /**
-     * Quit all WebDriver instances.
-     *
-     * @deprecated use {@link #quitDriver()} instead of this.
-     */
-    @Deprecated
-    public void quitAllDrivers() {
-        quitDriver();
     }
 
     @Override

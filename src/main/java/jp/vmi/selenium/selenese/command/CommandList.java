@@ -60,21 +60,6 @@ public class CommandList extends ArrayList<ICommand> {
         return super.listIterator(index);
     }
 
-    /**
-     * DO NOT USE THIS METHOD.
-     */
-    @Deprecated
-    @Override
-    public CommandListIterator listIterator(int index) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Deprecated
-    @Override
-    public CommandListIterator listIterator() {
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public CommandListIterator iterator() {
         return iterator(null);
@@ -118,19 +103,6 @@ public class CommandList extends ArrayList<ICommand> {
                 curArgs[i] = value.toString();
             }
         }
-    }
-
-    /**
-     * Execute command list.
-     *
-     * @deprecated Use {@link #execute(Context, CommandResultList)}.
-     *
-     * @param context Selenese Runner context.
-     * @return result of command list execution.
-     */
-    @Deprecated
-    public Result execute(Context context) {
-        return execute(context, new CommandResultList());
     }
 
     /**

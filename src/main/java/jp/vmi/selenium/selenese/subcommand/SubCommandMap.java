@@ -44,18 +44,6 @@ public class SubCommandMap {
         setUpSubCommands();
     }
 
-    /**
-     * Get Selenese Runner context.
-     * <br>
-     * <b>Internal use only.</b>
-     *
-     * @return Selenese Runner context.
-     */
-    @Deprecated
-    public Context getContext() {
-        return context;
-    }
-
     private void setUpSubCommands() {
         WebDriverElementFinder elementFinder = context.getElementFinder();
 
@@ -238,49 +226,5 @@ public class SubCommandMap {
      */
     public Map<String, ISubCommand<?>> getMap() {
         return Collections.unmodifiableMap(subCommands);
-    }
-
-    /**
-     * Set variable value.
-     *
-     * @param value value.
-     * @param varName variable name.
-     */
-    @Deprecated
-    public void setVar(Object value, String varName) {
-        context.getVarsMap().put(varName, value);
-    }
-
-    /**
-     * Get variable value.
-     *
-     * @param varName variable name.
-     * @return value.
-     */
-    @Deprecated
-    public Object getVar(String varName) {
-        return context.getVarsMap().get(varName);
-    }
-
-    /**
-     * Replace variable reference to value.
-     *
-     * @param expr expression string.
-     * @return replaced string.
-     */
-    @Deprecated
-    public String replaceVars(String expr) {
-        return context.getVarsMap().replaceVars(expr);
-    }
-
-    /**
-     * Replace variable reference to value for each strings.
-     *
-     * @param exprs expression strings.
-     * @return replaced strings.
-     */
-    @Deprecated
-    public String[] replaceVarsForArray(String[] exprs) {
-        return context.getVarsMap().replaceVarsForArray(exprs);
     }
 }

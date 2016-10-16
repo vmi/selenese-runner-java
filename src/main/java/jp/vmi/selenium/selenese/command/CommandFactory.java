@@ -118,13 +118,6 @@ public class CommandFactory implements ICommandFactory {
 
     /**
      * Constructor.
-     */
-    @Deprecated
-    public CommandFactory() {
-    }
-
-    /**
-     * Constructor.
      *
      * @param context Selenese Runner context.
      */
@@ -139,33 +132,6 @@ public class CommandFactory implements ICommandFactory {
      */
     public void registerCommandFactory(ICommandFactory factory) {
         commandFactories.add(factory);
-    }
-
-    /**
-     * Register user defined command factory.
-     *
-     * @deprecated use {@link #registerCommandFactory(ICommandFactory)}.
-     *
-     * @param factory user defined command factory.
-     */
-    @Deprecated
-    public void registerUserDefinedCommandFactory(final UserDefinedCommandFactory factory) {
-        commandFactories.add(new ICommandFactory() {
-            @Override
-            public ICommand newCommand(int index, String name, String... args) {
-                return factory.newCommand(index, name, args);
-            }
-        });
-    }
-
-    /**
-     * Set SubCommandMap instance.
-     *
-     * @param proc SubCommandMap instance.
-     */
-    @Deprecated
-    public void setProc(SubCommandMap proc) {
-        this.context = proc.getContext();
     }
 
     @Override

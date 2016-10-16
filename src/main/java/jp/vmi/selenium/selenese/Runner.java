@@ -228,18 +228,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    /**
-     * Get WebDriver.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @return WebDriver.
-     */
-    @Deprecated
-    public WebDriver getDriver() {
-        return getWrappedDriver();
-    }
-
     @Override
     public WebDriver getWrappedDriver() {
         return driver;
@@ -326,28 +314,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         log.info("Screenshot on fail directory: {}", StringUtils.defaultString(screenshotOnFailDir, "-"));
     }
 
-    /**
-     * Get current base URL.
-     *
-     * @return base URL.
-     */
-    @Deprecated
-    public String getBaseURL() {
-        return getCurrentBaseURL();
-    }
-
-    /**
-     * Set URL for overriding selenium.base in Selenese script.
-     *
-     * @param baseURL base URL.
-     *
-     * @deprecated Replaced by {@link #setOverridingBaseURL(String)}
-     */
-    @Deprecated
-    public void setBaseURL(String baseURL) {
-        setOverridingBaseURL(baseURL);
-    }
-
     @Override
     public String getCurrentBaseURL() {
         return StringUtils.defaultIfBlank(overridingBaseURL, currentTestCase.getBaseURL());
@@ -371,35 +337,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     /**
      * Set ignore screenshot command flag.
      *
-     * @deprecated use {@link #setIgnoredScreenshotCommand(boolean)}
-     *
-     * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
-     */
-    @Deprecated
-    public void setIgnoreScreenshotCommand(boolean isIgnoredScreenshotCommand) {
-        setIgnoredScreenshotCommand(isIgnoredScreenshotCommand);
-    }
-
-    /**
-     * Set ignore screenshot command flag.
-     *
      * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
      */
     public void setIgnoredScreenshotCommand(boolean isIgnoredScreenshotCommand) {
         this.isIgnoredScreenshotCommand = isIgnoredScreenshotCommand;
         log.info("Screenshot command: {}", isIgnoredScreenshotCommand ? "ignored" : "enabled");
-    }
-
-    /**
-     * Get ignore screenshot command flag.
-     *
-     * @deprecated use {@link #isIgnoredScreenshotCommand()}
-     *
-     * @return flag to ignore "captureEntirePageScreenshot"
-     */
-    @Deprecated
-    public boolean isIgnoreScreenshotCommand() {
-        return isIgnoredScreenshotCommand();
     }
 
     @Override
@@ -633,7 +575,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         List<TestSuite> testSuiteList = new ArrayList<>();
         for (String filename : filenames) {
             Selenese selenese = Parser.parse(filename, commandFactory);
-            Parser.setContextForBackwardCompatibility(selenese, this);
             if (selenese.isError()) {
                 log.error(selenese.toString());
                 totalResult = ((ErrorSource) selenese).getResult();
@@ -677,7 +618,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public Result run(String filename, InputStream is) {
         TestSuite testSuite;
         Selenese selenese = Parser.parse(filename, is, commandFactory);
-        Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
             testSuite = Binder.newTestSuite(filename, selenese.getName());

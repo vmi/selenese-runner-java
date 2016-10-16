@@ -175,16 +175,4 @@ public class SeleniumUtils {
         else
             return result.toString();
     }
-
-    /**
-     * Test current JVM version 7 or later.
-     *
-     * @return true if JVM version is 7 or later.
-     *
-     * @deprecated remove calling this method in caller.
-     */
-    @Deprecated
-    public static boolean isJava7orLater() {
-        return true;
-    }
 }
