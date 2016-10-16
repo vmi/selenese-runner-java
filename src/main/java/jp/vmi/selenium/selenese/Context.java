@@ -231,4 +231,11 @@ public interface Context extends WrapsDriver {
      * Reset internal state.
      */
     void resetState();
+
+    /**
+     * Get interactive.
+     *
+     * @return interactive.
+     */
+    boolean isInteractive();
 }
