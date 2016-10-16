@@ -3,7 +3,7 @@
 
   <groupId>jp.vmi</groupId>
   <artifactId>selenese-runner-java</artifactId>
-  <version>2.13.1-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>selenese-runner-java</name>
@@ -46,14 +46,14 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <source.version>1.7</source.version>
-    <target.version>1.7</target.version>
+    <source.version>1.8</source.version>
+    <target.version>1.8</target.version>
     <skipTests>true</skipTests>
-    <selenium.version>2.53.1</selenium.version>
-    <htmlunit-driver.version>2.21</htmlunit-driver.version>
+    <selenium.version>3.0.1</selenium.version>
+    <htmlunit-driver.version>2.23.2</htmlunit-driver.version>
     <httpclient.version>4.5.2</httpclient.version>
     <httpcore.version>4.4.5</httpcore.version>
-    <slf4j.version>1.7.21</slf4j.version>
+    <slf4j.version>1.7.22</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -514,7 +514,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.4</version>
+      <version>3.5</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -539,7 +539,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.7</version>
+      <version>1.1.8</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
