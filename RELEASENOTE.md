@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 2.12.0
+
+* Fix failure on `(assert|verify|waitFor|store)Not*` commands. (#220)
+
 ### 2.11.0
 
 * Add new option `--interactive` which enables the interactive mode. (#210, #217 by tgianko)

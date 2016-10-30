@@ -104,6 +104,8 @@ public class Assertion extends AbstractCommand {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
                         throw e;
+                    if (isInverse)
+                        return SUCCESS;
                     message = String.format("Assertion failed (%s)", error);
                     found = false;
                 }
@@ -119,6 +121,8 @@ public class Assertion extends AbstractCommand {
                     String error = e.getMessage();
                     if (!error.endsWith(" not found"))
                         throw e;
+                    if (isInverse)
+                        return SUCCESS;
                     message = String.format("Assertion failed (%s)", error);
                     found = false;
                 }

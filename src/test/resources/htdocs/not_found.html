@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #220</title>
+    <script><!--
+      function changeText() {
+        setTimeout(function() {
+          var elem = document.getElementById("text");
+          elem.textContent = "Text *NOT* found";
+        }, 3 * 1000);
+      }
+    //--></script>
+  </head>
+  <body onload="changeText()">
+    <div id="text">Text found</div>
+  </body>
+</html>
