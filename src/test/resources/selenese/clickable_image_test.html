@@ -22,6 +22,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>storeText</td>
+	<td>id=image_button.x</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>id=image_button.y</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>1:(${x}, ${y})</td>
+	<td></td>
+</tr>
+<tr>
 	<td>assertText</td>
 	<td>id=image_button.x</td>
 	<td>regexp:-?\d+</td>
@@ -31,7 +46,41 @@
 	<td>id=image_button.y</td>
 	<td>regexp:-?\d+</td>
 </tr>
-
+<tr>
+	<td>open</td>
+	<td>/clickable_image.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAtAndWait</td>
+	<td>name=image_button</td>
+	<td>10,10</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=image_button.x</td>
+	<td>regexp:-?\d+</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=image_button.y</td>
+	<td>regexp:-?\d+</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>id=image_button.x</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>id=image_button.y</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>2:(${x}, ${y})</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>
