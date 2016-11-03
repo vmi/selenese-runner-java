@@ -39,7 +39,7 @@ public class CommandFactory implements ICommandFactory {
     }
 
     static {
-        // commands overriding the command of WebDriverCommandProcessor.
+        addConstructor(AddLocationStrategy.class);
         addConstructor(Open.class);
         addConstructor(OpenWindow.class);
         addConstructor(RunScript.class);
@@ -72,6 +72,9 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(KeyDown.class);
         addConstructor(KeyPress.class);
         addConstructor(KeyUp.class);
+        addConstructor(AddSelection.class);
+        addConstructor(RemoveSelection.class);
+        addConstructor(RemoveAllSelections.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);

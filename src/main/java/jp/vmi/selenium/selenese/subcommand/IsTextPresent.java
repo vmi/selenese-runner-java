@@ -2,7 +2,6 @@ package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.List;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
@@ -28,8 +27,7 @@ public class IsTextPresent extends AbstractSubCommand<Boolean> {
         StringBuilder xpath = new StringBuilder("//*[contains(normalize-space(.),");
         XPathUtils.appendStringLiteral(xpath, args[ARG_TEXT]);
         xpath.append(")]");
-        WebDriver driver = context.getWrappedDriver();
-        List<WebElement> elements = context.getElementFinder().findElements(driver, xpath.toString());
+        List<WebElement> elements = context.findElements(xpath.toString());
         return elements != null && !elements.isEmpty();
     }
 }

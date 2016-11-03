@@ -1,7 +1,11 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 
 import jp.vmi.selenium.rollup.RollupRules;
@@ -117,6 +121,27 @@ public interface Context extends WrapsDriver {
      * @return element finder.
      */
     WebDriverElementFinder getElementFinder();
+
+    /**
+     * Find elements
+     *
+     * @param locator locator.
+     * @return list of found elements. (empty if no element)
+     */
+    default List<WebElement> findElements(String locator) {
+        return getElementFinder().findElements(getWrappedDriver(), locator);
+    }
+
+    /**
+     * Find an element
+     *
+     * @param locator locator.
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
+    default WebElement findElement(String locator) {
+        return getElementFinder().findElement(getWrappedDriver(), locator);
+    }
 
     /**
      * Get evaluater.
@@ -238,4 +263,19 @@ public interface Context extends WrapsDriver {
      * @return interactive.
      */
     boolean isInteractive();
+
+    /**
+     * Executes JavaScript in the context of the currently selected frame or window.
+     *
+     * see {@link JavascriptExecutor#executeScript(String, Object...)}.
+     *
+     * @param script The JavaScript to execute
+     * @param args The arguments to the script. May be empty
+     * @return One of Boolean, Long, String, List or WebElement. Or null.
+     */
+    default <T> T executeScript(String script, Object... args) {
+        @SuppressWarnings("unchecked")
+        T result = (T) ((JavascriptExecutor) getWrappedDriver()).executeScript(script, args);
+        return result;
+    }
 }

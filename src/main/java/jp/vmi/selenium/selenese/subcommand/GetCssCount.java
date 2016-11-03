@@ -32,7 +32,7 @@ public class GetCssCount extends AbstractSubCommand<Number> {
         if (!cssLocator.startsWith(CSS_EQ))
             cssLocator = CSS_EQ + cssLocator;
         try {
-            List<WebElement> elements = context.getElementFinder().findElements(context.getWrappedDriver(), cssLocator);
+            List<WebElement> elements = context.findElements(cssLocator);
             return elements.size();
         } catch (WebDriverException e) {
             if (e.getCause() instanceof NoSuchElementException)

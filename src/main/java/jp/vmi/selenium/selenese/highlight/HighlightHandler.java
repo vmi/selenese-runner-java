@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.highlight;
 
+import jp.vmi.selenium.selenese.locator.Locator;
+
 /**
  * Handle highlighting.
  */
@@ -15,10 +17,10 @@ public interface HighlightHandler {
     /**
      * Highlight and backup specified locator.
      *
-     * @param locator locator.
+     * @param ploc parsed locator.
      * @param highlightStyle highlight style.
      */
-    void highlight(String locator, HighlightStyle highlightStyle);
+    void highlight(Locator ploc, HighlightStyle highlightStyle);
 
     /**
      * Unhighlight backed up styles.

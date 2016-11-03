@@ -674,12 +674,12 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public void highlight(String locator, HighlightStyle highlightStyle) {
+    public void highlight(Locator ploc, HighlightStyle highlightStyle) {
         List<Locator> selectedFrameLocators = elementFinder.getCurrentFrameLocators();
-        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, elementFinder, locator, selectedFrameLocators);
+        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, elementFinder, ploc, selectedFrameLocators);
         if (prevStyles == null)
             return;
-        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, locator, selectedFrameLocators);
+        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, ploc, selectedFrameLocators);
         styleBackups.push(backup);
     }
 

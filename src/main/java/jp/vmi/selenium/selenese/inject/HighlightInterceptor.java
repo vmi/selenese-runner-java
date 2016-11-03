@@ -6,6 +6,7 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
@@ -20,9 +21,9 @@ public class HighlightInterceptor extends AbstractDoCommandInterceptor {
             handler.unhighlight();
             if (handler.isHighlight()) {
                 int i = 0;
-                String[] locators = command.convertLocators(curArgs);
-                for (String locator : locators)
-                    handler.highlight(locator, HighlightStyle.ELEMENT_STYLES[i++]);
+                Locator[] plocs = command.extractLocators(curArgs);
+                for (Locator ploc : plocs)
+                    handler.highlight(ploc, HighlightStyle.ELEMENT_STYLES[i++]);
             }
         }
         return (Result) invocation.proceed();

@@ -5,11 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
@@ -103,10 +102,16 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
+    @Deprecated
     public String[] convertLocators(String[] args) {
+        return Arrays.stream(extractLocators(args)).map(Locator::toLocatorString).toArray(String[]::new);
+    }
+
+    @Override
+    public Locator[] extractLocators(String[] args) {
         if (locatorIndexes.length == 0)
-            return ArrayUtils.EMPTY_STRING_ARRAY;
-        String[] locators = new String[locatorIndexes.length];
+            return Locator.EMPTY_ARRAY;
+        Locator[] plocs = new Locator[locatorIndexes.length];
         int i = 0;
         for (int locatorIndex : locatorIndexes) {
             ArgumentType type = argTypes[locatorIndex];
@@ -117,14 +122,14 @@ public abstract class AbstractCommand implements ICommand {
                     arg = "css=" + arg;
                 // fall through
             case LOCATOR:
-                locators[i++] = arg;
+                plocs[i++] = new Locator(arg);
                 break;
             case ATTRIBUTE_LOCATOR:
                 int at = arg.lastIndexOf('@');
-                locators[i++] = at >= 0 ? arg.substring(0, at) : arg;
+                plocs[i++] = new Locator(at >= 0 ? arg.substring(0, at) : arg);
                 break;
             case OPTION_LOCATOR:
-                locators[i] = WebDriverElementFinder.convertToOptionLocatorWithParent(locators[i - 1], arg);
+                plocs[i] = plocs[i - 1].withOption(arg);
                 i++;
                 break;
             default:
@@ -132,7 +137,7 @@ public abstract class AbstractCommand implements ICommand {
                 throw new RuntimeException("Invalid locator type: " + type);
             }
         }
-        return locators;
+        return plocs;
     }
 
     @Override

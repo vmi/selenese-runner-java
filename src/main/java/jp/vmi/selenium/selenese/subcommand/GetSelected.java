@@ -67,7 +67,7 @@ public class GetSelected extends AbstractSubCommand<Object> {
     @Override
     public Object execute(Context context, String... args) {
         String locator = args[ARG_LOCATOR];
-        WebElement select = context.getElementFinder().findElement(context.getWrappedDriver(), locator);
+        WebElement select = context.findElement(locator);
         if (select == null)
             return null;
         List<WebElement> options = select.findElements(By.tagName("option"));

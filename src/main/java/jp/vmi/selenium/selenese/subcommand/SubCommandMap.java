@@ -9,6 +9,7 @@ import com.thoughtworks.selenium.webdriven.SeleneseCommand;
 import com.thoughtworks.selenium.webdriven.commands.*;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.command.AddLocationStrategy;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
@@ -50,7 +51,7 @@ public class SubCommandMap {
         //// Selenium webdriven commands:
 
         register(new AddLocationStrategy(elementFinder), "addLocationStrategy", VALUE, VALUE);
-        register(new AddSelection(javascriptLibrary, elementFinder), "addSelection", LOCATOR, OPTION_LOCATOR);
+        // "addSelection"
         register(new AllowNativeXPath(), "allowNativeXpath", VALUE);
         // "altKeyDown"
         // "altKeyUp"
@@ -138,8 +139,8 @@ public class SubCommandMap {
         // "open"
         // "openWindow"
         register(new Refresh(), "refresh");
-        register(new RemoveAllSelections(elementFinder), "removeAllSelections", LOCATOR);
-        register(new RemoveSelection(javascriptLibrary, elementFinder), "removeSelection", LOCATOR, OPTION_LOCATOR);
+        // "removeAllSelections"
+        // "removeSelection"
         // "runScript"
         // "select"
         // "selectFrame"

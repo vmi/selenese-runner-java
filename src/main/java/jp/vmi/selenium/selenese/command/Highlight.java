@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -22,7 +23,7 @@ public class Highlight extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         if (context instanceof Runner)
-            ((Runner) context).highlight(curArgs[ARG_LOCATOR], HighlightStyle.ELEMENT_STYLES[0]);
+            ((Runner) context).highlight(new Locator(curArgs[ARG_LOCATOR]), HighlightStyle.ELEMENT_STYLES[0]);
         return SUCCESS;
     }
 }

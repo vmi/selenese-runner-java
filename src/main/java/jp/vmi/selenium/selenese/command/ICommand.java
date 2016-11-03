@@ -1,8 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.Arrays;
 import java.util.List;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
 
 /**
@@ -44,7 +46,18 @@ public interface ICommand {
      * @param args the command arguments.
      * @return converted locators.
      */
+    @Deprecated
     String[] convertLocators(String[] args);
+
+    /**
+     * Extract locators from arguments.
+     *
+     * @param args the command arguments.
+     * @return extracted parsed locators.
+     */
+    default Locator[] extractLocators(String[] args) {
+        return Arrays.stream(convertLocators(args)).map(Locator::new).toArray(Locator[]::new);
+    }
 
     /**
      * May the command update screen?
