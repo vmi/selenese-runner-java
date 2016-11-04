@@ -68,7 +68,9 @@ public class DriverOptions {
         /** --chrome-extension */
         CHROME_EXTENSION,
         /** --chrome-experimental-options */
-        CHROME_EXPERIMENTAL_OPTIONS,;
+        CHROME_EXPERIMENTAL_OPTIONS,
+        /** --marionette. */
+        MARIONETTE,;
 
         /**
          * Get option name as "word-word-word".

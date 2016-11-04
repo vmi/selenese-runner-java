@@ -62,6 +62,9 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     public static final String PHANTOMJS = "phantomjs";
 
+    /** Marionette Driver */
+    public static final String MARIONETTE = "marionette";
+
     /**
      * AndroidDriver
      */
@@ -227,6 +230,8 @@ public class WebDriverManager implements WebDriverPreparator {
             return new AppiumWebDriverFactory();
         case PHANTOMJS:
             return new PhantomJSDriverFactory();
+        case MARIONETTE:
+            return new MarionetteDriverFactory();
         default:
             try {
                 return (WebDriverFactory) Class.forName(factoryName).newInstance();

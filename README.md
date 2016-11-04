@@ -33,9 +33,9 @@ Usage
 -----
 
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
-    
+
      --config (-c) <file>                    : load option information from file.
-     --driver (-d) <driver>                  : firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
+     --driver (-d) <driver>                  : firefox (default) | marionette | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
      --profile (-p) <name>                   : profile name (Firefox only *1)
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
      --chrome-experimental-options <file>    : path to json file specify experimental options for chrome (Chrome only *1)
@@ -57,6 +57,7 @@ Usage
      --ignore-screenshot-command             : ignore captureEntirePageScreenshot command.
      --baseurl (-b) <baseURL>                : override base URL set in selenese.
      --firefox <path>                        : path to 'firefox' binary. (implies '--driver firefox')
+     --marionette <path>                     : path to 'marionette' binary aKa firefox binaries (implies '--driver marionette')
      --chromedriver <path>                   : path to 'chromedriver' binary. (implies '--driver chrome')
      --iedriver <path>                       : path to 'IEDriverServer' binary. (implies '--driver ie')
      --phantomjs <path>                      : path to 'phantomjs' binary. (implies '--driver phantomjs')
@@ -74,15 +75,15 @@ Usage
      --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)
      --max-time <max-time>                   : Maximum time in seconds that you allow the entire operation to take.
      --help (-h)                             : show this message.
-    
+
     [Note]
     *1 It is available if using "--driver remote --remote-browser firefox".
-    
+
     *2 If you want to use basic and/or proxy authentication on Firefox, then create new profile, install AutoAuth plugin, configure all settings, access test site with the profile, and specify the profile by --profile option.
-    
+
     *3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...".
        Because "java" command ignores all class path settings, when using "-jar" option.
-    
+
     *4 The list of strict exit code is follows:
        - 0: SUCCESS
        - 2: WARNING
@@ -122,7 +123,7 @@ You can read option information from the following configuration file by using "
 You can overwrite the information by additional command line options.
 
     # configuration file format.
-    
+
     driver: DRIVER_NAME
     profile: PROFILE_NAME
     profile-dir: /PATH/TO/PROFILE/DIRECTORY
@@ -204,7 +205,7 @@ Example:
 
 Refer to the following for how to write "rollup" script:
 
-* Using the rollup feature of Selenium  
+* Using the rollup feature of Selenium
 http://sanjitmohanty.wordpress.com/2012/07/06/using-the-rollup-feature-of-selenium/
 * Selenium Tutorial : Testing Strategies
 https://thenewcircle.com/static/bookshelf/selenium_tutorial/testing_strategies.html
