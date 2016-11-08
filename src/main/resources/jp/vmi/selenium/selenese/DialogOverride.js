@@ -55,6 +55,10 @@ function isAlertPresent() { // BEGIN
   return alerts && alerts.length > 0;
 } // END
 
+function setNextConfirmationState(state) { // BEGIN
+  window.localStorage.setItem('__webdriverNextConfirm', JSON.stringify(state));
+} // END
+
 function getNextConfirmation() { // BEGIN
   if (!('__webdriverConfirms' in window.localStorage))
     return null;

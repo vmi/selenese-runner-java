@@ -15,6 +15,7 @@ public class DialogOverride {
     private static final JSFunction replaceAlertMethod;
     private static final JSFunction getNextAlert;
     private static final JSFunction isAlertPresent;
+    private static final JSFunction setNextConfirmationState;
     private static final JSFunction getNextConfirmation;
     private static final JSFunction isConfirmationPresent;
     private static final JSFunction answerOnNextPrompt;
@@ -26,6 +27,7 @@ public class DialogOverride {
         replaceAlertMethod = jsMap.get("replaceAlertMethod");
         getNextAlert = jsMap.get("getNextAlert");
         isAlertPresent = jsMap.get("isAlertPresent");
+        setNextConfirmationState = jsMap.get("setNextConfirmationState");
         getNextConfirmation = jsMap.get("getNextConfirmation");
         isConfirmationPresent = jsMap.get("isConfirmationPresent");
         answerOnNextPrompt = jsMap.get("answerOnNextPrompt");
@@ -64,6 +66,16 @@ public class DialogOverride {
      */
     public boolean isAlertPresent(WebDriver driver) {
         return Boolean.TRUE.equals(isAlertPresent.call(driver));
+    }
+
+    /**
+     * Choose button on next confirm dialog.
+     *
+     * @param driver WebDriver object.
+     * @param state "OK" if true, otherwise "Cancel".
+     */
+    public void setNextConfirmationState(WebDriver driver, boolean state) {
+        setNextConfirmationState.call(driver, state);
     }
 
     /**

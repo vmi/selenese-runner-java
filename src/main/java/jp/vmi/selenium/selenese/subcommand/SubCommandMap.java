@@ -62,10 +62,10 @@ public class SubCommandMap {
         // "click"
         // "clickAt"
         // "check"
-        register(new SetNextConfirmationState(false), "chooseCancelOnNextConfirmation");
-        register(new SetNextConfirmationState(true), "chooseOkOnNextConfirmation");
-        register(new Close(), "close");
-        register(new CreateCookie(), "createCookie", VALUE, VALUE);
+        // "chooseCancelOnNextConfirmation"
+        // "chooseOkOnNextConfirmation"
+        register(new Close());
+        register(new CreateCookie());
         // "controlKeyDown"
         // "controlKeyUp"
         register(new DeleteAllVisibleCookies(), "deleteAllVisibleCookies");
