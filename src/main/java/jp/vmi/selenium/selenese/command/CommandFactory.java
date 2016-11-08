@@ -75,6 +75,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(AddSelection.class);
         addConstructor(RemoveSelection.class);
         addConstructor(RemoveAllSelections.class);
+        addConstructor(AnswerOnNextPrompt.class);
         addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
 

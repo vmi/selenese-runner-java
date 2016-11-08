@@ -171,7 +171,6 @@ public class SubCommandMap {
         register(new GetCssCount());
         register(new GetSpeed());
         register(new IsSomethingSelected());
-        register(new AnswerOnNextPrompt());
         register(new GetAlert());
         register(new GetConfirmation());
         register(new GetPrompt());
