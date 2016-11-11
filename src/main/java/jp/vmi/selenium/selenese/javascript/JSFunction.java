@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.utils;
+package jp.vmi.selenium.selenese.javascript;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -9,6 +9,6 @@ public class IsConfirmationPresent extends AbstractSubCommand<Boolean> {
 
     @Override
     public Boolean execute(Context context, String... args) {
-        return context.getDialogOverride().isConfirmationPresent(context.getWrappedDriver());
+        return context.getJSLibrary().isConfirmationPresent(context.getWrappedDriver());
     }
 }

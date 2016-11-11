@@ -37,7 +37,7 @@ public class Type extends AbstractCommand {
             value = value.toUpperCase();
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getDialogOverride().replaceAlertMethod(driver, element);
+        context.getJSLibrary().replaceAlertMethod(driver, element);
         String tagName = element.getTagName().toLowerCase();
         Result result = SUCCESS;
         switch (tagName) {

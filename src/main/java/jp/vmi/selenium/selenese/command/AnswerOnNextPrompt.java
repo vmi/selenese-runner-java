@@ -24,7 +24,7 @@ public class AnswerOnNextPrompt extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.getDialogOverride().answerOnNextPrompt(context.getWrappedDriver(), curArgs[ARG_ANSWER]);
+        context.getJSLibrary().answerOnNextPrompt(context.getWrappedDriver(), curArgs[ARG_ANSWER]);
         return SUCCESS;
     }
 }

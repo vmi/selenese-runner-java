@@ -78,6 +78,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(AnswerOnNextPrompt.class);
         addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
+        addConstructor(SetCursorPosition.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);

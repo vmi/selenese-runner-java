@@ -40,6 +40,7 @@ import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
@@ -92,7 +93,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private PageInformation latestPageInformation = PageInformation.EMPTY;
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
-    private DialogOverride dialogOverride = new DialogOverride();
+    private JSLibrary jsLibrary = new JSLibrary();
     private final ModifierKeyState modifierKeyState = new ModifierKeyState();
 
     private final JUnitResult jUnitResult = new JUnitResult();
@@ -524,13 +525,13 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public DialogOverride getDialogOverride() {
-        return dialogOverride;
+    public JSLibrary getJSLibrary() {
+        return jsLibrary;
     }
 
     @Override
-    public void setDialogOverride(DialogOverride dialogOverride) {
-        this.dialogOverride = dialogOverride;
+    public void setJSLibrary(JSLibrary jsLibrary) {
+        this.jsLibrary = jsLibrary;
     }
 
     @Override

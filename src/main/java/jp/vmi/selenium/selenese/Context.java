@@ -11,6 +11,7 @@ import org.openqa.selenium.internal.WrapsDriver;
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
+import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
@@ -232,18 +233,18 @@ public interface Context extends WrapsDriver {
     void setCookieFilter(CookieFilter cookieFilter);
 
     /**
-     * Get dialog override.
+     * Get JavaScript library handler.
      *
-     * @return dialog override.
+     * @return JavaScript library handler.
      */
-    DialogOverride getDialogOverride();
+    JSLibrary getJSLibrary();
 
     /**
-     * Set dialog override.
+     * Set JavaScript library handler.
      *
-     * @param dialogOverride dialog override.
+     * @param jsLibrary JavaScript library handler.
      */
-    void setDialogOverride(DialogOverride dialogOverride);
+    void setJSLibrary(JSLibrary jsLibrary);
 
     /**
      * Get modifier key state.

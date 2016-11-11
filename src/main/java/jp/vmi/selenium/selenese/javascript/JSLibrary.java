@@ -1,29 +1,50 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.javascript;
 
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import jp.vmi.selenium.selenese.utils.JSFunction;
+import jp.vmi.selenium.selenese.ModifierKeyState;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * Override dialog interfaces.
  */
-public class DialogOverride {
+public class JSLibrary {
 
-    private static final JSFunction replaceAlertMethod;
-    private static final JSFunction getNextAlert;
-    private static final JSFunction isAlertPresent;
-    private static final JSFunction setNextConfirmationState;
-    private static final JSFunction getNextConfirmation;
-    private static final JSFunction isConfirmationPresent;
-    private static final JSFunction answerOnNextPrompt;
-    private static final JSFunction getNextPrompt;
-    private static final JSFunction isPromptPresent;
+    /**
+     * Key event type.
+     */
+    @SuppressWarnings("javadoc")
+    public enum KeyEventType {
+        KEYDOWN, KEYPRESS, KEYUP;
 
-    static {
-        Map<String, JSFunction> jsMap = JSFunction.load(DialogOverride.class.getResourceAsStream("DialogOverride.js"));
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
+    }
+
+    private final JSFunction replaceAlertMethod;
+    private final JSFunction getNextAlert;
+    private final JSFunction isAlertPresent;
+    private final JSFunction setNextConfirmationState;
+    private final JSFunction getNextConfirmation;
+    private final JSFunction isConfirmationPresent;
+    private final JSFunction answerOnNextPrompt;
+    private final JSFunction getNextPrompt;
+    private final JSFunction isPromptPresent;
+
+    private final JSFunction triggerKeyEvent;
+
+    private final JSFunction setCursorPosition;
+
+    /**
+     * Constructor.
+     */
+    public JSLibrary() {
+        Map<String, JSFunction> jsMap = JSFunction.load(JSLibrary.class.getResourceAsStream("JSLibrary.js"));
         replaceAlertMethod = jsMap.get("replaceAlertMethod");
         getNextAlert = jsMap.get("getNextAlert");
         isAlertPresent = jsMap.get("isAlertPresent");
@@ -33,6 +54,8 @@ public class DialogOverride {
         answerOnNextPrompt = jsMap.get("answerOnNextPrompt");
         getNextPrompt = jsMap.get("getNextPrompt");
         isPromptPresent = jsMap.get("isPromptPresent");
+        triggerKeyEvent = jsMap.get("triggerKeyEvent");
+        setCursorPosition = jsMap.get("setCursorPosition");
     }
 
     /**
@@ -132,5 +155,44 @@ public class DialogOverride {
      */
     public boolean isPromptPresent(WebDriver driver) {
         return Boolean.TRUE.equals(isPromptPresent.call(driver));
+    }
+
+    /**
+     * Trigger key event.
+     *
+     * @param driver WebDriver object.
+     * @param element target element.
+     * @param eventType event type.
+     * @param keySequence key sequence.
+     * @param keyState modifier key state.
+     */
+    public void triggerKeyEvent(WebDriver driver, WebElement element, KeyEventType eventType, String keySequence, ModifierKeyState keyState) {
+        int keyCode;
+        if (keySequence.codePointCount(0, keySequence.length()) == 1) {
+            keyCode = keySequence.codePointAt(0);
+        } else {
+            try {
+                if (keySequence.startsWith("\\"))
+                    keyCode = Integer.parseInt(keySequence.substring(1));
+                else
+                    keyCode = Integer.parseInt(keySequence);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("invalid keySequence");
+            }
+        }
+        triggerKeyEvent.call(driver, element, eventType.toString(), keyCode,
+            keyState.isControlKeyDown(), keyState.isAltKeyDown(), keyState.isShiftKeyDown(), keyState.isMetaKeyDown());
+    }
+
+    /**
+     * Set cursor poision in text field.
+     *
+     * @param driver WebDriver object.
+     * @param element target element.
+     * @param position cusror position.
+     *
+     */
+    public void setCursorPosition(WebDriver driver, WebElement element, int position) {
+        setCursorPosition.call(driver, element, position);
     }
 }

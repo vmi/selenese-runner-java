@@ -25,7 +25,7 @@ public class Click extends AbstractCommand {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getDialogOverride().replaceAlertMethod(driver, element);
+        context.getJSLibrary().replaceAlertMethod(driver, element);
         element.click();
         return SUCCESS;
     }

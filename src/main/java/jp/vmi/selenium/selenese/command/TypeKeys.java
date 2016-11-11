@@ -36,7 +36,7 @@ public class TypeKeys extends AbstractCommand {
         value = value.replace("\\39", Keys.ARROW_RIGHT);
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getDialogOverride().replaceAlertMethod(driver, element);
+        context.getJSLibrary().replaceAlertMethod(driver, element);
         element.sendKeys(value);
         return SUCCESS;
     }

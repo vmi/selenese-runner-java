@@ -9,6 +9,6 @@ public class GetPrompt extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getDialogOverride().getNextPrompt(context.getWrappedDriver());
+        return context.getJSLibrary().getNextPrompt(context.getWrappedDriver());
     }
 }

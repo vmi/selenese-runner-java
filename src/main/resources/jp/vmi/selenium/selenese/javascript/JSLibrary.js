@@ -1,4 +1,34 @@
-function replaceAlertMethod(element) { // BEGIN
+// Following code is copied from:
+//   selenium/java/client/src/com/thoughtworks/selenium/webdriven/commands/AlertOverride.java 
+//   selenium/javascript/selenium-core/scripts/htmlutils.js
+//   selenium/javascript/selenium-atoms/text.js
+// and modified.
+//
+// Original license:
+// ------------------------------------------------------------
+// Licensed to the Software Freedom Conservancy (SFC) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The SFC licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+// ------------------------------------------------------------
+
+//
+// for overriding dialog functions.
+//
+
+function replaceAlertMethod(element) {
   window.localStorage.setItem('__webdriverAlerts', JSON.stringify([]));
   window.alert = function(msg) {
     var alerts = JSON.parse(window.localStorage.getItem('__webdriverAlerts'));
@@ -33,9 +63,9 @@ function replaceAlertMethod(element) { // BEGIN
     fw.confirm = window.confirm;
     fw.prompt = window.prompt;
   }
-} // END
+}
 
-function getNextAlert() { // BEGIN
+function getNextAlert() {
   if (!('__webdriverAlerts' in window.localStorage))
     return null;
   var alerts = JSON.parse(window.localStorage.getItem('__webdriverAlerts'));
@@ -46,20 +76,20 @@ function getNextAlert() { // BEGIN
   if (msg)
     msg = msg.replace(/\\n/g, ' ');
   return msg;
-} // END
+}
 
-function isAlertPresent() { // BEGIN
+function isAlertPresent() {
   if (!('__webdriverAlerts' in window.localStorage))
     return false;
   var alerts = JSON.parse(window.localStorage.getItem('__webdriverAlerts'));
   return alerts && alerts.length > 0;
-} // END
+}
 
-function setNextConfirmationState(state) { // BEGIN
+function setNextConfirmationState(state) {
   window.localStorage.setItem('__webdriverNextConfirm', JSON.stringify(state));
-} // END
+}
 
-function getNextConfirmation() { // BEGIN
+function getNextConfirmation() {
   if (!('__webdriverConfirms' in window.localStorage))
     return null;
   var confirms = JSON.parse(window.localStorage.getItem('__webdriverConfirms'));
@@ -70,20 +100,20 @@ function getNextConfirmation() { // BEGIN
   if (msg)
     msg = msg.replace(/\\n/g, ' ');
   return msg;
-} // END
+}
 
-function isConfirmationPresent() { // BEGIN
+function isConfirmationPresent() {
   if (!('__webdriverConfirms' in window.localStorage))
     return false;
   var confirms = JSON.parse(window.localStorage.getItem('__webdriverConfirms'));
   return confirms && confirms.length > 0;
-} // END
+}
 
-function answerOnNextPrompt(answer) { // BEGIN
+function answerOnNextPrompt(answer) {
   window.localStorage.setItem('__webdriverNextPrompt', JSON.stringify(answer));
-} // END
+}
 
-function getNextPrompt() { // BEGIN
+function getNextPrompt() {
   if (!('__webdriverPrompts' in window.localStorage))
     return null;
   var prompts = JSON.parse(window.localStorage.getItem('__webdriverPrompts'));
@@ -94,11 +124,69 @@ function getNextPrompt() { // BEGIN
   if (msg)
     msg = msg.replace(/\\n/g, ' ');
   return msg;
-} // END
+}
 
-function isPromptPresent() { // BEGIN
+function isPromptPresent() {
   if (!('__webdriverPrompts' in window.localStorage))
     return false;
   var prompts = JSON.parse(window.localStorage.getItem('__webdriverPrompts'));
   return prompts && prompts.length > 0;
-} // END
+}
+
+//
+// for handling key event.
+//
+
+function triggerKeyEvent(element, eventType, keyCode, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown) {
+  var evt;
+  if (element.fireEvent && element.ownerDocument && element.ownerDocument.createEventObject) { // IE
+    evt = element.ownerDocument.createEventObject();
+    evt.shiftKey = shiftKeyDown;
+    evt.metaKey = metaKeyDown;
+    evt.altKey = altKeyDown;
+    evt.ctrlKey = controlKeyDown;
+    evt.keyCode = keyCode;
+    element.fireEvent('on' + eventType, evt);
+    return;
+  }
+  var doc = element.ownerDocument;
+  var view = doc.defaultView;
+  if (window.KeyEvent) { // Firefox only?
+    evt = doc.createEvent('KeyEvents');
+    evt.initKeyEvent(eventType, true, true, view, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown, keyCode, keyCode);
+  } else {
+    evt = document.createEvent('Events');
+    evt.initEvent(eventType, true, true);
+    evt.view = window;
+    evt.shiftKey = shiftKeyDown;
+    evt.metaKey = metaKeyDown;
+    evt.altKey = altKeyDown;
+    evt.ctrlKey = controlKeyDown;
+    evt.keyCode = keyCode;
+    evt.which = keyCode;
+    evt.charCode = (eventType === "keypress") ? keyCode : 0;
+    console.log(keyCode + "/" + evt.keyCode);
+  }
+  element.dispatchEvent(evt);
+}
+
+//
+// for setting cursor position in text field.
+//
+function setCursorPosition(element, position) {
+  if (position == -1)
+    position = element.value.length;
+    element.focus();
+  if (element.setSelectionRange) {
+    element.setSelectionRange(position, position);
+  } else if (element.createTextRange) {
+    var range = element.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', position);
+    range.moveStart('character', position);
+    range.select();
+  }
+}
+
+if (module)
+  module.exports = triggerKeyEvent;

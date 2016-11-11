@@ -33,7 +33,7 @@ public class SelectElement {
         WebDriver driver = context.getWrappedDriver();
         finder = context.getElementFinder();
         select = finder.findElement(driver, selectLocator);
-        context.getDialogOverride().replaceAlertMethod(driver, select);
+        context.getJSLibrary().replaceAlertMethod(driver, select);
         String multiple = select.getAttribute("multiple");
         isMultiple = multiple != null && (multiple.equalsIgnoreCase("true") || multiple.equalsIgnoreCase("multiple"));
     }

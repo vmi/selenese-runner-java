@@ -16,7 +16,7 @@ public class ChooseCancelOnNextConfirmation extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.getDialogOverride().setNextConfirmationState(context.getWrappedDriver(), false);
+        context.getJSLibrary().setNextConfirmationState(context.getWrappedDriver(), false);
         return SUCCESS;
     }
 }

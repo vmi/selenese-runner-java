@@ -16,7 +16,7 @@ public class ChooseOkOnNextConfirmation extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.getDialogOverride().setNextConfirmationState(context.getWrappedDriver(), true);
+        context.getJSLibrary().setNextConfirmationState(context.getWrappedDriver(), true);
         return SUCCESS;
     }
 }
