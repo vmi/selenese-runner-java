@@ -1,17 +1,9 @@
 package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
-import com.thoughtworks.selenium.webdriven.JavascriptLibrary;
-import com.thoughtworks.selenium.webdriven.SeleneseCommand;
-import com.thoughtworks.selenium.webdriven.commands.*;
-
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.command.AddLocationStrategy;
-import jp.vmi.selenium.selenese.command.ArgumentType;
-import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -21,164 +13,57 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
  */
 public class SubCommandMap {
 
-    private final Map<String, ISubCommand<?>> subCommands = Maps.newHashMap();
-
-    private final JavascriptLibrary javascriptLibrary;
-
-    private final Context context;
+    private final Map<String, ISubCommand<?>> subCommands = new HashMap<>();
 
     /**
      * Constructor.
-     * <div>
-     * Requrements:
-     * <ul>
-     * <li>context.getEval() is available.</li>
-     * <li>context.getElementFinder() is available.</li>
-     * </ul>
-     * </div>
-     *
-     * @param context Selenese Runner context.
      */
-    public SubCommandMap(Context context) {
-        this.context = context;
-        this.javascriptLibrary = new JavascriptLibrary();
-        setUpSubCommands();
-    }
-
-    private void setUpSubCommands() {
-        WebDriverElementFinder elementFinder = context.getElementFinder();
-
-        //// Selenium webdriven commands:
-
-        register(new AddLocationStrategy(elementFinder), "addLocationStrategy", VALUE, VALUE);
-        // "addSelection"
-        register(new AllowNativeXPath(), "allowNativeXpath", VALUE);
-        // "altKeyDown"
-        // "altKeyUp"
-        register(new AssignId(javascriptLibrary, elementFinder), "assignId", LOCATOR, VALUE);
-        register(new AttachFile(elementFinder), "attachFile", LOCATOR, VALUE);
-        // can't handle the result:
-        // register(new CaptureScreenshotToString(), "captureScreenshotToString");
-        // "click"
-        // "clickAt"
-        // "check"
-        // "chooseCancelOnNextConfirmation"
-        // "chooseOkOnNextConfirmation"
-        register(new Close());
-        register(new CreateCookie());
-        // "controlKeyDown"
-        // "controlKeyUp"
-        register(new DeleteAllVisibleCookies(), "deleteAllVisibleCookies");
-        register(new DeleteCookie(), "deleteCookie", VALUE, VALUE); // 2nd parameter is optionsString.
-        // "deselectPopUp"
-        // "doubleClick"
-        register(new DragAndDrop(elementFinder), "dragdrop", LOCATOR, VALUE);
-        register(new DragAndDrop(elementFinder), "dragAndDrop", LOCATOR, VALUE);
-        register(new DragAndDropToObject(elementFinder), "dragAndDropToObject", LOCATOR, LOCATOR);
-        register(new FireEvent(elementFinder, javascriptLibrary), "fireEvent", LOCATOR, VALUE);
-        register(new FireNamedEvent(elementFinder, javascriptLibrary, "focus"), "focus", LOCATOR);
-        // "getAlert"
-        register(new GetAllButtons(), "getAllButtons");
-        register(new GetAllFields(), "getAllFields");
-        register(new GetAllLinks(), "getAllLinks");
-        // "getAllWindowNames"
-        register(new GetAllWindowTitles(), "getAllWindowTitles");
-        register(new GetAttribute(javascriptLibrary, elementFinder), "getAttribute", ATTRIBUTE_LOCATOR);
-        register(new GetAttributeFromAllWindows(), "getAttributeFromAllWindows", VALUE);
-        register(new GetBodyText(), "getBodyText");
-        // "getConfirmation"
-        register(new GetCookie(), "getCookie");
-        register(new GetCookieByName(), "getCookieByName", VALUE);
-        register(new GetElementHeight(elementFinder), "getElementHeight", LOCATOR);
-        register(new GetElementIndex(elementFinder, javascriptLibrary), "getElementIndex", LOCATOR);
-        register(new GetElementPositionLeft(elementFinder), "getElementPositionLeft", LOCATOR);
-        register(new GetElementPositionTop(elementFinder), "getElementPositionTop", LOCATOR);
-        register(new GetElementWidth(elementFinder), "getElementWidth", LOCATOR);
-        // "getEval"
-        register(new GetExpression(), "getExpression", VALUE);
-        register(new GetHtmlSource(), "getHtmlSource");
-        register(new GetLocation(), "getLocation");
-        // "getSelectedId"
-        // "getSelectedIds"
-        // "getSelectedIndex"
-        // "getSelectedIndexes"
-        // "getSelectedLabel"
-        // "getSelectedLabels"
-        // "getSelectedValue"
-        // "getSelectedValues"
-        register(new GetSelectOptions(javascriptLibrary, elementFinder), "getSelectOptions", LOCATOR);
-        // "getSpeed"
-        register(new GetTable(elementFinder, javascriptLibrary), "getTable", VALUE);
-        register(new GetText(javascriptLibrary, elementFinder), "getText", LOCATOR);
-        register(new GetTitle(), "getTitle");
-        register(new GetValue(elementFinder), "getValue", LOCATOR);
-        register(new GetXpathCount(), "getXpathCount", VALUE);
-        // "getCssCount"
-        register(new GoBack(), "goBack");
-        // "highlight"
-        // "isAlertPresent"
-        register(new IsChecked(elementFinder), "isChecked", LOCATOR);
-        // "isConfirmationPresent"
-        register(new IsCookiePresent(), "isCookiePresent", VALUE);
-        register(new IsEditable(elementFinder), "isEditable", LOCATOR);
-        register(new IsElementPresent(elementFinder), "isElementPresent", LOCATOR);
-        register(new IsOrdered(elementFinder, javascriptLibrary), "isOrdered", LOCATOR, LOCATOR);
-        // "isSomethingSelected"
-        // "isTextPresent"
-        register(new IsVisible(elementFinder), "isVisible", LOCATOR);
-        // "keyDown"
-        register(new KeyDownNative(), "keyDownNative", LOCATOR, VALUE);
-        // "keyPress"
-        register(new KeyPressNative(), "keyPressNative", LOCATOR, VALUE);
-        // "keyUp"
-        register(new KeyUpNative(), "keyUpNative", LOCATOR, VALUE);
-        // "metaKeyDown"
-        // "metaKeyUp"
-        for (MouseEventType type : MouseEventType.values())
-            register(new MouseEventHandler(elementFinder, type));
-        // "open"
-        // "openWindow"
-        register(new Refresh(), "refresh");
-        // "removeAllSelections"
-        // "removeSelection"
-        // "runScript"
-        // "select"
-        // "selectFrame"
-        // "selectPopUp"
-        // "selectWindow"
-        register(new NoOp(null), "setBrowserLogLevel", VALUE);
-        // "setSpeed"
-        // "setTimeout"
-        // "shiftKeyDown"
-        // "shiftKeyUp"
-        // "submit"
-        // "type"
-        // "typeKeys"
-        // "uncheck"
-        register(new UseXPathLibrary(), "useXpathLibrary", VALUE);
-        // "waitForCondition"
-        register(new NoOp(null), "waitForFrameToLoad", VALUE, VALUE);
-        // "waitForPageToLoad"
-        // "waitForPopUp"
-        register(new WindowFocus(javascriptLibrary), "windowFocus");
-        // windowMaximize
-
-        //// Customized commands:
-
-        // "openWindow"
-        // "runScript"
-        register(new GetEval());
-        register(new GetCssCount());
-        register(new GetSpeed());
-        register(new IsSomethingSelected());
+    public SubCommandMap() {
         register(new GetAlert());
-        register(new GetConfirmation());
-        register(new GetPrompt());
-        register(new IsAlertPresent());
-        register(new IsConfirmationPresent());
-        register(new IsPromptPresent());
+        register(new GetAllButtons());
+        register(new GetAllFields());
+        register(new GetAllLinks());
         register(new GetAllWindowNames());
+        register(new GetAllWindowTitles());
+        register(new GetAttribute());
+        register(new GetAttributeFromAllWindows());
+        register(new GetBodyText());
+        register(new GetConfirmation());
+        register(new GetCookie());
+        register(new GetCookieByName());
+        register(new GetCssCount());
+        register(new GetCursorPosition());
+        register(new GetElementHeight());
+        register(new GetElementIndex());
+        register(new GetElementPositionLeft());
+        register(new GetElementPositionTop());
+        register(new GetElementWidth());
+        register(new GetEval());
+        register(new GetExpression());
+        register(new GetHtmlSource());
+        register(new GetLocation());
+        register(new GetPrompt());
+        register(new GetSelectOptions());
+        register(new GetSpeed());
+        register(new GetTable());
+        register(new GetText());
+        register(new GetTitle());
+        register(new GetValue());
+        register(new GetXpathCount());
+        register(new IsAlertPresent());
+        register(new IsChecked());
+        register(new IsConfirmationPresent());
+        register(new IsCookiePresent());
+        register(new IsEditable());
+        register(new IsElementPresent());
+        register(new IsOrdered());
+        register(new IsPromptPresent());
+        register(new IsSomethingSelected());
         register(new IsTextPresent());
+        register(new IsVisible());
+
+        for (MouseEventType type : MouseEventType.values())
+            register(new MouseEventHandler(type));
 
         register(new GetSelected(GetSelected.Type.LABEL, false));
         register(new GetSelected(GetSelected.Type.LABEL, true));
@@ -188,17 +73,9 @@ public class SubCommandMap {
         register(new GetSelected(GetSelected.Type.INDEX, true));
         register(new GetSelected(GetSelected.Type.ID, false));
         register(new GetSelected(GetSelected.Type.ID, true));
-    }
 
-    /**
-     * Register SeleneseCommand as ISubCommand.
-     *
-     * @param seleneseCommand SeleneseCommand object.
-     * @param name SeleneseCommand name.
-     * @param argTypes argument types.
-     */
-    public void register(SeleneseCommand<?> seleneseCommand, String name, ArgumentType... argTypes) {
-        subCommands.put(name, new WDCommand(seleneseCommand, name, argTypes));
+        register(new NoOp("setBrowserLogLevel", VALUE));
+        register(new NoOp("waitForFrameToLoad", VALUE, VALUE));
     }
 
     /**
@@ -207,7 +84,17 @@ public class SubCommandMap {
      * @param subCommand ISubCommand object.
      */
     public void register(ISubCommand<?> subCommand) {
-        subCommands.put(subCommand.getName(), subCommand);
+        register(subCommand, subCommand.getName());
+    }
+
+    /**
+     * Register sub-command.
+     *
+     * @param subCommand ISubCommand object.
+     * @param name command name.
+     */
+    public void register(ISubCommand<?> subCommand, String name) {
+        subCommands.put(name, subCommand);
     }
 
     /**

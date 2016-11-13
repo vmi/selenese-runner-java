@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
@@ -38,7 +37,7 @@ public class CommandDumper {
 
     private static void addCommandInformationFromSubCommandMap(Map<String, String> commands) {
         try {
-            SubCommandMap subCommandMap = new SubCommandMap(new NullContext());
+            SubCommandMap subCommandMap = new SubCommandMap();
             for (Entry<String, ISubCommand<?>> entry : subCommandMap.getMap().entrySet()) {
                 String name = entry.getKey();
                 String info = "";

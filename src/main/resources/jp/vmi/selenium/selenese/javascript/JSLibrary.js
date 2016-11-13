@@ -1,7 +1,5 @@
-// Following code is copied from:
-//   selenium/java/client/src/com/thoughtworks/selenium/webdriven/commands/AlertOverride.java 
-//   selenium/javascript/selenium-core/scripts/htmlutils.js
-//   selenium/javascript/selenium-atoms/text.js
+// Following code is copied from Selenium project:
+//   http://www.seleniumhq.org/
 // and modified.
 //
 // Original license:
@@ -186,6 +184,63 @@ function setCursorPosition(element, position) {
     range.moveStart('character', position);
     range.select();
   }
+}
+
+//
+// for getting cursor position in text field.
+//
+function getCursorPosision(element) {
+  try {
+    var selectRange = document.selection.createRange().duplicate();
+    var elementRange = element.createTextRange();
+    selectRange.move('character', 0);
+    elementRange.move('character', 0);
+    var inRange1 = selectRange.inRange(elementRange);
+    var inRange2 = elementRange.inRange(selectRange);
+    elementRange.setEndPoint('EndToEnd', selectRange);
+  } catch (e) {
+    throw Error('There is no cursor on this page!');
+  }
+  return String(elementRange.text).replace(/\r/g,' ').length;
+}
+
+//
+// get element index.
+//
+function getElementIndex(element) {
+  var _isCommentOrEmptyTextNode = function(node) {
+    return node.nodeType == 8 || ((node.nodeType == 3) && !(/[^\\t\\n\\r ]/.test(node.data)));
+  };
+  var previousSibling;
+  var index = 0;
+  while ((previousSibling = element.previousSibling) != null) {
+    if (!_isCommentOrEmptyTextNode(previousSibling)) {
+      index++;
+    }
+    element = previousSibling;
+  }
+  return index;
+}
+
+function isOrdered(element1, element2) {
+  if (element1 === element2)
+    return false;
+  var previousSibling;
+  while ((previousSibling = element2.previousSibling) != null) {
+    if (previousSibling === element1)
+      return true;
+    element2 = previousSibling;
+  }
+  return false;
+}
+
+function getTable(table, row, col) {
+  var rows = table.rows;
+  if (row > rows.length)
+    return "Cannot access row " + row + " - table has " + rows.length + " rows";
+  if (col > rows[row].cells.length)
+    return "Cannot access column " + col + " - table row has " + rows[row].cells.length + " columns";
+  return rows[row].cells[col];
 }
 
 if (module)

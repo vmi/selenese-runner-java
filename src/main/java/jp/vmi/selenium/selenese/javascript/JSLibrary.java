@@ -37,6 +37,10 @@ public class JSLibrary {
     private final JSFunction isPromptPresent;
     private final JSFunction triggerKeyEvent;
     private final JSFunction setCursorPosition;
+    private final JSFunction getCursorPosition;
+    private final JSFunction getElementIndex;
+    private final JSFunction isOrdered;
+    private final JSFunction getTable;
 
     private final JSFunction fireEvent;
 
@@ -56,6 +60,10 @@ public class JSLibrary {
         isPromptPresent = jsMap.get("isPromptPresent");
         triggerKeyEvent = jsMap.get("triggerKeyEvent");
         setCursorPosition = jsMap.get("setCursorPosition");
+        getCursorPosition = jsMap.get("getCursorPosition");
+        getElementIndex = jsMap.get("getElementIndex");
+        isOrdered = jsMap.get("isOrdered");
+        getTable = jsMap.get("getTable");
         // fireEvent.js is copied from selenium.
         fireEvent = JSFunction.loadFunction(JSLibrary.class.getResourceAsStream("fireEvent.js"));
     }
@@ -196,6 +204,54 @@ public class JSLibrary {
      */
     public void setCursorPosition(WebDriver driver, WebElement element, int position) {
         setCursorPosition.call(driver, element, position);
+    }
+
+    /**
+     * Get cursor poision in text field.
+     *
+     * @param driver WebDriver object.
+     * @param element target element.
+     * @return cusror position.
+     *
+     */
+    public long getCursorPosition(WebDriver driver, WebElement element) {
+        return getCursorPosition.call(driver, element);
+    }
+
+    /**
+     * Get element index.
+     *
+     * @param driver WebDriver object.
+     * @param element target element.
+     * @return element index.
+     */
+    public long getElementIndex(WebDriver driver, WebElement element) {
+        return getElementIndex.call(driver, element);
+    }
+
+    /**
+     * Is ordered.
+     *
+     * @param driver WebDriver object.
+     * @param element1 target element 1.
+     * @param element2 target element 2.
+     * @return true if two elements are ordered.
+     */
+    public boolean isOrdered(WebDriver driver, WebElement element1, WebElement element2) {
+        return Boolean.TRUE.equals(isOrdered.call(driver, element1, element2));
+    }
+
+    /**
+     * Get cell value of table.
+     *
+     * @param driver WebDriver object.
+     * @param table table element.
+     * @param row row number. (row start at 0)
+     * @param col column number. (column start at 0)
+     * @return cell element or error message string.
+     */
+    public Object getTable(WebDriver driver, WebElement table, long row, long col) {
+        return getTable.call(driver, table, row, col);
     }
 
     /**
