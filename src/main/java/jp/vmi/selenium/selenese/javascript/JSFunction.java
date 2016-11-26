@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -34,13 +35,12 @@ public class JSFunction {
      * @return JSFunction
      */
     public static Map<String, JSFunction> load(InputStream is) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         Map<String, JSFunction> functions = new HashMap<>();
         String line;
         String name = null;
         boolean hasArgs = false;
         StringBuilder body = null;
-        try {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             while ((line = br.readLine()) != null) {
                 if (name == null) {
                     Matcher matcher = BEGIN_RE.matcher(line);
@@ -69,6 +69,21 @@ public class JSFunction {
             throw new RuntimeException(e);
         }
         return functions;
+    }
+
+    /**
+     * Load Javascript file as a function.
+     *
+     * @param is InputStream object.
+     * @return JSFunction
+     */
+    public static JSFunction loadFunction(InputStream is) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String body = br.lines().collect(Collectors.joining("\n", "return (", ").apply(null, arguments);"));
+            return new JSFunction(body);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -79,6 +79,21 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
         addConstructor(SetCursorPosition.class);
+        addConstructor(AttachFile.class);
+        addConstructor(DragAndDrop.class, "dragdrop");
+        addConstructor(DragAndDropToObject.class);
+        addConstructor(FireEvent.class);
+        addConstructor(Focus.class);
+        addConstructor(AllowNativeXPath.class);
+        addConstructor(AssignId.class);
+        addConstructor(Close.class);
+        addConstructor(CreateCookie.class);
+        addConstructor(DeleteAllVisibleCookies.class);
+        addConstructor(DeleteCookie.class);
+        addConstructor(GoBack.class);
+        addConstructor(Refresh.class);
+        addConstructor(UseXPathLibrary.class);
+        addConstructor(WindowFocus.class);
 
         // commands unsupported by WebDriverCommandProcessor
         addConstructor(Echo.class);

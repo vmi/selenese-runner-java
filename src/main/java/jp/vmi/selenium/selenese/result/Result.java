@@ -69,6 +69,18 @@ public abstract class Result implements Comparable<Result> {
     }
 
     /**
+     * Constructor.
+     *
+     * @param prefix prefix of message.
+     * @param message result massage.
+     * @param e Exception.
+     */
+    public Result(String prefix, String message, Exception e) {
+        StringBuilder result = new StringBuilder(prefix).append(": ").append(message).append(" - ");
+        this.message = generateExceptionMessage(result, e);
+    }
+
+    /**
      * Get exception message for result.
      *
      * @param prefix prefix of message.
@@ -76,7 +88,18 @@ public abstract class Result implements Comparable<Result> {
      * @return message.
      */
     protected String generateExceptionMessage(String prefix, Exception e) {
-        StringBuilder result = new StringBuilder(prefix).append(": ");
+        return generateExceptionMessage(new StringBuilder(prefix).append(": "), e);
+    }
+
+    /**
+     * Get exception message for result.
+     *
+     * @param prefix prefix of message.
+     * @param sep0 a separator.
+     * @param e exception.
+     * @return message.
+     */
+    protected String generateExceptionMessage(StringBuilder result, Exception e) {
         String msg = e.getMessage();
         if (msg != null)
             result.append(e.getClass().getSimpleName()).append(" - ").append(msg);

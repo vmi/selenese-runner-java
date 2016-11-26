@@ -35,10 +35,10 @@ public class JSLibrary {
     private final JSFunction answerOnNextPrompt;
     private final JSFunction getNextPrompt;
     private final JSFunction isPromptPresent;
-
     private final JSFunction triggerKeyEvent;
-
     private final JSFunction setCursorPosition;
+
+    private final JSFunction fireEvent;
 
     /**
      * Constructor.
@@ -56,6 +56,8 @@ public class JSLibrary {
         isPromptPresent = jsMap.get("isPromptPresent");
         triggerKeyEvent = jsMap.get("triggerKeyEvent");
         setCursorPosition = jsMap.get("setCursorPosition");
+        // fireEvent.js is copied from selenium.
+        fireEvent = JSFunction.loadFunction(JSLibrary.class.getResourceAsStream("fireEvent.js"));
     }
 
     /**
@@ -194,5 +196,17 @@ public class JSLibrary {
      */
     public void setCursorPosition(WebDriver driver, WebElement element, int position) {
         setCursorPosition.call(driver, element, position);
+    }
+
+    /**
+     * Fire event.
+     *
+     * @param driver WebDriver object.
+     * @param element target element.
+     * @param eventName event name.
+     *
+     */
+    public void fireEvent(WebDriver driver, WebElement element, String eventName) {
+        fireEvent.call(driver, element, eventName);
     }
 }
