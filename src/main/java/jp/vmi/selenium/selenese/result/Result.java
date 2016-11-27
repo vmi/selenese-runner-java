@@ -12,12 +12,7 @@ public abstract class Result implements Comparable<Result> {
      */
     @SuppressWarnings("javadoc")
     public static enum Level {
-        UNEXECUTED(-1, 0, 5),
-        SUCCESS(0, 0, 0),
-        WARNING(1, 0, 2),
-        FAILURE(2, 3, 3),
-        ERROR(3, 3, 4),
-        MAX_TIME_EXCEEDED(4, 3, 6);
+        UNEXECUTED(-1, 0, 5), SUCCESS(0, 0, 0), WARNING(1, 0, 2), FAILURE(2, 3, 3), ERROR(3, 3, 4), MAX_TIME_EXCEEDED(4, 3, 6);
 
         public final int value;
         public final int exitCode;
@@ -92,10 +87,9 @@ public abstract class Result implements Comparable<Result> {
     }
 
     /**
-     * Get exception message for result.
+     * Generate exception message.
      *
-     * @param prefix prefix of message.
-     * @param sep0 a separator.
+     * @param result message buffer.
      * @param e exception.
      * @return message.
      */

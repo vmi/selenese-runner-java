@@ -111,7 +111,7 @@ public class Locator {
     /**
      * Add option locator.
      *
-     * @param poptloc option locator.
+     * @param option option locator.
      * @return locator with option.
      */
     public Locator withOption(String option) {

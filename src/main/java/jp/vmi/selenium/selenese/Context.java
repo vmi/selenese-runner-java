@@ -270,6 +270,7 @@ public interface Context extends WrapsDriver {
      *
      * see {@link JavascriptExecutor#executeScript(String, Object...)}.
      *
+     * @param <T> type of return value.
      * @param script The JavaScript to execute
      * @param args The arguments to the script. May be empty
      * @return One of Boolean, Long, String, List or WebElement. Or null.
