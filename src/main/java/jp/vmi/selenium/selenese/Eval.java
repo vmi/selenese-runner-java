@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.google.gson.Gson;
 
+import jp.vmi.selenium.selenese.mutator.SeleneseRunnerMutator;
+
 /**
  * Evaluator of script including "storedVars" variable.
  */

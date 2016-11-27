@@ -1,8 +1,6 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.mutator;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-
-import com.thoughtworks.selenium.webdriven.ScriptMutator;
 
 /**
  * Variable declaration with dynamic value.

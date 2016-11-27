@@ -1,10 +1,7 @@
-package jp.vmi.selenium.selenese;
+package jp.vmi.selenium.selenese.mutator;
 
-import com.thoughtworks.selenium.webdriven.CompoundMutator;
-import com.thoughtworks.selenium.webdriven.ScriptMutator;
-import com.thoughtworks.selenium.webdriven.VariableDeclaration;
-
-import jp.vmi.selenium.selenese.VariableDeclarationWithDynamicValue.DynamicValue;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.mutator.VariableDeclarationWithDynamicValue.DynamicValue;
 
 /**
  * Substitute for CompoundMutator without static base URL.
