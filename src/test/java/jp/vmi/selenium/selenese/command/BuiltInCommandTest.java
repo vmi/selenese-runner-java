@@ -36,6 +36,6 @@ public class BuiltInCommandTest extends TestBase {
         testCase.addCommand(cf, "open", "/index.html");
         testCase.addCommand(cf, "click", "link=linktext");
         Result result = runner.execute(testCase);
-        assertThat(result.getMessage(), is("Failure: Element link=linktext not found"));
+        assertThat(result.getMessage(), startsWith("Failure: Element link=linktext not found /"));
     }
 }
