@@ -25,6 +25,7 @@ public class SelectWindow extends AbstractCommand {
         String handle = WindowSelector.getInstance().selectWindow(context, windowID);
         if (handle == null)
             return new Error("Specified window not found: " + windowID);
+        WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
         String title = context.getWrappedDriver().getTitle();
         return new Success("Selected window [" + handle + "] " + title);
     }

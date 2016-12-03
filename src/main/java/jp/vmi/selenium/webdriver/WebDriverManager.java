@@ -22,42 +22,42 @@ public class WebDriverManager implements WebDriverPreparator {
     /**
      * Firefox.
      */
-    public static final String FIREFOX = "firefox";
+    public static final String FIREFOX = FirefoxDriverFactory.BROWSER_NAME;
 
     /**
      * Chrome.
      */
-    public static final String CHROME = "chrome";
+    public static final String CHROME = ChromeDriverFactory.BROWSER_NAME;
 
     /**
      * Internet Explorer.
      */
-    public static final String IE = "ie";
+    public static final String IE = IEDriverFactory.BROWSER_NAME;
 
     /**
      * Html Unit.
      */
-    public static final String HTMLUNIT = "htmlunit";
+    public static final String HTMLUNIT = HtmlUnitDriverFactory.BROWSER_NAME;
 
     /**
      * Safari.
      */
-    public static final String SAFARI = "safari";
+    public static final String SAFARI = SafariDriverFactory.BROWSER_NAME;
 
     /**
      *  RemoteWebDriver
      */
-    public static final String REMOTE = "remote";
+    public static final String REMOTE = RemoteWebDriverFactory.BROWSER_NAME;
 
     /**
      *  AppiumWebDriver
      */
-    public static final String APPIUM = "appium";
+    public static final String APPIUM = AppiumWebDriverFactory.BROWSER_NAME;
 
     /**
      * PhantomJS
      */
-    public static final String PHANTOMJS = "phantomjs";
+    public static final String PHANTOMJS = PhantomJSDriverFactory.BROWSER_NAME;
 
     private static class Builder {
 
@@ -129,6 +129,11 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     private WebDriverManager() {
         setWebDriverFactory(System.getProperty(WEBDRIVER_FACTORY, FIREFOX));
+    }
+
+    @Override
+    public String getBrowserName() {
+        return factory.getBrowserName();
     }
 
     /**

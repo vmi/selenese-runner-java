@@ -28,6 +28,15 @@ public interface Context extends WrapsDriver {
     void prepareWebDriver();
 
     /**
+     * Get browser name.
+     *
+     * @return browser name.
+     */
+    default String getBrowserName() {
+        return "";
+    }
+
+    /**
      * Get current test-case.
      *
      * @return current test-case.

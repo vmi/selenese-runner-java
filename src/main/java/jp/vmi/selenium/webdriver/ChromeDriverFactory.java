@@ -26,6 +26,14 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  */
 public class ChromeDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "chrome";
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
+    }
+
     /**
      * set driver specific capabilities.
      *

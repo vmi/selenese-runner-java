@@ -9,6 +9,14 @@ import org.openqa.selenium.safari.SafariDriver;
  */
 public class SafariDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "safari";
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
+    }
+
     @Override
     public boolean isProxySupported() {
         return false;

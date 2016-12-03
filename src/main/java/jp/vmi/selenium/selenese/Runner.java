@@ -266,6 +266,21 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.preparator = preparator;
     }
 
+    @Override
+    public String getBrowserName() {
+        if (preparator != null)
+            return preparator.getBrowserName();
+        String name = driver.getClass().getSimpleName();
+        if (StringUtils.isEmpty(name))
+            return "";
+        else if (name.endsWith("WebDriver"))
+            return name.substring(0, name.length() - "WebDriver".length()).toLowerCase();
+        else if (name.endsWith("Driver"))
+            return name.substring(0, name.length() - "Driver".length()).toLowerCase();
+        else
+            return name.toLowerCase();
+    }
+
     private static void mkdirsForScreenshot(String dirStr, String msg) {
         if (dirStr == null)
             return;

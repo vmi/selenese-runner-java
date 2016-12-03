@@ -5,8 +5,10 @@ import java.util.Set;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.webdriver.WebDriverManager;
 
 /**
  * Re-implementation of "com.thoughtworks.selenium.webdriven.Windows".
@@ -14,6 +16,8 @@ import jp.vmi.selenium.selenese.Context;
 public class WindowSelector {
 
     private static final String NO_PREFIX = "";
+
+    private static final long WAIT_AFTER_SELECTING_WINDOW = 300; // ms
 
     private static WindowSelector windowSelector = new WindowSelector();
 
@@ -213,7 +217,12 @@ public class WindowSelector {
      */
     public String selectPreviousWindow(Context context) {
         WebDriver driver = context.getWrappedDriver();
-        String currentHandle = getWindowHandle(driver);
+        String currentHandle;
+        try {
+            currentHandle = getWindowHandle(driver);
+        } catch (WebDriverException e) {
+            currentHandle = null;
+        }
         Set<String> handles = driver.getWindowHandles();
         switch (handles.size()) {
         case 0:
@@ -278,5 +287,21 @@ public class WindowSelector {
         }
         switchToWindow(driver, currentHandle);
         return null;
+    }
+
+    /**
+     * Wait after selecting a window if the browser is Firefox.
+     *
+     * @param context Selenese Runner context.
+     */
+    public static void waitAfterSelectingWindowIfNeed(Context context) {
+        if (WebDriverManager.FIREFOX.equals(context.getBrowserName())) {
+            // workaround for new FirefoxDriver.
+            try {
+                Thread.sleep(WAIT_AFTER_SELECTING_WINDOW);
+            } catch (InterruptedException e) {
+                // ignore.
+            }
+        }
     }
 }
