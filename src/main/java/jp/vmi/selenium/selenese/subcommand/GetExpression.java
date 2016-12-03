@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import org.openqa.selenium.JavascriptExecutor;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 
@@ -21,6 +19,6 @@ public class GetExpression extends AbstractSubCommand<Object> {
 
     @Override
     public Object execute(Context context, String... args) {
-        return ((JavascriptExecutor) context.getWrappedDriver()).executeScript(args[ARG_EXPR]);
+        return args[ARG_EXPR];
     }
 }
