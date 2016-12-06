@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.Locator;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
@@ -151,6 +153,8 @@ public abstract class AbstractCommand implements ICommand {
     public final Result execute(Context context, String... curArgs) {
         try {
             result = executeImpl(context, curArgs);
+        } catch (TimeoutException e) {
+            result = new Error("Timed out");
         } catch (WebDriverException e) {
             result = new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
         }
