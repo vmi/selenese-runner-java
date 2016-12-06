@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,13 +99,10 @@ public class Assertion extends AbstractCommand {
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
-                } catch (WebDriverException e) {
-                    String error = e.getMessage();
-                    if (!error.endsWith(" not found"))
-                        throw e;
+                } catch (NotFoundException e) {
                     if (isInverse)
                         return SUCCESS;
-                    message = String.format("Assertion failed (%s)", error);
+                    message = String.format("Assertion failed (%s)", e.getMessage());
                     found = false;
                 }
             } else {
@@ -116,13 +113,10 @@ public class Assertion extends AbstractCommand {
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
                         StringEscapeUtils.escapeJava(resultString),
                         isInverse ? "Not " : "", StringEscapeUtils.escapeJava(expected));
-                } catch (WebDriverException e) {
-                    String error = e.getMessage();
-                    if (!error.endsWith(" not found"))
-                        throw e;
+                } catch (NotFoundException e) {
                     if (isInverse)
                         return SUCCESS;
-                    message = String.format("Assertion failed (%s)", error);
+                    message = String.format("Assertion failed (%s)", e.getMessage());
                     found = false;
                 }
             }
