@@ -41,6 +41,7 @@ public class JSLibrary {
     private final JSFunction getElementIndex;
     private final JSFunction isOrdered;
     private final JSFunction getTable;
+    private final JSFunction getText;
 
     private final JSFunction fireEvent;
 
@@ -64,6 +65,7 @@ public class JSLibrary {
         getElementIndex = jsMap.get("getElementIndex");
         isOrdered = jsMap.get("isOrdered");
         getTable = jsMap.get("getTable");
+        getText = jsMap.get("getText");
         // fireEvent.js is copied from selenium.
         fireEvent = JSFunction.loadFunction(JSLibrary.class.getResourceAsStream("fireEvent.js"));
     }
@@ -252,6 +254,17 @@ public class JSLibrary {
      */
     public Object getTable(WebDriver driver, WebElement table, long row, long col) {
         return getTable.call(driver, table, row, col);
+    }
+
+    /**
+     * Get text.
+     *
+     * @param driver WebDriver object.
+     * @param element element.
+     * @return text content.
+     */
+    public String getText(WebDriver driver, WebElement element) {
+        return getText.call(driver, element);
     }
 
     /**

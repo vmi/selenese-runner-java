@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese.subcommand;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 
@@ -19,6 +22,8 @@ public class GetText extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.findElement(args[ARG_LOCATOR]).getText();
+        WebDriver driver = context.getWrappedDriver();
+        WebElement element = context.getElementFinder().findElement(driver, args[ARG_LOCATOR]);
+        return context.getJSLibrary().getText(driver, element);
     }
 }

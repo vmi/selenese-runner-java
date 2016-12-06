@@ -243,5 +243,39 @@ function getTable(table, row, col) {
   return rows[row].cells[col];
 }
 
+function getText(element) {
+  function getTextInternal(element) {
+    var texts = [];
+    var prev = null;
+    var nodes = element.childNodes;
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      switch (node.nodeType) {
+      case 1: // ELEMENT_NODE
+        switch (node.nodeName) {
+        case "SCRIPT":
+        case "STYLE":
+        case "LINK":
+          // skip
+          break;
+        case "BR":
+          texts.push(prev = "\n");
+          break;
+        default:
+          texts.push(prev = getTextInternal(node));
+          break;
+        }
+        break;
+      default:
+        var text = node.textContent.replace(/[\u0000-\u0020]+/g, " ");
+        texts.push(prev = text);
+        break;
+      }
+    }
+    return texts.join("").replace(/ +/g, " ");
+  }
+  return getTextInternal(element);
+}
+
 if (module)
   module.exports = triggerKeyEvent;
