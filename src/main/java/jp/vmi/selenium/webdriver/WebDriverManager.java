@@ -210,7 +210,12 @@ public class WebDriverManager implements WebDriverPreparator {
     }
 
     private boolean isBrowserUnreachable(Throwable t) {
-        return t instanceof UnreachableBrowserException;
+        if (t instanceof UnreachableBrowserException)
+            return true;
+        String msg = t.getMessage();
+        if (msg != null && msg.startsWith("browser is undefined"))
+            return true;
+        return false;
     }
 
     private boolean isDriverReusable() {
