@@ -114,7 +114,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void clickableImage() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("clickable_image_test");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -287,14 +287,14 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void mouseEvent() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testsuite_mouse");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void issue179() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -353,7 +353,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void test203_02() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue203_02");
         assertThat(result, is(instanceOf(Success.class)));
     }
