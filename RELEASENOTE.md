@@ -1,6 +1,66 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.0.0
+
+* Catch up Selenium 3.0.1.
+* Update dependency versions.
+* Re-implement the following commands for catching up Selenium 3.x. (#218)
+    * `addLocationStrategy`
+    * `addSelection`
+    * `allowNativeXPath`
+    * `answerOnNextPrompt`
+    * `assignId`
+    * `attachFile`
+    * `chooseCancelOnNextConfirmation`
+    * `chooseOkOnNextConfirmation`
+    * `close`
+    * `createCookie`
+    * `deleteAllVisibleCookies`
+    * `deleteCookie`
+    * `dragAndDrop`
+    * `dragAndDropToObject`
+    * `fireEvent`
+    * `focus`
+    * `goBack`
+    * `refresh`
+    * `removeAllSelections`
+    * `removeSelection`
+    * `selectElement`
+    * `setCursorPosition`
+    * `useXPathLibrary`
+    * `windowFocus`
+    * `(assert|verify|waitFor|store)AllButtons`
+    * `(assert|verify|waitFor|store)AllFields`
+    * `(assert|verify|waitFor|store)AllLinks`
+    * `(assert|verify|waitFor|store)AllWindowTitles`
+    * `(assert|verify|waitFor|store)Attribute`
+    * `(assert|verify|waitFor|store)AttributeFromAllWindows`
+    * `(assert|verify|waitFor|store)BodyText`
+    * `(assert|verify|waitFor|store)Cookie`
+    * `(assert|verify|waitFor|store)CookieByName`
+    * `(assert|verify|waitFor|store)CursorPosition`
+    * `(assert|verify|waitFor|store)ElementHeight`
+    * `(assert|verify|waitFor|store)ElementIndex`
+    * `(assert|verify|waitFor|store)ElementPositionLeft`
+    * `(assert|verify|waitFor|store)ElementPositionTop`
+    * `(assert|verify|waitFor|store)ElementWidth`
+    * `(assert|verify|waitFor|store)Expression`
+    * `(assert|verify|waitFor|store)HtmlSource`
+    * `(assert|verify|waitFor|store)Location`
+    * `(assert|verify|waitFor|store)SelectOptions`
+    * `(assert|verify|waitFor|store)Table`
+    * `(assert|verify|waitFor|store)Text`
+    * `(assert|verify|waitFor|store)Title`
+    * `(assert|verify|waitFor|store)Value`
+    * `(assert|verify|waitFor|store)XpathCount`
+    * `(assert|verify|waitFor|store)Checked`
+    * `(assert|verify|waitFor|store)CookiePresent`
+    * `(assert|verify|waitFor|store)Editable`
+    * `(assert|verify|waitFor|store)ElementPresent`
+    * `(assert|verify|waitFor|store)Ordered`
+    * `(assert|verify|waitFor|store)Visible`
+
 ### 2.13.0
 
 * Fix that "clickAt" command ignores coordinates parameter. (#221)
