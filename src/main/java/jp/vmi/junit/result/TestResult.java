@@ -50,7 +50,7 @@ public abstract class TestResult<T extends ITestTarget> {
      */
     @XmlAttribute
     public String getTimestamp() {
-        return DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTime());
+        return DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTime());
     }
 
     /**
