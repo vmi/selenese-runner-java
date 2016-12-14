@@ -576,7 +576,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public boolean isTrue(String expr) {
-        return (Boolean) eval.eval(driver, varsMap.replaceVars(expr), "Boolean");
+        return (Boolean) eval.eval(this, varsMap.replaceVars(expr), "Boolean");
     }
 
     /**

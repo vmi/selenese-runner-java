@@ -27,11 +27,14 @@ package jp.vmi.selenium.selenese.mutator;
 
 import java.util.regex.Pattern;
 
+import jp.vmi.selenium.selenese.Context;
+
 /**
  * Models a function declaration. That is, it provides an implementation of a particular Javascript
  * function.
  */
 public class FunctionDeclaration implements ScriptMutator {
+
     private final Pattern pattern;
     private final String function;
 
@@ -40,20 +43,13 @@ public class FunctionDeclaration implements ScriptMutator {
      * @param result The body of the function implementation.
      */
     public FunctionDeclaration(String raw, String result) {
-        String base = raw.replace(".", "\\s*\\.\\s*");
-
-        pattern = Pattern.compile(".*" + base + "\\s*\\(\\s*\\).*");
-
-        function = raw + " = function() { " + result + " }; ";
+        pattern = MutatorUtils.generatePatternForCodePresence(raw + "()");
+        function = raw + " = function() { " + result + " };";
     }
 
     @Override
-    public void mutate(String script, StringBuilder outputTo) {
-        if (!pattern.matcher(script).matches()) {
-            return;
-        }
-
-        outputTo.append(function);
+    public void mutate(Context context, String script, StringBuilder outputTo) {
+        if (pattern.matcher(script).find())
+            outputTo.append(function);
     }
-
 }

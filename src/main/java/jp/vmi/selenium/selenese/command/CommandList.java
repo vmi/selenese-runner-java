@@ -97,7 +97,7 @@ public class CommandList extends ArrayList<ICommand> {
         for (int i = 0; i < curArgs.length; i++) {
             Matcher matcher = JS_BLOCK_RE.matcher(curArgs[i]);
             if (matcher.matches()) {
-                Object value = context.getEval().eval(context.getWrappedDriver(), matcher.group(1));
+                Object value = context.getEval().eval(context, matcher.group(1));
                 if (value == null)
                     value = "";
                 curArgs[i] = value.toString();

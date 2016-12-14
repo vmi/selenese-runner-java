@@ -3,9 +3,6 @@ package jp.vmi.selenium.selenese;
 import java.util.List;
 import java.util.Map;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-
 import com.google.gson.Gson;
 
 import jp.vmi.selenium.selenese.mutator.SeleneseRunnerMutator;
@@ -16,7 +13,6 @@ import jp.vmi.selenium.selenese.mutator.SeleneseRunnerMutator;
 public class Eval {
 
     private final SeleneseRunnerMutator mutator;
-    private final Context context;
 
     /**
      * Constructor.
@@ -24,30 +20,29 @@ public class Eval {
      * @param context Selenese Runner context.
      */
     public Eval(Context context) {
-        this.mutator = new SeleneseRunnerMutator(context);
-        this.context = context;
+        this.mutator = new SeleneseRunnerMutator();
     }
 
     /**
      * Evaluate script including "storedVars" variable.
      *
-     * @param driver WebDriver instance.
+     * @param context Selenese Runner context.
      * @param script JavaScript code.
      * @return result of evaluating script.
      */
-    public Object eval(WebDriver driver, String script) {
-        return eval(driver, script, null);
+    public Object eval(Context context, String script) {
+        return eval(context, script, null);
     }
 
     /**
      * Evaluate script including "storedVars" variable.
      *
-     * @param driver WebDriver instance.
+     * @param context Selenese Runner context.
      * @param script JavaScript code.
      * @param cast cast type.
      * @return result of evaluating script.
      */
-    public Object eval(WebDriver driver, String script, String cast) {
+    public Object eval(Context context, String script, String cast) {
         VarsMap varsMap = context.getVarsMap();
         boolean hasStoredVars = script.matches(".*\\bstoredVars\\b.*");
         StringBuilder writer = new StringBuilder();
@@ -60,13 +55,13 @@ public class Eval {
         if (cast != null)
             writer.append(cast);
         writer.append("((function(){");
-        mutator.mutate(script, writer);
+        mutator.mutate(context, script, writer);
         writer.append("})())");
         if (hasStoredVars)
             writer.append(", storedVars];})();");
         else
             writer.append("];");
-        Object result = ((JavascriptExecutor) driver).executeScript(writer.toString());
+        Object result = context.executeScript(writer.toString());
         if (!(result instanceof List))
             throw new SeleneseRunnerRuntimeException(result.toString());
         List<?> list = (List<?>) result;

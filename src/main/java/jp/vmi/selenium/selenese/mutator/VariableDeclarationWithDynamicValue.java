@@ -1,19 +1,20 @@
 package jp.vmi.selenium.selenese.mutator;
 
+import java.util.function.Function;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringEscapeUtils;
+
+import jp.vmi.selenium.selenese.Context;
 
 /**
  * Variable declaration with dynamic value.
  */
 public class VariableDeclarationWithDynamicValue implements ScriptMutator {
 
-    @SuppressWarnings("javadoc")
-    public static interface DynamicValue {
-        String getValue();
-    }
-
-    private final String varName;
-    private final DynamicValue dynamicValue;
+    private final Pattern pattern;
+    private final String declaration;
+    private final Function<Context, String> dynamicValue;
 
     /**
      * Constructor.
@@ -21,16 +22,20 @@ public class VariableDeclarationWithDynamicValue implements ScriptMutator {
      * @param varName variable name.
      * @param dynamicValue value getter on demand.
      */
-    public VariableDeclarationWithDynamicValue(String varName, DynamicValue dynamicValue) {
-        this.varName = varName;
+    public VariableDeclarationWithDynamicValue(String varName, Function<Context, String> dynamicValue) {
+        pattern = MutatorUtils.generatePatternForCodePresence(varName);
+        if (varName.indexOf('.') < 0)
+            declaration = "var " + varName + " = '";
+        else
+            declaration = varName + " = '";
         this.dynamicValue = dynamicValue;
     }
 
     @Override
-    public void mutate(String script, StringBuilder outputTo) {
-        if (script.contains(varName)) {
-            String value = dynamicValue.getValue();
-            outputTo.append(varName + " = '" + StringEscapeUtils.escapeEcmaScript(value) + "';");
+    public void mutate(Context context, String script, StringBuilder outputTo) {
+        if (pattern.matcher(script).find()) {
+            String value = dynamicValue.apply(context);
+            outputTo.append(declaration).append(StringEscapeUtils.escapeEcmaScript(value)).append("';");
         }
     }
 }

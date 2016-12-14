@@ -20,6 +20,6 @@ public class GetEval extends AbstractSubCommand<Object> {
 
     @Override
     public Object execute(Context context, String... args) {
-        return context.getEval().eval(context.getWrappedDriver(), args[ARG_SCRIPT]);
+        return context.getEval().eval(context, args[ARG_SCRIPT]);
     }
 }

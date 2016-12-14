@@ -27,28 +27,31 @@ package jp.vmi.selenium.selenese.mutator;
 
 import java.util.regex.Pattern;
 
+import jp.vmi.selenium.selenese.Context;
+
 /**
  * Prepend a variable declaration to a script.
  */
 public class VariableDeclaration implements ScriptMutator {
+
     private final Pattern pattern;
     private final String declaration;
 
-    public VariableDeclaration(String raw, String declaration) {
-        this.declaration = declaration;
-        raw = raw.replace(".", "\\s*\\.\\s*")
-            .replace("(", "\\(")
-            .replace(")", "\\)");
-
-        pattern = Pattern.compile(".*" + raw + ".*");
+    /**
+     * @param varName variable name.
+     * @param value value.
+     */
+    public VariableDeclaration(String varName, String value) {
+        pattern = MutatorUtils.generatePatternForCodePresence(varName);
+        if (varName.indexOf('.') < 0)
+            declaration = "var " + varName + " = " + value + ";";
+        else
+            declaration = varName + " = " + value + ";";
     }
 
     @Override
-    public void mutate(String script, StringBuilder outputTo) {
-        if (!pattern.matcher(script).matches()) {
-            return;
-        }
-
-        outputTo.append(declaration);
+    public void mutate(Context context, String script, StringBuilder outputTo) {
+        if (pattern.matcher(script).find())
+            outputTo.append(declaration);
     }
 }
