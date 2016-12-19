@@ -17,7 +17,7 @@ public class WindowSelector {
 
     private static final String NO_PREFIX = "";
 
-    private static final long WAIT_AFTER_SELECTING_WINDOW = 300; // ms
+    private static final long WAIT_AFTER_SELECTING_WINDOW = 500; // ms
 
     private static WindowSelector windowSelector = new WindowSelector();
 
