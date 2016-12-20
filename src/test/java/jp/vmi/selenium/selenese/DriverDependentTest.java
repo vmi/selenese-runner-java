@@ -370,4 +370,10 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_issue220");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void setAndGetCookies() {
+        execute("testcase_cookie");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

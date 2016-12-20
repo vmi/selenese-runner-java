@@ -27,8 +27,6 @@ package jp.vmi.selenium.selenese.subcommand;
 
 import java.util.stream.Collectors;
 
-import org.openqa.selenium.Cookie;
-
 import jp.vmi.selenium.selenese.Context;
 
 /**
@@ -45,6 +43,8 @@ public class GetCookie extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getWrappedDriver().manage().getCookies().stream().map(Cookie::toString).collect(Collectors.joining("; "));
+        return context.getWrappedDriver().manage().getCookies().stream()
+            .map(cookie -> cookie.getName() + "=" + cookie.getValue())
+            .collect(Collectors.joining("; "));
     }
 }
