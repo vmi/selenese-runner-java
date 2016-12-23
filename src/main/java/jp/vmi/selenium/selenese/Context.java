@@ -37,6 +37,16 @@ public interface Context extends WrapsDriver {
     }
 
     /**
+     * Test browser name.
+     *
+     * @param name browser name.
+     * @return true if match browser name.
+     */
+    default boolean isBrowser(String name) {
+        return name.equals(getBrowserName());
+    }
+
+    /**
      * Get current test-case.
      *
      * @return current test-case.

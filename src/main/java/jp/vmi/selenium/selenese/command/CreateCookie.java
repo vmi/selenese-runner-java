@@ -31,16 +31,17 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.InvalidCookieDomainException;
+import org.openqa.selenium.UnableToSetCookieException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 
 /**
  * Re-implementation of CreateCookie.
@@ -68,11 +69,6 @@ public class CreateCookie extends AbstractCommand {
         String nameValuePair = curArgs[ARG_NAME_VALUE_PAIR];
         String optionsString = curArgs[ARG_OPTIONS_STRING];
 
-        if (needWorkaround(context)) {
-            setCookieByJS(context, nameValuePair, optionsString);
-            return SUCCESS;
-        }
-
         Matcher nameValuePairMatcher = NAME_VALUE_PAIR_PATTERN.matcher(nameValuePair);
         if (!nameValuePairMatcher.find())
             return new Error("Invalid parameter: " + nameValuePair);
@@ -99,20 +95,15 @@ public class CreateCookie extends AbstractCommand {
         }
 
         Cookie cookie = new Cookie(name, value, path, maxAge);
-        context.getWrappedDriver().manage().addCookie(cookie);
+        try {
+            context.getWrappedDriver().manage().addCookie(cookie);
+        } catch (InvalidCookieDomainException | UnableToSetCookieException e) {
+            // This is workaround for PhanomJS bug.
+            // TODO remove it when fix the bug.
+            if (!context.isBrowser(PHANTOMJS))
+                throw e;
+        }
 
         return SUCCESS;
-    }
-
-    private boolean needWorkaround(Context context) {
-        // FIXME PhantomJSDriver does not properly support "driver.manage.addCookie(...)".
-        return WebDriverManager.PHANTOMJS.equals(context.getBrowserName());
-    }
-
-    private void setCookieByJS(Context context, String nameValuePair, String optionsString) {
-        String script = String.format("document.cookie = '%s;%s'",
-            StringEscapeUtils.ESCAPE_ECMASCRIPT.translate(nameValuePair),
-            StringEscapeUtils.ESCAPE_ECMASCRIPT.translate(optionsString));
-        context.executeScript(script);
     }
 }
