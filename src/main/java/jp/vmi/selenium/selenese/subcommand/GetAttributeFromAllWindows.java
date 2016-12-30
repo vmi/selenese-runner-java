@@ -34,7 +34,7 @@ import jp.vmi.selenium.selenese.command.ArgumentType;
 /**
  * Re-implementation of GetAttributeFromAllWindows.
  */
-public class GetAttributeFromAllWindows extends AbstractSubCommand<String[]> {
+public class GetAttributeFromAllWindows extends AbstractSubCommand<Object[]> {
 
     private static final int ARG_ATTR_NAME = 0;
 
@@ -46,7 +46,7 @@ public class GetAttributeFromAllWindows extends AbstractSubCommand<String[]> {
     }
 
     @Override
-    public String[] execute(Context context, String... args) {
+    public Object[] execute(Context context, String... args) {
         String attrName = args[ARG_ATTR_NAME];
         WebDriver driver = context.getWrappedDriver();
         String current = driver.getWindowHandle();
@@ -54,9 +54,9 @@ public class GetAttributeFromAllWindows extends AbstractSubCommand<String[]> {
             return driver.getWindowHandles().stream()
                 .map(handle -> {
                     driver.switchTo().window(handle);
-                    return ((JavascriptExecutor) driver).executeScript("return '' + window[arguments[0]];", attrName);
+                    return ((JavascriptExecutor) driver).executeScript("return window[arguments[0]];", attrName);
                 })
-                .toArray(String[]::new);
+                .toArray();
         } finally {
             driver.switchTo().window(current);
         }

@@ -1,6 +1,8 @@
 package jp.vmi.selenium.selenese.subcommand;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 
@@ -18,6 +20,8 @@ public class GetBodyText extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getWrappedDriver().findElement(By.tagName("body")).getText();
+        WebDriver driver = context.getWrappedDriver();
+        WebElement body = driver.findElement(By.tagName("body"));
+        return context.getJSLibrary().getText(driver, body);
     }
 }

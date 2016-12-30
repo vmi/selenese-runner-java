@@ -4,6 +4,8 @@ import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+
 /**
  * Re-implementation of IsEditable.
  */
@@ -15,7 +17,7 @@ public class IsEditable extends AbstractSubCommand<Boolean> {
      * Constructor.
      */
     public IsEditable() {
-        super();
+        super(LOCATOR);
     }
 
     @Override

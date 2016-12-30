@@ -72,7 +72,7 @@ function getNextAlert() {
   var msg = alerts.shift();
   window.localStorage.setItem('__webdriverAlerts', JSON.stringify(alerts));
   if (msg)
-    msg = msg.replace(/\\n/g, ' ');
+    msg = msg.replace(/\n/g, ' ');
   return msg;
 }
 
@@ -96,7 +96,7 @@ function getNextConfirmation() {
   var msg = confirms.shift();
   window.localStorage.setItem('__webdriverConfirms', JSON.stringify(confirms));
   if (msg)
-    msg = msg.replace(/\\n/g, ' ');
+    msg = msg.replace(/\n/g, ' ');
   return msg;
 }
 
@@ -120,7 +120,7 @@ function getNextPrompt() {
   var msg = prompts.shift();
   window.localStorage.setItem('__webdriverPrompts', JSON.stringify(prompts));
   if (msg)
-    msg = msg.replace(/\\n/g, ' ');
+    msg = msg.replace(/\n/g, ' ');
   return msg;
 }
 
@@ -209,7 +209,7 @@ function getCursorPosision(element) {
 //
 function getElementIndex(element) {
   var _isCommentOrEmptyTextNode = function(node) {
-    return node.nodeType == 8 || ((node.nodeType == 3) && !(/[^\\t\\n\\r ]/.test(node.data)));
+    return node.nodeType == 8 || ((node.nodeType == 3) && !(/[^\t\n\r ]/.test(node.data)));
   };
   var previousSibling;
   var index = 0;

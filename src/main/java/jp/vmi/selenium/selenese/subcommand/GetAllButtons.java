@@ -42,7 +42,7 @@ public class GetAllButtons extends AbstractSubCommand<String[]> {
 
     @Override
     public String[] execute(Context context, String... args) {
-        return context.findElements("//*[self:input or self:button]").stream()
+        return context.findElements("css=input").stream()
             .filter(elem -> {
                 if ("input".equalsIgnoreCase(elem.getTagName())) {
                     String type = elem.getAttribute("type");

@@ -89,7 +89,7 @@ public class SeleneseRunnerMutator implements ScriptMutator {
         outputTo.append("');");
     }
 
-    private static final Pattern ESC_RE = Pattern.compile("[\\\n']");
+    private static final Pattern ESC_RE = Pattern.compile("[\\\\\n']");
 
     private void escape(CharSequence escape, StringBuilder outputTo) {
         Matcher matcher = ESC_RE.matcher(escape);

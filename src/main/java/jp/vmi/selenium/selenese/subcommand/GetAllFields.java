@@ -45,7 +45,7 @@ public class GetAllFields extends AbstractSubCommand<String[]> {
         return context.findElements("css=input").stream()
             .filter(elem -> {
                 String type = elem.getAttribute("type");
-                return type == null | type.isEmpty() || "text".equalsIgnoreCase(type);
+                return type == null || type.isEmpty() || "text".equalsIgnoreCase(type);
             })
             .map(elem -> LangUtils.nullToEmpty(elem.getAttribute("id")))
             .toArray(String[]::new);
