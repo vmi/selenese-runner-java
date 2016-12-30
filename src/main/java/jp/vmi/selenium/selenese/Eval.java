@@ -12,16 +12,7 @@ import jp.vmi.selenium.selenese.mutator.SeleneseRunnerMutator;
  */
 public class Eval {
 
-    private final SeleneseRunnerMutator mutator;
-
-    /**
-     * Constructor.
-     *
-     * @param context Selenese Runner context.
-     */
-    public Eval(Context context) {
-        this.mutator = new SeleneseRunnerMutator();
-    }
+    private final SeleneseRunnerMutator mutator = new SeleneseRunnerMutator();
 
     /**
      * Evaluate script including "storedVars" variable.
