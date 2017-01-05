@@ -53,6 +53,7 @@ public class Type extends AbstractCommand {
             element.sendKeys(value);
             break;
         }
+        context.getJSLibrary().fireEvent(driver, element, "change");
         return result;
     }
 }

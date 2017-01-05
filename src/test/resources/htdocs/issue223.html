@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #223</title>
+    <script type="text/javascript"><!--
+      function onChange(elem, event) {
+        document.getElementById('msg').textContent = event.type + ':' + elem.value;
+      }
+    //--></script>
+  </head>
+  <body>
+    <div><input id="text" onchange="onChange(this, event);"></div>
+    <div id="msg"></div>
+  </body>
+</html>
