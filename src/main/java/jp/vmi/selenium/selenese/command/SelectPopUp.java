@@ -25,6 +25,7 @@ public class SelectPopUp extends AbstractCommand {
         String handle = WindowSelector.getInstance().selectPopUp(context, windowID);
         if (handle == null)
             return new Error("Specified pop up window not found: " + windowID);
+        WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
         String title = context.getWrappedDriver().getTitle();
         return new Success("Selected pop up window [" + handle + "] " + title);
     }

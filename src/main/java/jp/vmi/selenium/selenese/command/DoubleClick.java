@@ -26,7 +26,7 @@ public class DoubleClick extends AbstractCommand {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getDialogOverride().replaceAlertMethod(driver, element);
+        context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).doubleClick(element).perform();
         return SUCCESS;
     }

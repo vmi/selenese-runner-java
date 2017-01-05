@@ -66,7 +66,7 @@ public class WaitForPageToLoad extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        long timeout = 0;
+        long timeout = 0; // no wait
         if (curArgs.length > 0) {
             String arg = curArgs[ARG_TIMEOUT];
             if (!StringUtils.isEmpty(arg)) {
@@ -90,6 +90,8 @@ public class WaitForPageToLoad extends AbstractCommand {
     public static Result execute(Context context, long timeout) {
         if (timeout < 0)
             return new Error("Illegal timeout parameter: " + timeout);
+        else if (timeout == 0)
+            return SUCCESS;
         long startTime = System.currentTimeMillis();
         WebDriver driver = context.getWrappedDriver();
         if (!(driver instanceof JavascriptExecutor))

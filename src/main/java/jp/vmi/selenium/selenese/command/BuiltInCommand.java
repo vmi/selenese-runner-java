@@ -1,9 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
@@ -14,15 +11,9 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Commands implemented by {@link WebDriverCommandProcessor} or ISubCommand.
+ * Commands implemented by WebDriverCommandProcessor or ISubCommand.
  */
 public class BuiltInCommand extends AbstractCommand {
-
-    private static final String[] NO_UPDATE_SCREEN = {
-        "createCookie",
-        "deleteCookie",
-        "deleteAllVisibleCookies"
-    };
 
     private final ISubCommand<?> subCommand;
     private final boolean andWait;
@@ -32,7 +23,7 @@ public class BuiltInCommand extends AbstractCommand {
         super(index, name, args, subCommand.getArgumentTypes());
         this.subCommand = subCommand;
         this.andWait = andWait;
-        this.mayUpdateScreen = !ArrayUtils.contains(NO_UPDATE_SCREEN, subCommand.getName());
+        this.mayUpdateScreen = true;
     }
 
     @Override

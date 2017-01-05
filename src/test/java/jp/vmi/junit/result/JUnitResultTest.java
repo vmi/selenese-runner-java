@@ -222,7 +222,7 @@ public class JUnitResultTest {
         assertThat(suiteResult.getAttribute("name"), is("test-suite"));
         assertThat("test-suite:time", Double.parseDouble(suiteResult.getAttribute("time")), lessThan(1.0));
         String timestamp = suiteResult.getAttribute("timestamp");
-        Date suiteTimestamp = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.parse(timestamp);
+        Date suiteTimestamp = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.parse(timestamp);
         assertThat(suiteTimestamp, greaterThanOrEqualTo(start.getTime()));
 
         // test-case test.

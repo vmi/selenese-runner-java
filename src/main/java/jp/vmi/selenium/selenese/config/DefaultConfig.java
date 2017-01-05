@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.config;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +25,6 @@ import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.result.Result.Level.*;
-import static org.apache.commons.lang3.SystemUtils.*;
 
 /**
  * Configuration information.
@@ -61,7 +61,7 @@ public class DefaultConfig implements IConfig {
             + "access test site with the profile, "
             + "and specify the profile by --profile option.",
         "",
-        "*3 Use \"java -cp ..." + PATH_SEPARATOR + "selenese-runner.jar Main --command-factory ...\". ",
+        "*3 Use \"java -cp ..." + File.pathSeparator + "selenese-runner.jar Main --command-factory ...\". ",
         "Because \"java\" command ignores all class path settings, when using \"-jar\" option.",
         "",
         "*4 The list of strict exit code is follows:",
@@ -693,32 +693,6 @@ public class DefaultConfig implements IConfig {
      */
     public void add(String name, String value) {
         optionMap.get(name).add(this, value);
-    }
-
-    @Override
-    public boolean hasOption(String opt) {
-        Object value = get(opt);
-        return (value instanceof Boolean) ? (boolean) value : value != null;
-    }
-
-    @Override
-    public String getOptionValue(String opt) {
-        return get(opt);
-    }
-
-    @Override
-    public String getOptionValue(String opt, String defaultValue) {
-        return get(opt, defaultValue);
-    }
-
-    @Override
-    public String[] getOptionValues(String opt) {
-        return get(opt);
-    }
-
-    @Override
-    public boolean getOptionValueAsBoolean(String opt) {
-        return get(opt);
     }
 
     private static final Pattern NOTE_RE = Pattern.compile("(\\*\\d+\\s+)(.*)");

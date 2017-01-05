@@ -24,7 +24,7 @@ public class RunScript extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.getEval().eval(context.getWrappedDriver(), curArgs[ARG_SCRIPT]);
+        context.getEval().eval(context, curArgs[ARG_SCRIPT]);
         return SUCCESS;
     }
 }

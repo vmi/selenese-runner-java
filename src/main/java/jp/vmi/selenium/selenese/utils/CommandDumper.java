@@ -13,12 +13,10 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import jp.vmi.selenium.selenese.NullContext;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
-import jp.vmi.selenium.selenese.subcommand.WDCommand;
 
 /**
  * List supported commands.
@@ -39,18 +37,11 @@ public class CommandDumper {
 
     private static void addCommandInformationFromSubCommandMap(Map<String, String> commands) {
         try {
-            SubCommandMap subCommandMap = new SubCommandMap(new NullContext());
+            SubCommandMap subCommandMap = new SubCommandMap();
             for (Entry<String, ISubCommand<?>> entry : subCommandMap.getMap().entrySet()) {
                 String name = entry.getKey();
-                ISubCommand<?> command = entry.getValue();
                 String info = "";
-                if (command instanceof WDCommand) {
-                    info = append(info, "WD");
-                    if (((WDCommand) command).isNoOp())
-                        info = append(info, "NOP");
-                } else {
-                    info = append(info, "SR");
-                }
+                info = append(info, "SR");
                 Matcher matcher = GETTER.matcher(name);
                 if (matcher.matches()) {
                     String getterInfo = append(info, "Generated from " + name);

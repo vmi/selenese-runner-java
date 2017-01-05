@@ -20,6 +20,7 @@ public class DeselectPopUp extends AbstractCommand {
         String handle = WindowSelector.getInstance().selectPreviousWindow(context);
         if (handle == null)
             return new Error("Previous window not found");
+        WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
         String title = context.getWrappedDriver().getTitle();
         return new Success("Re-selected window [" + handle + "] " + title);
     }

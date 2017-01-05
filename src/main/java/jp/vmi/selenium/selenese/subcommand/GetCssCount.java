@@ -3,9 +3,8 @@ package jp.vmi.selenium.selenese.subcommand;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 import jp.vmi.selenium.selenese.Context;
 
@@ -33,9 +32,9 @@ public class GetCssCount extends AbstractSubCommand<Number> {
         if (!cssLocator.startsWith(CSS_EQ))
             cssLocator = CSS_EQ + cssLocator;
         try {
-            List<WebElement> elements = context.getElementFinder().findElements(context.getWrappedDriver(), cssLocator);
+            List<WebElement> elements = context.findElements(cssLocator);
             return elements.size();
-        } catch (SeleniumException e) {
+        } catch (WebDriverException e) {
             if (e.getCause() instanceof NoSuchElementException)
                 return 0;
             throw e;

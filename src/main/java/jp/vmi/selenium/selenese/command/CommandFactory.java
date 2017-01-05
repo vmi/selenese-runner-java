@@ -13,17 +13,14 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.cmdproc.CustomCommandProcessor;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * Factory of selenese command.
  */
-@SuppressWarnings("deprecation")
 public class CommandFactory implements ICommandFactory {
 
     private static final Map<String, Constructor<? extends ICommand>> constructorMap = new HashMap<>();
@@ -37,52 +34,72 @@ public class CommandFactory implements ICommandFactory {
             for (String alias : aliases)
                 constructorMap.put(alias, constructor);
         } catch (Exception e) {
-            throw new SeleniumException(e);
+            throw new SeleneseRunnerRuntimeException(e);
         }
     }
 
     static {
-        // commands overriding the command of WebDriverCommandProcessor.
-        addConstructor(Open.class);
-        addConstructor(OpenWindow.class);
-        addConstructor(RunScript.class);
-        addConstructor(Highlight.class);
-        addConstructor(WindowMaximize.class);
-        addConstructor(SelectFrame.class);
-        addConstructor(WaitForPageToLoad.class);
-        addConstructor(WaitForCondition.class);
-        addConstructor(SelectWindow.class);
-        addConstructor(SelectPopUp.class);
-        addConstructor(DeselectPopUp.class);
-        addConstructor(WaitForPopUp.class);
+        addConstructor(AddLocationStrategy.class);
+        addConstructor(AddSelection.class);
+        addConstructor(AllowNativeXpath.class);
+        addConstructor(AltKeyDown.class);
+        addConstructor(AltKeyUp.class);
+        addConstructor(AnswerOnNextPrompt.class);
+        addConstructor(AssignId.class);
+        addConstructor(AttachFile.class);
+        addConstructor(CaptureEntirePageScreenshot.class);
+        addConstructor(Check.class);
+        addConstructor(ChooseCancelOnNextConfirmation.class);
+        addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(Click.class);
         addConstructor(ClickAt.class);
-        addConstructor(Check.class);
+        addConstructor(Close.class);
+        addConstructor(ControlKeyDown.class);
+        addConstructor(ControlKeyUp.class);
+        addConstructor(CreateCookie.class);
+        addConstructor(DeleteAllVisibleCookies.class);
+        addConstructor(DeleteCookie.class);
+        addConstructor(DeselectPopUp.class);
         addConstructor(DoubleClick.class);
+        addConstructor(DragAndDrop.class, "dragdrop");
+        addConstructor(DragAndDropToObject.class);
+        addConstructor(Echo.class);
+        addConstructor(FireEvent.class);
+        addConstructor(Focus.class);
+        addConstructor(GoBack.class);
+        addConstructor(Highlight.class);
+        addConstructor(KeyDown.class);
+        addConstructor(KeyPress.class);
+        addConstructor(KeyUp.class);
+        addConstructor(MetaKeyDown.class);
+        addConstructor(MetaKeyUp.class);
+        addConstructor(Open.class);
+        addConstructor(OpenWindow.class);
+        addConstructor(Pause.class);
+        addConstructor(Refresh.class);
+        addConstructor(RemoveAllSelections.class);
+        addConstructor(RemoveSelection.class);
+        addConstructor(Rollup.class);
+        addConstructor(RunScript.class);
         addConstructor(Select.class);
+        addConstructor(SelectFrame.class);
+        addConstructor(SelectPopUp.class);
+        addConstructor(SelectWindow.class);
+        addConstructor(SetCursorPosition.class);
+        addConstructor(SetSpeed.class);
+        addConstructor(SetTimeout.class);
+        addConstructor(ShiftKeyDown.class);
+        addConstructor(ShiftKeyUp.class);
         addConstructor(Submit.class);
         addConstructor(Type.class);
         addConstructor(TypeKeys.class, "sendKeys");
         addConstructor(Uncheck.class);
-        addConstructor(AltKeyDown.class);
-        addConstructor(AltKeyUp.class);
-        addConstructor(ControlKeyDown.class);
-        addConstructor(ControlKeyUp.class);
-        addConstructor(MetaKeyDown.class);
-        addConstructor(MetaKeyUp.class);
-        addConstructor(ShiftKeyDown.class);
-        addConstructor(ShiftKeyUp.class);
-        addConstructor(KeyDown.class);
-        addConstructor(KeyPress.class);
-        addConstructor(KeyUp.class);
-
-        // commands unsupported by WebDriverCommandProcessor
-        addConstructor(Echo.class);
-        addConstructor(CaptureEntirePageScreenshot.class);
-        addConstructor(Pause.class);
-        addConstructor(SetSpeed.class);
-        addConstructor(SetTimeout.class);
-        addConstructor(Rollup.class);
+        addConstructor(UseXpathLibrary.class);
+        addConstructor(WaitForCondition.class);
+        addConstructor(WaitForPageToLoad.class);
+        addConstructor(WaitForPopUp.class);
+        addConstructor(WindowFocus.class);
+        addConstructor(WindowMaximize.class);
 
         // commands of selenium-ide-flowcontrol
         // https://github.com/davehunt/selenium-ide-flowcontrol
@@ -121,13 +138,6 @@ public class CommandFactory implements ICommandFactory {
 
     /**
      * Constructor.
-     */
-    @Deprecated
-    public CommandFactory() {
-    }
-
-    /**
-     * Constructor.
      *
      * @param context Selenese Runner context.
      */
@@ -142,43 +152,6 @@ public class CommandFactory implements ICommandFactory {
      */
     public void registerCommandFactory(ICommandFactory factory) {
         commandFactories.add(factory);
-    }
-
-    /**
-     * Register user defined command factory.
-     *
-     * @deprecated use {@link #registerCommandFactory(ICommandFactory)}.
-     *
-     * @param factory user defined command factory.
-     */
-    @Deprecated
-    public void registerUserDefinedCommandFactory(final UserDefinedCommandFactory factory) {
-        commandFactories.add(new ICommandFactory() {
-            @Override
-            public ICommand newCommand(int index, String name, String... args) {
-                return factory.newCommand(index, name, args);
-            }
-        });
-    }
-
-    /**
-     * Set CustomCommandProcessor instance.
-     *
-     * @param proc CustomCommandProcessor instance.
-     */
-    @Deprecated
-    public void setProc(CustomCommandProcessor proc) {
-        this.context = proc.getProc().getContext();
-    }
-
-    /**
-     * Set SubCommandMap instance.
-     *
-     * @param proc SubCommandMap instance.
-     */
-    @Deprecated
-    public void setProc(SubCommandMap proc) {
-        this.context = proc.getContext();
     }
 
     @Override
@@ -199,7 +172,7 @@ public class CommandFactory implements ICommandFactory {
             try {
                 return constructor.newInstance(index, name, args);
             } catch (Exception e) {
-                throw new SeleniumException(e);
+                throw new SeleneseRunnerRuntimeException(e);
             }
         }
 
@@ -213,7 +186,7 @@ public class CommandFactory implements ICommandFactory {
         // Assertion or Accessor
         Matcher matcher = COMMAND_PATTERN.matcher(name);
         if (!matcher.matches())
-            throw new SeleniumException("No such command: " + name);
+            throw new SeleneseRunnerRuntimeException("No such command: " + name);
         String assertion = matcher.group(ASSERTION);
         String target = matcher.group(TARGET);
         if (target == null)
@@ -227,7 +200,7 @@ public class CommandFactory implements ICommandFactory {
             getter = "is" + target;
             getterSubCommand = subCommandMap.get(getter);
             if (getterSubCommand == null)
-                throw new SeleniumException("No such command: " + name);
+                throw new SeleneseRunnerRuntimeException("No such command: " + name);
             isBoolean = true;
         }
         if (assertion != null) {

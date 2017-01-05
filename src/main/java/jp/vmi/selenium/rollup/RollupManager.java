@@ -8,10 +8,9 @@ import javax.script.ScriptEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.script.JSList;
 import jp.vmi.script.JSMap;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * Rollup manager called by user-extention-rollup.js.
@@ -62,7 +61,7 @@ public class RollupManager {
         } else if (ruleMap.containsKey("getExpandedCommands")) {
             log.info("- Expanded commands: function");
         } else {
-            throw new SeleniumException("Missing expandedCommands nor getExpandedCommands in rollup rule definition.");
+            throw new SeleneseRunnerRuntimeException("Missing expandedCommands nor getExpandedCommands in rollup rule definition.");
         }
     }
 }

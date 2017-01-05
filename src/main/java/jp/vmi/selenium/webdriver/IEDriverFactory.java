@@ -18,6 +18,14 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  */
 public class IEDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "ie";
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
+    }
+
     @Override
     public boolean isProxySupported() {
         return false;

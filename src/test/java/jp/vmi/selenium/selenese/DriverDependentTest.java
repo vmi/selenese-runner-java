@@ -114,7 +114,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void clickableImage() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("clickable_image_test");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -287,14 +287,14 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void mouseEvent() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testsuite_mouse");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void issue179() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -353,7 +353,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void test203_02() {
-        assumeNot(HTMLUNIT);
+        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue203_02");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -370,4 +370,38 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_issue220");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void setAndGetCookies() {
+        execute("testcase_cookie");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void elements() {
+        execute("testcase_elements");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void selenium3() {
+        assumeNot(FIREFOX);
+        execute("testcase_selenium3");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    @Ignore("Don't work on any drivers.")
+    public void dnd() {
+        assumeNot(HTMLUNIT, FIREFOX);
+        execute("testcase_dnd");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void test223() {
+        execute("testcase_issue223");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
 }

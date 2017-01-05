@@ -3,7 +3,7 @@
 
   <groupId>jp.vmi</groupId>
   <artifactId>selenese-runner-java</artifactId>
-  <version>2.13.1-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>selenese-runner-java</name>
@@ -46,14 +46,14 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <source.version>1.7</source.version>
-    <target.version>1.7</target.version>
+    <source.version>1.8</source.version>
+    <target.version>1.8</target.version>
     <skipTests>true</skipTests>
-    <selenium.version>2.53.1</selenium.version>
-    <htmlunit-driver.version>2.21</htmlunit-driver.version>
+    <selenium.version>3.0.1</selenium.version>
+    <htmlunit-driver.version>2.23.2</htmlunit-driver.version>
     <httpclient.version>4.5.2</httpclient.version>
     <httpcore.version>4.4.5</httpcore.version>
-    <slf4j.version>1.7.21</slf4j.version>
+    <slf4j.version>1.7.22</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -130,22 +130,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
                   <file>src/shade/resources/logback.xml</file>
                 </transformer>
               </transformers>
-              <filters>
-                <filter>
-                  <artifact>org.seleniumhq.selenium:selenium-server</artifact>
-                  <includes>
-                    <include>com/thoughtworks/selenium/webdriven/**/*.js</include>
-                  </includes>
-                </filter>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
             </configuration>
             <executions>
               <execution>
@@ -399,45 +383,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
 	</exclusions>
       </dependency>
       <dependency>
-	<groupId>org.seleniumhq.selenium</groupId>
-	<artifactId>selenium-server</artifactId>
-	<version>${selenium.version}</version>
-	<exclusions>
-          <exclusion>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>jetty-repacked</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j-tools</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>net.jcip</groupId>
-            <artifactId>jcip-annotations</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>servlet-api-2.5</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-          </exclusion>
-	</exclusions>
-      </dependency>
-      <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>htmlunit-driver</artifactId>
         <version>${htmlunit-driver.version}</version>
@@ -492,10 +437,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>selenium-java</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-server</artifactId>
-    </dependency>
-    <dependency>
       <groupId>net.sourceforge.nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
       <version>1.9.22</version>
@@ -514,7 +455,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.4</version>
+      <version>3.5</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -539,7 +480,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.7</version>
+      <version>1.1.8</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>

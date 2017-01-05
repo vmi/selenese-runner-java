@@ -25,7 +25,7 @@ public class IsSomethingSelected extends AbstractSubCommand<Boolean> {
 
     @Override
     public Boolean execute(Context context, String... args) {
-        WebElement select = context.getElementFinder().findElement(context.getWrappedDriver(), args[ARG_SELECT_LOCATOR]);
+        WebElement select = context.findElement(args[ARG_SELECT_LOCATOR]);
         List<WebElement> options = select.findElements(By.tagName("option"));
         for (WebElement option : options)
             if (option.isSelected())

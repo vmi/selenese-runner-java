@@ -1,5 +1,6 @@
 package jp.vmi.selenium.webdriver;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
@@ -22,6 +23,23 @@ public abstract class WebDriverFactory {
     protected static final int DEFAULT_WIDTH = 1024;
 
     protected static final int DEFAULT_HEIGHT = 768;
+
+    /**
+     * Get browser name.
+     *
+     * @return browser name. (i.e. "firefox", "chrome", ...)
+     */
+    public String getBrowserName() {
+        String name = getClass().getSimpleName();
+        if (StringUtils.isEmpty(name))
+            return "";
+        else if (name.endsWith("WebDriverFactory"))
+            return name.substring(0, name.length() - "WebDriverFactory".length()).toLowerCase();
+        else if (name.endsWith("DriverFactory"))
+            return name.substring(0, name.length() - "DriverFactory".length()).toLowerCase();
+        else
+            return name.toLowerCase();
+    }
 
     /**
      * Is proxy supported?

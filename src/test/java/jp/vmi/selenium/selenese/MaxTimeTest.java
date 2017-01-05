@@ -50,7 +50,7 @@ public class MaxTimeTest extends TestCaseTestBase {
     public void verifyNotText() throws IllegalArgumentException {
         execute("maxTimeVerifyNotText", 1500);
         assertThat(result, is(instanceOf(MaxTimeExceeded.class)));
-        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("verifyNotText")));
+        assertThat(getLastCommandResult().getCommand().getName(), anyOf(is("open"), is("verifyNotText"), is("label"), is("gotolabel")));
     }
 
     @Test

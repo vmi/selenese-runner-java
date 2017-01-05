@@ -12,12 +12,7 @@ public abstract class Result implements Comparable<Result> {
      */
     @SuppressWarnings("javadoc")
     public static enum Level {
-        UNEXECUTED(-1, 0, 5),
-        SUCCESS(0, 0, 0),
-        WARNING(1, 0, 2),
-        FAILURE(2, 3, 3),
-        ERROR(3, 3, 4),
-        MAX_TIME_EXCEEDED(4, 3, 6);
+        UNEXECUTED(-1, 0, 5), SUCCESS(0, 0, 0), WARNING(1, 0, 2), FAILURE(2, 3, 3), ERROR(3, 3, 4), MAX_TIME_EXCEEDED(4, 3, 6);
 
         public final int value;
         public final int exitCode;
@@ -69,6 +64,18 @@ public abstract class Result implements Comparable<Result> {
     }
 
     /**
+     * Constructor.
+     *
+     * @param prefix prefix of message.
+     * @param message result massage.
+     * @param e Exception.
+     */
+    public Result(String prefix, String message, Exception e) {
+        StringBuilder result = new StringBuilder(prefix).append(": ").append(message).append(" - ");
+        this.message = generateExceptionMessage(result, e);
+    }
+
+    /**
      * Get exception message for result.
      *
      * @param prefix prefix of message.
@@ -76,7 +83,17 @@ public abstract class Result implements Comparable<Result> {
      * @return message.
      */
     protected String generateExceptionMessage(String prefix, Exception e) {
-        StringBuilder result = new StringBuilder(prefix).append(": ");
+        return generateExceptionMessage(new StringBuilder(prefix).append(": "), e);
+    }
+
+    /**
+     * Generate exception message.
+     *
+     * @param result message buffer.
+     * @param e exception.
+     * @return message.
+     */
+    protected String generateExceptionMessage(StringBuilder result, Exception e) {
         String msg = e.getMessage();
         if (msg != null)
             result.append(e.getClass().getSimpleName()).append(" - ").append(msg);

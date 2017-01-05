@@ -7,13 +7,10 @@ import java.util.WeakHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * Manager of {@link WebDriver} instances.
@@ -25,48 +22,42 @@ public class WebDriverManager implements WebDriverPreparator {
     /**
      * Firefox.
      */
-    public static final String FIREFOX = "firefox";
+    public static final String FIREFOX = FirefoxDriverFactory.BROWSER_NAME;
 
     /**
      * Chrome.
      */
-    public static final String CHROME = "chrome";
+    public static final String CHROME = ChromeDriverFactory.BROWSER_NAME;
 
     /**
      * Internet Explorer.
      */
-    public static final String IE = "ie";
+    public static final String IE = IEDriverFactory.BROWSER_NAME;
 
     /**
      * Html Unit.
      */
-    public static final String HTMLUNIT = "htmlunit";
+    public static final String HTMLUNIT = HtmlUnitDriverFactory.BROWSER_NAME;
 
     /**
      * Safari.
      */
-    public static final String SAFARI = "safari";
+    public static final String SAFARI = SafariDriverFactory.BROWSER_NAME;
 
     /**
      *  RemoteWebDriver
      */
-    public static final String REMOTE = "remote";
+    public static final String REMOTE = RemoteWebDriverFactory.BROWSER_NAME;
 
     /**
      *  AppiumWebDriver
      */
-    public static final String APPIUM = "appium";
+    public static final String APPIUM = AppiumWebDriverFactory.BROWSER_NAME;
 
     /**
      * PhantomJS
      */
-    public static final String PHANTOMJS = "phantomjs";
-
-    /**
-     * AndroidDriver
-     */
-    @Deprecated
-    public static final String ANDROID = "android";
+    public static final String PHANTOMJS = PhantomJSDriverFactory.BROWSER_NAME;
 
     private static class Builder {
 
@@ -92,9 +83,6 @@ public class WebDriverManager implements WebDriverPreparator {
      * System property name for user defined {@link WebDriverFactory}.
      */
     public static final String WEBDRIVER_FACTORY = "jp.vmi.selenium.webdriver.factory";
-
-    // for backward compatibility.
-    private static WebDriverManager manager = null;
 
     private static final Set<WebDriverManager> managers = Collections.newSetFromMap(new WeakHashMap<WebDriverManager, Boolean>());
 
@@ -124,20 +112,6 @@ public class WebDriverManager implements WebDriverPreparator {
     }
 
     /**
-     * Get WebDriverManager instance. (singleton)
-     *
-     * @deprecated Use {@link #newInstance()} instead of this.
-     *
-     * @return WebDriverMangaer.
-     */
-    @Deprecated
-    public static synchronized WebDriverManager getInstance() {
-        if (manager == null)
-            manager = newInstance();
-        return manager;
-    }
-
-    /**
      * Construct WebDriverManager instance.
      *
      * @return WebDriverMangaer.
@@ -157,28 +131,9 @@ public class WebDriverManager implements WebDriverPreparator {
         setWebDriverFactory(System.getProperty(WEBDRIVER_FACTORY, FIREFOX));
     }
 
-    /**
-     * Is single instance of WebDriver?
-     *
-     * @deprecated This does not work. Please just remove it.
-     *
-     * @return true if the number of WebDriver instance is only 1.
-     */
-    @Deprecated
-    public boolean isSingleInstance() {
-        return true;
-    }
-
-    /**
-     * Set single instance of WebDriver.
-     *
-     * @deprecated This does not work. Please just remove it.
-     *
-     * @param isSingleInstance if true, the number of WebDriver instance is only 1.
-     */
-    @Deprecated
-    public void setSingleInstance(boolean isSingleInstance) {
-        // no operation.
+    @Override
+    public String getBrowserName() {
+        return factory.getBrowserName();
     }
 
     /**
@@ -257,9 +212,8 @@ public class WebDriverManager implements WebDriverPreparator {
     private boolean isBrowserUnreachable(Throwable t) {
         if (t instanceof UnreachableBrowserException)
             return true;
-        while (t instanceof SeleniumException)
-            t = t.getCause();
-        if (t instanceof WebDriverException && StringUtils.contains(t.getMessage(), "not reachable"))
+        String msg = t.getMessage();
+        if (msg != null && msg.startsWith("browser is undefined"))
             return true;
         return false;
     }
@@ -328,16 +282,6 @@ public class WebDriverManager implements WebDriverPreparator {
             log.info("Quit: {}", getDriverName(driver));
         }
         driver = null;
-    }
-
-    /**
-     * Quit all WebDriver instances.
-     *
-     * @deprecated use {@link #quitDriver()} instead of this.
-     */
-    @Deprecated
-    public void quitAllDrivers() {
-        quitDriver();
     }
 
     @Override

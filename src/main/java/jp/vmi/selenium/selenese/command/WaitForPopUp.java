@@ -39,6 +39,7 @@ public class WaitForPopUp extends AbstractCommand {
                 String handle = WindowSelector.getInstance().selectPopUp(context, windowID);
                 if (handle == null)
                     return false;
+                WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
                 selectedHandle[0] = handle;
                 return true;
             }

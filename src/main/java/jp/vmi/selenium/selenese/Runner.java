@@ -40,6 +40,7 @@ import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
@@ -92,7 +93,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private PageInformation latestPageInformation = PageInformation.EMPTY;
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
-    private DialogOverride dialogOverride = new DialogOverride();
+    private JSLibrary jsLibrary = new JSLibrary();
     private final ModifierKeyState modifierKeyState = new ModifierKeyState();
 
     private final JUnitResult jUnitResult = new JUnitResult();
@@ -105,9 +106,9 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public Runner() {
         this.ps = DEFAULT_PRINT_STREAM;
-        this.eval = new Eval(this);
+        this.eval = new Eval();
         this.elementFinder = new WebDriverElementFinder();
-        this.subCommandMap = new SubCommandMap(this);
+        this.subCommandMap = new SubCommandMap();
         this.commandFactory = new CommandFactory(this);
         this.varsMap = new VarsMap();
         this.styleBackups = new ArrayDeque<>();
@@ -228,18 +229,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    /**
-     * Get WebDriver.
-     * <p>
-     * <b>Internal use only.</b>
-     * </p>
-     * @return WebDriver.
-     */
-    @Deprecated
-    public WebDriver getDriver() {
-        return getWrappedDriver();
-    }
-
     @Override
     public WebDriver getWrappedDriver() {
         return driver;
@@ -275,6 +264,21 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setWebDriverPreparator(WebDriverPreparator preparator) {
         this.preparator = preparator;
+    }
+
+    @Override
+    public String getBrowserName() {
+        if (preparator != null)
+            return preparator.getBrowserName();
+        String name = driver.getClass().getSimpleName();
+        if (StringUtils.isEmpty(name))
+            return "";
+        else if (name.endsWith("WebDriver"))
+            return name.substring(0, name.length() - "WebDriver".length()).toLowerCase();
+        else if (name.endsWith("Driver"))
+            return name.substring(0, name.length() - "Driver".length()).toLowerCase();
+        else
+            return name.toLowerCase();
     }
 
     private static void mkdirsForScreenshot(String dirStr, String msg) {
@@ -326,28 +330,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         log.info("Screenshot on fail directory: {}", StringUtils.defaultString(screenshotOnFailDir, "-"));
     }
 
-    /**
-     * Get current base URL.
-     *
-     * @return base URL.
-     */
-    @Deprecated
-    public String getBaseURL() {
-        return getCurrentBaseURL();
-    }
-
-    /**
-     * Set URL for overriding selenium.base in Selenese script.
-     *
-     * @param baseURL base URL.
-     *
-     * @deprecated Replaced by {@link #setOverridingBaseURL(String)}
-     */
-    @Deprecated
-    public void setBaseURL(String baseURL) {
-        setOverridingBaseURL(baseURL);
-    }
-
     @Override
     public String getCurrentBaseURL() {
         return StringUtils.defaultIfBlank(overridingBaseURL, currentTestCase.getBaseURL());
@@ -371,35 +353,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     /**
      * Set ignore screenshot command flag.
      *
-     * @deprecated use {@link #setIgnoredScreenshotCommand(boolean)}
-     *
-     * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
-     */
-    @Deprecated
-    public void setIgnoreScreenshotCommand(boolean isIgnoredScreenshotCommand) {
-        setIgnoredScreenshotCommand(isIgnoredScreenshotCommand);
-    }
-
-    /**
-     * Set ignore screenshot command flag.
-     *
      * @param isIgnoredScreenshotCommand set true if you want to ignore "captureEntirePageScreenshot"
      */
     public void setIgnoredScreenshotCommand(boolean isIgnoredScreenshotCommand) {
         this.isIgnoredScreenshotCommand = isIgnoredScreenshotCommand;
         log.info("Screenshot command: {}", isIgnoredScreenshotCommand ? "ignored" : "enabled");
-    }
-
-    /**
-     * Get ignore screenshot command flag.
-     *
-     * @deprecated use {@link #isIgnoredScreenshotCommand()}
-     *
-     * @return flag to ignore "captureEntirePageScreenshot"
-     */
-    @Deprecated
-    public boolean isIgnoreScreenshotCommand() {
-        return isIgnoredScreenshotCommand();
     }
 
     @Override
@@ -582,13 +540,13 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public DialogOverride getDialogOverride() {
-        return dialogOverride;
+    public JSLibrary getJSLibrary() {
+        return jsLibrary;
     }
 
     @Override
-    public void setDialogOverride(DialogOverride dialogOverride) {
-        this.dialogOverride = dialogOverride;
+    public void setJSLibrary(JSLibrary jsLibrary) {
+        this.jsLibrary = jsLibrary;
     }
 
     @Override
@@ -618,7 +576,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public boolean isTrue(String expr) {
-        return (Boolean) eval.eval(driver, varsMap.replaceVars(expr), "Boolean");
+        return (Boolean) eval.eval(this, varsMap.replaceVars(expr), "Boolean");
     }
 
     /**
@@ -633,7 +591,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         List<TestSuite> testSuiteList = new ArrayList<>();
         for (String filename : filenames) {
             Selenese selenese = Parser.parse(filename, commandFactory);
-            Parser.setContextForBackwardCompatibility(selenese, this);
             if (selenese.isError()) {
                 log.error(selenese.toString());
                 totalResult = ((ErrorSource) selenese).getResult();
@@ -677,7 +634,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public Result run(String filename, InputStream is) {
         TestSuite testSuite;
         Selenese selenese = Parser.parse(filename, is, commandFactory);
-        Parser.setContextForBackwardCompatibility(selenese, this);
         switch (selenese.getType()) {
         case TEST_CASE:
             testSuite = Binder.newTestSuite(filename, selenese.getName());
@@ -734,12 +690,12 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public void highlight(String locator, HighlightStyle highlightStyle) {
+    public void highlight(Locator ploc, HighlightStyle highlightStyle) {
         List<Locator> selectedFrameLocators = elementFinder.getCurrentFrameLocators();
-        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, elementFinder, locator, selectedFrameLocators);
+        Map<String, String> prevStyles = highlightStyle.doHighlight(driver, elementFinder, ploc, selectedFrameLocators);
         if (prevStyles == null)
             return;
-        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, locator, selectedFrameLocators);
+        HighlightStyleBackup backup = new HighlightStyleBackup(prevStyles, ploc, selectedFrameLocators);
         styleBackups.push(backup);
     }
 

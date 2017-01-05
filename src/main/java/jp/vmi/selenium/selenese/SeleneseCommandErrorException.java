@@ -1,11 +1,13 @@
 package jp.vmi.selenium.selenese;
 
+import org.openqa.selenium.WebDriverException;
+
 import jp.vmi.selenium.selenese.result.Error;
 
 /**
  * The exception which occurs when a selenese command has caused an error.
  */
-public class SeleneseCommandErrorException extends RuntimeException {
+public class SeleneseCommandErrorException extends WebDriverException {
 
     private static final long serialVersionUID = 1L;
 

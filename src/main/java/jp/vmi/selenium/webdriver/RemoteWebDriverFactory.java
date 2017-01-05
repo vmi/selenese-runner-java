@@ -17,7 +17,15 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  */
 public class RemoteWebDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "remote";
+
     private static final Logger log = LoggerFactory.getLogger(RemoteWebDriverFactory.class);
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
+    }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {

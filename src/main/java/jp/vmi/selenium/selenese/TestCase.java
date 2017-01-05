@@ -5,22 +5,17 @@ import java.util.Deque;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
-import jp.vmi.selenium.selenese.command.Command;
 import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.EndLoop;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
-import jp.vmi.selenium.selenese.command.Label;
 import jp.vmi.selenium.selenese.command.StartLoop;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
@@ -51,25 +46,6 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     private final StopWatch stopWatch = new StopWatch();
     private LogRecorder logRecorder = null;
 
-    @Deprecated
-    private Context context = null;
-
-    /**
-     * Initialize after constructed.
-     *
-     * @param filename selenese script filename. (This base name is used for generating screenshot file)
-     * @param name test-case name.
-     * @param runner Runner instance.
-     * @param baseURL effective base URL.
-     * @return this.
-     */
-    @Deprecated
-    public TestCase initialize(String filename, String name, Runner runner, String baseURL) {
-        TestCase testCase = initialize(filename, name, baseURL);
-        testCase.setContext(runner);
-        return testCase;
-    }
-
     /**
      * Initialize after constructed.
      *
@@ -88,16 +64,6 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
         this.name = name;
         this.baseURL = baseURL.replaceFirst("/+$", ""); // remove trailing "/".
         return this;
-    }
-
-    /**
-     * Set Selenese Runner context for backward compatibility.
-     *
-     * @param context Selenese Runner context.
-     */
-    @Deprecated
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     @Override
@@ -140,26 +106,6 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     }
 
     /**
-     * Set SubCommandMap instance for backward compatibility.
-     *
-     * @param proc SubCommandMap intance.
-     */
-    @Deprecated
-    public void setProc(SubCommandMap proc) {
-        this.context = proc.getContext();
-    }
-
-    /**
-     * Get SubCommandMap instance generated at initialize.
-     *
-     * @return SubCommandMap instance.
-     */
-    @Deprecated
-    public SubCommandMap getProc() {
-        return context.getSubCommandMap();
-    }
-
-    /**
      * Get command list.
      *
      * @return command list.
@@ -182,7 +128,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public void setLogRecorder(LogRecorder logRecorder) {
         if (this.logRecorder != null)
-            throw new SeleniumException("The log recorder of " + this + " is already set.");
+            throw new SeleneseRunnerRuntimeException("The log recorder of " + this + " is already set.");
         this.logRecorder = logRecorder;
     }
 
@@ -204,58 +150,6 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public CommandResultList getResultList() {
         return cresultList;
-    }
-
-    /**
-     * Create new collection (FIFO).
-     *
-     * @param collectionName collection name.
-     */
-    @Deprecated
-    public void addCollection(String collectionName) {
-        context.getCollectionMap().addCollection(collectionName);
-    }
-
-    /**
-     * Add value to collection.
-     *
-     * @param collectionName collection name.
-     * @param value value.
-     */
-    @Deprecated
-    public void addToCollection(String collectionName, String value) {
-        context.getCollectionMap().addToCollection(collectionName, value);
-    }
-
-    /**
-     * Poll value from collection.
-     *
-     * @param collectionName collection name.
-     * @return value.
-     */
-    @Deprecated
-    public String pollFromCollection(String collectionName) {
-        return context.getCollectionMap().pollFromCollection(collectionName);
-    }
-
-    /**
-     * Register label command.
-     *
-     * @param labelCommand label command.
-     */
-    @Deprecated
-    public void setLabelCommand(Label labelCommand) {
-        // no opertion
-    }
-
-    /**
-     * Add command to command list.
-     *
-     * @param command command.
-     */
-    @Deprecated
-    public void addCommand(Command command) {
-        addCommand((ICommand) command);
     }
 
     /**

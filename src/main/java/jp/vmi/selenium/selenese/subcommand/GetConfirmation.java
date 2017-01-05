@@ -9,6 +9,6 @@ public class GetConfirmation extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getDialogOverride().getNextConfirmation(context.getWrappedDriver());
+        return context.getJSLibrary().getNextConfirmation(context.getWrappedDriver());
     }
 }

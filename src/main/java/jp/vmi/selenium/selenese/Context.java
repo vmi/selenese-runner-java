@@ -1,12 +1,17 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
+import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
@@ -21,6 +26,25 @@ public interface Context extends WrapsDriver {
      * Prepare WebDriver.
      */
     void prepareWebDriver();
+
+    /**
+     * Get browser name.
+     *
+     * @return browser name.
+     */
+    default String getBrowserName() {
+        return "";
+    }
+
+    /**
+     * Test browser name.
+     *
+     * @param name browser name.
+     * @return true if match browser name.
+     */
+    default boolean isBrowser(String name) {
+        return name.equals(getBrowserName());
+    }
 
     /**
      * Get current test-case.
@@ -119,6 +143,27 @@ public interface Context extends WrapsDriver {
     WebDriverElementFinder getElementFinder();
 
     /**
+     * Find elements
+     *
+     * @param locator locator.
+     * @return list of found elements. (empty if no element)
+     */
+    default List<WebElement> findElements(String locator) {
+        return getElementFinder().findElements(getWrappedDriver(), locator);
+    }
+
+    /**
+     * Find an element
+     *
+     * @param locator locator.
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
+    default WebElement findElement(String locator) {
+        return getElementFinder().findElement(getWrappedDriver(), locator);
+    }
+
+    /**
      * Get evaluater.
      *
      * @return eval object.
@@ -207,18 +252,18 @@ public interface Context extends WrapsDriver {
     void setCookieFilter(CookieFilter cookieFilter);
 
     /**
-     * Get dialog override.
+     * Get JavaScript library handler.
      *
-     * @return dialog override.
+     * @return JavaScript library handler.
      */
-    DialogOverride getDialogOverride();
+    JSLibrary getJSLibrary();
 
     /**
-     * Set dialog override.
+     * Set JavaScript library handler.
      *
-     * @param dialogOverride dialog override.
+     * @param jsLibrary JavaScript library handler.
      */
-    void setDialogOverride(DialogOverride dialogOverride);
+    void setJSLibrary(JSLibrary jsLibrary);
 
     /**
      * Get modifier key state.
@@ -238,4 +283,20 @@ public interface Context extends WrapsDriver {
      * @return interactive.
      */
     boolean isInteractive();
+
+    /**
+     * Executes JavaScript in the context of the currently selected frame or window.
+     *
+     * see {@link JavascriptExecutor#executeScript(String, Object...)}.
+     *
+     * @param <T> type of return value.
+     * @param script The JavaScript to execute
+     * @param args The arguments to the script. May be empty
+     * @return One of Boolean, Long, String, List or WebElement. Or null.
+     */
+    default <T> T executeScript(String script, Object... args) {
+        @SuppressWarnings("unchecked")
+        T result = (T) ((JavascriptExecutor) getWrappedDriver()).executeScript(script, args);
+        return result;
+    }
 }

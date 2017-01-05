@@ -18,6 +18,9 @@ import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
  */
 public class AppiumWebDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "appium";
+
     private static final Logger log = LoggerFactory.getLogger(AppiumWebDriverFactory.class);
 
     /**
@@ -34,6 +37,11 @@ public class AppiumWebDriverFactory extends WebDriverFactory {
         public AppiumDriver(URL url, Capabilities caps) {
             super(url, caps);
         }
+    }
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
     }
 
     @Override

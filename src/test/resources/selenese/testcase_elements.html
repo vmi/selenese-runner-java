@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost" />
+<title>testcase_elements</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_elements</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/elements.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllButtons</td>
+	<td>buttons</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${buttons}</td>
+	<td>button1,s_set</td>
+</tr>
+<tr>
+	<td>storeAllFields</td>
+	<td>fields</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${fields}</td>
+	<td>field1,field2,s_id,s_style,s_value</td>
+</tr>
+<tr>
+	<td>storeAllLinks</td>
+	<td>links</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${links}</td>
+	<td>link1,link2</td>
+</tr>
+<tr>
+	<td>storeAllWindowTitles</td>
+	<td>wtitles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${wtitles}</td>
+	<td>Elements Test</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>id=checkbox1@type</td>
+	<td>attr</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${attr}</td>
+	<td>checkbox</td>
+</tr>
+<tr>
+	<td>storeAttributeFromAllWindows</td>
+	<td>location</td>
+	<td>wattr</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['wattr'][0].pathname }</td>
+	<td>/elements.html</td>
+</tr>
+<tr>
+	<td>storeBodyText</td>
+	<td>body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{storedVars['body'].replace(/\s+/g,' ')}</td>
+	<td>Elements Test Button2 CheckBox1 CheckBox2 Link1 Link2 OK NG Cell11Cell12Cell21Cell22 ID: Style: Value:</td>
+</tr>
+<tr>
+	<td>storeElementHeight</td>
+	<td>id=button1</td>
+	<td>b1h</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['b1h'] &gt; 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeElementIndex</td>
+	<td>id=li2</td>
+	<td>li2</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${li2}</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>storeElementPositionLeft</td>
+	<td>id=button1</td>
+	<td>b1l</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['b1l'] &gt; 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeElementPositionTop</td>
+	<td>id=button1</td>
+	<td>b1t</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['b1t'] &gt; 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeElementWidth</td>
+	<td>id=button1</td>
+	<td>b1w</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['b1h'] &gt; 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeHtmlSource</td>
+	<td>html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['html'].indexOf('CheckBox1') &gt; 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeLocation</td>
+	<td>loc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>javascript{ storedVars['loc'].indexOf('elements.html') &gt;= 0 }</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeSelectOptions</td>
+	<td>id=select1</td>
+	<td>select</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${select}</td>
+	<td>OK,NG</td>
+</tr>
+<tr>
+	<td>storeTable</td>
+	<td>id=table1.1.1</td>
+	<td>cell</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${cell}</td>
+	<td>Cell22</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>id=link2</td>
+	<td>link2text</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${link2text}</td>
+	<td>Link2</td>
+</tr>
+<tr>
+	<td>storeTextPresent</td>
+	<td>Link2</td>
+	<td>link2p</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${link2p}</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeTitle</td>
+	<td>title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${title}</td>
+	<td>Elements Test</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>id=field2</td>
+	<td>field2value</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${field2value}</td>
+	<td>field2</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>//tr</td>
+	<td>xpc</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${xpc}</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>storeChecked</td>
+	<td>id=checkbox2</td>
+	<td>checked</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${checked}</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=checkbox2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeChecked</td>
+	<td>id=checkbox2</td>
+	<td>checked</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${checked}</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeEditable</td>
+	<td>id=field1</td>
+	<td>editable</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${editable}</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeEditable</td>
+	<td>id=field2</td>
+	<td>editable</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${editable}</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>storeVisible</td>
+	<td>id=table1</td>
+	<td>visible</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${visible}</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=s_id</td>
+	<td>table1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=s_style</td>
+	<td>visibility</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=s_value</td>
+	<td>hidden</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=s_set</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeVisible</td>
+	<td>id=table1</td>
+	<td>visible</td>
+</tr>
+<tr>
+	<td>verifyExpression</td>
+	<td>${visible}</td>
+	<td>false</td>
+</tr>
+</tbody></table>
+</body>
+</html>

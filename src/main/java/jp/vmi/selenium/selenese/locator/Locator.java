@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.thoughtworks.selenium.SeleniumException;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -31,7 +31,11 @@ public class Locator {
     public static final String RELATIVE_PARENT = RELATIVE + "=parent";
 
     /** Separator between locator and option locator. */
+    @Deprecated
     public static final String OPTION_LOCATOR_SEPARATOR = "\0";
+
+    /** the array of empty locators. */
+    public static final Locator[] EMPTY_ARRAY = new Locator[0];
 
     private static final Pattern LOCATORS_RE = Pattern.compile("(\\w+)=(.*)|(document\\..*)|(//.*)");
 
@@ -50,13 +54,13 @@ public class Locator {
     public final String arg;
 
     /** option locator. */
-    public final String option;
+    public final OptionLocator poptloc;
 
     /** frame list. */
     public final Deque<Integer> frameIndexList = new ArrayDeque<>();
 
-    private static String formatLocator(String locator, String option) {
-        return (option == null) ? locator : locator + " (" + option + ")";
+    private static String formatLocator(String locator, OptionLocator poptloc) {
+        return (poptloc == null) ? locator : locator + " (" + poptloc.locator + ")";
     }
 
     /**
@@ -67,7 +71,7 @@ public class Locator {
     public Locator(String locator) {
         String[] pair = locator.split(OPTION_LOCATOR_SEPARATOR, 2);
         this.locator = pair[0];
-        this.option = pair.length == 2 ? pair[1] : null;
+        this.poptloc = pair.length == 2 ? new OptionLocator(pair[1]) : null;
         Matcher matcher = LOCATORS_RE.matcher(this.locator);
         if (matcher.matches()) {
             String type = matcher.group(LOCATOR_TYPE);
@@ -76,7 +80,7 @@ public class Locator {
                 try {
                     this.type = type.toLowerCase();
                 } catch (IllegalArgumentException e) {
-                    throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.option), e);
+                    throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.poptloc), e);
                 }
                 this.arg = arg;
             } else if (isNotEmpty(matcher.group(DOM_LOCATOR))) {
@@ -89,12 +93,29 @@ public class Locator {
                 this.arg = this.locator;
             } else {
                 // not reached?
-                throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.option));
+                throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.poptloc));
             }
         } else {
             this.type = IDENTIFIER;
             this.arg = this.locator;
         }
+    }
+
+    private Locator(Locator parent, String optionLocator) {
+        this.locator = parent.locator;
+        this.type = parent.type;
+        this.arg = parent.arg;
+        this.poptloc = new OptionLocator(optionLocator);
+    }
+
+    /**
+     * Add option locator.
+     *
+     * @param option option locator.
+     * @return locator with option.
+     */
+    public Locator withOption(String option) {
+        return new Locator(this, option);
     }
 
     public boolean isTypeRelative() {
@@ -117,12 +138,17 @@ public class Locator {
         try {
             return Integer.parseInt(arg);
         } catch (NumberFormatException e) {
-            throw new SeleniumException("Invalid \"" + type + "\" locator argument: " + arg, e);
+            throw new SeleneseRunnerRuntimeException("Invalid \"" + type + "\" locator argument: " + arg, e);
         }
+    }
+
+    @Deprecated
+    public String toLocatorString() {
+        return poptloc == null ? locator : locator + OPTION_LOCATOR_SEPARATOR + poptloc.locator;
     }
 
     @Override
     public String toString() {
-        return formatLocator(locator, option);
+        return formatLocator(locator, poptloc);
     }
 }

@@ -10,6 +10,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class HtmlUnitDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "htmlunit";
+
     private static final String HTML_UNIT_DRIVER = "org.openqa.selenium.htmlunit.HtmlUnitDriver";
 
     /**
@@ -17,6 +20,11 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
      */
     public HtmlUnitDriverFactory() {
         super();
+    }
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
     }
 
     @Override

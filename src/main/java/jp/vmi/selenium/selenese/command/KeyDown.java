@@ -4,9 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.EventUtils;
-import jp.vmi.selenium.selenese.EventUtils.EventType;
 import jp.vmi.selenium.selenese.ModifierKeyState;
+import jp.vmi.selenium.selenese.javascript.JSLibrary.KeyEventType;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -31,7 +30,7 @@ public class KeyDown extends AbstractCommand {
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
         ModifierKeyState keyState = context.getModifierKeyState();
-        EventUtils.eventUtils.triggerKeyEvent(driver, element, EventType.KEYDOWN, keySequence, keyState);
+        context.getJSLibrary().triggerKeyEvent(driver, element, KeyEventType.KEYDOWN, keySequence, keyState);
         return SUCCESS;
     }
 }

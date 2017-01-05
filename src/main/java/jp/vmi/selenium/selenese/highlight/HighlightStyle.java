@@ -65,14 +65,14 @@ public class HighlightStyle {
      *
      * @param driver instance of WebDriver.
      * @param elementFinder element finder.
-     * @param locator locator to target element.
+     * @param ploc parsed locator to target element.
      * @param selectedFrameLocators selected frame locators.
      * @return previous style.
      */
     @SuppressWarnings("unchecked")
-    public Map<String, String> doHighlight(WebDriver driver, WebDriverElementFinder elementFinder, String locator, List<Locator> selectedFrameLocators) {
+    public Map<String, String> doHighlight(WebDriver driver, WebDriverElementFinder elementFinder, Locator ploc, List<Locator> selectedFrameLocators) {
         try {
-            WebElement element = elementFinder.findElement(driver, locator, selectedFrameLocators);
+            WebElement element = elementFinder.findElement(driver, ploc, selectedFrameLocators);
             Object result = ((JavascriptExecutor) driver).executeScript(SCRIPT, element, styles);
             return result instanceof Map ? (Map<String, String>) result : null;
         } catch (RuntimeException e) {

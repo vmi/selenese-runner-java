@@ -56,62 +56,6 @@ public interface IConfig {
     String[] getArgs();
 
     /**
-     * Test whether the option exists or not. (old style)
-     *
-     * @param opt option name.
-     * @return true if exists.
-     *
-     * @deprecated Use getXXX() != null.
-     */
-    @Deprecated
-    boolean hasOption(String opt);
-
-    /**
-     * Get option value. (old style)
-     *
-     * @param opt option name.
-     * @return option value.
-     *
-     * @deprecated Use {@link #get(String)} or getXXX()
-     */
-    @Deprecated
-    String getOptionValue(String opt);
-
-    /**
-     * Get option value or default value. (old style)
-     *
-     * @param opt option name.
-     * @param defaultValue default value.
-     * @return option value, or defaultvalue if option does not exist.
-     *
-     * @deprecated Use {@link #get(String, Object)} or getXXX() with null check.
-     */
-    @Deprecated
-    String getOptionValue(String opt, String defaultValue);
-
-    /**
-     * Get option values. (old style)
-     *
-     * @param opt option name.
-     * @return array of option values.
-     *
-     * @deprecated Use {@link #get(String)} or getXXX() as String[].
-     */
-    @Deprecated
-    String[] getOptionValues(String opt);
-
-    /**
-     * Get option value as boolean. (old style)
-     *
-     * @param opt option name.
-     * @return true if the option is exists or the entry in configuration file is "true"/"on"/"yes".
-     *
-     * @deprecated Use {@link #get(String)} or getXXX() as boolean.
-     */
-    @Deprecated
-    boolean getOptionValueAsBoolean(String opt);
-
-    /**
      * Get option value.
      *
      * @param <T> type of option value.

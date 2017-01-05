@@ -34,7 +34,7 @@ public class WaitForCondition extends AbstractCommand {
         boolean waitResult = Wait.defaultInterval.wait(startTime, timeout, new StopCondition() {
             @Override
             public boolean isSatisfied() {
-                Object result = context.getEval().eval(context.getWrappedDriver(), script);
+                Object result = context.getEval().eval(context, script);
                 if (result == null)
                     return false;
                 else if (result instanceof String)

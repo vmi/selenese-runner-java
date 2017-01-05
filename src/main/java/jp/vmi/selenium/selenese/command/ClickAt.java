@@ -38,7 +38,7 @@ public class ClickAt extends AbstractCommand {
         Point coord = coordToPoint(curArgs[ARG_COORD]);
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getDialogOverride().replaceAlertMethod(driver, element);
+        context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).moveToElement(element, coord.x, coord.y).click().perform();
         return SUCCESS;
     }

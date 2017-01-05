@@ -18,6 +18,14 @@ import static org.openqa.selenium.phantomjs.PhantomJSDriverService.*;
  */
 public class PhantomJSDriverFactory extends WebDriverFactory {
 
+    @SuppressWarnings("javadoc")
+    public static final String BROWSER_NAME = "phantomjs";
+
+    @Override
+    public String getBrowserName() {
+        return BROWSER_NAME;
+    }
+
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = setupProxy(DesiredCapabilities.phantomjs(), driverOptions);

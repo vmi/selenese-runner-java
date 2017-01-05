@@ -3,9 +3,8 @@ package jp.vmi.selenium.selenese.command;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.thoughtworks.selenium.SeleniumException;
-
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -32,7 +31,7 @@ public class Open extends AbstractCommand {
             try {
                 url = new URI(baseURL).resolve(url).toASCIIString();
             } catch (URISyntaxException e) {
-                throw new SeleniumException("Invalid URL: baseURL=[" + baseURL + "] / parameter=[" + url + "]", e);
+                throw new SeleneseRunnerRuntimeException("Invalid URL: baseURL=[" + baseURL + "] / parameter=[" + url + "]", e);
             }
         }
         context.getWrappedDriver().get(url);

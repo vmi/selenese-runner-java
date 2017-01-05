@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
-import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -96,17 +95,14 @@ public class MouseEventHandler implements ISubCommand<Void> {
     private static final int ARG_LOCATOR = 0;
     private static final int ARG_COORD = 1;
 
-    private final WebDriverElementFinder elementFinder;
     private final MouseEventType eventType;
 
     /**
      * Constructor.
      *
-     * @param elementFinder element finder.
      * @param eventType mouse event eventType.
      */
-    public MouseEventHandler(WebDriverElementFinder elementFinder, MouseEventType eventType) {
-        this.elementFinder = elementFinder;
+    public MouseEventHandler(MouseEventType eventType) {
         this.eventType = eventType;
     }
 
@@ -180,7 +176,7 @@ public class MouseEventHandler implements ISubCommand<Void> {
             "return [document.documentElement.clientWidth, document.documentElement.clientHeight];");
         int vpWidth = viewportSize.get(0).intValue();
         int vpHeight = viewportSize.get(1).intValue();
-        WebElement element = elementFinder.findElement(driver, args[ARG_LOCATOR]);
+        WebElement element = context.findElement(args[ARG_LOCATOR]);
         Dimension elemSize = element.getSize();
         Point elemLocation = element.getLocation();
         log.debug("Viewport Size: ({}, {}) / Element Location: {} / Element Size: {}",

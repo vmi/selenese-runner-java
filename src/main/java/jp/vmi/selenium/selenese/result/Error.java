@@ -25,6 +25,16 @@ public class Error extends Result {
         super("Error", e);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param message error message.
+     * @param e Exception.
+     */
+    public Error(String message, Exception e) {
+        super("Error", message, e);
+    }
+
     @Override
     public Level getLevel() {
         return Level.ERROR;

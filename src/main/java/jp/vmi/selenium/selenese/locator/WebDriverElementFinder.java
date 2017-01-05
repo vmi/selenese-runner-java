@@ -18,8 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.thoughtworks.selenium.SeleniumException;
-import com.thoughtworks.selenium.webdriven.ElementFinder;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * WebDriver Element Locator.
@@ -33,7 +32,7 @@ import com.thoughtworks.selenium.webdriven.ElementFinder;
  * <li>@see <a href="https://code.google.com/p/selenium/source/browse/javascript/selenium-core/scripts/ui-doc.html">UI document</a>
  * </ul>
  */
-public class WebDriverElementFinder extends ElementFinder {
+public class WebDriverElementFinder {
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverElementFinder.class);
 
@@ -44,6 +43,7 @@ public class WebDriverElementFinder extends ElementFinder {
      * @param optionLocator child option locator.
      * @return option locator with parent.
      */
+    @Deprecated
     public static String convertToOptionLocatorWithParent(String parentLocator, String optionLocator) {
         return parentLocator + Locator.OPTION_LOCATOR_SEPARATOR + optionLocator;
     }
@@ -95,21 +95,27 @@ public class WebDriverElementFinder extends ElementFinder {
         return this;
     }
 
-    @Override
-    public void add(String strategyName, String implementation) {
-        registerHandler(new AdditionalHandler(strategyName, implementation));
+    /**
+     * Get option locator handler.
+     *
+     * @param poptloc option locator.
+     * @return option locator handler.
+     */
+    public OptionLocatorHandler getOptionHandler(OptionLocator poptloc) {
+        OptionLocatorHandler handler = optionHandlerMap.get(poptloc.type);
+        if (handler == null)
+            throw new UnsupportedOperationException("Unknown option locator type: " + poptloc);
+        return handler;
     }
 
     /**
-     * call findElement of superclass.
+     * Add user defined handler of element finder.
      *
-     * @param driver driver.
-     * @param locator locator.
-     *
-     * @return element.
+     * @param strategyName strategy name.
+     * @param implementation JavaScript code.
      */
-    public WebElement superFindElement(WebDriver driver, String locator) {
-        return super.findElement(driver, locator);
+    public void add(String strategyName, String implementation) {
+        registerHandler(new AdditionalHandler(strategyName, implementation));
     }
 
     private void switchToFrame(WebDriver driver, List<Locator> plocs) {
@@ -147,7 +153,7 @@ public class WebDriverElementFinder extends ElementFinder {
     private boolean isParentFrameUnsupported(RuntimeException e) {
         return (e instanceof UnsupportedCommandException)
             || (e instanceof WebDriverException
-            && StringUtils.contains(e.getMessage(), "switchToParentFrame"));
+                && StringUtils.contains(e.getMessage(), "switchToParentFrame"));
     }
 
     private void popFrame(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
@@ -191,26 +197,28 @@ public class WebDriverElementFinder extends ElementFinder {
         return null;
     }
 
-    private List<WebElement> filterElementsByOptionLocator(List<WebElement> elements, String option) {
-        if (option == null)
-            return elements;
-        String[] pair = option.split("=", 2);
-        String type;
-        String arg;
-        if (pair.length == 1) {
-            type = "label";
-            arg = option;
+    /**
+     * Find "option" elements of specified option locator.
+     *
+     * @param element "select" element.
+     * @param poptloc parsed option locator.
+     * @return list of found "option" elements.
+     */
+    public List<WebElement> findOptions(WebElement element, OptionLocator poptloc) {
+        return getOptionHandler(poptloc).handle(element, poptloc.arg);
+
+    }
+
+    private List<WebElement> findOptions(List<WebElement> elements, OptionLocator poptloc) {
+        if (elements.size() == 1) {
+            return findOptions(elements.get(0), poptloc);
         } else {
-            type = pair[0];
-            arg = pair[1];
+            OptionLocatorHandler handler = getOptionHandler(poptloc);
+            List<WebElement> result = new ArrayList<>();
+            for (WebElement element : elements)
+                result.addAll(handler.handle(element, poptloc.arg));
+            return result;
         }
-        OptionLocatorHandler handler = optionHandlerMap.get(type);
-        if (handler == null)
-            throw new UnsupportedOperationException("Unknown option locator type: " + option);
-        List<WebElement> result = new ArrayList<>();
-        for (WebElement element : elements)
-            result.addAll(handler.handle(element, arg));
-        return result;
     }
 
     private List<WebElement> findElementsInternal(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
@@ -219,20 +227,19 @@ public class WebDriverElementFinder extends ElementFinder {
             throw new UnsupportedOperationException("Unknown locator type: " + ploc);
         List<WebElement> elements = findElementsByLocator(handler, driver, ploc, selectedFrameLocators);
         if (elements == null)
-            throw new SeleniumException("Element " + ploc + " not found", new NoSuchElementException(ploc.toString()));
-        return filterElementsByOptionLocator(elements, ploc.option);
+            throw new NoSuchElementException("Element " + ploc + " not found", new NoSuchElementException(ploc.toString()));
+        return ploc.poptloc == null ? elements : findOptions(elements, ploc.poptloc);
     }
 
     /**
      * Find elements of specified locator.
      *
      * @param driver WebDriver.
-     * @param locator locator.
+     * @param ploc parsed locator.
      * @param selectedFrameLocators selected frame locators.
      * @return list of found elements. (empty if no element)
      */
-    public List<WebElement> findElements(WebDriver driver, String locator, List<Locator> selectedFrameLocators) {
-        Locator ploc = new Locator(locator);
+    public List<WebElement> findElements(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
         if (ploc.isTypeRelative()) {
             if (ploc.isRelativeTop()) {
                 driver.switchTo().defaultContent();
@@ -243,7 +250,7 @@ public class WebDriverElementFinder extends ElementFinder {
                 else
                     log.warn("The current selected frame is top level. \"" + ploc + "\" is ignored.");
             } else {
-                throw new SeleniumException("Invalid \"relative\" locator argument: " + ploc.arg);
+                throw new SeleneseRunnerRuntimeException("Invalid \"relative\" locator argument: " + ploc.arg);
             }
             return Arrays.asList(driver.switchTo().activeElement());
         } else if (ploc.isTypeIndex()) {
@@ -253,7 +260,7 @@ public class WebDriverElementFinder extends ElementFinder {
                 frames = driver.findElements(By.tagName("frame"));
             int index = ploc.getIndex();
             if (index < 0 || index >= frames.size())
-                throw new SeleniumException("\"index\" locator argument is out of range: " + ploc.arg);
+                throw new SeleneseRunnerRuntimeException("\"index\" locator argument is out of range: " + ploc.arg);
             return Arrays.asList(frames.get(index));
         } else {
             switchToFrame(driver, selectedFrameLocators);
@@ -265,38 +272,74 @@ public class WebDriverElementFinder extends ElementFinder {
      * Find elements of specified locator.
      *
      * @param driver WebDriver.
+     * @param ploc parsed locator.
+     * @return list of found elements. (empty if no element)
+     */
+    public List<WebElement> findElements(WebDriver driver, Locator ploc) {
+        return findElements(driver, ploc, currentFrameLocators);
+    }
+
+    /**
+     * Find elements of specified locator.
+     *
+     * @param driver WebDriver.
      * @param locator locator.
      * @return list of found elements. (empty if no element)
      */
     public List<WebElement> findElements(WebDriver driver, String locator) {
-        return findElements(driver, locator, currentFrameLocators);
+        return findElements(driver, new Locator(locator));
     }
 
     /**
      * Find an element of specified locator.
      *
      * @param driver WebDriver.
-     * @param locator locator.
+     * @param ploc parsed locator.
      * @param selectedFrameLocators selected frame locators.
      * @return found element.
+     * @throws NoSuchElementException throw if element not found.
      */
-    public WebElement findElement(WebDriver driver, String locator, List<Locator> selectedFrameLocators) {
-        return findElements(driver, locator, selectedFrameLocators).get(0);
+    public WebElement findElement(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
+        List<WebElement> elements = findElements(driver, ploc, selectedFrameLocators);
+        if (elements.isEmpty())
+            throw new NoSuchElementException(ploc.toString());
+        return elements.get(0);
     }
 
-    @Override
+    /**
+     * Find an element.
+     *
+     * @param driver WebDriver.
+     * @param ploc parsed locator.
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
+    public WebElement findElement(WebDriver driver, Locator ploc) {
+        List<WebElement> elements = findElements(driver, ploc);
+        if (elements.isEmpty())
+            throw new NoSuchElementException(ploc.toString());
+        return elements.get(0);
+    }
+
+    /**
+     * Find an element.
+     *
+     * @param driver WebDriver.
+     * @param locator locator.
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
     public WebElement findElement(WebDriver driver, String locator) {
-        return findElements(driver, locator).get(0);
+        return findElement(driver, new Locator(locator));
     }
 
     /**
      * Select frame or iframe.
      *
      * @param driver WebDriver.
-     * @param locator locator to frame/iframe.
+     * @param ploc parsed locator to frame/iframe.
      */
-    public void selectFrame(WebDriver driver, String locator) {
-        Locator ploc = new Locator(locator);
+    public void selectFrame(WebDriver driver, Locator ploc) {
         if (ploc.isTypeRelative()) {
             if (ploc.isRelativeTop()) {
                 driver.switchTo().defaultContent();
@@ -310,7 +353,7 @@ public class WebDriverElementFinder extends ElementFinder {
                     log.warn("The current selected frame is top level. \"" + ploc + "\" is ignored.");
                 }
             } else { // neither "relative=top" nor "relative=parent"
-                throw new SeleniumException("Invalid frame locator: " + ploc);
+                throw new SeleneseRunnerRuntimeException("Invalid frame locator: " + ploc);
             }
         } else if (ploc.isTypeIndex()) {
             switchToFrame(driver, currentFrameLocators);
@@ -318,7 +361,7 @@ public class WebDriverElementFinder extends ElementFinder {
             try {
                 driver.switchTo().frame(index);
             } catch (NoSuchFrameException e) {
-                throw new SeleniumException(e);
+                throw new SeleneseRunnerRuntimeException(e);
             }
             ploc.frameIndexList.add(index);
             currentFrameLocators.add(ploc);
@@ -328,6 +371,16 @@ public class WebDriverElementFinder extends ElementFinder {
             driver.switchTo().frame(frame);
             currentFrameLocators.add(ploc);
         }
+    }
+
+    /**
+     * Select frame or iframe.
+     *
+     * @param driver WebDriver.
+     * @param locator locator to frame/iframe.
+     */
+    public void selectFrame(WebDriver driver, String locator) {
+        selectFrame(driver, new Locator(locator));
     }
 
     /**

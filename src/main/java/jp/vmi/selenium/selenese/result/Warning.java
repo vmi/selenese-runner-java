@@ -14,6 +14,16 @@ public class Warning extends Result {
         super("Warning", message);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param message warning message.
+     * @param e Exception.
+     */
+    public Warning(String message, Exception e) {
+        super("Warning", message, e);
+    }
+
     @Override
     public Level getLevel() {
         return Level.WARNING;

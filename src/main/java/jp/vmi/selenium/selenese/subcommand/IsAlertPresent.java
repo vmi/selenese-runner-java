@@ -9,6 +9,6 @@ public class IsAlertPresent extends AbstractSubCommand<Boolean> {
 
     @Override
     public Boolean execute(Context context, String... args) {
-        return context.getDialogOverride().isAlertPresent(context.getWrappedDriver());
+        return context.getJSLibrary().isAlertPresent(context.getWrappedDriver());
     }
 }

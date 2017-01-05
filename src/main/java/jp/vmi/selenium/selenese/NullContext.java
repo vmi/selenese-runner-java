@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
+import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
@@ -153,12 +154,12 @@ public class NullContext implements Context {
     }
 
     @Override
-    public DialogOverride getDialogOverride() {
+    public JSLibrary getJSLibrary() {
         return null;
     }
 
     @Override
-    public void setDialogOverride(DialogOverride dialogOverride) {
+    public void setJSLibrary(JSLibrary jsLibrary) {
     }
 
     @Override

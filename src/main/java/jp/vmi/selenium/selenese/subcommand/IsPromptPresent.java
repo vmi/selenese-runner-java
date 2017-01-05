@@ -9,6 +9,6 @@ public class IsPromptPresent extends AbstractSubCommand<Boolean> {
 
     @Override
     public Boolean execute(Context context, String... args) {
-        return context.getDialogOverride().isPromptPresent(context.getWrappedDriver());
+        return context.getJSLibrary().isPromptPresent(context.getWrappedDriver());
     }
 }

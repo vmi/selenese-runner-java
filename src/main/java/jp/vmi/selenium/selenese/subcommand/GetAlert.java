@@ -9,6 +9,6 @@ public class GetAlert extends AbstractSubCommand<String> {
 
     @Override
     public String execute(Context context, String... args) {
-        return context.getDialogOverride().getNextAlert(context.getWrappedDriver());
+        return context.getJSLibrary().getNextAlert(context.getWrappedDriver());
     }
 }
