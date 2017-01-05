@@ -36,11 +36,11 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 /**
  * Re-implementation of AllowNativeXPath.
  */
-public class AllowNativeXPath extends AbstractCommand {
+public class AllowNativeXpath extends AbstractCommand {
 
     private static final int ARG_FLAG = 0;
 
-    AllowNativeXPath(int index, String name, String... args) {
+    AllowNativeXpath(int index, String name, String... args) {
         super(index, name, args, VALUE);
     }
 

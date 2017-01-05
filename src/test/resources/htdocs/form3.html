@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Form Test 3</title>
+  <style type="text/css"><!--
+    .dnd {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+    }
+  //--></style>
+  <script type="text/javascript"><!--
+    function setMsg(msg) {
+      document.getElementById("msg").textContent = msg;
+    }
+    function focused(elem) {
+      setMsg(elem.id + " is focused.");
+    }
+  //--></script>
+</head>
+<body>
+  <h1>Form Test 3</h1>
+  <hr>
+  <div>
+    <form id="form" name="form" action="form_posted.html" method="POST" target="_top">
+      <input id="text" name="text" class="simple" onfocus="focused(this)"><input type="submit" class="simple">
+    </form>
+  </div>
+  <div>Message<button id="clear" onclick="setMsg('')">Clear</button>: <span id="msg"></span>
+  </div>
+</body>
+</html>

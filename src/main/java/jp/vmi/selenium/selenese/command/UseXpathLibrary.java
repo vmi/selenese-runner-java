@@ -33,13 +33,13 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Re-implementation of UseXPathLibrary.
+ * Re-implementation of UseXpathLibrary.
  */
-public class UseXPathLibrary extends AbstractCommand {
+public class UseXpathLibrary extends AbstractCommand {
 
     private static final int ARG_LIBRARY_NAME = 0;
 
-    UseXPathLibrary(int index, String name, String... args) {
+    UseXpathLibrary(int index, String name, String... args) {
         super(index, name, args, VALUE);
     }
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost" />
+<title>testcase_selenium3</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_selenium3</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/form3.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>allowNativeXpath</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>useXpathLibrary</td>
+	<td>javascript-xpath</td>
+	<td></td>
+</tr>
+<tr>
+	<td>focus</td>
+	<td>id=text</td>
+	<td></td>
+</tr>
+<tr>
+	<td>fireEvent</td>
+	<td>id=text</td>
+	<td>focus</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=msg</td>
+	<td>text is focused.</td>
+</tr>
+<tr>
+	<td>refresh</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>id=msg</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addLocationStrategy</td>
+	<td>myloc</td>
+	<td>return inDocument.getElementById(locator);</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>myloc=clear</td>
+	<td>Clear</td>
+</tr>
+<tr>
+	<td>assignId</td>
+	<td>//input[@type='submit']</td>
+	<td>button</td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>id=button@type</td>
+	<td>submit</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Posted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goBack</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTitle</td>
+	<td>Form Test 3</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

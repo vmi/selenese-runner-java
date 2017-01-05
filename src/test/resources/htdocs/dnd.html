@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Drag and Drop Test</title>
+  <style type="text/css"><!--
+    .dnd {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+    }
+  //--></style>
+  <script type="text/javascript"><!--
+    function setMsg(msg) {
+      document.getElementById("msg").textContent = msg;
+    }
+
+    function startDrag(event, text, msg) {
+      console.log("drag");
+      event.dataTransfer.setData('text/plain', text);
+      setMsg(msg + ": " + text);
+    }
+
+    function drop(event, msg) {
+      console.log("drop");
+      if (event.stopPropagation)
+        event.stopPropagation();
+      var text = event.dataTransfer.getData('text/plain');
+      setMsg(msg + ": " + text);
+      document.getElementById("blue").style.backgroundColor = "magenta";
+      event.preventDefault();
+    }
+  //--></script>
+</head>
+<body>
+  <h1>Drag and Drop Test</h1>
+  <hr>
+  <div>
+    <span id="blue" class="dnd" style="background-color: blue"
+          ondragover="event.preventDefault()"
+          ondrop="drop(event, 'Dropped')">&nbsp;</span>
+    <span id="red" class="dnd" style="background-color: red; cursor: move"
+          draggable="true"
+          ondragstart="startDrag(event, 'Box', 'Drag started')">&nbsp;</span>
+  </div>
+  <br>
+  <div>Message<button id="clear" onclick="setMsg('')">Clear</button>: <span id="msg"></span>
+  </div>
+</body>
+</html>

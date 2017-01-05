@@ -382,4 +382,19 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_elements");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void selenium3() {
+        assumeNot(FIREFOX);
+        execute("testcase_selenium3");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    @Ignore("Don't work on any drivers.")
+    public void dnd() {
+        assumeNot(HTMLUNIT, FIREFOX);
+        execute("testcase_dnd");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

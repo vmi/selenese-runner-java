@@ -84,7 +84,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(DragAndDropToObject.class);
         addConstructor(FireEvent.class);
         addConstructor(Focus.class);
-        addConstructor(AllowNativeXPath.class);
+        addConstructor(AllowNativeXpath.class);
         addConstructor(AssignId.class);
         addConstructor(Close.class);
         addConstructor(CreateCookie.class);
@@ -92,7 +92,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(DeleteCookie.class);
         addConstructor(GoBack.class);
         addConstructor(Refresh.class);
-        addConstructor(UseXPathLibrary.class);
+        addConstructor(UseXpathLibrary.class);
         addConstructor(WindowFocus.class);
 
         // commands unsupported by WebDriverCommandProcessor
