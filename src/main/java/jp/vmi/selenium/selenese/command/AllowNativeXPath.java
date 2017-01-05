@@ -55,7 +55,7 @@ public class AllowNativeXPath extends AbstractCommand {
         if (flag.isEmpty())
             return new Error("You must set this value to 'true' or 'false'");
         else if (!"true".equalsIgnoreCase(flag))
-            return new Warning("This selenium version only supports native xpath");
+            return new Warning("Supported XPath is native only");
         return SUCCESS;
     }
 }
