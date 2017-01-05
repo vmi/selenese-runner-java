@@ -94,7 +94,7 @@ Usage
 Requirements
 ------------
 
-* Java 7 or later.
+* Java 8 or later.
 * Apache Maven 2.x or later to build.
 
 Release Note
