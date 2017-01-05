@@ -5,10 +5,11 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 3.0.1.
 * Update dependency versions.
+* Fire `change` event at the end of `type` command. (#223)
 * Re-implement the following commands for catching up Selenium 3.x. (#218)
     * `addLocationStrategy`
     * `addSelection`
-    * `allowNativeXPath`
+    * `allowNativeXpath`
     * `answerOnNextPrompt`
     * `assignId`
     * `attachFile`
@@ -28,7 +29,7 @@ Selenese Runner Java Relase Note
     * `removeSelection`
     * `selectElement`
     * `setCursorPosition`
-    * `useXPathLibrary`
+    * `useXpathLibrary`
     * `windowFocus`
     * `(assert|verify|waitFor|store)AllButtons`
     * `(assert|verify|waitFor|store)AllFields`
