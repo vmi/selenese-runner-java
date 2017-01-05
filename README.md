@@ -5,7 +5,7 @@ This is selenese script interpreter implemented by Java.
 
 It supports test-case and test-suite which are Selenium IDE's native format.
 
-Note: Supported Java version is 7 or later.
+Note: Supported Java version is 8 or later.
 
 [![Build Status](https://travis-ci.org/vmi/selenese-runner-java.svg?branch=master)](https://travis-ci.org/vmi/selenese-runner-java)
 
