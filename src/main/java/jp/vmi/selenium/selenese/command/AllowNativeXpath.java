@@ -28,10 +28,10 @@ package jp.vmi.selenium.selenese.command;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of AllowNativeXPath.
@@ -56,6 +56,6 @@ public class AllowNativeXpath extends AbstractCommand {
             return new Error("You must set this value to 'true' or 'false'");
         else if (!"true".equalsIgnoreCase(flag))
             return new Warning("Supported XPath is native only");
-        return SUCCESS;
+        return new Success();
     }
 }

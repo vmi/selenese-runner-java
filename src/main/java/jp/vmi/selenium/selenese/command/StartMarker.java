@@ -1,11 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.util.Collections;
-import java.util.List;
-
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 /**
  * Start marker for result sequence.
@@ -13,7 +10,6 @@ import jp.vmi.selenium.selenese.result.Success;
 public class StartMarker implements ICommand {
 
     private final ICommand command;
-    private final Result result;
 
     /**
      * Constructor.
@@ -23,7 +19,6 @@ public class StartMarker implements ICommand {
      */
     public StartMarker(ICommand command, String message) {
         this.command = command;
-        this.result = new Success(message);
     }
 
     @Override
@@ -48,8 +43,8 @@ public class StartMarker implements ICommand {
 
     @Deprecated
     @Override
-    public String[] convertLocators(String[] args) {
-        throw new UnsupportedOperationException();
+    public Locator[] extractLocators(String[] args) {
+        return this.command.extractLocators(args);
     }
 
     @Override
@@ -63,11 +58,6 @@ public class StartMarker implements ICommand {
     }
 
     @Override
-    public Result getResult() {
-        return result;
-    }
-
-    @Override
     public void setStartLoop(StartLoop startLoop) {
         throw new UnsupportedOperationException();
     }
@@ -75,15 +65,5 @@ public class StartMarker implements ICommand {
     @Override
     public StartLoop getStartLoop() {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void addScreenshot(String path, String label) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<Screenshot> getScreenshots() {
-        return Collections.emptyList();
     }
 }

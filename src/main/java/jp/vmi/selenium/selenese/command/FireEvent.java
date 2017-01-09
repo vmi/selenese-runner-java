@@ -4,9 +4,9 @@ import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of FireEvent.
@@ -24,6 +24,6 @@ public class FireEvent extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         WebElement element = context.findElement(curArgs[ARG_LOCATOR]);
         context.getJSLibrary().fireEvent(context.getWrappedDriver(), element, curArgs[ARG_EVENT_NAME]);
-        return SUCCESS;
+        return new Success();
     }
 }

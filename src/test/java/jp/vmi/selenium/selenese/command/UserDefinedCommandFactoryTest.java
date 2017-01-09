@@ -7,9 +7,9 @@ import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestBase;
 
-import static jp.vmi.selenium.selenese.result.Success.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ public class UserDefinedCommandFactoryTest extends TestBase {
 
         @Override
         protected Result executeImpl(Context context, String... curArgs) {
-            return SUCCESS;
+            return new Success();
         }
     }
 

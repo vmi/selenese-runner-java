@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "answerOnNextPrompt".
@@ -25,6 +25,6 @@ public class AnswerOnNextPrompt extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         context.getJSLibrary().answerOnNextPrompt(context.getWrappedDriver(), curArgs[ARG_ANSWER]);
-        return SUCCESS;
+        return new Success();
     }
 }

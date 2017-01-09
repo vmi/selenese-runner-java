@@ -334,14 +334,14 @@ ${foreach seleneseList selenese}
                 <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
               </thead>
               <tbody>
-    ${foreach selenese.commandList command}
-                <tr class="cmd_status_${command.result}">
+    ${foreach selenese.commandList command}${@commandResults results selenese command}${@tail lastResult results}
+                <tr class="cmd_status_${lastResult.result}">
                   <td class="index">${command.index;i}</td>
       ${foreach command.source item}
                   <td>${item;h}</td>
       ${end}
-                  <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
-                  <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
+                  <td class="number">${foreach results result , }${result.duration;n}${end}</td>
+                  <td>${foreach results result}${foreach result.result.screenshots screenshot}${if first_result}${if first_screenshot}${else}, ${end}${else}, ${end}<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}${end}</td>
                 </tr>
     ${end}
               </tbody>
@@ -372,7 +372,7 @@ ${foreach seleneseList selenese}
                   <td>${item;h}</td>
       ${end}
                   <td>${result.result;s}</td>
-                  <td>${foreach result.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
+                  <td>${foreach result.result.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
                 </tr>
     ${end}
               </tbody>

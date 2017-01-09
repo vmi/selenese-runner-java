@@ -32,9 +32,9 @@ import org.openqa.selenium.interactions.Actions;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of DragAndDropToObject.
@@ -55,6 +55,6 @@ public class DragAndDropToObject extends AbstractCommand {
         WebElement elementFrom = finder.findElement(driver, curArgs[ARG_LOCATOR_FROM]);
         WebElement elementTo = finder.findElement(driver, curArgs[ARG_LOCATOR_TO]);
         new Actions(driver).dragAndDrop(elementFrom, elementTo).perform();
-        return SUCCESS;
+        return new Success();
     }
 }

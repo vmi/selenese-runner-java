@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "submit".
@@ -27,6 +27,6 @@ public class Submit extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         element.submit();
-        return SUCCESS;
+        return new Success();
     }
 }

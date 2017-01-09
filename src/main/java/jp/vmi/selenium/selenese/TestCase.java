@@ -16,12 +16,12 @@ import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
 import static jp.vmi.selenium.selenese.command.StartLoop.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * test-case object for execution.
@@ -186,7 +186,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public Result execute(Selenese parent, Context context) {
         if (commandList.isEmpty())
-            return cresultList.setResult(SUCCESS);
+            return cresultList.setResult(new Success());
         if (parent instanceof TestCase) {
             try {
                 context.setCurrentTestCase(this);

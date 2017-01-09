@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
-import static jp.vmi.selenium.selenese.result.Success.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
@@ -29,7 +29,7 @@ public class CommandSequenceTest {
 
         @Override
         protected Result executeImpl(Context context, String... curArgs) {
-            return SUCCESS;
+            return new Success();
         }
     }
 

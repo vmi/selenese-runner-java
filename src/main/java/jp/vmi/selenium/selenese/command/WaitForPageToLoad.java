@@ -39,11 +39,11 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseCommandErrorException;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.utils.Wait;
 import jp.vmi.selenium.selenese.utils.Wait.StopCondition;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of "waitForPageToLoad".
@@ -91,7 +91,7 @@ public class WaitForPageToLoad extends AbstractCommand {
         if (timeout < 0)
             return new Error("Illegal timeout parameter: " + timeout);
         else if (timeout == 0)
-            return SUCCESS;
+            return new Success();
         long startTime = System.currentTimeMillis();
         WebDriver driver = context.getWrappedDriver();
         if (!(driver instanceof JavascriptExecutor))
@@ -99,7 +99,7 @@ public class WaitForPageToLoad extends AbstractCommand {
         StopCondition condition = isReadyStateSupported(driver) ? checkByReadyState(driver) : checkByBodyLength(driver);
         if (!Wait.defaultInterval.wait(startTime, timeout, condition))
             return new Error("Failed to load page within " + timeout + " ms");
-        return SUCCESS;
+        return new Success();
     }
 
     private static boolean isReadyStateSupported(WebDriver driver) {

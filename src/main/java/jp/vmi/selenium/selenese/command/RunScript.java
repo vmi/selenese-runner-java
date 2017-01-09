@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * An implementation of the "runScript" method from Selenium.
@@ -25,6 +25,6 @@ public class RunScript extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         context.getEval().eval(context, curArgs[ARG_SCRIPT]);
-        return SUCCESS;
+        return new Success();
     }
 }

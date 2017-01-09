@@ -29,9 +29,9 @@ import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of AssignId.
@@ -54,6 +54,6 @@ public class AssignId extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         WebElement elem = context.findElement(curArgs[ARG_LOCATOR]);
         context.executeScript("arguments[0].id = arguments[1]", elem, curArgs[ARG_VALUE]);
-        return SUCCESS;
+        return new Success();
     }
 }

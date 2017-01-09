@@ -9,7 +9,6 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "click".
@@ -30,7 +29,7 @@ public class Click extends AbstractCommand {
         context.getJSLibrary().replaceAlertMethod(driver, element);
         try {
             element.click();
-            return SUCCESS;
+            return new Success();
         } catch (ElementNotVisibleException e) {
             context.executeScript("arguments[0].click()", element);
             return new Success("Success (the element is not visible)");

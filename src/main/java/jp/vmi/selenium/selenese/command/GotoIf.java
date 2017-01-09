@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "gotoIf".
@@ -27,6 +27,6 @@ public class GotoIf extends AbstractCommand {
     public Result executeImpl(Context context, String... curArgs) {
         if (context.isTrue(curArgs[ARG_EXPRESSION]))
             context.getCommandListIterator().jumpTo(curArgs[ARG_LABEL]);
-        return SUCCESS;
+        return new Success();
     }
 }

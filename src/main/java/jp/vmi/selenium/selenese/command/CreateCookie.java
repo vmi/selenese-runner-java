@@ -38,9 +38,9 @@ import org.openqa.selenium.UnableToSetCookieException;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 
 /**
@@ -104,6 +104,6 @@ public class CreateCookie extends AbstractCommand {
                 throw e;
         }
 
-        return SUCCESS;
+        return new Success();
     }
 }

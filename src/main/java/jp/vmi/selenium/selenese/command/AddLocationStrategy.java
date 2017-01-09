@@ -27,9 +27,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of AddLocationStrategy.
@@ -49,6 +49,6 @@ public class AddLocationStrategy extends AbstractCommand {
             + curArgs[ARG_DEFINITION]
             + " }).call(null, arguments[0], window, document)";
         context.getElementFinder().add(curArgs[ARG_NAME], strategy);
-        return SUCCESS;
+        return new Success();
     }
 }

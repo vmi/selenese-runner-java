@@ -30,9 +30,9 @@ import org.openqa.selenium.WebElement;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of SetCursorPosition.
@@ -56,6 +56,6 @@ public class SetCursorPosition extends AbstractCommand {
             return new Error("Position is not a number: " + curArgs[ARG_POSITION]);
         }
         context.getJSLibrary().setCursorPosition(context.getWrappedDriver(), element, position);
-        return SUCCESS;
+        return new Success();
     }
 }

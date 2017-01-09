@@ -9,7 +9,6 @@ import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "captureEntirePageScreenshot".
@@ -38,8 +37,9 @@ public class CaptureEntirePageScreenshot extends AbstractCommand {
         if (handler.isIgnoredScreenshotCommand())
             return new Success("captureEntirePageScreenshot is ignored.");
         try {
-            addScreenshot(handler.takeScreenshot(filename), "cmd");
-            return SUCCESS;
+            Result result = new Success("Success");
+            result.addScreenshot(handler.takeScreenshot(filename), "cmd");
+            return result;
         } catch (UnsupportedOperationException e) {
             return new Warning(e.getMessage());
         }

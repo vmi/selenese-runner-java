@@ -3,11 +3,11 @@ package jp.vmi.selenium.selenese.command;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.utils.Wait;
 import jp.vmi.selenium.selenese.utils.Wait.StopCondition;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * An implementation of "waitForCondition".
@@ -46,7 +46,7 @@ public class WaitForCondition extends AbstractCommand {
             }
         });
         if (waitResult)
-            return SUCCESS;
+            return new Success();
         else
             return new Error("Timed out after " + timeout + "ms");
     }

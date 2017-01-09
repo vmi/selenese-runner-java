@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "setSpeed".
@@ -32,7 +32,7 @@ public class SetSpeed extends AbstractCommand {
             return new Warning("the argument of setSpeed is ignored: empty.");
         try {
             context.setSpeed(Long.parseLong(speed));
-            return SUCCESS;
+            return new Success();
         } catch (NumberFormatException e) {
             return new Warning("the argument of setSpeed is ignored: invalid number format: " + speed);
         }

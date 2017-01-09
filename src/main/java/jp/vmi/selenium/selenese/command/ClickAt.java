@@ -7,9 +7,9 @@ import org.openqa.selenium.interactions.Actions;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "clickAt".
@@ -40,6 +40,6 @@ public class ClickAt extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).moveToElement(element, coord.x, coord.y).click().perform();
-        return SUCCESS;
+        return new Success();
     }
 }

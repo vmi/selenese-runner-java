@@ -7,9 +7,9 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ModifierKeyState;
 import jp.vmi.selenium.selenese.javascript.JSLibrary.KeyEventType;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "keyDown".
@@ -31,6 +31,6 @@ public class KeyDown extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         ModifierKeyState keyState = context.getModifierKeyState();
         context.getJSLibrary().triggerKeyEvent(driver, element, KeyEventType.KEYDOWN, keySequence, keyState);
-        return SUCCESS;
+        return new Success();
     }
 }
