@@ -134,21 +134,21 @@
           position: relative;
           padding: 0;
       }
-      
+
       .tabs ul {
           margin: 0;
           padding: 0;
       }
-      
+
       .tabs li {
           list-style: none;
           display: inline-block;
       }
-      
+
       .tabs input[type=radio] {
           display: none;
       }
-      
+
       .tabs label {
           z-index: 2;
           position: absolute;
@@ -164,30 +164,30 @@
           padding: 0.5ex 0.5em;
           text-align: center;
       }
-      
+
       .tabs label:hover {
           cursor: pointer;
           background-color: #ccc;
           color: #000;
       }
-      
+
       .tabs input[type=radio]:checked + label {
           background-color: #fff;
           color: #000;
       }
-      
+
       .tab_source {
           left: 0;
       }
-      
+
       .tab_sequence {
           left: 7.5em;
       }
-      
+
       .tab_log {
           left: 15em;
       }
-      
+
       .tabs .contents {
           z-index: 1;
           display: none;
@@ -197,11 +197,11 @@
           padding: 0.5em;
           min-width: 22.5em;
       }
-      
+
       .tabs input[type=radio]:checked + label + .contents {
           display: block;
       }
-      
+
       .tabs p {
         margin: 0;
         line-height: 180%;
@@ -268,13 +268,13 @@
         </table>
         <table class="rbox">
           <tr>
-            <th>Selenese Runner Version:</th><td>${sysInfo.seleneseRunnerVersion}</td>
+            <th>Selenese Runner Version:</th><td>${sysInfo.seleneseRunnerVersion;h}</td>
           </tr>
           <tr>
             <th>WebDriver Name:</th><td>${testSuite.webDriverName;h}</td>
           </tr>
           <tr>
-            <th>Selenium Version:</th><td>${sysInfo.seleniumVersion}</td>
+            <th>Selenium Version:</th><td>${sysInfo.seleniumVersion;h}</td>
           </tr>
           <tr>
             <th>Java Version:</th><td>${sysInfo.javaVersion;h}</td>
