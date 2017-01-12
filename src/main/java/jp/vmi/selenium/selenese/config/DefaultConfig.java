@@ -23,6 +23,7 @@ import org.kohsuke.args4j.ParserProperties;
 
 import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.LangUtils;
+import jp.vmi.selenium.selenese.utils.SystemInformation;
 
 import static jp.vmi.selenium.selenese.result.Result.Level.*;
 
@@ -713,7 +714,8 @@ public class DefaultConfig implements IConfig {
             System.out.println();
         }
         int width = helpWidth - HELP_PADDING;
-        pw.println(WordUtils.wrap(title + " " + version, width));
+        String seleniumVersion = SystemInformation.getInstance().getSeleniumVersion();
+        pw.println(WordUtils.wrap(title + " " + version + " (with Selenium " + seleniumVersion + ")", width));
         pw.println();
         for (String line : HEADER) {
             if (line.isEmpty())

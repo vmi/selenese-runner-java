@@ -299,6 +299,19 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.6</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifestSections>
+              <manifestSection>
+                <name>Build-Info</name>
+                <manifestEntries>
+                  <Selenium-Version>${selenium.version}</Selenium-Version>
+                </manifestEntries>
+              </manifestSection>
+            </manifestSections>
+          </archive>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

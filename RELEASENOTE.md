@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.0.1
+
+* Fix a bug that can not get version number of Selenium when executable jar is used.
+
 ### 3.0.0
 
 * Catch up Selenium 3.0.1.

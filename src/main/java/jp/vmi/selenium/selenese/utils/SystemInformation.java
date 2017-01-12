@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.openqa.selenium.internal.BuildInfo;
+
 /**
  * System Information.
  */
@@ -43,7 +45,9 @@ public class SystemInformation {
     }
 
     public String getSeleniumVersion() {
-        return getVersionFromPomProperties("/META-INF/maven/org.seleniumhq.selenium/selenium-java/pom.properties");
+        BuildInfo buildInfo = new BuildInfo();
+        String label = buildInfo.getReleaseLabel();
+        return "unknown".equals(label) ? UNKNOWN : label;
     }
 
     public String getJavaVMName() {
