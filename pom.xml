@@ -255,7 +255,8 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
               <target>
                 <property name="build.compiler" value="extJavac" />
                 <mkdir dir="${shade.java.destdir}" />
-                <javac srcdir="${shade.java.srcdir}" destdir="${shade.java.destdir}" target="${target.version}" source="${source.version}" encoding="${project.build.sourceEncoding}" debug="true" nowarn="true" includeantruntime="false">
+                <javac srcdir="${shade.java.srcdir}" destdir="${shade.java.destdir}" target="${target.version}" source="${source.version}" encoding="${project.build.sourceEncoding}"
+                  debug="true" nowarn="true" includeantruntime="false">
                   <classpath refid="maven.dependency.classpath" />
                 </javac>
               </target>
@@ -361,26 +362,26 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   <dependencyManagement>
     <dependencies>
       <dependency>
-	<groupId>org.seleniumhq.selenium</groupId>
-	<artifactId>selenium-java</artifactId>
-	<version>${selenium.version}</version>
-	<exclusions>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>${selenium.version}</version>
+        <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
-	</exclusions>
+        </exclusions>
       </dependency>
       <dependency>
-	<groupId>org.seleniumhq.selenium</groupId>
-	<artifactId>selenium-remote-driver</artifactId>
-	<version>${selenium.version}</version>
-	<exclusions>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-remote-driver</artifactId>
+        <version>${selenium.version}</version>
+        <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
-	</exclusions>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
@@ -398,31 +399,31 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         </exclusions>
       </dependency>
       <dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpclient</artifactId>
-	<version>${httpclient.version}</version>
-	<exclusions>
-	  <exclusion>
-	    <groupId>commons-logging</groupId>
-	    <artifactId>commons-logging</artifactId>
-	  </exclusion>
-	</exclusions>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpmime</artifactId>
-	<version>${httpclient.version}</version>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpmime</artifactId>
+        <version>${httpclient.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpasyncclient</artifactId>
         <version>4.1.2</version>
-	<exclusions>
-	  <exclusion>
-	    <groupId>commons-logging</groupId>
-	    <artifactId>commons-logging</artifactId>
-	  </exclusion>
-	</exclusions>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
