@@ -46,6 +46,7 @@ public class StartMarker implements ICommand {
         return this.command.getName();
     }
 
+    @Deprecated
     @Override
     public String[] convertLocators(String[] args) {
         throw new UnsupportedOperationException();
