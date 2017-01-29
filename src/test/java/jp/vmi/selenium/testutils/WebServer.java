@@ -72,6 +72,8 @@ public class WebServer {
         case "jpeg":
         case "png":
             return "image/" + ext;
+        case "ico":
+            return "image/vnd.microsoft.icon";
         default:
             throw new UnsupportedOperationException(path.toString());
         }
