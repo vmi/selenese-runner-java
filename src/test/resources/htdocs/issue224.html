@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #224</title>
+    <script type="text/javascript"><!--
+      function onClick(elem) {
+        document.getElementById('msg').textContent = elem.textContent;
+      }
+    //--></script>
+  </head>
+  <body>
+    <div><button id="btn" onclick="onClick(this);" style="display:none">Button</button></div>
+    <div id="msg"></div>
+  </body>
+</html>
