@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.1.0
+
+* Fix the `click` command to fail when the element is not visible. (#224)
+* Update dependency versions.
+
 ### 3.0.1
 
 * Fix a bug that can not get version number of Selenium when executable jar is used.
