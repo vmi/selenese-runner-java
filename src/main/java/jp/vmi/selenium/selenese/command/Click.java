@@ -1,10 +1,12 @@
 package jp.vmi.selenium.selenese.command;
 
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -26,7 +28,12 @@ public class Click extends AbstractCommand {
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
-        element.click();
-        return SUCCESS;
+        try {
+            element.click();
+            return SUCCESS;
+        } catch (ElementNotVisibleException e) {
+            context.getJSLibrary().fireEvent(driver, element, "click");
+            return new Success("Success, but the element is not visible");
+        }
     }
 }
