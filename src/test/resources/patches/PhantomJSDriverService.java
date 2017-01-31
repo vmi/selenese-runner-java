@@ -33,7 +33,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.PortProber;
-import org.openqa.selenium.os.CommandLine;
+import org.openqa.selenium.os.ExecutableFinder;
 import org.openqa.selenium.remote.service.DriverService;
 
 import java.io.File;
@@ -229,7 +229,7 @@ public class PhantomJSDriverService extends DriverService {
                 desiredCapabilities.getCapability(PHANTOMJS_EXECUTABLE_PATH_PROPERTY) != null) {
             phantomjspath = (String) desiredCapabilities.getCapability(PHANTOMJS_EXECUTABLE_PATH_PROPERTY);
         } else {
-            phantomjspath = CommandLine.find(PHANTOMJS_DEFAULT_EXECUTABLE);
+            phantomjspath = new ExecutableFinder().find(PHANTOMJS_DEFAULT_EXECUTABLE);
             phantomjspath = System.getProperty(PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjspath);
         }
 
