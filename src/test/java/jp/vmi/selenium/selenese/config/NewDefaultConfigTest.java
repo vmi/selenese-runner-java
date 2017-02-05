@@ -65,6 +65,7 @@ public class NewDefaultConfigTest {
         "--ignore-screenshot-command",
         "--baseurl", "base-url",
         "--firefox", "firefox-binary-path",
+        "--geckodriver", "geckodriver-path",
         "--chromedriver", "chromedriver-path",
         "--iedriver", "iedriver-path",
         "--phantomjs", "phantomjs-path",
@@ -116,6 +117,7 @@ public class NewDefaultConfigTest {
         assertThat(options.isIgnoreScreenshotCommand(), is(false));
         assertThat(options.getBaseurl(), is(nullValue()));
         assertThat(options.getFirefox(), is(nullValue()));
+        assertThat(options.getGeckodriver(), is(nullValue()));
         assertThat(options.getChromedriver(), is(nullValue()));
         assertThat(options.getIedriver(), is(nullValue()));
         assertThat(options.getPhantomjs(), is(nullValue()));
@@ -157,6 +159,7 @@ public class NewDefaultConfigTest {
         assertThat(options.isIgnoreScreenshotCommand(), is(true));
         assertThat(options.getBaseurl(), is("base-url"));
         assertThat(options.getFirefox(), is("firefox-binary-path"));
+        assertThat(options.getGeckodriver(), is("geckodriver-path"));
         assertThat(options.getChromedriver(), is("chromedriver-path"));
         assertThat(options.getIedriver(), is("iedriver-path"));
         assertThat(options.getPhantomjs(), is("phantomjs-path"));

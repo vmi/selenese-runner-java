@@ -34,6 +34,7 @@ public class DefaultConfigTest {
         "--" + IGNORE_SCREENSHOT_COMMAND,
         "--" + BASEURL + "=http://baseurl.example.com/opt",
         "--" + FIREFOX + "=/opt/path/to/firefox/binary",
+        "--" + GECKODRIVER + "=/opt/path/to/geckodriver",
         "--" + CHROMEDRIVER + "=/opt/path/to/chromedriver",
         "--" + IEDRIVER + "=/opt/path/to/iedriver",
         "--" + PHANTOMJS + "=/opt/path/to/phantomjs",
@@ -73,6 +74,7 @@ public class DefaultConfigTest {
         assertThat(config.isIgnoreScreenshotCommand(), is(false));
         assertThat(config.get(BASEURL), is(nullValue()));
         assertThat(config.get(FIREFOX), is(nullValue()));
+        assertThat(config.get(GECKODRIVER), is(nullValue()));
         assertThat(config.get(CHROMEDRIVER), is(nullValue()));
         assertThat(config.get(IEDRIVER), is(nullValue()));
         assertThat(config.get(PHANTOMJS), is(nullValue()));
@@ -112,6 +114,7 @@ public class DefaultConfigTest {
         assertThat(config.isIgnoreScreenshotCommand(), is(false));
         assertThat((String) config.get(BASEURL), is("http://baseurl.example.com/"));
         assertThat((String) config.get(FIREFOX), is("/path/to/firefox/binary"));
+        assertThat((String) config.get(GECKODRIVER), is("/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/path/to/iedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/path/to/phantomjs"));
@@ -151,6 +154,7 @@ public class DefaultConfigTest {
         assertThat(config.isIgnoreScreenshotCommand(), is(true));
         assertThat((String) config.get(BASEURL), is("http://baseurl.example.com/opt"));
         assertThat((String) config.get(FIREFOX), is("/opt/path/to/firefox/binary"));
+        assertThat((String) config.get(GECKODRIVER), is("/opt/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/opt/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/opt/path/to/iedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/opt/path/to/phantomjs"));

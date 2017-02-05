@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.2.0
+
+* Add new option `--geckodriver` which specifies geckodriver binary path. (#225)
+
 ### 3.1.0
 
 * Fix the `click` command to fail when the element is not visible. (#224)

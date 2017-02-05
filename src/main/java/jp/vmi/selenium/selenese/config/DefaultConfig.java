@@ -150,6 +150,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--firefox", metaVar = "<path>", usage = "path to 'firefox' binary. (implies '--driver firefox')")
     private String firefox;
 
+    @Option(name = "--geckodriver", metaVar = "<path>", usage = "path to 'geckodriver' binary. (implies '--driver firefox')")
+    private String geckodriver;
+
     @Option(name = "--chromedriver", metaVar = "<path>", usage = "path to 'chromedriver' binary. (implies '--driver chrome')")
     private String chromedriver;
 
@@ -419,6 +422,15 @@ public class DefaultConfig implements IConfig {
 
     public void setFirefox(String firefox) {
         this.firefox = firefox;
+    }
+
+    @Override
+    public String getGeckodriver() {
+        return geckodriver != null ? geckodriver : (parentOptions != null ? parentOptions.getGeckodriver() : null);
+    }
+
+    public void setGeckodriver(String geckodriver) {
+        this.geckodriver = geckodriver;
     }
 
     @Override

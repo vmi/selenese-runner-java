@@ -11,10 +11,13 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -166,6 +169,12 @@ public class FirefoxDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
+        if (driverOptions.has(GECKODRIVER)) {
+            String executable = PathUtils.normalize(driverOptions.get(GECKODRIVER));
+            if (!new File(executable).canExecute())
+                throw new IllegalArgumentException("Missing GeckoDriver: " + executable);
+            System.setProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, executable);
+        }
         DesiredCapabilities caps = DesiredCapabilities.firefox();
         setupProxy(caps, driverOptions);
         caps.merge(driverOptions.getCapabilities());

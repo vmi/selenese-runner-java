@@ -43,6 +43,8 @@ public class DriverOptions {
         NO_PROXY,
         /** --firefox */
         FIREFOX,
+        /** --geckodriver */
+        GECKODRIVER,
         /** --chromedriver */
         CHROMEDRIVER,
         /** --iedriver */
@@ -68,7 +70,8 @@ public class DriverOptions {
         /** --chrome-extension */
         CHROME_EXTENSION,
         /** --chrome-experimental-options */
-        CHROME_EXPERIMENTAL_OPTIONS,;
+        CHROME_EXPERIMENTAL_OPTIONS,
+        ;
 
         /**
          * Get option name as "word-word-word".

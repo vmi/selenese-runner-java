@@ -30,6 +30,7 @@ public interface IConfig {
     public static final String IGNORE_SCREENSHOT_COMMAND = "ignore-screenshot-command";
     public static final String BASEURL = "baseurl";
     public static final String FIREFOX = "firefox";
+    public static final String GECKODRIVER = "geckodriver";
     public static final String CHROMEDRIVER = "chromedriver";
     public static final String IEDRIVER = "iedriver";
     public static final String PHANTOMJS = "phantomjs";
@@ -117,6 +118,8 @@ public interface IConfig {
     String getBaseurl();
 
     String getFirefox();
+
+    String getGeckodriver();
 
     String getChromedriver();
 

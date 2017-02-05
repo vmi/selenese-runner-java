@@ -111,7 +111,7 @@ public class Main {
         String driverName = config.getDriver();
         DriverOptions driverOptions = new DriverOptions(config);
         if (driverName == null) {
-            if (driverOptions.has(DriverOption.FIREFOX))
+            if (driverOptions.has(DriverOption.FIREFOX) || driverOptions.has(DriverOption.GECKODRIVER))
                 driverName = WebDriverManager.FIREFOX;
             else if (driverOptions.has(DriverOption.CHROMEDRIVER))
                 driverName = WebDriverManager.CHROME;
