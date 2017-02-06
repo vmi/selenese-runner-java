@@ -57,6 +57,7 @@ Usage
      --ignore-screenshot-command             : ignore captureEntirePageScreenshot command.
      --baseurl (-b) <baseURL>                : override base URL set in selenese.
      --firefox <path>                        : path to 'firefox' binary. (implies '--driver firefox')
+     --geckodriver <path>                    : path to 'geckodriver' binary. (implies '--driver firefox')
      --chromedriver <path>                   : path to 'chromedriver' binary. (implies '--driver chrome')
      --iedriver <path>                       : path to 'IEDriverServer' binary. (implies '--driver ie')
      --phantomjs <path>                      : path to 'phantomjs' binary. (implies '--driver phantomjs')
