@@ -410,4 +410,9 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         assertThat(result, is(instanceOf(Success.class)));
     }
 
+    @Test
+    public void test227() {
+        execute("testcase_issue227");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }
