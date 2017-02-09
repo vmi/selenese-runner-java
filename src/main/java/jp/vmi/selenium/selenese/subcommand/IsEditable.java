@@ -25,14 +25,7 @@ public class IsEditable extends AbstractSubCommand<Boolean> {
         WebElement element = context.findElement(args[ARG_LOCATOR]);
         if (!element.isEnabled())
             return false;
-        switch (element.getTagName().toLowerCase()) {
-        case "input":
-            String readonly = element.getAttribute("readonly");
-            return readonly == null || "false".equals(readonly);
-        case "select":
-            return true;
-        default:
-            return false;
-        }
+        String readonly = element.getAttribute("readonly");
+        return readonly == null || "false".equals(readonly);
     }
 }

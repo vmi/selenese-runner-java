@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.2.0
 
 * Add new option `--geckodriver` which specifies geckodriver binary path. (#226)
+* Fix the behavior of `(assert|verify|waitFor|store)Editable` according to Selenium IDE. (#227)
 
 ### 3.1.0
 

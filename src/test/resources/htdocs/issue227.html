@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #227</title>
+    <script type="text/javascript"><!--
+    function mkTag(i, type, attr) {
+      var t1 = "<li>id_" + i + ": <input type=\"" + type + "\" id=\"id_" + i + "\"";
+      var t2 = "value=\"" + type + "\"></li>";
+      if (attr) {
+        return t1 + " " + attr + " " + t2;
+      } else {
+        return t1 + t2;
+      }
+    }
+
+    function genInput() {
+      var i = 7;
+      [ "button",
+        "checkbox",
+        "color",
+        "date",
+        "datetime",
+        "datetime-local",
+        "email",
+        "file",
+        "hidden",
+        "image",
+        "month",
+        "number",
+        "password",
+        "radio",
+        "range",
+        "min",
+        "max",
+        "value",
+        "step",
+        "reset",
+        "search",
+        "submit",
+        "tel",
+        "text",
+        "time",
+        "url",
+        "week" ].forEach(function(type) {
+          document.write(mkTag(i++, type));
+          document.write(mkTag(i++, type, "disabled"));
+          document.write(mkTag(i++, type, "readonly"));
+        });
+    }
+    //--></script>
+  </head>
+  <body>
+    <h1>Issue #227</h1>
+    <hr>
+    <ul>
+      <li>id_1: <button id="id_1">button tag</button></li>
+      <li>id_2: <button id="id_2" disabled>button tag</button></li>
+      <li>id_3: <button id="id_3" readonly>button tag</button></li>
+      <li>id_4: <select id="id_4"><option>select1</option><option>select2</option></select></li>
+      <li>id_5: <select id="id_5" disabled><option>select1</option><option>select2</option></select></li>
+      <li>id_6: <select id="id_6" readonly><option>select1</option><option>select2</option></select></li>
+      <script type="text/javascript">genInput();</script>
+    </ul>
+  </body>
+</html>
