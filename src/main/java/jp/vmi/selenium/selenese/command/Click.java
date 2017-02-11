@@ -32,8 +32,8 @@ public class Click extends AbstractCommand {
             element.click();
             return SUCCESS;
         } catch (ElementNotVisibleException e) {
-            context.getJSLibrary().fireEvent(driver, element, "click");
-            return new Success("Success, but the element is not visible");
+            context.executeScript("arguments[0].click()", element);
+            return new Success("Success (the element is not visible)");
         }
     }
 }

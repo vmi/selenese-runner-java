@@ -5,10 +5,11 @@ Selenese Runner Java Relase Note
 
 * Add new option `--geckodriver` which specifies geckodriver binary path. (#226)
 * Fix the behavior of `(assert|verify|waitFor|store)Editable` according to Selenium IDE. (#227)
+* Re-fix the behavior of `click` command for invisible element. (#224)
 
 ### 3.1.0
 
-* Fix the `click` command to fail when the element is not visible. (#224)
+* Fix `click` command to fail when the element is not visible. (#224)
 * Update dependency versions.
 
 ### 3.0.1
