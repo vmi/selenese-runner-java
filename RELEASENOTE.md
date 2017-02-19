@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.3.0
+
+* Fix to output an error if the specified profile does not exist.
+
 ### 3.2.0
 
 * Add new option `--geckodriver` which specifies geckodriver binary path. (#226)

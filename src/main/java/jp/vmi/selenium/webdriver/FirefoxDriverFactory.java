@@ -118,6 +118,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
                 // see http://code.google.com/p/selenium/wiki/TipsAndTricks
                 ProfilesIni allProfiles = new ProfilesIni();
                 profile = allProfiles.getProfile(profileName);
+                if (profile == null)
+                    throw new IllegalArgumentException("Profile '" + profile + "' does not exist.");
                 log.info("Firefox profile: {}", profileName);
             } else {
                 File dir = new File(profileDir);
