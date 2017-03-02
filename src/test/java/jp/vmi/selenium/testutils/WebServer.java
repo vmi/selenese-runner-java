@@ -121,10 +121,10 @@ public class WebServer {
     }
 
     private static enum Status {
-        OK(200, "OK"), // -
-        NOT_FOUND(403, "Not Found"), // -
-        FORBIDDEN(404, "Forbidden"), // -
-        INTERNAL_SERVER_ERROR(500, "Internal Server Error"), // -
+        OK(200, "OK"),
+        NOT_FOUND(403, "Not Found"),
+        FORBIDDEN(404, "Forbidden"),
+        INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
         ;
         private final int code;
         private final String message;
