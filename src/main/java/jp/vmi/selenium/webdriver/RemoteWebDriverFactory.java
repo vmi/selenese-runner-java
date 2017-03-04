@@ -6,6 +6,7 @@ import java.net.URL;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         RemoteWebDriver driver = new RemoteWebDriver(url, caps);
         log.info("Session ID: " + driver.getSessionId());
         setInitialWindowSize(driver, driverOptions);
+        driver.setFileDetector(new LocalFileDetector());
         return driver;
     }
 }

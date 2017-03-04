@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.3.0
 
 * Fix to output an error if the specified profile does not exist.
+* Add local file detector for file uploading by RemoteWebDriver. (#231)
 
 ### 3.2.0
 
