@@ -406,6 +406,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void test224() {
+        assumeNot(HTMLUNIT);
         execute("testcase_issue224");
         assertThat(result, is(instanceOf(Success.class)));
     }

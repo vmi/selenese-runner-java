@@ -1,8 +1,6 @@
 package jp.vmi.selenium.selenese.utils;
 
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.support.ui.Duration;
+import java.time.Duration;
 
 /**
  * Record log message.
@@ -79,17 +77,17 @@ public class StopWatch {
      */
     public String getDurationString() {
         StringBuilder ds = new StringBuilder();
-        Duration d = new Duration(endTime - startTime, TimeUnit.MILLISECONDS);
-        long h = d.in(TimeUnit.HOURS);
+        Duration d = Duration.ofMillis(endTime - startTime);
+        long h = d.toHours();
         if (h > 0)
             ds.append(h).append("hour");
-        long m = d.in(TimeUnit.MINUTES) % 60;
+        long m = d.toMinutes() % 60;
         if (ds.length() > 0)
             ds.append('/').append(m).append("min");
         else if (m > 0)
             ds.append(m).append("min");
-        long s = d.in(TimeUnit.SECONDS) % 60;
-        double ms = (d.in(TimeUnit.MILLISECONDS) % 1000) / 1000.0;
+        long s = d.getSeconds() % 60;
+        double ms = (d.toMillis() % 1000) / 1000.0;
         if (ds.length() > 0)
             ds.append('/');
         ds.append(String.format("%.3fsec", s + ms));
