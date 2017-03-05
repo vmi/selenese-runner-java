@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "typeKeys".
@@ -38,6 +38,6 @@ public class TypeKeys extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         element.sendKeys(value);
-        return new Success();
+        return SUCCESS;
     }
 }

@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Commands of "assert*", "verify*", and "waitFor*".
@@ -97,11 +97,11 @@ public class Assertion extends AbstractCommand {
                 try {
                     boolean result = (Boolean) getterSubCommand.execute(context, getterArgs);
                     if (result ^ isInverse)
-                        return new Success();
+                        return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
                 } catch (NotFoundException e) {
                     if (isInverse)
-                        return new Success();
+                        return SUCCESS;
                     message = String.format("Assertion failed (%s)", e.getMessage());
                     found = false;
                 }
@@ -109,13 +109,13 @@ public class Assertion extends AbstractCommand {
                 try {
                     String resultString = SeleniumUtils.convertToString(getterSubCommand.execute(context, getterArgs));
                     if (SeleniumUtils.patternMatches(expected, resultString) ^ isInverse)
-                        return new Success();
+                        return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
                         StringEscapeUtils.escapeJava(resultString),
                         isInverse ? "Not " : "", StringEscapeUtils.escapeJava(expected));
                 } catch (NotFoundException e) {
                     if (isInverse)
-                        return new Success();
+                        return SUCCESS;
                     message = String.format("Assertion failed (%s)", e.getMessage());
                     found = false;
                 }

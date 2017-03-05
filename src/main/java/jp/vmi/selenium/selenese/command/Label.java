@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "label".
@@ -34,6 +34,6 @@ public class Label extends AbstractCommand implements ILabel {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        return new Success();
+        return SUCCESS;
     }
 }

@@ -26,7 +26,6 @@ import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.result.CommandResult;
 import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
 
 /**
@@ -52,24 +51,6 @@ public class HtmlResult {
             ICommand command = (ICommand) context.model.get(args[2]);
             List<CommandResult> results = cresultList.getResults(command);
             context.model.put(args[0], results);
-            return null;
-        }
-    }
-
-    // Usage: ${@tail VAR LIST_VAR}
-    private static class AnnoTail implements AnnotationProcessor<Level> {
-
-        @Override
-        public String getType() {
-            return "tail";
-        }
-
-        @Override
-        public Level eval(AnnotationToken token, TemplateContext context) {
-            String[] args = token.getArguments().split("\\s+");
-            List<?> list = (List<?>) context.model.get(args[1]);
-            Object tail = (list != null && !list.isEmpty()) ? list.get(list.size() - 1) : null;
-            context.model.put(args[0], tail);
             return null;
         }
     }
@@ -128,7 +109,6 @@ public class HtmlResult {
             engine.registerRenderer(Result.class, new ResultRenderer());
             engine.registerRenderer(Node.class, new NodeRenderer(engine, getTemplate("index-node.html")));
             engine.registerAnnotationProcessor(new AnnoCommandResults());
-            engine.registerAnnotationProcessor(new AnnoTail());
         }
         return engine;
     }
@@ -175,10 +155,8 @@ public class HtmlResult {
                     summary.numTestFailures++;
                     break;
                 }
-                CommandResultList resultList = testCase.getResultList();
                 for (ICommand command : testCase.getCommandList()) {
-                    Result result = resultList.getLastResult(command);
-                    switch (result.getLevel()) {
+                    switch (command.getResult().getLevel()) {
                     case UNEXECUTED:
                         // no count
                         break;

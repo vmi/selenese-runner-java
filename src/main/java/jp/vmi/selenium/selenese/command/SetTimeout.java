@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "setTimeout".
@@ -32,7 +32,7 @@ public class SetTimeout extends AbstractCommand {
             return new Warning("the argument of setTimeout is ignored: empty.");
         try {
             context.setTimeout(Integer.parseInt(timeout));
-            return new Success();
+            return SUCCESS;
         } catch (NumberFormatException e) {
             return new Warning("the argument of setTimeout is ignored: invalid number format: " + timeout);
         }

@@ -20,9 +20,9 @@ public class ScreenshotInterceptor extends AbstractDoCommandInterceptor {
             ScreenshotHandler handler = (ScreenshotHandler) context;
             String baseName = context.getCurrentTestCase().getBaseName();
             try {
-                result.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()), "all");
+                command.addScreenshot(handler.takeScreenshotAll(baseName, command.getIndex()), "all");
                 if (!result.isSuccess())
-                    result.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()), "fail");
+                    command.addScreenshot(handler.takeScreenshotOnFail(baseName, command.getIndex()), "fail");
             } catch (WebDriverException e) {
                 // ignore if failed to capturing.
             }

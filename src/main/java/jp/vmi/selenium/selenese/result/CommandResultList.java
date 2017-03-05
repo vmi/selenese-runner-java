@@ -124,19 +124,6 @@ public class CommandResultList implements List<CommandResult> {
     }
 
     /**
-     * Get last result of the command.
-     *
-     * @param command command.
-     * @return result.
-     */
-    public Result getLastResult(ICommand command) {
-        List<CommandResult> results = getResults(command);
-        if (results == null || results.isEmpty())
-            return UNEXECUTED;
-        return results.get(results.size() - 1).getResult();
-    }
-
-    /**
      * Set end time.
      *
      * @param endTime end time.

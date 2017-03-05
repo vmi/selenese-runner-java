@@ -5,10 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "pause".
@@ -28,7 +28,7 @@ public class Pause extends AbstractCommand {
             return new Warning("pause is ignored: empty time.");
         try {
             Thread.sleep(Long.parseLong(pauseMSec));
-            return new Success();
+            return SUCCESS;
         } catch (NumberFormatException e) {
             return new Warning("pause is ignored: invalid time: " + pauseMSec);
         } catch (InterruptedException e) {

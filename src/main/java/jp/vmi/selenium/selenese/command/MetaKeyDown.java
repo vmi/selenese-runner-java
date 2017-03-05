@@ -2,7 +2,8 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
+
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "metaKeyDown".
@@ -16,6 +17,6 @@ public class MetaKeyDown extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         context.getModifierKeyState().metaKeyDown();
-        return new Success();
+        return SUCCESS;
     }
 }

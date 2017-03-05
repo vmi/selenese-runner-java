@@ -13,6 +13,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "include".
@@ -38,11 +39,11 @@ public class Include extends AbstractCommand {
             String seq = context.getCommandListIterator().getCommandSequence().toString();
             StartMarker marker = new StartMarker(this, "Start: " + filename);
             long now = System.currentTimeMillis();
-            CommandResult markerResult = new CommandResult(seq, marker, new Success(), now, now);
+            CommandResult markerResult = new CommandResult(seq, marker, marker.getScreenshots(), marker.getResult(), now, now);
             current.getResultList().add(markerResult);
             try {
                 Result result = child.execute(current, context);
-                return result.isSuccess() ? new Success("Success: " + filename) : result;
+                return result == SUCCESS ? new Success("Success: " + filename) : result;
             } catch (InvalidSeleneseException e) {
                 return new Error(e);
             }

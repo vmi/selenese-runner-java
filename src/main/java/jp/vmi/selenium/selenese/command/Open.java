@@ -6,9 +6,9 @@ import java.net.URISyntaxException;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "open".
@@ -35,6 +35,6 @@ public class Open extends AbstractCommand {
             }
         }
         context.getWrappedDriver().get(url);
-        return new Success();
+        return SUCCESS;
     }
 }

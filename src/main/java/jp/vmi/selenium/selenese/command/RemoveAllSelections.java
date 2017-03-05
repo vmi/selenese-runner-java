@@ -27,10 +27,10 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of RemoveAllSelections.
@@ -49,6 +49,6 @@ public class RemoveAllSelections extends AbstractCommand {
         if (!select.isMultiple)
             return new Warning("The specified \"select\" is not multiple.");
         select.unsetOptions();
-        return new Success();
+        return SUCCESS;
     }
 }

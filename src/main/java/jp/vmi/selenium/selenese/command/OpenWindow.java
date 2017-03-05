@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * An implementation of the "openWindow" method from Selenium.
@@ -22,6 +22,6 @@ public class OpenWindow extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String script = String.format("window.open('%s', '%s'); null;", curArgs[ARG_URL], curArgs[ARG_WINDOW_ID]);
         context.getEval().eval(context, script);
-        return new Success();
+        return SUCCESS;
     }
 }

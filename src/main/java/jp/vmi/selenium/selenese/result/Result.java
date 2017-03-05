@@ -1,8 +1,5 @@
 package jp.vmi.selenium.selenese.result;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -26,11 +23,6 @@ public abstract class Result implements Comparable<Result> {
             this.exitCode = exitCode;
             this.strictExitCode = strictExitCode;
         }
-
-        @Override
-        public String toString() {
-            return name().toLowerCase();
-        }
     }
 
     private static final Pattern SKIP_RE = Pattern.compile("ByGuice"
@@ -41,7 +33,6 @@ public abstract class Result implements Comparable<Result> {
         + "|^org\\.eclipse\\.jdt\\.");
 
     private final String message;
-    private List<Screenshot> screenshots = null;
 
     /**
      * Constructor.
@@ -147,29 +138,6 @@ public abstract class Result implements Comparable<Result> {
      */
     public String getMessage() {
         return message;
-    }
-
-    /**
-     * Add screenshot information.
-     *
-     * @param path image path.
-     * @param label label.
-     */
-    public void addScreenshot(String path, String label) {
-        if (path == null)
-            return;
-        if (screenshots == null)
-            screenshots = new ArrayList<>();
-        screenshots.add(new Screenshot(path, label));
-    }
-
-    /**
-     * Get map of screenshots.
-     *
-     * @return map of screenshots. key is label, and value is path.
-     */
-    public List<Screenshot> getScreenshots() {
-        return screenshots != null ? screenshots : Collections.emptyList();
     }
 
     /**

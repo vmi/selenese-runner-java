@@ -15,6 +15,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "rollup".
@@ -68,6 +69,6 @@ public class Rollup extends AbstractCommand {
             return new Error("No such rollup rule: " + rollupName);
         CommandList commandList = rollupRule.getExpandedCommands(context, kwArgsMap);
         Result result = commandList.execute(context, new CommandResultList());
-        return result.isSuccess() ? new Success("Success: " + rollupRule.getName()) : result;
+        return result == SUCCESS ? new Success("Success: " + rollupRule.getName()) : result;
     }
 }

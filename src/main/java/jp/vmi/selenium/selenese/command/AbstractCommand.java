@@ -1,6 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
@@ -13,6 +16,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
 import static jp.vmi.selenium.selenese.command.StartLoop.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Base implementation of command.
@@ -24,7 +28,9 @@ public abstract class AbstractCommand implements ICommand {
     private final String[] args;
     private final ArgumentType[] argTypes;
     private final int[] locatorIndexes;
+    private Result result = UNEXECUTED;
     private StartLoop startLoop = NO_START_LOOP;
+    private List<Screenshot> screenshots = null;
 
     /**
      * Constructor.
@@ -98,6 +104,12 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
+    @Deprecated
+    public String[] convertLocators(String[] args) {
+        return Arrays.stream(extractLocators(args)).map(Locator::toLocatorString).toArray(String[]::new);
+    }
+
+    @Override
     public Locator[] extractLocators(String[] args) {
         if (locatorIndexes.length == 0)
             return Locator.EMPTY_ARRAY;
@@ -140,12 +152,18 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public final Result execute(Context context, String... curArgs) {
         try {
-            return executeImpl(context, curArgs);
+            result = executeImpl(context, curArgs);
         } catch (TimeoutException e) {
-            return new Error("Timed out");
+            result = new Error("Timed out");
         } catch (WebDriverException e) {
-            return new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
+            result = new Failure(e.getMessage().replaceAll("(\r?\n)+", " / "));
         }
+        return result;
+    }
+
+    @Override
+    public Result getResult() {
+        return result;
     }
 
     @Override
@@ -156,6 +174,22 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public StartLoop getStartLoop() {
         return startLoop;
+    }
+
+    @Override
+    public void addScreenshot(String path, String label) {
+        if (path == null)
+            return;
+        if (screenshots == null)
+            screenshots = new ArrayList<>();
+        screenshots.add(new Screenshot(path, label));
+    }
+
+    @Override
+    public List<Screenshot> getScreenshots() {
+        if (screenshots == null)
+            return Collections.emptyList();
+        return screenshots;
     }
 
     static String toString(int index, String name, String[] args) {

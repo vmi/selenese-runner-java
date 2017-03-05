@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
@@ -38,12 +41,23 @@ public interface ICommand {
     String getName();
 
     /**
+     * Convert locators from arguments.
+     *
+     * @param args the command arguments.
+     * @return converted locators.
+     */
+    @Deprecated
+    String[] convertLocators(String[] args);
+
+    /**
      * Extract locators from arguments.
      *
      * @param args the command arguments.
      * @return extracted parsed locators.
      */
-    Locator[] extractLocators(String[] args);
+    default Locator[] extractLocators(String[] args) {
+        return Arrays.stream(convertLocators(args)).map(Locator::new).toArray(Locator[]::new);
+    }
 
     /**
      * May the command update screen?
@@ -63,6 +77,14 @@ public interface ICommand {
      * @return the command result.
      */
     Result execute(Context context, String... curArgs);
+
+    /**
+     * Get the command result.
+     *
+     * @return the command result.
+     */
+    Result getResult();
+
     /**
      * Set beginning-of-loop command.
      *
@@ -77,4 +99,18 @@ public interface ICommand {
      */
     StartLoop getStartLoop();
 
+    /**
+     * Add screenshot image.
+     *
+     * @param path image path.
+     * @param label image label.
+     */
+    void addScreenshot(String path, String label);
+
+    /**
+     * Get list of screenshot images.
+     *
+     * @return list of image path of sreenshot.
+     */
+    List<Screenshot> getScreenshots();
 }

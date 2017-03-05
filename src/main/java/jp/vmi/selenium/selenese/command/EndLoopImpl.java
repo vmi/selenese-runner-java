@@ -2,7 +2,8 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
+
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Default implementation for EndLoop.
@@ -22,6 +23,6 @@ public abstract class EndLoopImpl extends AbstractCommand implements EndLoop {
     protected Result executeImpl(Context context, String... curArgs) {
         StartLoop startLoop = getStartLoop();
         context.getCommandListIterator().jumpTo(startLoop);
-        return new Success();
+        return SUCCESS;
     }
 }

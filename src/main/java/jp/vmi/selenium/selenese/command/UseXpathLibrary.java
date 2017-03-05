@@ -27,10 +27,10 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of UseXpathLibrary.
@@ -52,7 +52,7 @@ public class UseXpathLibrary extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         switch (curArgs[ARG_LIBRARY_NAME]) {
         case "javascript-xpath":
-            return new Success();
+            return SUCCESS;
         default:
             return new Warning("XPath library to use must be 'javascript-xpath'");
         }

@@ -8,10 +8,10 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ModifierKeyState;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "type".
@@ -39,7 +39,7 @@ public class Type extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         String tagName = element.getTagName().toLowerCase();
-        Result result = null;
+        Result result = SUCCESS;
         switch (tagName) {
         case "input":
             String type = element.getAttribute("type");
@@ -54,6 +54,6 @@ public class Type extends AbstractCommand {
             break;
         }
         context.getJSLibrary().fireEvent(driver, element, "change");
-        return result != null ? result : new Success();
+        return result;
     }
 }

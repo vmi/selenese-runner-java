@@ -5,9 +5,9 @@ import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "highlight".
@@ -24,6 +24,6 @@ public class Highlight extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         if (context instanceof Runner)
             ((Runner) context).highlight(new Locator(curArgs[ARG_LOCATOR]), HighlightStyle.ELEMENT_STYLES[0]);
-        return new Success();
+        return SUCCESS;
     }
 }

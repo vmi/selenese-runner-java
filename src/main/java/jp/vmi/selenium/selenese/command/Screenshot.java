@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.result;
+package jp.vmi.selenium.selenese.command;
 
 /**
  * Screenshot information.

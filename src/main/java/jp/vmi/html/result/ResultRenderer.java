@@ -13,6 +13,6 @@ public class ResultRenderer implements Renderer<Result> {
 
     @Override
     public String render(Result result, Locale locale) {
-        return result.getLevel().toString();
+        return result.getClass().getSimpleName().toLowerCase();
     }
 }

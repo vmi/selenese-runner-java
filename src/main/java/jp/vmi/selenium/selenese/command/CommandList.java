@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -121,6 +122,8 @@ public class CommandList extends ArrayList<ICommand> {
             while (isContinued && commandListIterator.hasNext()) {
                 ICommand command = commandListIterator.next();
                 sequence.increment(command);
+                List<Screenshot> ss = command.getScreenshots();
+                int prevSSIndex = (ss == null) ? 0 : ss.size();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
                 evalCurArgs(context, curArgs);
                 Result result = doCommand(context, command, curArgs);
@@ -128,8 +131,15 @@ public class CommandList extends ArrayList<ICommand> {
                     isContinued = false;
                 else
                     context.waitSpeed();
-                CommandResult cresult = new CommandResult(sequence.toString(), command, result, cresultList.getEndTime(), System.currentTimeMillis());
+                ss = command.getScreenshots();
+                List<Screenshot> newSS;
+                if (ss == null || prevSSIndex == ss.size())
+                    newSS = null;
+                else
+                    newSS = new ArrayList<>(ss.subList(prevSSIndex, ss.size()));
+                CommandResult cresult = new CommandResult(sequence.toString(), command, newSS, result, cresultList.getEndTime(), System.currentTimeMillis());
                 cresultList.add(cresult);
+
             }
         } finally {
             context.popCommandListIterator();

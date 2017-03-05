@@ -5,6 +5,9 @@ package jp.vmi.selenium.selenese.result;
  */
 public class Success extends Result {
 
+    /** Default success */
+    public static final Success SUCCESS = new Success("Success");
+
     /**
      * Constructor.
      *
@@ -12,13 +15,6 @@ public class Success extends Result {
      */
     public Success(String message) {
         super(message);
-    }
-
-    /**
-     * Constructor.
-     */
-    public Success() {
-        this("Success");
     }
 
     @Override

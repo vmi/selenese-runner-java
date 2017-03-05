@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "selectFrame".
@@ -21,6 +21,6 @@ public class SelectFrame extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         context.getElementFinder().selectFrame(context.getWrappedDriver(), locator);
-        return new Success();
+        return SUCCESS;
     }
 }

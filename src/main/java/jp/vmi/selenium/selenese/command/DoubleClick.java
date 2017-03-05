@@ -6,9 +6,9 @@ import org.openqa.selenium.interactions.Actions;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "doubleClick".
@@ -28,6 +28,6 @@ public class DoubleClick extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).doubleClick(element).perform();
-        return new Success();
+        return SUCCESS;
     }
 }

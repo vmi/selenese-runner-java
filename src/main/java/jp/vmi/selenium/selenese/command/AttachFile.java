@@ -39,10 +39,10 @@ import com.google.common.io.Resources;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Re-implementation of AttachFile.
@@ -85,6 +85,6 @@ public class AttachFile extends AbstractCommand {
         WebElement element = context.findElement(curArgs[ARG_LOCATOR]);
         element.clear();
         element.sendKeys(outputTo.getAbsolutePath());
-        return new Success();
+        return SUCCESS;
     }
 }

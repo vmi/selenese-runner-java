@@ -8,6 +8,8 @@ import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
+import static jp.vmi.selenium.selenese.result.Success.*;
+
 /**
  * Commands implemented by WebDriverCommandProcessor or ISubCommand.
  */
@@ -36,6 +38,6 @@ public class BuiltInCommand extends AbstractCommand {
             int timeout = context.getTimeout();
             WaitForPageToLoad.execute(context, timeout);
         }
-        return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : new Success();
+        return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
     }
 }
