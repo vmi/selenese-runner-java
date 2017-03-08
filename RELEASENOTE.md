@@ -5,7 +5,7 @@ Selenese Runner Java Relase Note
 
 * Fix to output an error if the specified profile does not exist.
 * Add local file detector for file uploading by RemoteWebDriver. (#231)
-* Catch up Selenium 3.2.0.
+* Catch up Selenium 3.3.1.
 * Update dependency versions.
 
 ### 3.2.0
