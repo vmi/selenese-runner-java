@@ -53,7 +53,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <htmlunit-driver.version>2.25</htmlunit-driver.version>
     <httpclient.version>4.5.3</httpclient.version>
     <httpcore.version>4.4.6</httpcore.version>
-    <slf4j.version>1.7.24</slf4j.version>
+    <slf4j.version>1.7.25</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -503,7 +503,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.2</version>
     </dependency>
     <dependency>
       <groupId>xalan</groupId>
@@ -559,7 +559,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.littleshoot</groupId>
       <artifactId>littleproxy</artifactId>
-      <version>0.5.3</version>
+      <version>1.1.2</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

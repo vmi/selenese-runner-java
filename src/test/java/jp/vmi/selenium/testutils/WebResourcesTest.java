@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -37,6 +38,7 @@ public class WebResourcesTest {
     }
 
     // proxy access.
+    @Ignore
     @Test
     public void testWebProxyResources() throws IOException {
         String baseURL = wsr.getBaseURL();

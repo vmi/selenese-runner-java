@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TemporaryFolder;
 
-import static jp.vmi.selenium.webdriver.FirefoxDriverFactory.*;
+import static org.openqa.selenium.firefox.FirefoxDriver.SystemProperty.*;
 
 /**
  * Test for {@link FirefoxDriverFactory}.
@@ -26,24 +26,22 @@ public class FirefoxDriverFactoryTest {
     @Rule
     public ExternalResource systemProperty = new ExternalResource() {
 
-        private static final String key = WEBDRIVER_FIREFOX_BIN;
-
         String original;
 
         @Override
         protected void before() throws Throwable {
             super.before();
-            original = System.getProperty(key);
+            original = System.getProperty(BROWSER_BINARY);
             folder.create(); // why need?
-            System.setProperty(key, folder.newFolder().getAbsolutePath());
+            System.setProperty(BROWSER_BINARY, folder.newFolder().getAbsolutePath());
         }
 
         @Override
         protected void after() {
             if (original == null) {
-                System.clearProperty(key);
+                System.clearProperty(BROWSER_BINARY);
             } else {
-                System.setProperty(key, original);
+                System.setProperty(BROWSER_BINARY, original);
             }
             super.after();
         }
@@ -55,9 +53,8 @@ public class FirefoxDriverFactoryTest {
      * @throws IOException exception.
      * @throws IllegalArgumentException exception.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
-        System.setProperty(WEBDRIVER_FIREFOX_BIN, folder.newFolder().getAbsolutePath());
         new FirefoxDriverFactory().newInstance(new DriverOptions());
     }
 }

@@ -25,9 +25,9 @@
         <ignoreVersion type="regex">4\..*</ignoreVersion>
       </ignoreVersions>
     </rule>
-    <rule groupId="org.littleshoot" artifactId="littleproxy">
+    <rule groupId="com.floreysoft" artifactId="jmte">
       <ignoreVersions>
-        <ignoreVersion type="regex">1\.1\..*</ignoreVersion>
+        <ignoreVersion type="regex">4\..*</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>

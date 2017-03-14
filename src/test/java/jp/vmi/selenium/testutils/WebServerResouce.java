@@ -21,6 +21,15 @@ public class WebServerResouce extends ExternalResource {
     }
 
     /**
+     * Get server port.
+     *
+     * @return port number.
+     */
+    public int getServerPort() {
+        return server.getServerPort();
+    }
+
+    /**
      * Get server name.
      *
      * @return server name.

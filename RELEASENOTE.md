@@ -7,6 +7,8 @@ Selenese Runner Java Relase Note
 * Add local file detector for file uploading by RemoteWebDriver. (#231)
 * Catch up Selenium 3.3.1.
 * Update dependency versions.
+* Fix FirefoxDriver initialization failed. (#232)
+    * Note: Several tests fail with Firefox. I think that this is a problem of Selenium 3.3.1.
 
 ### 3.2.0
 
