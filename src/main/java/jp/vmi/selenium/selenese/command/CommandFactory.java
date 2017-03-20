@@ -47,6 +47,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(Click.class);
         addConstructor(IfElementThenClick.class);
+        addConstructor(GetElementByBackgroundColor.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);
         addConstructor(ControlKeyDown.class);

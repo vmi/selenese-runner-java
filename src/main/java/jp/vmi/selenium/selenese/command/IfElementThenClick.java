@@ -1,14 +1,14 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-import jp.vmi.selenium.selenese.result.Success;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
+import static jp.vmi.selenium.selenese.command.ArgumentType.LOCATOR;
+import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
 
 /**
  * Command "IfElementThenClick".
@@ -28,11 +28,11 @@ public class IfElementThenClick extends AbstractCommand {
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         try {
+            System.out.println( element.isDisplayed() );
             element.click();
             return SUCCESS;
         } catch (ElementNotVisibleException e) {
-            context.executeScript("arguments[0].click()", element);
-            return new Success("Success (the element is not visible)");
+            return new Error("Error (the element is not visible)");
         }
     }
 }
