@@ -1,22 +1,16 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Constructor;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Factory of selenese command.
@@ -52,6 +46,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(ChooseCancelOnNextConfirmation.class);
         addConstructor(ChooseOkOnNextConfirmation.class);
         addConstructor(Click.class);
+        addConstructor(IfElementThenClick.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);
         addConstructor(ControlKeyDown.class);
