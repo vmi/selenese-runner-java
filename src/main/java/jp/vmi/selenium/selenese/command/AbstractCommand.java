@@ -1,22 +1,21 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriverException;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 
-import static jp.vmi.selenium.selenese.command.StartLoop.*;
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static jp.vmi.selenium.selenese.command.StartLoop.NO_START_LOOP;
+import static jp.vmi.selenium.selenese.result.Unexecuted.UNEXECUTED;
 
 /**
  * Base implementation of command.
