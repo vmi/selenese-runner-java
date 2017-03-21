@@ -67,11 +67,12 @@ public class WebDriverProxyTest extends TestBase {
             assumeNoException("Unsupported platform.", e);
             return;
         }
+        wpr.setLocalPort(wsr.getServerPort());
         wpr.resetCount();
-        driver.get(wsr.getBaseURL());
+        driver.get(WebProxyResource.DUMMY_URI);
         String actualTitle = driver.getTitle();
         int actualCount = wpr.getCount();
-        log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, factoryName);
+        log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, currentFactoryName);
         assertThat(actualTitle, is("Index for Unit Test"));
         assumeThat("proxy option does not work on PhantomJS 1.9.2 for Mac OS X",
             driver.getClass().getSimpleName() + "/" + actualCount,

@@ -334,6 +334,15 @@ public class WebServer {
     }
 
     /**
+     * Get server port.
+     *
+     * @return port number.
+     */
+    public int getServerPort() {
+        return port;
+    }
+
+    /**
      * Get server name.
      *
      * @return server name.
