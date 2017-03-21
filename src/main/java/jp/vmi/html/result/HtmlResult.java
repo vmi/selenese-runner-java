@@ -198,7 +198,7 @@ public class HtmlResult {
         String html = getEngine().transform(getTemplate("result.html"), model);
         File file = new File(dir, "TEST-" + testSuite.getBaseName() + ".html");
         try {
-            FileUtils.write(file, html, "UTF-8");
+            FileUtils.write(file, html, StandardCharsets.UTF_8);
             log.info("Generated HTML result: {}", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -219,7 +219,7 @@ public class HtmlResult {
         String html = getEngine().transform(getTemplate("index.html"), model);
         File file = new File(htmlResultDir, "index.html");
         try {
-            FileUtils.write(file, html);
+            FileUtils.write(file, html, StandardCharsets.UTF_8);
             log.info("Generated index of HTML results: {}", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
