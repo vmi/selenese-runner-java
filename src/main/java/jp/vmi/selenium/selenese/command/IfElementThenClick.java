@@ -1,9 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
-import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -25,14 +24,12 @@ public class IfElementThenClick extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
-        WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getJSLibrary().replaceAlertMethod(driver, element);
+//        WebDriverElementFinder finder = context.getElementFinder();
         try {
-            System.out.println( element.isDisplayed() );
-            element.click();
+            WebElement element = context.getElementFinder().findElement(driver, locator);
+        } catch (NoSuchElementException e) {
             return SUCCESS;
-        } catch (ElementNotVisibleException e) {
-            return new Error("Error (the element is not visible)");
         }
+        return SUCCESS;
     }
 }
