@@ -88,6 +88,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(Submit.class);
         addConstructor(Type.class);
         addConstructor(TypeKeys.class, "sendKeys");
+        addConstructor(TypeRandomEmail.class);
         addConstructor(Uncheck.class);
         addConstructor(UseXpathLibrary.class);
         addConstructor(WaitForCondition.class);
