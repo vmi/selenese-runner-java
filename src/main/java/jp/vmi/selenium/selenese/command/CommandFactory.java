@@ -77,7 +77,6 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(Rollup.class);
         addConstructor(RunScript.class);
         addConstructor(Select.class);
-        addConstructor(BackgroundColor.class);
         addConstructor(SelectFrame.class);
         addConstructor(SelectPopUp.class);
         addConstructor(SelectWindow.class);
