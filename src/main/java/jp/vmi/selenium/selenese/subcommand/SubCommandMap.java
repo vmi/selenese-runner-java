@@ -1,12 +1,12 @@
 package jp.vmi.selenium.selenese.subcommand;
 
+import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
-
-import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.command.ArgumentType.VALUE;
 
 /**
  * Replacement of WebDriverCommandProcessor for extention.
@@ -26,6 +26,7 @@ public class SubCommandMap {
         register(new GetAllWindowNames());
         register(new GetAllWindowTitles());
         register(new GetAttribute());
+        register(new GetAttributeCSS());
         register(new GetAttributeFromAllWindows());
         register(new GetBodyText());
         register(new GetConfirmation());
