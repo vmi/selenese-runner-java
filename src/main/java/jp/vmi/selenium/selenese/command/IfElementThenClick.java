@@ -27,6 +27,7 @@ public class IfElementThenClick extends AbstractCommand {
 //        WebDriverElementFinder finder = context.getElementFinder();
         try {
             WebElement element = context.getElementFinder().findElement(driver, locator);
+            element.click();
         } catch (NoSuchElementException e) {
             return SUCCESS;
         }
