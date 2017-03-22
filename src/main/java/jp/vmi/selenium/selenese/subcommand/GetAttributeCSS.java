@@ -23,6 +23,11 @@ public class GetAttributeCSS extends AbstractSubCommand<String> {
         int index = attrLocator.lastIndexOf('@');
         String locator = attrLocator.substring(0, index);
         String attrName = attrLocator.substring(index + 1);
-        return context.findElement(locator).getAttribute(attrName);
+        String cssValue = context.findElement(locator).getCssValue(attrName);
+        String newCssValue = null;
+        if (cssValue.contains("rgba")) {
+            newCssValue = cssValue.replace("rgba", "rgb").replace(", 1", "");
+        }
+        return newCssValue;
     }
 }
