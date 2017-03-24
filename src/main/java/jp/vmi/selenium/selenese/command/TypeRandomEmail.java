@@ -31,9 +31,7 @@ public class TypeRandomEmail extends AbstractCommand {
         context.getJSLibrary().replaceAlertMethod(driver, element);
 
         element.sendKeys(value);
-
-        Result result = SUCCESS;
         context.getJSLibrary().fireEvent(driver, element, "change");
-        return result;
+        return SUCCESS;
     }
 }
