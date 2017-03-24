@@ -35,6 +35,8 @@ public class SubCommandMap {
         register(new GetCssCount());
         register(new GetCursorPosition());
         register(new GetDisplayStateOfElement());
+        register(new GetElementByColor());
+        register(new GetElementByBackgroundColor());
         register(new GetElementHeight());
         register(new GetElementIndex());
         register(new GetElementPositionLeft());
@@ -47,6 +49,7 @@ public class SubCommandMap {
         register(new GetPrompt());
         register(new GetSelectOptions());
         register(new GetSpeed());
+        register(new GetStateOfTab());
         register(new GetTable());
         register(new GetText());
         register(new GetTitle());
