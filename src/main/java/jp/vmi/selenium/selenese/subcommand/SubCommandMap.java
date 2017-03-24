@@ -37,6 +37,7 @@ public class SubCommandMap {
         register(new GetDisplayStateOfElement());
         register(new GetElementByColor());
         register(new GetElementByBackgroundColor());
+        register(new GetElementActivityByClass());
         register(new GetElementHeight());
         register(new GetElementIndex());
         register(new GetElementPositionLeft());
