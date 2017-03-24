@@ -34,6 +34,7 @@ public class SubCommandMap {
         register(new GetCookieByName());
         register(new GetCssCount());
         register(new GetCursorPosition());
+        register(new GetDisplayStateOfElement());
         register(new GetElementHeight());
         register(new GetElementIndex());
         register(new GetElementPositionLeft());
