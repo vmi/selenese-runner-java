@@ -1,12 +1,12 @@
 package jp.vmi.selenium.selenese.subcommand;
 
+import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.vmi.selenium.selenese.subcommand.MouseEventHandler.MouseEventType;
-
-import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.command.ArgumentType.VALUE;
 
 /**
  * Replacement of WebDriverCommandProcessor for extention.
@@ -26,6 +26,7 @@ public class SubCommandMap {
         register(new GetAllWindowNames());
         register(new GetAllWindowTitles());
         register(new GetAttribute());
+        register(new GetAttributeCSS());
         register(new GetAttributeFromAllWindows());
         register(new GetBodyText());
         register(new GetConfirmation());
@@ -33,6 +34,10 @@ public class SubCommandMap {
         register(new GetCookieByName());
         register(new GetCssCount());
         register(new GetCursorPosition());
+        register(new GetDisplayStateOfElement());
+        register(new GetElementByColor());
+        register(new GetElementByBackgroundColor());
+        register(new GetElementActivityByClass());
         register(new GetElementHeight());
         register(new GetElementIndex());
         register(new GetElementPositionLeft());
@@ -45,6 +50,7 @@ public class SubCommandMap {
         register(new GetPrompt());
         register(new GetSelectOptions());
         register(new GetSpeed());
+        register(new GetStateOfTab());
         register(new GetTable());
         register(new GetText());
         register(new GetTitle());

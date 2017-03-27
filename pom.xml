@@ -40,7 +40,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   </developers>
 
   <prerequisites>
-    <maven>3.0.4</maven>
+    <maven>3.3.9</maven>
   </prerequisites>
 
   <properties>
@@ -112,7 +112,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>2.4.2</version>
+            <version>3.0.0</version>
             <configuration>
               <finalName>selenese-runner</finalName>
               <transformers>
@@ -215,7 +215,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.6</version>
+          <version>1.6.8</version>
           <extensions>true</extensions>
           <configuration>
             <serverId>ossrh</serverId>
@@ -277,7 +277,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
+        <version>3.6.0</version>
         <configuration>
           <source>${source.version}</source>
           <target>${target.version}</target>
@@ -286,12 +286,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.0.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.0.2</version>
         <configuration>
           <archive>
             <index>true</index>
@@ -309,7 +309,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>2.10.4</version>
         <configuration>
           <locale>en</locale>
         </configuration>
@@ -325,7 +325,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -348,12 +348,12 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.6</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19</version>
+        <version>2.19.1</version>
         <configuration>
           <skipTests>${skipTests}</skipTests>
         </configuration>
@@ -361,7 +361,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.3</version>
       </plugin>
     </plugins>
   </build>
@@ -593,7 +593,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.5</version>
+        <version>3.7</version>
         <configuration>
           <targetJdk>1.7</targetJdk>
         </configuration>
@@ -601,7 +601,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
         <configuration>
           <xmlOutput>true</xmlOutput>
           <!-- Optional directory to put findbugs xdoc xml report -->
