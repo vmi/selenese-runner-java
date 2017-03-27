@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.result.Result;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
@@ -14,8 +15,8 @@ import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
  * Command "typeRandomEmail".
  */
 public class TypeRandomEmail extends AbstractCommand {
-
     private static final int ARG_LOCATOR = 0;
+    private static final int ARG_VAR_NAME = 1;
 
     TypeRandomEmail(int index, String name, String... args) {
         super(index, name, args, LOCATOR, VALUE);
@@ -24,7 +25,13 @@ public class TypeRandomEmail extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
+        String varName = curArgs[ARG_VAR_NAME];
         String value = RandomStringUtils.random(5, true, false) + "@yopmail.com";
+
+        if (!varName.equals("")) {
+            VarsMap varsMap = context.getVarsMap();
+            varsMap.put(varName, value);
+        }
 
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);

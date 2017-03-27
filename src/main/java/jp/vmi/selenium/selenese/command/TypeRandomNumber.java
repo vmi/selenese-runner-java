@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.result.Result;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
  */
 public class TypeRandomNumber extends AbstractCommand {
     private static final int ARG_LOCATOR = 0;
+    private static final int ARG_VAR_NAME = 1;
 
     TypeRandomNumber(int index, String name, String... args) {
         super(index, name, args, LOCATOR, VALUE);
@@ -23,8 +25,14 @@ public class TypeRandomNumber extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
+        String varName = curArgs[ARG_VAR_NAME];
         // Need to implement ability to pass the length of value to 'Random' method
         String value = RandomStringUtils.random(10, false, true);
+
+        if (!varName.equals("")) {
+            VarsMap varsMap = context.getVarsMap();
+            varsMap.put(varName, value);
+        }
 
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);

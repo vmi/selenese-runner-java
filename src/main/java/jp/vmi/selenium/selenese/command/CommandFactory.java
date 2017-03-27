@@ -94,6 +94,8 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(TypeRandomValue.class);
         addConstructor(Uncheck.class);
         addConstructor(UseXpathLibrary.class);
+        addConstructor(VerifyButtonActivity.class);
+//        doVerifyButtonNotActivity
         addConstructor(WaitForCondition.class);
         addConstructor(WaitForPageToLoad.class);
         addConstructor(WaitForPopUp.class);
