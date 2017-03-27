@@ -1,14 +1,13 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.util.List;
-
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.locator.OptionLocator;
+import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.locator.OptionLocator;
-import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import java.util.List;
 
 /**
  * Select element.
