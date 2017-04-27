@@ -41,7 +41,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             String proxy = p[0];
             int port = p.length == 2 ? Integer.parseInt(p[1]) : 80;
             JsonObject json = new JsonObject();
-            json.addProperty("proxyType", "MANUAL");
+            json.addProperty("proxyType", "manual");
             json.addProperty("httpProxy", proxy);
             json.addProperty("httpProxyPort", port);
             json.addProperty("sslProxy", proxy);
