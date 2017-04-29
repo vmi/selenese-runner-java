@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -31,7 +31,7 @@ public class Click extends AbstractCommand {
         try {
             element.click();
             return SUCCESS;
-        } catch (ElementNotVisibleException e) {
+        } catch (ElementNotInteractableException e) {
             context.executeScript("arguments[0].click()", element);
             return new Success("Success (the element is not visible)");
         }
