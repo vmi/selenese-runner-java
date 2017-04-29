@@ -5,7 +5,9 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 3.4.0.
 * Update dependency versions.
-* Fix FirefoxDriver problems.
+* Refine `pom.xml`.
+* Fix some FirefoxDriver problems.
+* Treat `StaleElementReferenceException ` same as `NotFoundException`. (#237)
 
 ### 3.3.0
 
