@@ -66,8 +66,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         DesiredCapabilities requiredCaps = new DesiredCapabilities();
         setupProxy(requiredCaps, driverOptions);
-        firefoxOptions.addRequiredCapabilities(requiredCaps);
-        firefoxOptions.addDesiredCapabilities(driverOptions.getCapabilities());
+        firefoxOptions.addCapabilities(requiredCaps);
+        firefoxOptions.addCapabilities(driverOptions.getCapabilities());
         String firefoxBin = getFirefoxBinary(driverOptions);
         if (firefoxBin != null)
             firefoxOptions.setBinary(firefoxBin);
