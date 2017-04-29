@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 
@@ -59,7 +60,7 @@ public class PageInformation {
             origin = getOrigin(url);
             for (Cookie cookie : driver.manage().getCookies())
                 cookieMap.add(cookie);
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | StaleElementReferenceException e) {
             message = "No focused window/frame.";
             origin = "";
         } catch (UnhandledAlertException e) {

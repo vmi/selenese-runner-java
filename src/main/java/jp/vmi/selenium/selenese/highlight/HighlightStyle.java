@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 /**
  * Highlight style.
@@ -76,8 +75,7 @@ public class HighlightStyle {
             Object result = ((JavascriptExecutor) driver).executeScript(SCRIPT, element, styles);
             return result instanceof Map ? (Map<String, String>) result : null;
         } catch (RuntimeException e) {
-            // element specified by locator is not found.
-            if (e instanceof NotFoundException || e.getCause() instanceof NotFoundException || e instanceof StaleElementReferenceException)
+            if (SeleniumUtils.isElementNotFound(e))
                 return null;
             throw e;
         }

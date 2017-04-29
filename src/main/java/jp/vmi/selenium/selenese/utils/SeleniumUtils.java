@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.StaleElementReferenceException;
 
 /**
  * Utilities for Selenium.
@@ -174,5 +176,18 @@ public class SeleniumUtils {
             return StringUtils.join((Iterator<?>) result, ',');
         else
             return result.toString();
+    }
+
+    /**
+     * Check if Exception type is "element not found".
+     *
+     * @param e RuntimeException
+     * @return true if the exception is "element not found".
+     */
+    public static boolean isElementNotFound(RuntimeException e) {
+        return e instanceof NotFoundException
+            || e instanceof StaleElementReferenceException
+            || e.getCause() instanceof NotFoundException
+            || e.getCause() instanceof StaleElementReferenceException;
     }
 }

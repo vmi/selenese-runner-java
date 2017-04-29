@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ public class Assertion extends AbstractCommand {
                     if (result ^ isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (Result: [%s] / Expected: [%s])", result, !result);
-                } catch (NotFoundException e) {
+                } catch (NotFoundException | StaleElementReferenceException e) {
                     if (isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (%s)", e.getMessage());
@@ -113,7 +114,7 @@ public class Assertion extends AbstractCommand {
                     message = String.format("Assertion failed (Result: [%s] / %sExpected: [%s])",
                         StringEscapeUtils.escapeJava(resultString),
                         isInverse ? "Not " : "", StringEscapeUtils.escapeJava(expected));
-                } catch (NotFoundException e) {
+                } catch (NotFoundException | StaleElementReferenceException e) {
                     if (isInverse)
                         return SUCCESS;
                     message = String.format("Assertion failed (%s)", e.getMessage());

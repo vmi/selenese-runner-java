@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -19,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 /**
  * WebDriver Element Locator.
@@ -132,7 +132,7 @@ public class WebDriverElementFinder {
                 selectedFrameLocators.add(ploc);
             }
         } catch (RuntimeException e) {
-            if (e instanceof NotFoundException || e.getCause() instanceof NotFoundException) {
+            if (SeleniumUtils.isElementNotFound(e)) {
                 if (plocs == currentFrameLocators) {
                     log.warn("The selected frame has disapeared: {}", StringUtils.join(plocs, '/'));
                     log.warn("Reset selected frame.");
