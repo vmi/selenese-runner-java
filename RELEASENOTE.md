@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.4.0
+
+* Catch up Selenium 3.4.0.
+* Update dependency versions.
+* Fix FirefoxDriver problems.
+
 ### 3.3.0
 
 * Fix to output an error if the specified profile does not exist.
