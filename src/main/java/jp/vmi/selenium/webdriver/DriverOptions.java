@@ -1,6 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +10,10 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -82,6 +87,8 @@ public class DriverOptions {
             return name().toLowerCase().replace('_', '-');
         }
     }
+
+    private static final Pattern DEFINE_RE = Pattern.compile("(?<name>[^:+=]+)(?::(?<type>\\w+))?(?<add>\\+)?=(?<value>.*)");
 
     private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
@@ -199,6 +206,58 @@ public class DriverOptions {
         return this;
     }
 
+    private static Object getTypedValue(String type, String value, Consumer<String> errorHandler) {
+        if (type == null)
+            return value;
+        switch (type) {
+        case "str":
+            return value;
+        case "int":
+            try {
+                return Integer.valueOf(value);
+            } catch (NumberFormatException e) {
+                errorHandler.accept("\"" + value + "\" is not integer");
+                return null;
+            }
+        case "bool":
+            return Boolean.valueOf(value);
+        default:
+            errorHandler.accept("unrecognized type: " + type);
+            return null;
+        }
+    }
+
+    private static String getTypeName(Object value) {
+        Class<?> clazz = value.getClass();
+        if (clazz.isArray())
+            clazz = clazz.getComponentType();
+        if (clazz == String.class)
+            return "str";
+        else if (clazz == Boolean.class)
+            return "bool";
+        else
+            return "(unknown)";
+    }
+
+    private void appendCapValue(String name, Object value, Consumer<String> errorHandler) {
+        Object prevValue = caps.getCapability(name);
+        Object[] newValue;
+        try {
+            if (prevValue == null || prevValue.getClass().isArray()) {
+                newValue = ArrayUtils.add((Object[]) prevValue, value);
+            } else {
+                newValue = (Object[]) Array.newInstance(prevValue.getClass(), 2);
+                newValue[0] = prevValue;
+                newValue[1] = value;
+            }
+        } catch (ArrayStoreException e) {
+            errorHandler.accept(String.format("the expected type is %s, but the actual type is %s",
+                getTypeName(prevValue), getTypeName(value)));
+            return;
+        }
+        caps.setCapability(name, newValue);
+    }
+
     /**
      * Add "define" parameters.
      *
@@ -208,30 +267,27 @@ public class DriverOptions {
     public DriverOptions addDefinitions(String... defs) {
         if (defs == null)
             return this;
+        List<String> errors = new ArrayList<>();
         for (String def : defs) {
-            if (def.contains("+=")) {
-                String[] pair = def.split("\\+=", 2);
-                String capName = pair[0];
-                String capValue = pair[1];
-                Object prevCapValue = caps.getCapability(capName);
-                if (prevCapValue == null)
-                    caps.setCapability(capName, new String[] { capValue });
-                else if (prevCapValue instanceof String)
-                    caps.setCapability(capName, new String[] { (String) prevCapValue, capValue });
-                else if (prevCapValue instanceof String[])
-                    caps.setCapability(capName, ArrayUtils.add((String[]) prevCapValue, capValue));
-                else
-                    throw new IllegalArgumentException("The capability " + capName + " is not string.");
-            } else if (def.contains("=")) {
-                String[] pair = def.split("=", 2);
-                String capName = pair[0];
-                String capValue = pair[1];
-                caps.setCapability(capName, capValue);
-            } else {
-                throw new IllegalArgumentException("The definition format need to be KEY=VALUE or KEY+=VALUE: " + def);
+            Matcher matcher = DEFINE_RE.matcher(def);
+            if (!matcher.matches()) {
+                errors.add("[" + def + "] => invalid format (neither key[:type]=value nor key[:type]+=value)");
+                continue;
             }
+            String name = matcher.group("name");
+            Object value = getTypedValue(matcher.group("type"), matcher.group("value"), (msg) -> errors.add("[" + def + "] => " + msg));
+            if (value == null)
+                continue;
+            String add = matcher.group("add");
+            if (add == null)
+                caps.setCapability(name, value);
+            else
+                appendCapValue(name, value, (msg) -> errors.add("[" + def + "] => " + msg));
         }
+        if (!errors.isEmpty())
+            throw new IllegalArgumentException(errors.stream().collect(Collectors.joining(" / ")));
         return this;
+
     }
 
     /**

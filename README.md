@@ -67,7 +67,7 @@ Usage
      --set-speed <speed>                     : same as executing setSpeed(ms) command first.
      --height <height>                       : set initial height. (excluding mobile)
      --width <width>                         : set initial width. (excluding mobile)
-     --define (-D) <key=value or key+=value> : define parameters for capabilities. (multiple)
+     --define (-D) <key>[:<type>][+]=<value> : define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)
      --rollup <file>                         : define rollup rule by JavaScript. (multiple)
      --cookie-filter <+RE|-RE>               : filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
      --command-factory <FQCN>                : register user defined command factory. (See Note *3)

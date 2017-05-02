@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.5.0
+
+* Support the `int` and `bool` type in `--define` option. (#236)
+
 ### 3.4.0
 
 * Catch up Selenium 3.4.0.

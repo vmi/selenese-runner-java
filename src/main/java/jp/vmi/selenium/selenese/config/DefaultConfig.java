@@ -180,7 +180,8 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--width", metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
-    @Option(name = "--define", aliases = "-D", metaVar = "<key=value or key+=value>", usage = "define parameters for capabilities. (multiple)")
+    @Option(name = "--define", aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
+        usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
 
     @Option(name = "--rollup", metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")

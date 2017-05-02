@@ -17,6 +17,16 @@ import static jp.vmi.selenium.webdriver.WebDriverManager.*;
  */
 public final class TestUtils {
 
+    /**
+     * Runnable with Throwable.
+     */
+    @FunctionalInterface
+    public interface ThrowableRunnable {
+
+        @SuppressWarnings("javadoc")
+        void run() throws Throwable;
+    }
+
     private TestUtils() {
         // no operation
     }
@@ -77,5 +87,21 @@ public final class TestUtils {
             drivers = prop.split("\\s*,\\s*");
         }
         return toParamList(drivers);
+    }
+
+    /**
+     * Get Throwable if the function throws Throwable.
+     *
+     * @param func function with "throws Throwable".
+     * @return Throwable if the function throws Throwable, else null.
+     */
+    public static Throwable exceptionOf(ThrowableRunnable func) {
+        try {
+            func.run();
+            return null;
+        } catch (Throwable t) {
+            System.err.println(t.getClass().getSimpleName() + ": " + t.getMessage());
+            return t;
+        }
     }
 }
