@@ -184,6 +184,10 @@ public class DefaultConfig implements IConfig {
         usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
 
+    @Option(name = "--var", aliases = "-V", metaVar = "<var-name>=<json-value>",
+        usage = "set JSON value to variable with a specified name. (multiple)")
+    private String[] var;
+
     @Option(name = "--rollup", metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
     private String[] rollup;
 
@@ -522,6 +526,15 @@ public class DefaultConfig implements IConfig {
 
     public void addDefine(String defineItem) {
         this.define = ArrayUtils.add(this.define, defineItem);
+    }
+
+    @Override
+    public String[] getVar() {
+        return var != null ? var : (parentOptions != null ? parentOptions.getVar() : null);
+    }
+
+    public void addVar(String expr) {
+        this.var = ArrayUtils.add(this.var, expr);
     }
 
     @Override

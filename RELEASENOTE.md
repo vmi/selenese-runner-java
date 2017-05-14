@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.6.0
+
+* Add a new option to set variables from the command line: `―var <var-name>=<json-value>` (#216)
+
 ### 3.5.0
 
 * Support the `int` and `bool` type in `--define` option. (#236)

@@ -68,6 +68,7 @@ Usage
      --height <height>                       : set initial height. (excluding mobile)
      --width <width>                         : set initial width. (excluding mobile)
      --define (-D) <key>[:<type>][+]=<value> : define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)
+     --var (-V) <var-name>=<json-value>      : set JSON value to variable with a specified name. (multiple)
      --rollup <file>                         : define rollup rule by JavaScript. (multiple)
      --cookie-filter <+RE|-RE>               : filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
      --command-factory <FQCN>                : register user defined command factory. (See Note *3)

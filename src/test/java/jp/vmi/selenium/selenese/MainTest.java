@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -7,8 +10,8 @@ import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.webdriver.DriverOptions;
 
-import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class MainTest {
@@ -34,5 +37,30 @@ public class MainTest {
         assertThat((String[]) caps.getCapability("key3"), is(arrayContaining("value31", "value32")));
         assertThat((String[]) caps.getCapability("key4"), is(arrayContaining("value41", "value42")));
         assertThat(driverOptions.toString(), is(not("[]")));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testVar() {
+        Main main = new Main();
+        Runner runner = new Runner();
+        IConfig config = new DefaultConfig(
+            "-d", "htmlunit",
+            "-V", "key1=null",
+            "-V", "key2=1",
+            "-V", "key3='str'",
+            "-V", "key4=['a', 'b', 'c']",
+            "-V", "key5={'A':1,'B':2,'C':3}");
+        main.setupRunner(runner, config);
+        VarsMap varsMap = runner.getVarsMap();
+        assertThat(varsMap.get("key1"), is(nullValue()));
+        assertThat(varsMap.get("key2"), is(1.0));
+        assertThat(varsMap.get("key3"), is("str"));
+        assertThat((List<String>) varsMap.get("key4"), is(contains("a", "b", "c")));
+        Map<Object, Object> value5 = (Map<Object, Object>) varsMap.get("key5");
+        assertThat(value5, is(notNullValue()));
+        assertThat(value5.get("A"), is(1.0));
+        assertThat(value5.get("B"), is(2.0));
+        assertThat(value5.get("C"), is(3.0));
     }
 }

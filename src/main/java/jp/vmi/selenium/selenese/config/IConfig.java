@@ -2,6 +2,16 @@ package jp.vmi.selenium.selenese.config;
 
 /**
  * Configuration information.
+ *
+ * <p>
+ * If you want to add new option, you need edit the following classes:
+ * </p>
+ * <ul>
+ * <li>{@link jp.vmi.selenium.selenese.config.DefaultConfig}</li>
+ * <li>{@link jp.vmi.selenium.selenese.config.IConfig}</li>
+ * <li>{@link jp.vmi.selenium.webdriver.DriverOptions} (for WebDriver specific option)</li>
+ * <li>{@link jp.vmi.selenium.webdriver.DriverOptions.DriverOption} (for WebDriver specific option)</li>
+ * </ul>
  */
 @SuppressWarnings("javadoc")
 public interface IConfig {
@@ -41,6 +51,7 @@ public interface IConfig {
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
     public static final String DEFINE = "define";
+    public static final String VAR = "var";
     public static final String ROLLUP = "rollup";
     public static final String COOKIE_FILTER = "cookie-filter";
     public static final String COMMAND_FACTORY = "command-factory";
@@ -140,6 +151,8 @@ public interface IConfig {
     String getWidth();
 
     String[] getDefine();
+
+    String[] getVar();
 
     String[] getRollup();
 

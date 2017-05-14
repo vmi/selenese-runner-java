@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -31,6 +36,8 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     private static final String PROG_TITLE = "Selenese Runner";
+
+    private static final Pattern EXPR_RE = Pattern.compile("\\s*(?<varName>\\w+)\\s*=\\s*(?<jsonValue>.*)");
 
     private boolean noExit = false;
     private boolean exitStrictly = false;
@@ -152,6 +159,23 @@ public class Main {
             runner.setOverridingBaseURL(config.getBaseurl());
         if (config.isIgnoreScreenshotCommand())
             runner.setIgnoredScreenshotCommand(true);
+        if (config.getVar() != null) {
+            Gson gson = new Gson();
+            VarsMap varsMap = runner.getVarsMap();
+            for (String expr : config.getVar()) {
+                Matcher matcher = EXPR_RE.matcher(expr);
+                if (!matcher.matches())
+                    throw new IllegalArgumentException("invalid var option format: " + expr);
+                String name = matcher.group("varName");
+                Object value;
+                try {
+                    value = gson.fromJson(matcher.group("jsonValue"), Object.class);
+                } catch (JsonSyntaxException e) {
+                    throw new IllegalArgumentException("JSON syntax error: " + expr);
+                }
+                varsMap.put(name, value);
+            }
+        }
         if (config.getRollup() != null) {
             String[] rollups = config.getRollup();
             for (String rollup : rollups)
