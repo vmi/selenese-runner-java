@@ -23,7 +23,7 @@ public abstract class JSList<E> extends AbstractList<E> {
     public abstract Object unwrap();
 
     // for Nashorn.
-    static class JSMapList<E> extends JSList<E> {
+    public static class JSMapList<E> extends JSList<E> {
 
         private final Map<?, E> map;
 
