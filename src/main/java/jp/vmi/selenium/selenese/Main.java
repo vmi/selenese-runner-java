@@ -218,12 +218,30 @@ public class Main {
         runner.setPrintStream(System.out);
     }
 
+    private void dumpThreads() {
+        log.trace("Dump threads:");
+        Thread.getAllStackTraces().entrySet().stream()
+            .sorted((a, b) -> (int) (a.getKey().getId() - b.getKey().getId()))
+            .forEach(entry -> {
+                Thread t = entry.getKey();
+                String daemon = t.isDaemon() ? " (daemon)" : "";
+                log.trace("[{}] {}{}", t.getId(), t.getName(), daemon);
+                for (StackTraceElement s : entry.getValue()) {
+                    int line = s.getLineNumber();
+                    String lns = line > 0 ? ":" + line : "";
+                    log.trace("  {}#{}{}", s.getClassName(), s.getMethodName(), lns);
+                }
+                log.trace("--------");
+            });
+    }
+
     protected void exit(int exitCode) {
         this.exitCode = exitCode;
         log.info("Exit code: {}", exitCode);
         WebDriverManager.quitDriversOnAllManagers();
         if (!noExit)
             System.exit(exitCode);
+        dumpThreads();
     }
 
     /**
