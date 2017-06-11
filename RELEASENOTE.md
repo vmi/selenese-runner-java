@@ -4,6 +4,8 @@ Selenese Runner Java Relase Note
 ### 3.6.0
 
 * Add a new option to set variables from the command line: `―var <var-name>=<json-value>` (#216)
+* Fix for non-daemon threads not remaining after tests. (#244, #148)
+* Update dependency versions.
 
 ### 3.5.0
 
