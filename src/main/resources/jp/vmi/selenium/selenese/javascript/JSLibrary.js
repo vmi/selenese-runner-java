@@ -266,6 +266,9 @@ function getText(element) {
           break;
         }
         break;
+      case 8: // COMMENT_NODE
+        // skip
+        break;
       default:
         var text = node.textContent.replace(/[\u0000-\u0020]+/g, " ");
         texts.push(prev = text);
