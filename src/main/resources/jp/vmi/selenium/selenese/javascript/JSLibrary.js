@@ -244,9 +244,12 @@ function getTable(table, row, col) {
 }
 
 function getText(element) {
+  function isVisible(element) {
+    var style = getComputedStyle(element);
+    return style.display !== 'none' && style.visibility !== 'hidden';
+  }
   function getTextInternal(element) {
     var texts = [];
-    var prev = null;
     var nodes = element.childNodes;
     for (var i = 0; i < nodes.length; i++) {
       var node = nodes[i];
@@ -259,10 +262,11 @@ function getText(element) {
           // skip
           break;
         case "BR":
-          texts.push(prev = "\n");
+          texts.push("\n");
           break;
         default:
-          texts.push(prev = getTextInternal(node));
+          if (isVisible(node))
+            texts.push(getTextInternal(node));
           break;
         }
         break;
@@ -271,11 +275,11 @@ function getText(element) {
         break;
       default:
         var text = node.textContent.replace(/[\u0000-\u0020]+/g, " ");
-        texts.push(prev = text);
+        texts.push(text);
         break;
       }
     }
-    return texts.join("").replace(/ +/g, " ");
+    return texts.join("").replace(/ +/g, " ").trim();
   }
   return getTextInternal(element);
 }
