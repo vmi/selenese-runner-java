@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.7.0
+
+* Skip comment nodes when extracting text. (#245, PR #246 by @mcclellanmj)
+* Fix to ignore invisible text with ***Text commands. (#247)
+
 ### 3.6.0
 
 * Add a new option to set variables from the command line: `―var <var-name>=<json-value>` (#216)
