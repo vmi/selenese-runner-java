@@ -77,6 +77,7 @@ public abstract class Parser {
             dp.setEntityResolver(null);
             dp.setFeature("http://xml.org/sax/features/namespaces", false);
             dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
+            dp.setFeature("http://cyberneko.org/html/features/scanner/cdata-sections", true);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
             Node seleniumBase = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href");
