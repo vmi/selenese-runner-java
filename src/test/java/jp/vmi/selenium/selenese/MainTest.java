@@ -3,7 +3,10 @@ package jp.vmi.selenium.selenese;
 import java.util.List;
 import java.util.Map;
 
+import jp.vmi.selenium.selenese.log.PageInformation;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -62,5 +65,50 @@ public class MainTest {
         assertThat(value5.get("A"), is(1.0));
         assertThat(value5.get("B"), is(2.0));
         assertThat(value5.get("C"), is(3.0));
+    }
+
+    @Rule
+    public ExpectedException ee = ExpectedException.none();
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testDisablePageInformationOption() {
+        Main main = new Main();
+        Runner runner = new Runner();
+        IConfig config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--disable-page-information", "all");
+        main.setupRunner(runner, config);
+        assertThat(runner.getDisabledPageInformation().equals(PageInformation.Type.ALL), is(true));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--disable-page-information", "cookie",
+            "--disable-page-information", "title");
+        main.setupRunner(runner, config);
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.COOKIE), is(true));
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.TITLE), is(true));
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.URL), is(false));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--disable-page-information", "cookie",
+            "--disable-page-information", "title",
+            "--disable-page-information", "no",
+            "--disable-page-information", "url");
+        main.setupRunner(runner, config);
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.COOKIE), is(false));
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.TITLE), is(false));
+        assertThat(runner.getDisabledPageInformation().contains(PageInformation.Type.URL), is(true));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--disable-page-information", "foo");
+        ee.expect(IllegalArgumentException.class);
+        ee.expectMessage("Invalid value for --disable-page-information: foo");
+        main.setupRunner(runner, config);
     }
 }

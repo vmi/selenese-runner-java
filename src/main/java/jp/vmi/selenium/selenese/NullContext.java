@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.EnumSet;
 
 import org.openqa.selenium.WebDriver;
 
@@ -142,6 +143,11 @@ public class NullContext implements Context {
 
     @Override
     public void setLatestPageInformation(PageInformation pageInformation) {
+    }
+
+    @Override
+    public EnumSet<PageInformation.Type> getDisabledPageInformation() {
+        return null;
     }
 
     @Override

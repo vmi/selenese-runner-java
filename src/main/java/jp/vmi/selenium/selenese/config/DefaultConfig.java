@@ -194,6 +194,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--cookie-filter", metaVar = "<+RE|-RE>", usage = "filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is ignoring)")
     private String cookieFilter;
 
+    @Option(name = "--disable-page-information", metaVar = "<yes|all|no|cookie|title|url>", usage = "disable getting all/particular page information. (multiple)")
+    private String[] disablePageInformation;
+
     @Option(name = "--command-factory", metaVar = "<FQCN>", usage = "register user defined command factory. (See Note *3)")
     private String commandFactory;
 
@@ -549,6 +552,15 @@ public class DefaultConfig implements IConfig {
     @Override
     public String getCookieFilter() {
         return cookieFilter != null ? cookieFilter : (parentOptions != null ? parentOptions.getCookieFilter() : null);
+    }
+
+    @Override
+    public String[] getDisablePageInformation() {
+        return disablePageInformation != null ? disablePageInformation : (parentOptions != null ? parentOptions.getDisablePageInformation() : null);
+    }
+
+    public void addDisablePageInformation(String pageInfoType) {
+        this.disablePageInformation = ArrayUtils.add(this.disablePageInformation, pageInfoType);
     }
 
     public void setCookieFilter(String cookieFilter) {

@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.log;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,10 @@ public class PageInformation {
 
     public static final PageInformation EMPTY = new PageInformation();
 
+    public enum Type {
+        TITLE, URL, COOKIE;
+        public static final EnumSet<Type> ALL = EnumSet.allOf(Type.class);
+    }
     public final String message;
     public final String origin; // error if origin is null.
     public final CookieMap cookieMap = new CookieMap();
@@ -46,6 +51,7 @@ public class PageInformation {
         String message;
         String origin;
         WebDriver driver = context.getWrappedDriver();
+        EnumSet<Type> disableInfo = context.getDisabledPageInformation();
         try {
             // ChromeDriver may return the unavailable window handle.
             // When getCurrentUrl() is called in this state, ChromeDriver hangs up.
@@ -54,12 +60,13 @@ public class PageInformation {
             // Other WebDriver throws NoSuchWindowException when getWindowHandle() is called.
             String handle = driver.getWindowHandle();
             driver.switchTo().window(handle);
-            String url = driver.getCurrentUrl();
-            String title = driver.getTitle();
+            String url = disableInfo.contains(Type.URL) ? null : driver.getCurrentUrl();
+            String title = disableInfo.contains(Type.TITLE) ? null : driver.getTitle();
             message = formatUrlAndTitle(url, title);
-            origin = getOrigin(url);
-            for (Cookie cookie : driver.manage().getCookies())
-                cookieMap.add(cookie);
+            origin = (url == null) ? "" : getOrigin(url);
+            if (!disableInfo.contains(Type.COOKIE))
+                for (Cookie cookie : driver.manage().getCookies())
+                    cookieMap.add(cookie);
         } catch (NotFoundException | StaleElementReferenceException e) {
             message = "No focused window/frame.";
             origin = "";
@@ -80,7 +87,15 @@ public class PageInformation {
     }
 
     private String formatUrlAndTitle(String url, String title) {
-        return "URL: [" + url + "] / Title: [" + title + "]";
+        StringBuilder s = new StringBuilder();
+        if (url != null)
+            s.append("URL: [" + url + "]");
+        if (title != null) {
+            if (s.length() > 0)
+                s.append(" / ");
+            s.append("Title: [" + title + "]");
+        }
+        return s.toString();
     }
 
     private String getOrigin(String url) {
