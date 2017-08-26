@@ -13,8 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -762,13 +761,13 @@ public class DefaultConfig implements IConfig {
                 if (m.matches()) {
                     String mark = m.group(1);
                     padding = StringUtils.repeat(' ', mark.length());
-                    String desc = WordUtils.wrap(m.group(2), width - mark.length(), "\n", false).replace("\n", SystemUtils.LINE_SEPARATOR + padding);
+                    String desc = WordUtils.wrap(m.group(2), width - mark.length(), "\n", false).replace("\n", System.lineSeparator() + padding);
                     pw.print(mark);
                     pw.print(desc);
                     pw.println();
                 } else {
                     pw.print(padding);
-                    pw.println(WordUtils.wrap(line, width - padding.length(), "\n", false).replace("\n", SystemUtils.LINE_SEPARATOR + padding));
+                    pw.println(WordUtils.wrap(line, width - padding.length(), "\n", false).replace("\n", System.lineSeparator() + padding));
                 }
             }
         }

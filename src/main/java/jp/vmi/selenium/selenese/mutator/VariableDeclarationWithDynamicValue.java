@@ -3,7 +3,7 @@ package jp.vmi.selenium.selenese.mutator;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import jp.vmi.selenium.selenese.Context;
 

@@ -2,8 +2,8 @@ package jp.vmi.selenium.selenese;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang3.text.StrLookup;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StrLookup;
+import org.apache.commons.text.StrSubstitutor;
 import org.openqa.selenium.Keys;
 
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;

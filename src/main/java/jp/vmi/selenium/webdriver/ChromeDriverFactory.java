@@ -54,7 +54,7 @@ public class ChromeDriverFactory extends WebDriverFactory {
         if (experimentalOptions != null) {
             String json = "{}";
             try {
-                json = Files.toString(new File(experimentalOptions), Charset.defaultCharset());
+                json = Files.asCharSource(new File(experimentalOptions), Charset.defaultCharset()).read();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
