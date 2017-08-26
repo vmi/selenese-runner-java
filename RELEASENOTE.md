@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.8.0
+
+* Treat CDATA sections as character content. (#250)
+* Add `--no-proxy` support for chromedriver. (#252)
+
 ### 3.7.0
 
 * Skip comment nodes when extracting text. (#245, PR #246 by @mcclellanmj)
