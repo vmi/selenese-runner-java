@@ -5,6 +5,8 @@ Selenese Runner Java Relase Note
 
 * Treat CDATA sections as character content. (#250)
 * Add `--no-proxy` support for chromedriver. (#252)
+* Catch up Selenium 3.5.3.
+* Update dependency versions.
 
 ### 3.7.0
 
