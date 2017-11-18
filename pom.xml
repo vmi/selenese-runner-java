@@ -510,6 +510,10 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>selenium-java</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>htmlunit-driver</artifactId>
+    </dependency>
+    <dependency>
       <groupId>net.sourceforge.nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
       <version>1.9.22</version>
