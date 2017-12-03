@@ -8,6 +8,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Deque;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -88,6 +89,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final Deque<HighlightStyleBackup> styleBackups;
 
     private PageInformation latestPageInformation = PageInformation.EMPTY;
+    private EnumSet<PageInformation.Type> disabledPageInformation = EnumSet.noneOf(PageInformation.Type.class);
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
     private JSLibrary jsLibrary = new JSLibrary();
@@ -525,6 +527,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setLatestPageInformation(PageInformation pageInformation) {
         this.latestPageInformation = pageInformation;
+    }
+
+    @Override
+    public EnumSet<PageInformation.Type> getDisabledPageInformation() {
+        return this.disabledPageInformation;
     }
 
     @Override

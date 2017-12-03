@@ -88,6 +88,8 @@ public class NewDefaultConfigTest {
         "--strict-exit-code",
         "--help",
         "--define", "--define",
+        "--disable-page-information", "title",
+        "--disable-page-information", "url",
         "arg1", "arg2", "arg3"
     };
 
@@ -134,6 +136,7 @@ public class NewDefaultConfigTest {
         assertThat(options.isNoExit(), is(false));
         assertThat(options.isStrictExitCode(), is(false));
         assertThat(options.isHelp(), is(false));
+        assertThat(options.getDisablePageInformation(), is(nullValue()));
         assertThat(options.getArgs(), is(emptyArray()));
 
         options.parseCommandLine(testArgs);
@@ -176,6 +179,7 @@ public class NewDefaultConfigTest {
         assertThat(options.isNoExit(), is(true));
         assertThat(options.isStrictExitCode(), is(true));
         assertThat(options.isHelp(), is(true));
+        assertThat(options.getDisablePageInformation(), is(new String[] { "title", "url" }));
         assertThat(options.getArgs(), is(new String[] { "arg1", "arg2", "arg3" }));
     }
 

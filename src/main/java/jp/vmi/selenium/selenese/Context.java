@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -236,6 +237,13 @@ public interface Context extends WrapsDriver {
      * @param pageInformation page information.
      */
     void setLatestPageInformation(PageInformation pageInformation);
+
+    /**
+     * Get list of disabled page information.
+     *
+     * @return list of disabled page information.
+     */
+    EnumSet<PageInformation.Type> getDisabledPageInformation();
 
     /**
      * Get cookie filter.

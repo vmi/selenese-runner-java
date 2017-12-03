@@ -3,10 +3,12 @@ package jp.vmi.selenium.selenese;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.vmi.selenium.selenese.log.PageInformation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -180,6 +182,26 @@ public class Main {
             String[] rollups = config.getRollup();
             for (String rollup : rollups)
                 runner.getRollupRules().load(rollup);
+        }
+        if (config.getDisablePageInformation() != null) {
+            for (String s : config.getDisablePageInformation()) {
+                String uc = s.toUpperCase();
+                switch (uc) {
+                case "YES":
+                case "ALL":
+                    Collections.addAll(runner.getDisabledPageInformation(), PageInformation.Type.values());
+                    break;
+                case "NO":
+                    runner.getDisabledPageInformation().clear();
+                    break;
+                default:
+                    try {
+                        runner.getDisabledPageInformation().add(PageInformation.Type.valueOf(uc));
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException("Invalid value for --" + IConfig.DISABLE_PAGE_INFORMATION + ": " + s);
+                    }
+                }
+            }
         }
         if (config.getCookieFilter() != null) {
             String cookieFilter = config.getCookieFilter();
