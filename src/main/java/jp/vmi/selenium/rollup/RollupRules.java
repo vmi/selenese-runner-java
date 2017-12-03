@@ -2,6 +2,7 @@ package jp.vmi.selenium.rollup;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -13,7 +14,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
@@ -71,18 +71,18 @@ public class RollupRules {
         RollupManager.rollupRulesContext(this, new Runnable() {
             @Override
             public void run() {
-                Reader r = null;
                 try {
                     String packageName = RollupManager.class.getPackage().getName();
                     if (engineType == EngineType.NASHORN)
                         engine.eval("load('nashorn:mozilla_compat.js');");
                     engine.eval("importPackage(Packages." + packageName + ");");
-                    r = new InputStreamReader(is, StandardCharsets.UTF_8);
-                    engine.eval(r);
+                    try (Reader r = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+                        engine.eval(r);
+                    } catch (IOException e) {
+                        // no operation.
+                    }
                 } catch (ScriptException e) {
                     throw new SeleneseRunnerRuntimeException(e);
-                } finally {
-                    IOUtils.closeQuietly(r);
                 }
             }
         });

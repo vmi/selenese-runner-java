@@ -2,11 +2,11 @@ package jp.vmi.selenium.selenese;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.xpath.XPathAPI;
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -98,7 +98,11 @@ public abstract class Parser {
         } catch (Exception e) {
             return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e));
         } finally {
-            IOUtils.closeQuietly(is);
+            try {
+                is.close();
+            } catch (IOException e) {
+                // no operation.
+            }
         }
     }
 
