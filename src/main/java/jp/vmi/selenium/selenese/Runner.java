@@ -23,7 +23,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.internal.ApacheHttpAsyncClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -711,11 +710,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @param maxTime the maxTime in milliseconds.
      */
     void setupMaxTimeTimer(long maxTime) {
-        try {
-            ApacheHttpAsyncClientFactory.replaceDefaultClientFactory();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         this.maxTimeTimer = new MaxTimeActiveTimer(maxTime);
     }
 }
