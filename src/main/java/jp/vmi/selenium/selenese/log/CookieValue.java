@@ -19,6 +19,10 @@ public class CookieValue {
     public CookieValue(CookieKey key, String value, Date expiry) {
         this.key = key;
         this.value = value;
+        if (expiry != null && (expiry.getTime() & 0xFFFF_0000_0000_0000L) == 0x7FFF_0000_0000_0000L) {
+            // FIXME GeckoDriver's bug?
+            expiry = null;
+        }
         this.expiry = expiry;
     }
 
