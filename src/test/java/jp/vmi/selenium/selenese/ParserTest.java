@@ -1,8 +1,8 @@
 package jp.vmi.selenium.selenese;
 
+import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,13 +28,11 @@ public class ParserTest extends TestBase {
     public void parseTestCaseWithoutBaseURL() {
         Runner runner = new Runner();
         runner.setDriver(manager.get());
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream(WITHOUT_BASE_URL);
+        try (InputStream is = getClass().getResourceAsStream(WITHOUT_BASE_URL)) {
             Selenese selenese = Parser.parse(WITHOUT_BASE_URL, is, runner.getCommandFactory());
             assertThat(selenese, is(instanceOf(TestCase.class)));
-        } finally {
-            IOUtils.closeQuietly(is);
+        } catch (IOException e) {
+            // no operation.
         }
     }
 
@@ -42,13 +40,12 @@ public class ParserTest extends TestBase {
     public void parseTestSuite() {
         Runner runner = new Runner();
         runner.setDriver(manager.get());
-        InputStream is = null;
-        try {
-            is = getClass().getResourceAsStream(TEST_SUITE);
+        try (InputStream is = getClass().getResourceAsStream(TEST_SUITE)) {
+            ;
             Selenese selenese = Parser.parse(TEST_SUITE, is, runner.getCommandFactory());
             assertThat(selenese, is(instanceOf(TestSuite.class)));
-        } finally {
-            IOUtils.closeQuietly(is);
+        } catch (IOException e) {
+            // no operation.
         }
     }
 }
