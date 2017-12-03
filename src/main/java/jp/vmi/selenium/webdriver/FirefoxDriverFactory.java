@@ -13,8 +13,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-
 import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
@@ -35,27 +33,6 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     }
 
     @Override
-    protected DesiredCapabilities setupProxy(DesiredCapabilities caps, DriverOptions driverOptions) {
-        if (driverOptions.has(PROXY)) {
-            String[] p = driverOptions.get(PROXY).split(":", 2);
-            String proxy = p[0];
-            int port = p.length == 2 ? Integer.parseInt(p[1]) : 80;
-            JsonObject json = new JsonObject();
-            json.addProperty("proxyType", "manual");
-            json.addProperty("httpProxy", proxy);
-            json.addProperty("httpProxyPort", port);
-            json.addProperty("sslProxy", proxy);
-            json.addProperty("sslProxyPort", port);
-            if (driverOptions.has(NO_PROXY)) {
-                // don't work?
-                json.addProperty("noProxy", driverOptions.get(NO_PROXY));
-            }
-            caps.setCapability("proxy", json);
-        }
-        return caps;
-    }
-
-    @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
         if (driverOptions.has(GECKODRIVER)) {
             String executable = PathUtils.normalize(driverOptions.get(GECKODRIVER));
@@ -66,8 +43,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         DesiredCapabilities requiredCaps = new DesiredCapabilities();
         setupProxy(requiredCaps, driverOptions);
-        firefoxOptions.addCapabilities(requiredCaps);
-        firefoxOptions.addCapabilities(driverOptions.getCapabilities());
+        firefoxOptions.merge(requiredCaps);
+        firefoxOptions.merge(driverOptions.getCapabilities());
         String firefoxBin = getFirefoxBinary(driverOptions);
         if (firefoxBin != null)
             firefoxOptions.setBinary(firefoxBin);
