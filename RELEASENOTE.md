@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.9.0
+
+* Catch up Selenium 3.8.1.
+    * Fix some problems.
+* Update dependency versions.
+
 ### 3.8.0
 
 * Treat CDATA sections as character content. (#250)
