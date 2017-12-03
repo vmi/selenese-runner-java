@@ -360,8 +360,7 @@ public class DriverOptions {
             result.deleteCharAt(result.length() - 1);
             sep = "|";
         }
-        @SuppressWarnings("unchecked")
-        Map<String, Object> capsMap = (Map<String, Object>) caps.asMap();
+        Map<String, Object> capsMap = caps.asMap();
         if (!capsMap.isEmpty()) {
             result.append(sep).append("DEFINE=[\n");
             List<Entry<String, Object>> capsList = new ArrayList<>(capsMap.entrySet());
