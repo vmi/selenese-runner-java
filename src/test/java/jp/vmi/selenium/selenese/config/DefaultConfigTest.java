@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.config;
 
-import jp.vmi.selenium.selenese.log.PageInformation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 
@@ -51,7 +50,7 @@ public class DefaultConfigTest {
         "--" + ROLLUP + "=/opt/path/to/rollup",
         "--" + COOKIE_FILTER + "=^OPT_SID",
         "--" + COMMAND_FACTORY + "=opt.full.qualify.class.Name",
-        "--" + DISABLE_PAGE_INFORMATION + "=cookie"
+        "--" + LOG_FILTER + "=-cookie"
     };
 
     @Test
@@ -90,7 +89,7 @@ public class DefaultConfigTest {
         assertThat(config.get(ROLLUP), is(nullValue()));
         assertThat(config.get(COOKIE_FILTER), is(nullValue()));
         assertThat(config.get(COMMAND_FACTORY), is(nullValue()));
-        assertThat(config.get(DISABLE_PAGE_INFORMATION), is(nullValue()));
+        assertThat(config.get(LOG_FILTER), is(nullValue()));
         assertThat(config.getArgs(), is(emptyArray()));
     }
 
@@ -131,7 +130,7 @@ public class DefaultConfigTest {
         assertThat(config.getRollup(), equalTo(new String[] { "/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("full.qualify.class.Name"));
-        assertThat(config.getDisablePageInformation(), equalTo(new String[] { "all" }));
+        assertThat(config.getLogFilter(), equalTo(new String[] { "-pageinfo", "+title", "+url" }));
     }
 
     @Test
@@ -172,6 +171,6 @@ public class DefaultConfigTest {
         assertThat(config.getRollup(), equalTo(new String[] { "/opt/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^OPT_SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("opt.full.qualify.class.Name"));
-        assertThat(config.getDisablePageInformation(), equalTo(new String[] { "cookie" }));
+        assertThat(config.getLogFilter(), equalTo(new String[] { "-cookie" }));
     }
 }

@@ -11,6 +11,7 @@ import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -146,7 +147,7 @@ public class NullContext implements Context {
     }
 
     @Override
-    public EnumSet<PageInformation.Type> getDisabledPageInformation() {
+    public EnumSet<LogFilter> getLogFilter() {
         return null;
     }
 

@@ -42,6 +42,7 @@ import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
@@ -89,7 +90,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final Deque<HighlightStyleBackup> styleBackups;
 
     private PageInformation latestPageInformation = PageInformation.EMPTY;
-    private EnumSet<PageInformation.Type> disabledPageInformation = EnumSet.noneOf(PageInformation.Type.class);
+    private final EnumSet<LogFilter> logFilter = LogFilter.all();
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
     private JSLibrary jsLibrary = new JSLibrary();
@@ -530,8 +531,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public EnumSet<PageInformation.Type> getDisabledPageInformation() {
-        return this.disabledPageInformation;
+    public EnumSet<LogFilter> getLogFilter() {
+        return this.logFilter;
     }
 
     @Override

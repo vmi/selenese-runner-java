@@ -190,11 +190,12 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--rollup", metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
     private String[] rollup;
 
-    @Option(name = "--cookie-filter", metaVar = "<+RE|-RE>", usage = "filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is ignoring)")
+    @Option(name = "--cookie-filter", metaVar = "<+RE|-RE>", usage = "filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is suppressing)")
     private String cookieFilter;
 
-    @Option(name = "--disable-page-information", metaVar = "<yes|all|no|cookie|title|url>", usage = "disable getting all/particular page information. (multiple)")
-    private String[] disablePageInformation;
+    @Option(name = "--log-filter", metaVar = "<+type|-type>",
+        usage = "filter the logging information by the specified type. (multiple. \"+\" is passing, \"-\" is suppressing. type: cookie, title, url, pageinfo(= cookie & title & url))")
+    private String[] logFilter;
 
     @Option(name = "--command-factory", metaVar = "<FQCN>", usage = "register user defined command factory. (See Note *3)")
     private String commandFactory;
@@ -554,12 +555,12 @@ public class DefaultConfig implements IConfig {
     }
 
     @Override
-    public String[] getDisablePageInformation() {
-        return disablePageInformation != null ? disablePageInformation : (parentOptions != null ? parentOptions.getDisablePageInformation() : null);
+    public String[] getLogFilter() {
+        return logFilter != null ? logFilter : (parentOptions != null ? parentOptions.getLogFilter() : null);
     }
 
-    public void addDisablePageInformation(String pageInfoType) {
-        this.disablePageInformation = ArrayUtils.add(this.disablePageInformation, pageInfoType);
+    public void addLogFilter(String logFilter) {
+        this.logFilter = ArrayUtils.add(this.logFilter, logFilter);
     }
 
     public void setCookieFilter(String cookieFilter) {

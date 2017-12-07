@@ -15,6 +15,7 @@ import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -243,7 +244,7 @@ public interface Context extends WrapsDriver {
      *
      * @return list of disabled page information.
      */
-    EnumSet<PageInformation.Type> getDisabledPageInformation();
+    EnumSet<LogFilter> getLogFilter();
 
     /**
      * Get cookie filter.

@@ -54,7 +54,7 @@ public interface IConfig {
     public static final String VAR = "var";
     public static final String ROLLUP = "rollup";
     public static final String COOKIE_FILTER = "cookie-filter";
-    public static final String DISABLE_PAGE_INFORMATION = "disable-page-information";
+    public static final String LOG_FILTER = "log-filter";
     public static final String COMMAND_FACTORY = "command-factory";
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
@@ -159,7 +159,7 @@ public interface IConfig {
 
     String getCookieFilter();
 
-    String[] getDisablePageInformation();
+    String[] getLogFilter();
 
     String getCommandFactory();
 

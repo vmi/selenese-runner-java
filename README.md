@@ -70,7 +70,8 @@ Usage
      --define (-D) <key>[:<type>][+]=<value> : define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)
      --var (-V) <var-name>=<json-value>      : set JSON value to variable with a specified name. (multiple)
      --rollup <file>                         : define rollup rule by JavaScript. (multiple)
-     --cookie-filter <+RE|-RE>               : filter cookies to log by RE matching the name. ("+" is passing, "-" is ignoring)
+     --cookie-filter <+RE|-RE>               : filter cookies to log by RE matching the name. ("+" is passing, "-" is suppressing)
+     --log-filter <+type|-type>              : filter the logging information by the specified type. (multiple. "+" is passing, "-" is suppressing. type: cookie, title, url, pageinfo(= cookie & title & url))
      --command-factory <FQCN>                : register user defined command factory. (See Note *3)
      --no-exit                               : don't call System.exit at end.
      --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)

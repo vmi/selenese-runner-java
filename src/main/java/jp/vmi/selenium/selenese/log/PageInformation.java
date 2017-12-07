@@ -22,36 +22,19 @@ public class PageInformation {
 
     public static final PageInformation EMPTY = new PageInformation();
 
-    public enum Type {
-        TITLE, URL, COOKIE;
-        public static final EnumSet<Type> ALL = EnumSet.allOf(Type.class);
-    }
     public final String message;
     public final String origin; // error if origin is null.
     public final CookieMap cookieMap = new CookieMap();
 
-    private String getMessage(Exception e) {
-        String msg = e.getMessage();
-        if (msg != null) {
-            return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
-        } else {
-            List<String> msgs = new ArrayList<>();
-            msgs.add(e.toString());
-            String pkgName = PageInformation.class.getPackage().getName() + ".";
-            for (StackTraceElement ste : e.getStackTrace()) {
-                if (ste.getClassName().startsWith(pkgName))
-                    break;
-                msgs.add(ste.toString().trim());
-            }
-            return StringUtils.join(msgs, " / at ");
-        }
+    public static PageInformation newInstance(Context context) {
+        return context.getLogFilter().isEmpty() ? EMPTY : new PageInformation(context);
     }
 
-    public PageInformation(Context context) {
+    private PageInformation(Context context) {
         String message;
         String origin;
         WebDriver driver = context.getWrappedDriver();
-        EnumSet<Type> disableInfo = context.getDisabledPageInformation();
+        EnumSet<LogFilter> logFilter = context.getLogFilter();
         try {
             // ChromeDriver may return the unavailable window handle.
             // When getCurrentUrl() is called in this state, ChromeDriver hangs up.
@@ -60,11 +43,11 @@ public class PageInformation {
             // Other WebDriver throws NoSuchWindowException when getWindowHandle() is called.
             String handle = driver.getWindowHandle();
             driver.switchTo().window(handle);
-            String url = disableInfo.contains(Type.URL) ? null : driver.getCurrentUrl();
-            String title = disableInfo.contains(Type.TITLE) ? null : driver.getTitle();
+            String url = logFilter.contains(LogFilter.URL) ? driver.getCurrentUrl() : null;
+            String title = logFilter.contains(LogFilter.TITLE) ? driver.getTitle() : null;
             message = formatUrlAndTitle(url, title);
             origin = (url == null) ? "" : getOrigin(url);
-            if (!disableInfo.contains(Type.COOKIE))
+            if (logFilter.contains(LogFilter.COOKIE))
                 for (Cookie cookie : driver.manage().getCookies())
                     cookieMap.add(cookie);
         } catch (NotFoundException | StaleElementReferenceException e) {
@@ -84,6 +67,23 @@ public class PageInformation {
     private PageInformation() {
         this.message = "";
         this.origin = "";
+    }
+
+    private String getMessage(Exception e) {
+        String msg = e.getMessage();
+        if (msg != null) {
+            return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
+        } else {
+            List<String> msgs = new ArrayList<>();
+            msgs.add(e.toString());
+            String pkgName = PageInformation.class.getPackage().getName() + ".";
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().startsWith(pkgName))
+                    break;
+                msgs.add(ste.toString().trim());
+            }
+            return StringUtils.join(msgs, " / at ");
+        }
     }
 
     private String formatUrlAndTitle(String url, String title) {
