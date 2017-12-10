@@ -1,10 +1,13 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.result.Failure;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.openqa.selenium.*;
+import org.apache.commons.text.StringEscapeUtils;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -32,9 +35,9 @@ public class EditContent extends AbstractCommand {
         WebDriver driver = context.getWrappedDriver();
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        String javascript_escaped = StringEscapeUtils.escapeJavaScript(value);
+        String javascriptEscaped = StringEscapeUtils.escapeEcmaScript(value);
         try {
-            js.executeScript("var el = arguments[0]; el.innerHTML = '"+javascript_escaped+"';",element);
+            js.executeScript("var el = arguments[0]; el.innerHTML = '" + javascriptEscaped + "';", element);
             return SUCCESS;
         } catch (JavascriptException e) {
             return new Failure(e.getMessage());
