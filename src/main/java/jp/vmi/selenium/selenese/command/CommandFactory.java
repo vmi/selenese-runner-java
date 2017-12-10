@@ -64,6 +64,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(DragAndDrop.class, "dragdrop");
         addConstructor(DragAndDropToObject.class);
         addConstructor(Echo.class);
+        addConstructor(EditContent.class);
         addConstructor(FireEvent.class);
         addConstructor(Focus.class);
         addConstructor(GoBack.class);
