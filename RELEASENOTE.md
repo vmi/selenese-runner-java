@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 3.8.1.
     * Fix some problems.
 * Update dependency versions.
+* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
 
 ### 3.8.0
 
