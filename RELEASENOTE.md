@@ -6,6 +6,7 @@ Selenese Runner Java Relase Note
 * Catch up Selenium 3.8.1.
     * Fix some problems.
 * Update dependency versions.
+* Add new command: `editContent`. (PR #261 by @apcros)
 
 ### 3.8.0
 
