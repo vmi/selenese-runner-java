@@ -7,6 +7,7 @@ Selenese Runner Java Relase Note
     * Fix some problems.
 * Update dependency versions.
 * Add new command: `editContent`. (PR #261 by @apcros)
+* If the value of the variable is mathematically an integer, it is expanded as an integer. (#258)
 
 ### 3.8.0
 
