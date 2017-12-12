@@ -46,4 +46,18 @@ public class VariableTest extends TestBase {
         assertThat(varsMap.replaceVarsForArray(new String[] { "abc", "${a}", "abc${a}bca" }),
             is(arrayContaining("abc", "XYZ", "abcXYZbca")));
     }
+
+    /**
+     * Test of replaceVariables(Number).
+     */
+    @Test
+    public void replaceVarsForNumber() {
+        VarsMap varsMap = runner.getVarsMap();
+        varsMap.put("a1", 1);
+        varsMap.put("a2", 1.0);
+        varsMap.put("a3", 1.5);
+        assertThat(varsMap.replaceVars("${a1}"), is(equalTo("1")));
+        assertThat(varsMap.replaceVars("${a2}"), is(equalTo("1")));
+        assertThat(varsMap.replaceVars("${a3}"), is(equalTo("1.5")));
+    }
 }

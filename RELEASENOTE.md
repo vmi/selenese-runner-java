@@ -1,12 +1,17 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.10.0
+
+* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
+
 ### 3.9.0
 
 * Catch up Selenium 3.8.1.
     * Fix some problems.
 * Update dependency versions.
-* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
+* Add new command: `editContent`. (PR #261 by @apcros)
+* If the value of the variable is mathematically an integer, it is expanded as an integer. (#258)
 
 ### 3.8.0
 
