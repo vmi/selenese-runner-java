@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.10.0
 
 * Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
+* Refactor the code of initializing WebDriver for Selenium 3.8.1.
 
 ### 3.9.0
 
