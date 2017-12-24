@@ -54,8 +54,12 @@ public class FirefoxDriverFactoryTest {
      * @throws IOException exception.
      * @throws IllegalArgumentException exception.
      */
-    @Test(expected = SessionNotCreatedException.class)
+    @Test(expected = IllegalStateException.class)
     public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
-        new FirefoxDriverFactory().newInstance(new DriverOptions());
+        try {
+            new FirefoxDriverFactory().newInstance(new DriverOptions());
+        } catch (SessionNotCreatedException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
