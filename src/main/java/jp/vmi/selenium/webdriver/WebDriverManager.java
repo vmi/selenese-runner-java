@@ -57,6 +57,7 @@ public class WebDriverManager implements WebDriverPreparator {
     /**
      * PhantomJS
      */
+    @SuppressWarnings("deprecation")
     public static final String PHANTOMJS = PhantomJSDriverFactory.BROWSER_NAME;
 
     private static class Builder {
@@ -162,6 +163,7 @@ public class WebDriverManager implements WebDriverPreparator {
      *
      * @return WebDriverFactory instance.
      */
+    @SuppressWarnings("deprecation")
     public WebDriverFactory lookupWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;

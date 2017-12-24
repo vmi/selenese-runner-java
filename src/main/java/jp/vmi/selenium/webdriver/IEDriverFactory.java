@@ -1,15 +1,12 @@
 package jp.vmi.selenium.webdriver;
 
-import java.io.File;
-
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
-import jp.vmi.selenium.selenese.utils.PathUtils;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -26,28 +23,28 @@ public class IEDriverFactory extends WebDriverFactory {
         return BROWSER_NAME;
     }
 
-    @Override
-    public boolean isProxySupported() {
-        return false;
+    /**
+     * Create and initialize InternetExplorerOptions.
+     *
+     * @param driverOptions driver options.
+     * @return InternetExplorerOptions.
+     */
+    public static InternetExplorerOptions newInternetExplorerOptions(DriverOptions driverOptions) {
+        InternetExplorerOptions options = new InternetExplorerOptions();
+        Proxy proxy = newProxy(driverOptions);
+        if (proxy != null)
+            options.setProxy(proxy);
+        return options;
     }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
         if (!OS.isFamilyWindows())
             throw new UnsupportedOperationException("Unsupported platform: " + Platform.getCurrent());
-        DesiredCapabilities caps = setupProxy(DesiredCapabilities.internetExplorer(), driverOptions);
-        if (driverOptions.has(IEDRIVER)) {
-            String executable = PathUtils.normalize(driverOptions.get(IEDRIVER));
-            if (!new File(executable).canExecute())
-                throw new IllegalArgumentException("Missing IEDriverServer: " + executable);
-            System.setProperty(InternetExplorerDriverService.IE_DRIVER_EXE_PROPERTY, executable);
-        }
-        InternetExplorerDriverService service = new InternetExplorerDriverService.Builder()
-            .usingAnyFreePort()
-            .withEnvironment(driverOptions.getEnvVars())
-            .build();
-        caps.merge(driverOptions.getCapabilities());
-        InternetExplorerDriver driver = new InternetExplorerDriver(service, caps);
+        InternetExplorerDriverService service = setupBuilder(new InternetExplorerDriverService.Builder(), driverOptions, IEDRIVER).build();
+        InternetExplorerOptions options = newInternetExplorerOptions(driverOptions);
+        options.merge(driverOptions.getCapabilities());
+        InternetExplorerDriver driver = new InternetExplorerDriver(service, options);
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }
