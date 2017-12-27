@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ContextMenu Test</title>
+    <style type="text/css">
+#contextMenu {
+  position: absolute;
+  display: table;
+  background-color: #FFF;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid rgb(190,190,190);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+}
+#contextMenu * {
+  color: #404040;
+  text-decoration: none;
+  font-size: small;
+}
+.contextMenuItem {
+  display: block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.contextMenuItem.mouseover {
+  background-color: #2980b9;
+}
+    </style>
+    <script>
+function getPosition(el) {
+  var xPos = 0;
+  var yPos = 0;
+
+  while (el) {
+    if (el.tagName == "BODY") {
+      // deal with browser quirks with body/window/document and page scroll
+      var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+      var yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+      xPos += (el.offsetLeft - xScroll + el.clientLeft);
+      yPos += (el.offsetTop - yScroll + el.clientTop);
+    } else {
+      // for all other non-BODY elements
+      xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+      yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+    }
+
+    el = el.offsetParent;
+  }
+  return {
+    x: xPos,
+    y: yPos
+  };
+}
+function addMouseoverClass(e) {
+  e.classList.add("mouseover");
+}
+function removeMouseoverClass(e) {
+  e.classList.remove("mouseover");
+}
+function showMenu(e) {
+  var parentPos = getPosition(e.currentTarget);
+  el = e.currentTarget
+  var x = parentPos.x + e.offsetX;
+  var y = parentPos.y + e.offsetY;
+  m = document.getElementById('contextMenu');
+  m.style.left = x + 'px';
+  m.style.top = y + 'px';
+  m.style.display = 'table';
+  return false;
+}
+    </script>
+  </head>
+  <body>
+    <div id="target" style='background-color:#F2F2F2;height:500px;width:500px;padding:1em'>
+      Right-click here
+    </div>
+    <div id="not_target">Right click here show normal context menu</div>
+    <div id="contextMenu" style='display: none'>
+      <div class="contextMenuItem" onmouseover="addMouseoverClass(this)" onmouseleave="removeMouseoverClass(this)"><a href="https://github.com/vmi/selenese-runner-java/">selenese-runner-java</a></div>
+      <div class="contextMenuItem" onmouseover="addMouseoverClass(this)" onmouseleave="removeMouseoverClass(this)"><a href="/index.html">/index.html</a></div>
+      <div class="contextMenuItem" onmouseover="addMouseoverClass(this)" onmouseleave="removeMouseoverClass(this)"><span onclick="alert('Clicked!');return false">Alert!</span></div>
+    </div>
+    </tbody>
+    </table>
+    <script>
+<!--
+e = document.getElementById('target');
+e.oncontextmenu = showMenu;
+document.documentElement.onclick = function(e) {
+  m = document.getElementById('contextMenu');
+  m.style.display = 'none';
+};
+-->
+    </script>
+  </body>
+</html>

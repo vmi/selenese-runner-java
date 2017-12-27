@@ -17,7 +17,6 @@ assertSelected
 assertWhetherThisFrameMatchFrameExpression
 assertWhetherThisWindowMatchWindowExpression
 break
-contextMenu
 contextMenuAt
 doubleClickAt
 goto

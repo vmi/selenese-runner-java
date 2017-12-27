@@ -421,4 +421,11 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_hidden_text");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void testContextMenu() {
+        assumeNot(HTMLUNIT, PHANTOMJS);
+        execute("contextMenu");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }
