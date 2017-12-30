@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.11.0
+
+* Add new command: `contextMenu`. (PR #262 by @kokichirok)
+
 ### 3.10.0
 
 * Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
