@@ -54,6 +54,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(Click.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);
+        addConstructor(ContextMenu.class);
         addConstructor(ControlKeyDown.class);
         addConstructor(ControlKeyUp.class);
         addConstructor(CreateCookie.class);
