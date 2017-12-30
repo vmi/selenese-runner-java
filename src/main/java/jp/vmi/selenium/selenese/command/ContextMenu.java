@@ -1,19 +1,23 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.result.Result;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import static jp.vmi.selenium.selenese.command.ArgumentType.LOCATOR;
-import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
+import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.result.Result;
 
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
+
+/**
+ * Command "contextMenu".
+ */
 public class ContextMenu extends AbstractCommand {
 
     private static final int ARG_LOCATOR = 0;
 
-    public ContextMenu(int index, String name, String... args) {
+    ContextMenu(int index, String name, String... args) {
         super(index, name, args, LOCATOR);
     }
 
