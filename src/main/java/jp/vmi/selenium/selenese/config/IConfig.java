@@ -19,6 +19,7 @@ public interface IConfig {
     // List of option name.
     // public static final String CONFIG = "config";
     public static final String DRIVER = "driver";
+    public static final String HEADLESS = "headless";
     public static final String PROFILE = "profile";
     public static final String PROFILE_DIR = "profile-dir";
     public static final String CHROME_EXTENSION = "chrome-extension";
@@ -88,6 +89,8 @@ public interface IConfig {
     <T> T get(String opt, T defaultValue);
 
     String getDriver();
+
+    boolean isHeadless();
 
     String getProfile();
 

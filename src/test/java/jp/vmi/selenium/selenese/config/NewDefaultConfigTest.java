@@ -42,6 +42,7 @@ public class NewDefaultConfigTest {
     private static final String[] testArgs = {
         // "--config", "config-file",
         "--driver", "driver-name",
+        "--headless",
         "--profile", "profile-name",
         "--profile-dir", "profile-dir",
         "--chrome-experimental-options", "json-file",
@@ -100,6 +101,7 @@ public class NewDefaultConfigTest {
 
         //assertThat(options.getConfig(), is(nullValue()));
         assertThat(options.getDriver(), is(nullValue()));
+        assertThat(options.isHeadless(), is(false));
         assertThat(options.getProfile(), is(nullValue()));
         assertThat(options.getProfileDir(), is(nullValue()));
         assertThat(options.getChromeExperimentalOptions(), is(nullValue()));
@@ -143,6 +145,7 @@ public class NewDefaultConfigTest {
         options.parseCommandLine(testArgs);
         //assertThat(options.getConfig(), is("config-file"));
         assertThat(options.getDriver(), is("driver-name"));
+        assertThat(options.isHeadless(), is(true));
         assertThat(options.getProfile(), is("profile-name"));
         assertThat(options.getProfileDir(), is("profile-dir"));
         assertThat(options.getChromeExperimentalOptions(), is("json-file"));

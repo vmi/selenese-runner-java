@@ -39,6 +39,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
      */
     public static FirefoxOptions newFirefoxOptions(DriverOptions driverOptions) {
         FirefoxOptions options = new FirefoxOptions();
+        if (driverOptions.has(HEADLESS))
+            options.setHeadless(driverOptions.getBoolean(HEADLESS));
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);

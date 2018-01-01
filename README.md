@@ -36,6 +36,7 @@ Usage
     
      --config (-c) <file>                    : load option information from file.
      --driver (-d) <driver>                  : firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
+     --headless                              : use headless mode if driver is supported (currently, Chrome and Firefox)
      --profile (-p) <name>                   : profile name (Firefox only *1)
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
      --chrome-experimental-options <file>    : path to json file specify experimental options for chrome (Chrome only *1)

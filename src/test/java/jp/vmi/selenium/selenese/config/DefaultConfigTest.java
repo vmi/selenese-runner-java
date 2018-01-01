@@ -15,6 +15,7 @@ public class DefaultConfigTest {
 
     private final String[] args = {
         "--" + DRIVER + "=opt-firefox",
+        "--" + HEADLESS,
         "--" + PROFILE + "=opt-selenium",
         "--" + PROFILE_DIR + "=/opt/path/to/profile/directory",
         "--" + PROXY + "=opt-proxy-host",
@@ -57,6 +58,7 @@ public class DefaultConfigTest {
     public void testEmptyConfig() {
         IConfig config = new DefaultConfig();
         assertThat(config.get(DRIVER), is(nullValue()));
+        assertThat(config.get(HEADLESS), is(false));
         assertThat(config.get(PROFILE), is(nullValue()));
         assertThat(config.get(PROFILE_DIR), is(nullValue()));
         assertThat(config.get(PROXY), is(nullValue()));
@@ -98,6 +100,7 @@ public class DefaultConfigTest {
         String file = DefaultConfigTest.class.getResource("/config/test.config").getPath();
         IConfig config = new DefaultConfig(new String[] { "--config", file });
         assertThat((String) config.get(DRIVER), is("firefox"));
+        assertThat((boolean) config.get(HEADLESS), is(true));
         assertThat((String) config.get(PROFILE), is("selenium"));
         assertThat((String) config.get(PROFILE_DIR), is("/path/to/profile/directory"));
         assertThat((String) config.get(PROXY), is("proxy-host"));
@@ -139,6 +142,7 @@ public class DefaultConfigTest {
         String[] newArgs = ArrayUtils.addAll(args, "--config", file);
         IConfig config = new DefaultConfig(newArgs);
         assertThat((String) config.get(DRIVER), is("opt-firefox"));
+        assertThat((boolean) config.get(HEADLESS), is(true));
         assertThat((String) config.get(PROFILE), is("opt-selenium"));
         assertThat((String) config.get(PROFILE_DIR), is("/opt/path/to/profile/directory"));
         assertThat((String) config.get(PROXY), is("opt-proxy-host"));

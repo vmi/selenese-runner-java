@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.11.0
 
 * Add new command: `contextMenu`. (PR #262 by @kokichirok)
+* Add new option `--headless` which enables the headless mode for Chrome and Firefox.
 * Update dependency versions.
 
 ### 3.10.0

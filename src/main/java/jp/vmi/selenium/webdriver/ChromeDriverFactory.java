@@ -41,6 +41,8 @@ public class ChromeDriverFactory extends WebDriverFactory {
      */
     public static ChromeOptions newChromeOptions(DriverOptions driverOptions) {
         ChromeOptions options = new ChromeOptions();
+        if (driverOptions.has(HEADLESS))
+            options.setHeadless(driverOptions.getBoolean(HEADLESS));
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);

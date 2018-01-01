@@ -69,14 +69,26 @@ public class DriverOptions {
         /** --height */
         HEIGHT,
         /** --define */
-        DEFINE,
+        DEFINE(String[].class),
         /** --cli-args */
-        CLI_ARGS,
+        CLI_ARGS(String[].class),
         /** --chrome-extension */
-        CHROME_EXTENSION,
+        CHROME_EXTENSION(String[].class),
         /** --chrome-experimental-options */
         CHROME_EXPERIMENTAL_OPTIONS,
+        /** --headless */
+        HEADLESS(Boolean.class),
         ;
+
+        private final Class<?> valueType;
+
+        private DriverOption(Class<?> valueType) {
+            this.valueType = valueType;
+        }
+
+        private DriverOption() {
+            this(String.class);
+        }
 
         /**
          * Get option name as "word-word-word".
@@ -86,11 +98,16 @@ public class DriverOptions {
         public String optionName() {
             return name().toLowerCase().replace('_', '-');
         }
+
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "." + name();
+        }
     }
 
     private static final Pattern DEFINE_RE = Pattern.compile("(?<name>[^:+=]+)(?::(?<type>\\w+))?(?<add>\\+)?=(?<value>.*)");
 
-    private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
+    private final IdentityHashMap<DriverOptions.DriverOption, Object> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
     private String[] cliArgs = ArrayUtils.EMPTY_STRING_ARRAY;
     private List<File> chromeExtensions = new ArrayList<>();
@@ -108,20 +125,8 @@ public class DriverOptions {
      * @param config configuration information.
      */
     public DriverOptions(IConfig config) {
-        for (DriverOption opt : DriverOption.values()) {
-            switch (opt) {
-            case DEFINE:
-            case CLI_ARGS:
-            case CHROME_EXTENSION:
-                String[] values = config.get(opt.optionName());
-                if (values != null)
-                    set(opt, values);
-                break;
-            default:
-                set(opt, (String) config.get(opt.optionName()));
-                break;
-            }
-        }
+        for (DriverOption opt : DriverOption.values())
+            set(opt, (Object) config.get(opt.optionName()));
     }
 
     /**
@@ -152,8 +157,24 @@ public class DriverOptions {
         case CHROME_EXTENSION:
             throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CHROME_EXTENSION).");
         default:
-            return map.get(opt);
+            break;
         }
+        if (opt.valueType != String.class)
+            throw new IllegalArgumentException("The option value of " + opt + " is not String.");
+        return (String) map.get(opt);
+    }
+
+    /**
+     * Get option value as boolean.
+     *
+     * @param opt option key.
+     * @return option value.
+     */
+    public boolean getBoolean(DriverOption opt) {
+        if (opt.valueType != Boolean.class)
+            throw new IllegalArgumentException("The option value of " + opt + " is not boolean.");
+        Object value = map.get(opt);
+        return value != null ? (boolean) value : false;
     }
 
     /**
@@ -179,29 +200,62 @@ public class DriverOptions {
      * Set option key and value.
      *
      * @param opt option key.
-     * @param values option values. (multiple values are accepted by DEFINE and CLI_ARGS only)
+     * @param values option values. (multiple values are accepted by DEFINE, CLI_ARGS, and CHROME_EXTENSION only)
      * @return this.
      */
     public DriverOptions set(DriverOption opt, String... values) {
         switch (opt) {
         case DEFINE:
-            addDefinitions(values);
-            break;
         case CLI_ARGS:
-            cliArgs = ArrayUtils.addAll(cliArgs, values);
-            break;
         case CHROME_EXTENSION:
-            for (String ext : values)
-                chromeExtensions.add(new File(ext));
-            break;
+            return set(opt, (Object) values);
         default:
             if (values.length != 1)
                 throw new IllegalArgumentException("Need to pass only a single value for " + opt);
-            if (values[0] != null)
-                map.put(opt, values[0]);
-            else
-                map.remove(opt);
+            return set(opt, (Object) values[0]);
+        }
+    }
+
+    /**
+     * Set option key and value.
+     *
+     * @param opt option key.
+     * @param value option value.
+     * @return this.
+     */
+    public DriverOptions set(DriverOption opt, Object value) {
+        boolean isMultiple;
+        Consumer<Object> setter;
+        switch (opt) {
+        case DEFINE:
+            isMultiple = true;
+            setter = val -> addDefinitions((String[]) val);
             break;
+        case CLI_ARGS:
+            isMultiple = true;
+            setter = val -> cliArgs = ArrayUtils.addAll(cliArgs, (String[]) val);
+            break;
+        case CHROME_EXTENSION:
+            isMultiple = true;
+            setter = val -> {
+                for (String ext : (String[]) val)
+                    chromeExtensions.add(new File(ext));
+            };
+            break;
+        default:
+            isMultiple = false;
+            setter = val -> map.put(opt, val);
+            break;
+        }
+        if (value == null) {
+            // no operation if isMultiple is true and value is null.
+            if (!isMultiple)
+                map.remove(opt);
+        } else if (opt.valueType.isAssignableFrom(value.getClass())) {
+            setter.accept(value);
+        } else {
+            throw new IllegalArgumentException(String.format("The type of the option value of %s must be %s, but it is %s",
+                opt, opt.valueType.getSimpleName(), value.getClass().getSimpleName()));
         }
         return this;
     }

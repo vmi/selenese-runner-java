@@ -86,6 +86,9 @@ public class DefaultConfig implements IConfig {
         usage = "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
     private String driver;
 
+    @Option(name = "--headless", usage = "use headless mode if driver is supported (currently, Chrome and Firefox)")
+    private Boolean headless;
+
     @Option(name = "--profile", aliases = "-p", metaVar = "<name>", usage = "profile name (Firefox only *1)")
     private String profile;
 
@@ -241,6 +244,15 @@ public class DefaultConfig implements IConfig {
 
     public void setDriver(String driver) {
         this.driver = driver;
+    }
+
+    @Override
+    public boolean isHeadless() {
+        return headless != null ? headless : (parentOptions != null ? parentOptions.isHeadless() : false);
+    }
+
+    public void setHeadless(boolean headless) {
+        this.headless = headless;
     }
 
     @Override
