@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -294,6 +295,13 @@ public interface Context extends WrapsDriver {
     boolean isInteractive();
 
     /**
+     * Get next native alert action.
+     *
+     * @return next native alert state
+     */
+    AlertAction getNextNativeAlertAction();
+
+    /**
      * Executes JavaScript in the context of the currently selected frame or window.
      *
      * see {@link JavascriptExecutor#executeScript(String, Object...)}.
@@ -307,5 +315,25 @@ public interface Context extends WrapsDriver {
         @SuppressWarnings("unchecked")
         T result = (T) ((JavascriptExecutor) getWrappedDriver()).executeScript(script, args);
         return result;
+    }
+
+    /**
+     * action class for <i>native</i> alert dialog.
+     */
+    interface AlertAction {
+        /**
+         * Set whether or not to accept next alert dialog. <code>true</code> for accept, <code>false</code> for dismiss.
+         */
+        void setAccept(boolean accept);
+
+        /**
+         * Set the answer for <i>native</i> alert dialog.
+         */
+        void setAnswer(String answer);
+
+        /**
+         * Performs the action to <code>alert</code>. After perform, instance behaviour should be reset.
+         */
+        void perform(Alert alert);
     }
 }

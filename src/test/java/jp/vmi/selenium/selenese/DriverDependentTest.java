@@ -428,4 +428,11 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("contextMenu");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void testNativeAlert() {
+        assumeNot(HTMLUNIT, PHANTOMJS);
+        execute("testcase_native_alert");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

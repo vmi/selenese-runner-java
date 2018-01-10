@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>Native alert test</title>
+    <script><!--
+      function $(id) {
+        return document.getElementById(id);
+      }
+      function alert_test() {
+        console.log('alert_test');
+        alert('open alert dialog.');
+        $('alert_result').textContent = "done.";
+      }
+      function confirm_test() {
+        console.log('confirm_test');
+        var result = confirm('open confirm dialog.');
+        $('confirm_result').textContent = result;
+      }
+      function prompt_test() {
+        console.log('prompt_test');
+        var result = prompt('open prompt dialog.', '');
+        $('prompt_result').textContent = result;
+      }
+      function beforeunload_test(e) {
+        console.log('beforeunload_test');
+        var confirmationMessage = "Beforeunload dialog message";
+        e.returnValue = confirmationMessage;	// Gecko and Trident
+        return confirmationMessage;		// Gecko and WebKit
+      }
+    //--></script>
+  </head>
+  <body>
+    <h1>Dialog override test</h1>
+    <hr>
+    <ul>
+      <li>alert
+        <button id="alert" onclick="alert_test()">alert</button><br>
+        Result: <span id="alert_result">-</span>
+      </li>
+      <li>confirm
+        <button id="confirm" onclick="confirm_test()">confirm</button><br>
+        Result: <span id="confirm_result">-</span>
+      </li>
+      <li>prompt
+        <button id="prompt" onclick="prompt_test()">prompt</button><br>
+        Result: <span id="prompt_result">-</span>
+      </li>
+      <li><a id="enable_beforeunload" onclick="window.addEventListener('beforeunload',beforeunload_test);">Enable beforeunload dialog</a></li>
+      <li><a id="goto_top" href="/">Go to top page</a></li>
+    </ul>
+  </body>
+  <script>
+<!--
+alert_test()
+confirm_test()
+prompt_test()
+-->
+  </script>
+</html>

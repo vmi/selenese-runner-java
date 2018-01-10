@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -101,6 +102,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private MaxTimeTimer maxTimeTimer = new MaxTimeTimer() {
     };
+    private AlertAction alertAction = new AlertAction();
 
     /**
      * Constructor.
@@ -384,6 +386,40 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public boolean isInteractive() {
         return isInteractive;
+    }
+
+    class AlertAction implements Context.AlertAction {
+        boolean accept = true;
+        String answer = null;
+
+        @Override
+        public void setAccept(boolean accept) {
+            this.accept = accept;
+        }
+        @Override
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
+
+        @Override
+        public void perform(Alert alert) {
+            if (answer != null) {
+                alert.sendKeys(answer);
+            }
+            if (accept) {
+                alert.accept();
+            } else {
+                alert.dismiss();
+            }
+            // reset the behavior
+            this.answer = null;
+            this.accept = true;
+        }
+    }
+
+    @Override
+    public Context.AlertAction getNextNativeAlertAction() {
+        return this.alertAction;
     }
 
     /**

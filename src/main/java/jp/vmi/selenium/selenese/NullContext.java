@@ -182,4 +182,9 @@ public class NullContext implements Context {
     public boolean isInteractive() {
         return false;
     }
+
+    @Override
+    public AlertAction getNextNativeAlertAction() {
+        return null;
+    }
 }
