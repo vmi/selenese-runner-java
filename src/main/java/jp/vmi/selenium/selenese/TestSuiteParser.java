@@ -1,37 +1,36 @@
 package jp.vmi.selenium.selenese;
 
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.xpath.XPathAPI;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
+import jp.vmi.selenium.selenese.parser.CommandIterator;
+import jp.vmi.selenium.selenese.parser.TestCaseEntry;
+import jp.vmi.selenium.selenese.parser.TestCaseIterator;
+import jp.vmi.selenium.selenese.parser.TestElementIteratorFactory;
 
 /**
- * Parse Selenese script of test-suite.
+ * Parser of test-suite script.
  */
-public class TestSuiteParser extends Parser {
+public final class TestSuiteParser {
 
-    protected TestSuiteParser(String filename, Document document) {
-        super(filename, document);
-    }
-
-    @Override
-    protected Selenese parse(ICommandFactory commandFactory) {
+    /**
+     * Parse test-suite script.
+     *
+     * @param caseIter test-case iterator.
+     * @param commandFactory command factory.
+     * @return Selenese instance.
+     */
+    public static Selenese parse(TestCaseIterator caseIter, ICommandFactory commandFactory) {
+        TestSuite testSuite = Binder.newTestSuite(caseIter.getFilename(), caseIter.getName());
         try {
-            TestSuite testSuite = Binder.newTestSuite(filename, null);
-            NodeList nodeList = XPathAPI.selectNodeList(docucment, "//TBODY/TR/TD/A/@href");
-            for (Node node : each(nodeList)) {
-                String tcFilename = node.getNodeValue();
-                testSuite.addSeleneseFile(tcFilename, commandFactory);
+            TestElementIteratorFactory<CommandIterator, TestCaseEntry> comIterFactory = caseIter.getCommandIteratorFactory();
+            for (TestCaseEntry entry : caseIter) {
+                CommandIterator comIter = comIterFactory.getTestElementIterator(entry);
+                Selenese selenese = TestCaseParser.parse(comIter, commandFactory);
+                testSuite.addSelenese(selenese);
             }
-            return testSuite;
-        } catch (TransformerException e) {
-            return Binder.newErrorTestSuite(FilenameUtils.getBaseName(filename), new InvalidSeleneseException(e));
+        } catch (InvalidSeleneseException e) {
+            testSuite.addSelenese(Binder.newErrorTestCase(e.getFilename(), e));
         }
+        return caseIter.isDummy() ? testSuite.getSeleneseList().get(0) : testSuite;
     }
 }

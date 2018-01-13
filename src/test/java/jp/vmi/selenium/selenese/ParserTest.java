@@ -41,7 +41,6 @@ public class ParserTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(manager.get());
         try (InputStream is = getClass().getResourceAsStream(TEST_SUITE)) {
-            ;
             Selenese selenese = Parser.parse(TEST_SUITE, is, runner.getCommandFactory());
             assertThat(selenese, is(instanceOf(TestSuite.class)));
         } catch (IOException e) {
