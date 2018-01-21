@@ -184,7 +184,7 @@ public class NullContext implements Context {
     }
 
     @Override
-    public AlertAction getNextNativeAlertAction() {
+    public AlertActionListener getNextNativeAlertActionListener() {
         return null;
     }
 }

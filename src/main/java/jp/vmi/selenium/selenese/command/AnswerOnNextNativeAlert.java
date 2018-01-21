@@ -3,9 +3,12 @@ package jp.vmi.selenium.selenese.command;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 
-import static jp.vmi.selenium.selenese.command.ArgumentType.VALUE;
-import static jp.vmi.selenium.selenese.result.Success.SUCCESS;
+import static jp.vmi.selenium.selenese.command.ArgumentType.*;
+import static jp.vmi.selenium.selenese.result.Success.*;
 
+/**
+ * Command "answerOnNextNativeAlert".
+ */
 public class AnswerOnNextNativeAlert extends AbstractCommand {
 
     private static final int ARG_ANSWER = 0;
@@ -21,7 +24,7 @@ public class AnswerOnNextNativeAlert extends AbstractCommand {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.getNextNativeAlertAction().setAnswer(curArgs[ARG_ANSWER]);
+        context.getNextNativeAlertActionListener().setAnswer(curArgs[ARG_ANSWER]);
         return SUCCESS;
     }
 }

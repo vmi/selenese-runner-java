@@ -102,7 +102,35 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private MaxTimeTimer maxTimeTimer = new MaxTimeTimer() {
     };
-    private AlertAction alertAction = new AlertAction();
+
+    private final AlertActionListener alertActionListener = new AlertActionListener() {
+
+        private boolean accept = true;
+        private String answer = null;
+
+        @Override
+        public void setAccept(boolean accept) {
+            this.accept = accept;
+        }
+
+        @Override
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
+
+        @Override
+        public void actionPerformed(Alert alert) {
+            if (answer != null)
+                alert.sendKeys(answer);
+            if (accept)
+                alert.accept();
+            else
+                alert.dismiss();
+            // reset the behavior
+            this.answer = null;
+            this.accept = true;
+        }
+    };
 
     /**
      * Constructor.
@@ -388,7 +416,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return isInteractive;
     }
 
-    class AlertAction implements Context.AlertAction {
+    class AlertActionImpl implements AlertActionListener {
         boolean accept = true;
         String answer = null;
 
@@ -396,13 +424,14 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         public void setAccept(boolean accept) {
             this.accept = accept;
         }
+
         @Override
         public void setAnswer(String answer) {
             this.answer = answer;
         }
 
         @Override
-        public void perform(Alert alert) {
+        public void actionPerformed(Alert alert) {
             if (answer != null) {
                 alert.sendKeys(answer);
             }
@@ -418,8 +447,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public Context.AlertAction getNextNativeAlertAction() {
-        return this.alertAction;
+    public AlertActionListener getNextNativeAlertActionListener() {
+        return this.alertActionListener;
     }
 
     /**
