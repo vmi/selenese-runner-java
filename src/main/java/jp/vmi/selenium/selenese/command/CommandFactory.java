@@ -45,12 +45,15 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(AltKeyDown.class);
         addConstructor(AltKeyUp.class);
         addConstructor(AnswerOnNextPrompt.class);
+        addConstructor(AnswerOnNextNativeAlert.class);
         addConstructor(AssignId.class);
         addConstructor(AttachFile.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Check.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
+        addConstructor(ChooseCancelOnNextNativeAlert.class);
         addConstructor(ChooseOkOnNextConfirmation.class);
+        addConstructor(ChooseOkOnNextNativeAlert.class);
         addConstructor(Click.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);

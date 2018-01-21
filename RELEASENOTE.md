@@ -6,6 +6,14 @@ Selenese Runner Java Relase Note
 * Add new command: `contextMenu`. (PR #262 by @kokichirok)
 * Add new option `--headless` which enables the headless mode for Chrome and Firefox.
 * Update dependency versions.
+* Add following new conmands: (PR #263 by @koichirok with refactoring by @vmi)
+** `answerOnNextNativeAlert`
+** `chooseCancelOnNextNativeAlert`
+** `chooseOkOnNextNativeAlert`
+** `(assert|verify|waitFor|store)Alert`
+** `(assert|verify|waitFor|store)AlertPresent`
+** `(assert|verify|waitFor)NotAlert`
+** `(assert|verify|waitFor)AlertNotPresent`
 
 ### 3.10.0
 

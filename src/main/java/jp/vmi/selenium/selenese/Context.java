@@ -294,6 +294,13 @@ public interface Context extends WrapsDriver {
     boolean isInteractive();
 
     /**
+     * Get next native alert action.
+     *
+     * @return next native alert state
+     */
+    AlertActionListener getNextNativeAlertActionListener();
+
+    /**
      * Executes JavaScript in the context of the currently selected frame or window.
      *
      * see {@link JavascriptExecutor#executeScript(String, Object...)}.
