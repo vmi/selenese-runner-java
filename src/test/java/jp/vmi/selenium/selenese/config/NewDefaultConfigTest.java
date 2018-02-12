@@ -69,6 +69,7 @@ public class NewDefaultConfigTest {
         "--geckodriver", "geckodriver-path",
         "--chromedriver", "chromedriver-path",
         "--iedriver", "iedriver-path",
+        "--edgedriver", "edgedriver-path",
         "--phantomjs", "phantomjs-path",
         "--xml-result", "xml-result-dir",
         "--html-result", "html-result-dir",
@@ -125,6 +126,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getGeckodriver(), is(nullValue()));
         assertThat(options.getChromedriver(), is(nullValue()));
         assertThat(options.getIedriver(), is(nullValue()));
+        assertThat(options.getEdgedriver(), is(nullValue()));
         assertThat(options.getPhantomjs(), is(nullValue()));
         assertThat(options.getXmlResult(), is(nullValue()));
         assertThat(options.getHtmlResult(), is(nullValue()));
@@ -169,6 +171,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getGeckodriver(), is("geckodriver-path"));
         assertThat(options.getChromedriver(), is("chromedriver-path"));
         assertThat(options.getIedriver(), is("iedriver-path"));
+        assertThat(options.getEdgedriver(), is("edgedriver-path"));
         assertThat(options.getPhantomjs(), is("phantomjs-path"));
         assertThat(options.getXmlResult(), is("xml-result-dir"));
         assertThat(options.getHtmlResult(), is("html-result-dir"));

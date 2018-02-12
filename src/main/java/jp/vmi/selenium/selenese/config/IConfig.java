@@ -44,6 +44,7 @@ public interface IConfig {
     public static final String GECKODRIVER = "geckodriver";
     public static final String CHROMEDRIVER = "chromedriver";
     public static final String IEDRIVER = "iedriver";
+    public static final String EDGEDRIVER = "edgedriver";
     public static final String PHANTOMJS = "phantomjs";
     public static final String XML_RESULT = "xml-result";
     public static final String HTML_RESULT = "html-result";
@@ -139,6 +140,8 @@ public interface IConfig {
     String getChromedriver();
 
     String getIedriver();
+
+    String getEdgedriver();
 
     String getPhantomjs();
 

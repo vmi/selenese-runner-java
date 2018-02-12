@@ -125,6 +125,8 @@ public class Main {
                 driverName = WebDriverManager.CHROME;
             else if (driverOptions.has(DriverOption.IEDRIVER))
                 driverName = WebDriverManager.IE;
+            else if (driverOptions.has(DriverOption.EDGEDRIVER))
+                driverName = WebDriverManager.EDGE;
             else if (driverOptions.has(DriverOption.PHANTOMJS))
                 driverName = WebDriverManager.PHANTOMJS;
         }

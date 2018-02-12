@@ -83,7 +83,7 @@ public class DefaultConfig implements IConfig {
     private String config;
 
     @Option(name = "--driver", aliases = "-d", metaVar = "<driver>",
-        usage = "firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
+        usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
     private String driver;
 
     @Option(name = "--headless", usage = "use headless mode if driver is supported (currently, Chrome and Firefox)")
@@ -160,6 +160,9 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--iedriver", metaVar = "<path>", usage = "path to 'IEDriverServer' binary. (implies '--driver ie')")
     private String iedriver;
+
+    @Option(name = "--edgedriver", metaVar = "<path>", usage = "path to Edge 'WebDriver' binary. (implies '--driver edge')")
+    private String edgedriver;
 
     @Option(name = "--phantomjs", metaVar = "<path>", usage = "path to 'phantomjs' binary. (implies '--driver phantomjs')")
     private String phantomjs;
@@ -469,6 +472,15 @@ public class DefaultConfig implements IConfig {
 
     public void setIedriver(String iedriver) {
         this.iedriver = iedriver;
+    }
+
+    @Override
+    public String getEdgedriver() {
+        return edgedriver != null ? edgedriver : (parentOptions != null ? parentOptions.getEdgedriver() : null);
+    }
+
+    public void setEdgedriver(String edgedriver) {
+        this.edgedriver = edgedriver;
     }
 
     @Override

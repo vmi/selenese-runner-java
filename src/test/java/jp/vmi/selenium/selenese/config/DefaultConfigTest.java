@@ -38,6 +38,7 @@ public class DefaultConfigTest {
         "--" + GECKODRIVER + "=/opt/path/to/geckodriver",
         "--" + CHROMEDRIVER + "=/opt/path/to/chromedriver",
         "--" + IEDRIVER + "=/opt/path/to/iedriver",
+        "--" + EDGEDRIVER + "=/opt/path/to/edgedriver",
         "--" + PHANTOMJS + "=/opt/path/to/phantomjs",
         "--" + XML_RESULT + "=/opt/path/to/xml/result",
         "--" + HTML_RESULT + "=/opt/path/to/html/result",
@@ -80,6 +81,7 @@ public class DefaultConfigTest {
         assertThat(config.get(GECKODRIVER), is(nullValue()));
         assertThat(config.get(CHROMEDRIVER), is(nullValue()));
         assertThat(config.get(IEDRIVER), is(nullValue()));
+        assertThat(config.get(EDGEDRIVER), is(nullValue()));
         assertThat(config.get(PHANTOMJS), is(nullValue()));
         assertThat(config.get(XML_RESULT), is(nullValue()));
         assertThat(config.get(HTML_RESULT), is(nullValue()));
@@ -122,6 +124,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(GECKODRIVER), is("/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/path/to/iedriver"));
+        assertThat((String) config.get(EDGEDRIVER), is("/path/to/edgedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/path/to/html/result"));
@@ -164,6 +167,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(GECKODRIVER), is("/opt/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/opt/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/opt/path/to/iedriver"));
+        assertThat((String) config.get(EDGEDRIVER), is("/opt/path/to/edgedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/opt/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/opt/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/opt/path/to/html/result"));

@@ -35,7 +35,7 @@ Usage
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
      --config (-c) <file>                    : load option information from file.
-     --driver (-d) <driver>                  : firefox (default) | chrome | ie | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
+     --driver (-d) <driver>                  : firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
      --headless                              : use headless mode if driver is supported (currently, Chrome and Firefox)
      --profile (-p) <name>                   : profile name (Firefox only *1)
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
@@ -61,6 +61,7 @@ Usage
      --geckodriver <path>                    : path to 'geckodriver' binary. (implies '--driver firefox')
      --chromedriver <path>                   : path to 'chromedriver' binary. (implies '--driver chrome')
      --iedriver <path>                       : path to 'IEDriverServer' binary. (implies '--driver ie')
+     --edgedriver <path>                     : path to Edge 'WebDriver' binary. (implies '--driver edge')
      --phantomjs <path>                      : path to 'phantomjs' binary. (implies '--driver phantomjs')
      --xml-result <dir>                      : output XML JUnit results to specified directory.
      --html-result <dir>                     : output HTML results to specified directory.

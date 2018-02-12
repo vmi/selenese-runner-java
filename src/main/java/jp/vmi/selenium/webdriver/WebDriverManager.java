@@ -35,6 +35,11 @@ public class WebDriverManager implements WebDriverPreparator {
     public static final String IE = IEDriverFactory.BROWSER_NAME;
 
     /**
+     * Edge.
+     */
+    public static final String EDGE = EdgeDriverFactory.BROWSER_NAME;
+
+    /**
      * Html Unit.
      */
     public static final String HTMLUNIT = HtmlUnitDriverFactory.BROWSER_NAME;
@@ -174,6 +179,8 @@ public class WebDriverManager implements WebDriverPreparator {
             return new ChromeDriverFactory();
         case IE:
             return new IEDriverFactory();
+        case EDGE:
+            return new EdgeDriverFactory();
         case SAFARI:
             return new SafariDriverFactory();
         case HTMLUNIT:
