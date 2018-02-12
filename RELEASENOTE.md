@@ -1,6 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.12.0
+
+* Add support EdgeDriver.
+* Catch up Selenium 3.9.1.
+* Update dependency versions.
+* Update Maven plugin versions.
+
 ### 3.11.0
 
 * Add new command: `contextMenu`. (PR #262 by @kokichirok)
