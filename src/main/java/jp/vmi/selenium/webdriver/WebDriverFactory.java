@@ -62,6 +62,7 @@ public abstract class WebDriverFactory {
      * @param builder DriverService builder.
      * @param driverOptions driver options.
      * @param driverKey driver option (e.g. '--firefox', '--chrome')
+     * @param <B> subclass of DriverService.Builder
      * @return setup builder.
      */
     public static <B extends DriverService.Builder<?, B>> B setupBuilder(B builder, DriverOptions driverOptions, DriverOption driverKey) {
