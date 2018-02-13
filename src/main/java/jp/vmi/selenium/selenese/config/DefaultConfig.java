@@ -82,140 +82,140 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--config", aliases = "-c", metaVar = "<file>", usage = "load option information from file.")
     private String config;
 
-    @Option(name = "--driver", aliases = "-d", metaVar = "<driver>",
+    @Option(name = "--" + DRIVER, aliases = "-d", metaVar = "<driver>",
         usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
     private String driver;
 
-    @Option(name = "--headless", usage = "use headless mode if driver is supported (currently, Chrome and Firefox)")
+    @Option(name = "--" + HEADLESS, usage = "use headless mode if driver is supported (currently, Chrome and Firefox)")
     private Boolean headless;
 
-    @Option(name = "--profile", aliases = "-p", metaVar = "<name>", usage = "profile name (Firefox only *1)")
+    @Option(name = "--" + PROFILE, aliases = "-p", metaVar = "<name>", usage = "profile name (Firefox only *1)")
     private String profile;
 
-    @Option(name = "--profile-dir", aliases = "-P", metaVar = "<dir>", usage = "profile directory (Firefox only *1)")
+    @Option(name = "--" + PROFILE_DIR, aliases = "-P", metaVar = "<dir>", usage = "profile directory (Firefox only *1)")
     private String profileDir;
 
-    @Option(name = "--chrome-experimental-options", metaVar = "<file>", usage = "path to json file specify experimental options for chrome (Chrome only *1)")
+    @Option(name = "--" + CHROME_EXPERIMENTAL_OPTIONS, metaVar = "<file>", usage = "path to json file specify experimental options for chrome (Chrome only *1)")
     private String chromeExperimentalOptions;
 
-    @Option(name = "--chrome-extension", metaVar = "<file>", usage = "chrome extension file (multiple, Chrome only *1)")
+    @Option(name = "--" + CHROME_EXTENSION, metaVar = "<file>", usage = "chrome extension file (multiple, Chrome only *1)")
     private String[] chromeExtension;
 
-    @Option(name = "--proxy", metaVar = "<proxy>", usage = "proxy host and port (HOST:PORT) (excepting IE)")
+    @Option(name = "--" + PROXY, metaVar = "<proxy>", usage = "proxy host and port (HOST:PORT) (excepting IE)")
     private String proxy;
 
-    @Option(name = "--proxy-user", metaVar = "<user>", usage = "proxy username (HtmlUnit only *2)")
+    @Option(name = "--" + PROXY_USER, metaVar = "<user>", usage = "proxy username (HtmlUnit only *2)")
     private String proxyUser;
 
-    @Option(name = "--proxy-password", metaVar = "<password>", usage = "proxy password (HtmlUnit only *2)")
+    @Option(name = "--" + PROXY_PASSWORD, metaVar = "<password>", usage = "proxy password (HtmlUnit only *2)")
     private String proxyPassword;
 
-    @Option(name = "--no-proxy", metaVar = "<hosts>", usage = "no-proxy hosts")
+    @Option(name = "--" + NO_PROXY, metaVar = "<hosts>", usage = "no-proxy hosts")
     private String noProxy;
 
-    @Option(name = "--cli-args", metaVar = "<arg>", usage = "add command line arguments at starting up driver (multiple)")
+    @Option(name = "--" + CLI_ARGS, metaVar = "<arg>", usage = "add command line arguments at starting up driver (multiple)")
     private String[] cliArgs;
 
-    @Option(name = "--remote-url", metaVar = "<url>", usage = "Remote test runner URL (Remote only)")
+    @Option(name = "--" + REMOTE_URL, metaVar = "<url>", usage = "Remote test runner URL (Remote only)")
     private String remoteUrl;
 
-    @Option(name = "--remote-platform", metaVar = "<platform>", usage = "Desired remote platform (Remote only)")
+    @Option(name = "--" + REMOTE_PLATFORM, metaVar = "<platform>", usage = "Desired remote platform (Remote only)")
     private String remotePlatform;
 
-    @Option(name = "--remote-browser", metaVar = "<browser>", usage = "Desired remote browser (Remote only)")
+    @Option(name = "--" + REMOTE_BROWSER, metaVar = "<browser>", usage = "Desired remote browser (Remote only)")
     private String remoteBrowser;
 
-    @Option(name = "--remote-version", metaVar = "<browser-version>", usage = "Desired remote browser version (Remote only)")
+    @Option(name = "--" + REMOTE_VERSION, metaVar = "<browser-version>", usage = "Desired remote browser version (Remote only)")
     private String remoteVersion;
 
-    @Option(name = "--highlight", aliases = "-H", usage = "highlight locator always.")
+    @Option(name = "--" + HIGHLIGHT, aliases = "-H", usage = "highlight locator always.")
     private Boolean highlight;
 
-    @Option(name = "--interactive", aliases = "-i", usage = "interactive mode.")
+    @Option(name = "--" + INTERACTIVE, aliases = "-i", usage = "interactive mode.")
     private Boolean interactive;
 
-    @Option(name = "--screenshot-dir", aliases = "-s", metaVar = "<dir>", usage = "override captureEntirePageScreenshot directory.")
+    @Option(name = "--" + SCREENSHOT_DIR, aliases = "-s", metaVar = "<dir>", usage = "override captureEntirePageScreenshot directory.")
     private String screenshotDir;
 
-    @Option(name = "--screenshot-all", aliases = "-S", metaVar = "<dir>", usage = "take screenshot at all commands to specified directory.")
+    @Option(name = "--" + SCREENSHOT_ALL, aliases = "-S", metaVar = "<dir>", usage = "take screenshot at all commands to specified directory.")
     private String screenshotAll;
 
-    @Option(name = "--screenshot-on-fail", metaVar = "<dir>", usage = "take screenshot on fail commands to specified directory.")
+    @Option(name = "--" + SCREENSHOT_ON_FAIL, metaVar = "<dir>", usage = "take screenshot on fail commands to specified directory.")
     private String screenshotOnFail;
 
-    @Option(name = "--ignore-screenshot-command", usage = "ignore captureEntirePageScreenshot command.")
+    @Option(name = "--" + IGNORE_SCREENSHOT_COMMAND, usage = "ignore captureEntirePageScreenshot command.")
     private Boolean ignoreScreenshotCommand;
 
-    @Option(name = "--baseurl", aliases = "-b", metaVar = "<baseURL>", usage = "override base URL set in selenese.")
+    @Option(name = "--" + BASEURL, aliases = "-b", metaVar = "<baseURL>", usage = "override base URL set in selenese.")
     private String baseurl;
 
-    @Option(name = "--firefox", metaVar = "<path>", usage = "path to 'firefox' binary. (implies '--driver firefox')")
+    @Option(name = "--" + FIREFOX, metaVar = "<path>", usage = "path to 'firefox' binary. (implies '--driver firefox')")
     private String firefox;
 
-    @Option(name = "--geckodriver", metaVar = "<path>", usage = "path to 'geckodriver' binary. (implies '--driver firefox')")
+    @Option(name = "--" + GECKODRIVER, metaVar = "<path>", usage = "path to 'geckodriver' binary. (implies '--driver firefox')")
     private String geckodriver;
 
-    @Option(name = "--chromedriver", metaVar = "<path>", usage = "path to 'chromedriver' binary. (implies '--driver chrome')")
+    @Option(name = "--" + CHROMEDRIVER, metaVar = "<path>", usage = "path to 'chromedriver' binary. (implies '--driver chrome')")
     private String chromedriver;
 
-    @Option(name = "--iedriver", metaVar = "<path>", usage = "path to 'IEDriverServer' binary. (implies '--driver ie')")
+    @Option(name = "--" + IEDRIVER, metaVar = "<path>", usage = "path to 'IEDriverServer' binary. (implies '--driver ie')")
     private String iedriver;
 
-    @Option(name = "--edgedriver", metaVar = "<path>", usage = "path to Edge 'WebDriver' binary. (implies '--driver edge')")
+    @Option(name = "--" + EDGEDRIVER, metaVar = "<path>", usage = "path to Edge 'WebDriver' binary. (implies '--driver edge')")
     private String edgedriver;
 
-    @Option(name = "--phantomjs", metaVar = "<path>", usage = "path to 'phantomjs' binary. (implies '--driver phantomjs')")
+    @Option(name = "--" + PHANTOMJS, metaVar = "<path>", usage = "path to 'phantomjs' binary. (implies '--driver phantomjs')")
     private String phantomjs;
 
-    @Option(name = "--xml-result", metaVar = "<dir>", usage = "output XML JUnit results to specified directory.")
+    @Option(name = "--" + XML_RESULT, metaVar = "<dir>", usage = "output XML JUnit results to specified directory.")
     private String xmlResult;
 
-    @Option(name = "--html-result", metaVar = "<dir>", usage = "output HTML results to specified directory.")
+    @Option(name = "--" + HTML_RESULT, metaVar = "<dir>", usage = "output HTML results to specified directory.")
     private String htmlResult;
 
-    @Option(name = "--timeout", aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
+    @Option(name = "--" + TIMEOUT, aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
     private String timeout;
 
-    @Option(name = "--set-speed", metaVar = "<speed>", usage = "same as executing setSpeed(ms) command first.")
+    @Option(name = "--" + SET_SPEED, metaVar = "<speed>", usage = "same as executing setSpeed(ms) command first.")
     private String setSpeed;
 
-    @Option(name = "--height", metaVar = "<height>", usage = "set initial height. (excluding mobile)")
+    @Option(name = "--" + HEIGHT, metaVar = "<height>", usage = "set initial height. (excluding mobile)")
     private String height;
 
-    @Option(name = "--width", metaVar = "<width>", usage = "set initial width. (excluding mobile)")
+    @Option(name = "--" + WIDTH, metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
-    @Option(name = "--define", aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
+    @Option(name = "--" + DEFINE, aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
         usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
 
-    @Option(name = "--var", aliases = "-V", metaVar = "<var-name>=<json-value>",
+    @Option(name = "--" + VAR, aliases = "-V", metaVar = "<var-name>=<json-value>",
         usage = "set JSON value to variable with a specified name. (multiple)")
     private String[] var;
 
-    @Option(name = "--rollup", metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
+    @Option(name = "--" + ROLLUP, metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
     private String[] rollup;
 
-    @Option(name = "--cookie-filter", metaVar = "<+RE|-RE>", usage = "filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is suppressing)")
+    @Option(name = "--" + COOKIE_FILTER, metaVar = "<+RE|-RE>", usage = "filter cookies to log by RE matching the name. (\"+\" is passing, \"-\" is suppressing)")
     private String cookieFilter;
 
-    @Option(name = "--log-filter", metaVar = "<+type|-type>",
+    @Option(name = "--" + LOG_FILTER, metaVar = "<+type|-type>",
         usage = "filter the logging information by the specified type. (multiple. \"+\" is passing, \"-\" is suppressing. type: cookie, title, url, pageinfo(= cookie & title & url))")
     private String[] logFilter;
 
-    @Option(name = "--command-factory", metaVar = "<FQCN>", usage = "register user defined command factory. (See Note *3)")
+    @Option(name = "--" + COMMAND_FACTORY, metaVar = "<FQCN>", usage = "register user defined command factory. (See Note *3)")
     private String commandFactory;
 
-    @Option(name = "--no-exit", usage = "don't call System.exit at end.")
+    @Option(name = "--" + NO_EXIT, usage = "don't call System.exit at end.")
     private Boolean noExit;
 
-    @Option(name = "--strict-exit-code", usage = "return strict exit code, reflected by selenese command results at end. (See Note *4)")
+    @Option(name = "--" + STRICT_EXIT_CODE, usage = "return strict exit code, reflected by selenese command results at end. (See Note *4)")
     private Boolean strictExitCode;
 
-    @Option(name = "--max-time", metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
+    @Option(name = "--" + MAX_TIME, metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
 
-    @Option(name = "--help", aliases = "-h", usage = "show this message.")
+    @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
     @Argument
