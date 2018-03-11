@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.13.0
+
+* Catch up Selenium 3.10.0.
+* Update dependency versions.
+
 ### 3.12.0
 
 * Add support EdgeDriver.
