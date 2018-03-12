@@ -16,6 +16,11 @@ You can download the executable jar from:
 
 https://github.com/vmi/selenese-runner-java/releases
 
+Release Note
+------------
+
+Please check [RELEASENOTE.md](RELEASENOTE.md).
+
 Features
 --------
 
@@ -101,11 +106,6 @@ Requirements
 
 * Java 8 or later.
 * Apache Maven 2.x or later to build.
-
-Release Note
-------------
-
-The release note is moved to [RELEASENOTE.md](RELEASENOTE.md) file.
 
 Building the Application
 ------------------------
