@@ -1,6 +1,7 @@
 package jp.vmi.html.result;
 
 import java.util.Locale;
+import java.util.Map;
 
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
@@ -39,7 +40,7 @@ public class RelativePathRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale) {
+    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
         // NB: Relativize has URI escaped the path
         return PathUtils.relativize(htmlResult.getDir(), o.toString());
     }

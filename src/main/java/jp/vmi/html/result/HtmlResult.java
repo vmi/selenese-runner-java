@@ -98,7 +98,7 @@ public class HtmlResult {
 
     private Engine getEngine() {
         if (engine == null) {
-            engine = Engine.createCompilingEngine();
+            engine = Engine.createEngine();
             engine.registerNamedRenderer(new HtmlEscapeRenderer());
             engine.registerNamedRenderer(new LogRenderer(this));
             engine.registerNamedRenderer(new IndexRenderer());
