@@ -59,6 +59,7 @@ public interface IConfig {
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
     public static final String HELP = "help";
+    public static final String ALERTS_POLICY = "alerts-policy";
 
     /**
      * Get command line arguments without parsed options.
@@ -167,4 +168,6 @@ public interface IConfig {
     String getMaxTime();
 
     boolean isHelp();
+
+    String getAlertsPolicy();
 }

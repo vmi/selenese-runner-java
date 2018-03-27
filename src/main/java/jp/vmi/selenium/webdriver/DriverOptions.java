@@ -66,6 +66,8 @@ public class DriverOptions {
         REMOTE_URL,
         /** --width */
         WIDTH,
+        /** --alerts-policy */
+        ALERTS_POLICY,
         /** --height */
         HEIGHT,
         /** --define */

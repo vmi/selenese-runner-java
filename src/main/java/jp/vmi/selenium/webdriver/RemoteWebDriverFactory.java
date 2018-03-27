@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -33,6 +34,33 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         DesiredCapabilities caps = DesiredCapabilities.htmlUnit();
         setupProxy(caps, driverOptions);
         caps.merge(driverOptions.getCapabilities());
+
+        if(driverOptions.has(ALERTS_POLICY)) {
+            UnexpectedAlertBehaviour unexpectedAlertBehaviour = null;
+            String alertPolicy = driverOptions.get(ALERTS_POLICY).toUpperCase();
+
+            switch (alertPolicy) {
+                case "IGNORE":
+                    unexpectedAlertBehaviour = UnexpectedAlertBehaviour.IGNORE;
+                    break;
+                case "DISMISS":
+                    unexpectedAlertBehaviour = UnexpectedAlertBehaviour.DISMISS;
+                    break;
+                case "ACCEPT":
+                    unexpectedAlertBehaviour = UnexpectedAlertBehaviour.ACCEPT;
+                    break;
+
+            }
+
+            if( unexpectedAlertBehaviour != null ) {
+                log.info("Browser UNEXPECTED_ALERT_BEHAVIOUR set to : " + alertPolicy);
+                caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, unexpectedAlertBehaviour);
+            } else {
+                log.warn("Invalid --alerts-policy : " + alertPolicy);
+            }
+
+        }
+
         if (driverOptions.has(REMOTE_BROWSER)) {
             String browser = driverOptions.get(REMOTE_BROWSER);
             caps.setBrowserName(browser);
