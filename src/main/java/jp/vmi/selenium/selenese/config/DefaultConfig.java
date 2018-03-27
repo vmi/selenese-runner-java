@@ -218,6 +218,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
+    @Option(name = "--alerts-policy", usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
+    private String alertsPolicy;
+
     @Argument
     private String[] args = LangUtils.EMPTY_STRING_ARRAY;
 
@@ -427,6 +430,11 @@ public class DefaultConfig implements IConfig {
 
     public void setIgnoreScreenshotCommand(boolean ignoreScreenshotCommand) {
         this.ignoreScreenshotCommand = ignoreScreenshotCommand;
+    }
+
+    @Override
+    public String getAlertsPolicy() {
+        return alertsPolicy;
     }
 
     @Override
