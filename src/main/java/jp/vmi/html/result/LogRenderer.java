@@ -1,7 +1,6 @@
 package jp.vmi.html.result;
 
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +51,7 @@ public class LogRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
+    public String render(Object o, String format, Locale locale) {
         StringBuilder result = new StringBuilder();
         String s = o.toString();
         Matcher matcher = RE.matcher(s);

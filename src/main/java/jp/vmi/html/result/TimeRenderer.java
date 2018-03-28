@@ -1,7 +1,6 @@
 package jp.vmi.html.result;
 
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -29,7 +28,7 @@ public class TimeRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
+    public String render(Object o, String format, Locale locale) {
         long value = ((Number) o).longValue();
         return FastDateFormat.getInstance(format).format(value);
     }

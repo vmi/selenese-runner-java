@@ -1,7 +1,6 @@
 package jp.vmi.html.result;
 
 import java.util.Locale;
-import java.util.Map;
 
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
@@ -27,7 +26,7 @@ public class IndexRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
+    public String render(Object o, String format, Locale locale) {
         if (((Number) o).intValue() >= 0)
             return o.toString();
         else
