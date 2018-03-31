@@ -42,6 +42,7 @@ public class NewDefaultConfigTest {
     private static final String[] testArgs = {
         // "--config", "config-file",
         "--driver", "driver-name",
+        "--headless",
         "--profile", "profile-name",
         "--profile-dir", "profile-dir",
         "--chrome-experimental-options", "json-file",
@@ -68,6 +69,7 @@ public class NewDefaultConfigTest {
         "--geckodriver", "geckodriver-path",
         "--chromedriver", "chromedriver-path",
         "--iedriver", "iedriver-path",
+        "--edgedriver", "edgedriver-path",
         "--phantomjs", "phantomjs-path",
         "--xml-result", "xml-result-dir",
         "--html-result", "html-result-dir",
@@ -79,6 +81,7 @@ public class NewDefaultConfigTest {
         "--define", "key1=value12",
         "--define", "key2+=value21",
         "--define", "key2+=value22",
+        "--alerts-policy", "accept",
         "--rollup", "rollup-file1",
         "--rollup", "rollup-file2",
         "--rollup", "rollup-file3",
@@ -88,6 +91,9 @@ public class NewDefaultConfigTest {
         "--strict-exit-code",
         "--help",
         "--define", "--define",
+        "--log-filter", "-all",
+        "--log-filter", "+title",
+        "--log-filter", "+url",
         "arg1", "arg2", "arg3"
     };
 
@@ -97,6 +103,7 @@ public class NewDefaultConfigTest {
 
         //assertThat(options.getConfig(), is(nullValue()));
         assertThat(options.getDriver(), is(nullValue()));
+        assertThat(options.isHeadless(), is(false));
         assertThat(options.getProfile(), is(nullValue()));
         assertThat(options.getProfileDir(), is(nullValue()));
         assertThat(options.getChromeExperimentalOptions(), is(nullValue()));
@@ -120,6 +127,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getGeckodriver(), is(nullValue()));
         assertThat(options.getChromedriver(), is(nullValue()));
         assertThat(options.getIedriver(), is(nullValue()));
+        assertThat(options.getEdgedriver(), is(nullValue()));
         assertThat(options.getPhantomjs(), is(nullValue()));
         assertThat(options.getXmlResult(), is(nullValue()));
         assertThat(options.getHtmlResult(), is(nullValue()));
@@ -128,17 +136,20 @@ public class NewDefaultConfigTest {
         assertThat(options.getHeight(), is(nullValue()));
         assertThat(options.getWidth(), is(nullValue()));
         assertThat(options.getDefine(), is(nullValue()));
+        assertThat(options.getAlertsPolicy(), is(nullValue()));
         assertThat(options.getRollup(), is(nullValue()));
         assertThat(options.getCookieFilter(), is(nullValue()));
         assertThat(options.getCommandFactory(), is(nullValue()));
         assertThat(options.isNoExit(), is(false));
         assertThat(options.isStrictExitCode(), is(false));
         assertThat(options.isHelp(), is(false));
+        assertThat(options.getLogFilter(), is(nullValue()));
         assertThat(options.getArgs(), is(emptyArray()));
 
         options.parseCommandLine(testArgs);
         //assertThat(options.getConfig(), is("config-file"));
         assertThat(options.getDriver(), is("driver-name"));
+        assertThat(options.isHeadless(), is(true));
         assertThat(options.getProfile(), is("profile-name"));
         assertThat(options.getProfileDir(), is("profile-dir"));
         assertThat(options.getChromeExperimentalOptions(), is("json-file"));
@@ -162,6 +173,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getGeckodriver(), is("geckodriver-path"));
         assertThat(options.getChromedriver(), is("chromedriver-path"));
         assertThat(options.getIedriver(), is("iedriver-path"));
+        assertThat(options.getEdgedriver(), is("edgedriver-path"));
         assertThat(options.getPhantomjs(), is("phantomjs-path"));
         assertThat(options.getXmlResult(), is("xml-result-dir"));
         assertThat(options.getHtmlResult(), is("html-result-dir"));
@@ -170,12 +182,14 @@ public class NewDefaultConfigTest {
         assertThat(options.getHeight(), is("screen-height"));
         assertThat(options.getWidth(), is("screen-width"));
         assertThat(options.getDefine(), is(new String[] { "key1=value11", "key1=value12", "key2+=value21", "key2+=value22", "--define" }));
+        assertThat(options.getAlertsPolicy(), is("accept"));
         assertThat(options.getRollup(), is(new String[] { "rollup-file1", "rollup-file2", "rollup-file3", }));
         assertThat(options.getCookieFilter(), is("+RE"));
         assertThat(options.getCommandFactory(), is("com.example.CommandFactory"));
         assertThat(options.isNoExit(), is(true));
         assertThat(options.isStrictExitCode(), is(true));
         assertThat(options.isHelp(), is(true));
+        assertThat(options.getLogFilter(), is(new String[] { "-all", "+title", "+url" }));
         assertThat(options.getArgs(), is(new String[] { "arg1", "arg2", "arg3" }));
     }
 

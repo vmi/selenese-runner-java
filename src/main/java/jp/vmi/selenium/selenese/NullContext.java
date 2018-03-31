@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.EnumSet;
 
 import org.openqa.selenium.WebDriver;
 
@@ -10,6 +11,7 @@ import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -145,6 +147,11 @@ public class NullContext implements Context {
     }
 
     @Override
+    public EnumSet<LogFilter> getLogFilter() {
+        return null;
+    }
+
+    @Override
     public CookieFilter getCookieFilter() {
         return null;
     }
@@ -174,5 +181,10 @@ public class NullContext implements Context {
     @Override
     public boolean isInteractive() {
         return false;
+    }
+
+    @Override
+    public AlertActionListener getNextNativeAlertActionListener() {
+        return null;
     }
 }

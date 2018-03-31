@@ -8,6 +8,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Deque;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -41,6 +43,7 @@ import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
@@ -88,6 +91,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final Deque<HighlightStyleBackup> styleBackups;
 
     private PageInformation latestPageInformation = PageInformation.EMPTY;
+    private final EnumSet<LogFilter> logFilter = LogFilter.all();
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
     private JSLibrary jsLibrary = new JSLibrary();
@@ -97,6 +101,35 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final HtmlResult htmlResult = new HtmlResult();
 
     private MaxTimeTimer maxTimeTimer = new MaxTimeTimer() {
+    };
+
+    private final AlertActionListener alertActionListener = new AlertActionListener() {
+
+        private boolean accept = true;
+        private String answer = null;
+
+        @Override
+        public void setAccept(boolean accept) {
+            this.accept = accept;
+        }
+
+        @Override
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
+
+        @Override
+        public void actionPerformed(Alert alert) {
+            if (answer != null)
+                alert.sendKeys(answer);
+            if (accept)
+                alert.accept();
+            else
+                alert.dismiss();
+            // reset the behavior
+            this.answer = null;
+            this.accept = true;
+        }
     };
 
     /**
@@ -383,6 +416,41 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return isInteractive;
     }
 
+    class AlertActionImpl implements AlertActionListener {
+        boolean accept = true;
+        String answer = null;
+
+        @Override
+        public void setAccept(boolean accept) {
+            this.accept = accept;
+        }
+
+        @Override
+        public void setAnswer(String answer) {
+            this.answer = answer;
+        }
+
+        @Override
+        public void actionPerformed(Alert alert) {
+            if (answer != null) {
+                alert.sendKeys(answer);
+            }
+            if (accept) {
+                alert.accept();
+            } else {
+                alert.dismiss();
+            }
+            // reset the behavior
+            this.answer = null;
+            this.accept = true;
+        }
+    }
+
+    @Override
+    public AlertActionListener getNextNativeAlertActionListener() {
+        return this.alertActionListener;
+    }
+
     /**
      * Set interactive.
      *
@@ -525,6 +593,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setLatestPageInformation(PageInformation pageInformation) {
         this.latestPageInformation = pageInformation;
+    }
+
+    @Override
+    public EnumSet<LogFilter> getLogFilter() {
+        return this.logFilter;
     }
 
     @Override

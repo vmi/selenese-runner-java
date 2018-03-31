@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.PrintStream;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -14,6 +15,7 @@ import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -238,6 +240,13 @@ public interface Context extends WrapsDriver {
     void setLatestPageInformation(PageInformation pageInformation);
 
     /**
+     * Get list of disabled page information.
+     *
+     * @return list of disabled page information.
+     */
+    EnumSet<LogFilter> getLogFilter();
+
+    /**
      * Get cookie filter.
      *
      * @return cookie filter.
@@ -283,6 +292,13 @@ public interface Context extends WrapsDriver {
      * @return interactive.
      */
     boolean isInteractive();
+
+    /**
+     * Get next native alert action.
+     *
+     * @return next native alert state
+     */
+    AlertActionListener getNextNativeAlertActionListener();
 
     /**
      * Executes JavaScript in the context of the currently selected frame or window.

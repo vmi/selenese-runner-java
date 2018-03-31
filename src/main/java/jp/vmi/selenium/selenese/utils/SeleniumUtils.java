@@ -1,6 +1,9 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +15,8 @@ import org.openqa.selenium.StaleElementReferenceException;
  * Utilities for Selenium.
  */
 public class SeleniumUtils {
+
+    private static final DecimalFormatSymbols US_FORMAT = DecimalFormatSymbols.getInstance(Locale.US);
 
     private SeleniumUtils() {
     }
@@ -159,6 +164,21 @@ public class SeleniumUtils {
     }
 
     /**
+     * Stringify the double value.
+     *
+     * If the double value is mathematically an integer, drop fraction part.
+     *
+     * @param d double value.
+     * @return stringified double value.
+     */
+    public static String doubleToString(double d) {
+        if (d % 1.0 == 0)
+            return new DecimalFormat("0", US_FORMAT).format(d);
+        else
+            return Double.toString(d);
+    }
+
+    /**
      * Convert to String from the result of execute().
      *
      * @param <T> the type of result object.
@@ -174,6 +194,8 @@ public class SeleniumUtils {
             return StringUtils.join((Iterable<?>) result, ',');
         else if (result instanceof Iterator)
             return StringUtils.join((Iterator<?>) result, ',');
+        else if (result instanceof Double)
+            return doubleToString((Double) result);
         else
             return result.toString();
     }

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>testcase_native_alert</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testcase_native_alert</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/native_alert.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open alert dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseCancelOnNextNativeAlert</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open confirm dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>answerOnNextNativeAlert</td>
+	<td>prompt answer.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open prompt dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=alert_result</td>
+	<td>done.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=confirm_result</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=prompt_result</td>
+	<td>prompt answer.</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/native_alert.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open alert dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseCancelOnNextNativeAlert</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open confirm dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlert</td>
+	<td>open prompt dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNativeAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=alert_result</td>
+	<td>done.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=confirm_result</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=prompt_result</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=enable_beforeunload</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=goto_top</td>
+	<td></td>
+</tr>
+<tr>
+	<!-- Google Chrome returns empty string for onbeforeunload dialog -->
+	<td>assertNativeAlert</td>
+	<td>*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTitle</td>
+	<td>Index for Unit Test</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

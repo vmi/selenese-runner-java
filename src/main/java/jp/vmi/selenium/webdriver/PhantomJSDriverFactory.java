@@ -15,7 +15,10 @@ import static org.openqa.selenium.phantomjs.PhantomJSDriverService.*;
 
 /**
  * Factory of {@link PhantomJSDriver}.
+ *
+ * @deprecated PhantomJS is no longer actively developed, and support will eventually be dropped.
  */
+@Deprecated
 public class PhantomJSDriverFactory extends WebDriverFactory {
 
     @SuppressWarnings("javadoc")

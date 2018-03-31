@@ -1,5 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
@@ -8,8 +10,12 @@ import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.service.DriverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.utils.PathUtils;
+import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -50,22 +56,55 @@ public abstract class WebDriverFactory {
         return true;
     }
 
+    /**
+     * Setup builder for DriverService.
+     *
+     * @param builder DriverService builder.
+     * @param driverOptions driver options.
+     * @param driverKey driver option (e.g. '--firefox', '--chrome')
+     * @param <B> subclass of DriverService.Builder
+     * @return setup builder.
+     */
+    public static <B extends DriverService.Builder<?, B>> B setupBuilder(B builder, DriverOptions driverOptions, DriverOption driverKey) {
+        builder = builder.usingAnyFreePort().withEnvironment(driverOptions.getEnvVars());
+        if (driverKey != null && driverOptions.has(driverKey)) {
+            File executable = new File(PathUtils.normalize(driverOptions.get(driverKey)));
+            if (!executable.canExecute())
+                throw new IllegalArgumentException("Missing driver executable: " + executable);
+            builder = builder.usingDriverExecutable(executable);
+        }
+        return builder;
+    }
+
+    /**
+     * Create new Proxy from driver options.
+     *
+     * @param driverOptions driver options.
+     * @return Proxy or null.
+     */
+    public static Proxy newProxy(DriverOptions driverOptions) {
+        if (!driverOptions.has(PROXY))
+            return null;
+        Proxy proxy = new Proxy();
+        proxy.setProxyType(ProxyType.MANUAL);
+        String ps = driverOptions.get(PROXY);
+        proxy.setHttpProxy(ps)
+            .setSslProxy(ps)
+            .setFtpProxy(ps);
+        if (driverOptions.has(NO_PROXY))
+            proxy.setNoProxy(driverOptions.get(NO_PROXY));
+        return proxy;
+    }
+
     protected DesiredCapabilities setupProxy(DesiredCapabilities caps, DriverOptions driverOptions) {
-        if (driverOptions.has(PROXY)) {
-            if (!isProxySupported()) {
+        Proxy proxy = newProxy(driverOptions);
+        if (proxy != null) {
+            if (isProxySupported()) {
+                caps.setCapability(CapabilityType.PROXY, proxy);
+            } else {
                 log.warn("No support proxy with {}. Please set proxy to browser configuration in advance.",
                     getClass().getSimpleName().replaceFirst("Factory$", ""));
-                return caps;
             }
-            Proxy proxy = new Proxy();
-            proxy.setProxyType(ProxyType.MANUAL);
-            String ps = driverOptions.get(PROXY);
-            proxy.setHttpProxy(ps)
-                .setSslProxy(ps)
-                .setFtpProxy(ps);
-            if (driverOptions.has(NO_PROXY))
-                proxy.setNoProxy(driverOptions.get(NO_PROXY));
-            caps.setCapability(CapabilityType.PROXY, proxy);
         }
         return caps;
     }

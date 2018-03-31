@@ -10,6 +10,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +18,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
@@ -28,7 +33,7 @@ import jp.vmi.selenium.selenese.config.IConfig;
  */
 public class DriverOptions {
 
-    // private static final Logger log = LoggerFactory.getLogger(DriverOptions.class);
+    private static final Logger log = LoggerFactory.getLogger(DriverOptions.class);
 
     /**
      * WebDriver option.
@@ -54,6 +59,8 @@ public class DriverOptions {
         CHROMEDRIVER,
         /** --iedriver */
         IEDRIVER,
+        /** --edgedriver */
+        EDGEDRIVER,
         /** --phantomjs */
         PHANTOMJS,
         /** --remote-platform */
@@ -67,18 +74,31 @@ public class DriverOptions {
         /** --width */
         WIDTH,
         /** --alerts-policy */
-        ALERTS_POLICY,
+        ALERTS_POLICY(UnexpectedAlertBehaviour.class),
         /** --height */
         HEIGHT,
         /** --define */
-        DEFINE,
+        DEFINE(String[].class),
         /** --cli-args */
-        CLI_ARGS,
+        CLI_ARGS(String[].class),
         /** --chrome-extension */
-        CHROME_EXTENSION,
+        CHROME_EXTENSION(String[].class),
         /** --chrome-experimental-options */
         CHROME_EXPERIMENTAL_OPTIONS,
+        /** --headless */
+        HEADLESS(Boolean.class),
+        // end of options.
         ;
+
+        private final Class<?> valueType;
+
+        private DriverOption(Class<?> valueType) {
+            this.valueType = valueType;
+        }
+
+        private DriverOption() {
+            this(String.class);
+        }
 
         /**
          * Get option name as "word-word-word".
@@ -88,11 +108,16 @@ public class DriverOptions {
         public String optionName() {
             return name().toLowerCase().replace('_', '-');
         }
+
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "." + name();
+        }
     }
 
     private static final Pattern DEFINE_RE = Pattern.compile("(?<name>[^:+=]+)(?::(?<type>\\w+))?(?<add>\\+)?=(?<value>.*)");
 
-    private final IdentityHashMap<DriverOptions.DriverOption, String> map = Maps.newIdentityHashMap();
+    private final IdentityHashMap<DriverOptions.DriverOption, Object> map = Maps.newIdentityHashMap();
     private final DesiredCapabilities caps = new DesiredCapabilities();
     private String[] cliArgs = ArrayUtils.EMPTY_STRING_ARRAY;
     private List<File> chromeExtensions = new ArrayList<>();
@@ -110,20 +135,8 @@ public class DriverOptions {
      * @param config configuration information.
      */
     public DriverOptions(IConfig config) {
-        for (DriverOption opt : DriverOption.values()) {
-            switch (opt) {
-            case DEFINE:
-            case CLI_ARGS:
-            case CHROME_EXTENSION:
-                String[] values = config.get(opt.optionName());
-                if (values != null)
-                    set(opt, values);
-                break;
-            default:
-                set(opt, (String) config.get(opt.optionName()));
-                break;
-            }
-        }
+        for (DriverOption opt : DriverOption.values())
+            set(opt, (Object) config.get(opt.optionName()));
     }
 
     /**
@@ -154,8 +167,24 @@ public class DriverOptions {
         case CHROME_EXTENSION:
             throw new IllegalArgumentException("Need to use DriverOptions#getExtraOptions() instead of get(DriverOption.CHROME_EXTENSION).");
         default:
-            return map.get(opt);
+            break;
         }
+        if (opt.valueType != String.class)
+            throw new IllegalArgumentException("The option value of " + opt + " is not String.");
+        return (String) map.get(opt);
+    }
+
+    /**
+     * Get option value as boolean.
+     *
+     * @param opt option key.
+     * @return option value.
+     */
+    public boolean getBoolean(DriverOption opt) {
+        if (opt.valueType != Boolean.class)
+            throw new IllegalArgumentException("The option value of " + opt + " is not boolean.");
+        Object value = map.get(opt);
+        return value != null ? (boolean) value : false;
     }
 
     /**
@@ -172,6 +201,8 @@ public class DriverOptions {
             return cliArgs.length != 0;
         case CHROME_EXTENSION:
             return !chromeExtensions.isEmpty();
+        case ALERTS_POLICY:
+            return caps.getCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR) != null;
         default:
             return map.containsKey(opt);
         }
@@ -181,34 +212,97 @@ public class DriverOptions {
      * Set option key and value.
      *
      * @param opt option key.
-     * @param values option values. (multiple values are accepted by DEFINE and CLI_ARGS only)
+     * @param values option values. (multiple values are accepted by DEFINE, CLI_ARGS, and CHROME_EXTENSION only)
      * @return this.
      */
     public DriverOptions set(DriverOption opt, String... values) {
         switch (opt) {
         case DEFINE:
-            addDefinitions(values);
-            break;
         case CLI_ARGS:
-            cliArgs = ArrayUtils.addAll(cliArgs, values);
-            break;
         case CHROME_EXTENSION:
-            for (String ext : values)
-                chromeExtensions.add(new File(ext));
-            break;
+            return set(opt, (Object) values);
         default:
             if (values.length != 1)
                 throw new IllegalArgumentException("Need to pass only a single value for " + opt);
-            if (values[0] != null)
-                map.put(opt, values[0]);
-            else
-                map.remove(opt);
-            break;
+            return set(opt, (Object) values[0]);
         }
-        return this;
     }
 
-    private static Object getTypedValue(String type, String value, Consumer<String> errorHandler) {
+    private static UnexpectedAlertBehaviour parseUnexpectedAlertBehaviour(Object value) {
+        if (value == null || value instanceof UnexpectedAlertBehaviour)
+            return (UnexpectedAlertBehaviour) value;
+        if (value instanceof String) {
+            try {
+                return Enum.valueOf(UnexpectedAlertBehaviour.class, ((String) value).toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // fall through.
+            }
+        }
+        throw new IllegalArgumentException(String.format(
+            "The value of %s is \"%s\". It must be one of the following: accept, dismiss, accept_and_notify, dismiss_and_notify, ignore",
+            DriverOption.ALERTS_POLICY.optionName(), value));
+    }
+
+    private static boolean isOptionValueTypeValid(DriverOption opt, Object value) {
+        return opt.valueType.isAssignableFrom(value.getClass());
+    }
+
+    /**
+     * Set option key and value.
+     *
+     * @param opt option key.
+     * @param value option value.
+     * @return this.
+     */
+    public DriverOptions set(DriverOption opt, Object value) {
+        switch (opt) {
+        case DEFINE:
+            if (value == null)
+                return this;
+            if (isOptionValueTypeValid(opt, value)) {
+                addDefinitions((String[]) value);
+                return this;
+            }
+            break;
+        case CLI_ARGS:
+            if (value == null)
+                return this;
+            if (isOptionValueTypeValid(opt, value)) {
+                cliArgs = ArrayUtils.addAll(cliArgs, (String[]) value);
+                return this;
+            }
+            break;
+        case CHROME_EXTENSION:
+            if (value == null)
+                return this;
+            if (isOptionValueTypeValid(opt, value)) {
+                for (String ext : (String[]) value)
+                    chromeExtensions.add(new File(ext));
+                return this;
+            }
+            break;
+        case ALERTS_POLICY:
+            UnexpectedAlertBehaviour uab = parseUnexpectedAlertBehaviour(value);
+            caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, uab);
+            return this;
+        default:
+            if (value == null)
+                map.remove(opt);
+            else
+                map.put(opt, value);
+            return this;
+        }
+        throw new IllegalArgumentException(String.format("The type of the option value of %s must be %s, but it is %s (value = %s)",
+            opt, opt.valueType.getSimpleName(), value.getClass().getSimpleName(), value));
+    }
+
+    private static Object getTypedValue(String name, String type, String value, Consumer<String> errorHandler) {
+        switch (name) {
+        case CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR:
+            return parseUnexpectedAlertBehaviour(value);
+        default:
+            break;
+        }
         if (type == null)
             return value;
         switch (type) {
@@ -277,7 +371,7 @@ public class DriverOptions {
                 continue;
             }
             String name = matcher.group("name");
-            Object value = getTypedValue(matcher.group("type"), matcher.group("value"), (msg) -> errors.add("[" + def + "] => " + msg));
+            Object value = getTypedValue(name, matcher.group("type"), matcher.group("value"), (msg) -> errors.add("[" + def + "] => " + msg));
             if (value == null)
                 continue;
             String add = matcher.group("add");
@@ -327,6 +421,13 @@ public class DriverOptions {
         }
     };
 
+    private void eachCapabilities(Map<String, Object> capsMap, BiConsumer<String, Object> consumer) {
+        List<Entry<String, Object>> capsList = new ArrayList<>(capsMap.entrySet());
+        Collections.sort(capsList, mapEntryComparator);
+        for (Entry<String, Object> cap : capsList)
+            consumer.accept(cap.getKey(), cap.getValue());
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("[");
@@ -335,6 +436,7 @@ public class DriverOptions {
             for (DriverOption opt : DriverOption.values()) {
                 switch (opt) {
                 case DEFINE:
+                case ALERTS_POLICY:
                     // skip
                     break;
                 case CLI_ARGS:
@@ -364,15 +466,11 @@ public class DriverOptions {
         }
         Map<String, Object> capsMap = caps.asMap();
         if (!capsMap.isEmpty()) {
-            result.append(sep).append("DEFINE=[\n");
-            List<Entry<String, Object>> capsList = new ArrayList<>(capsMap.entrySet());
-            Collections.sort(capsList, mapEntryComparator);
-            for (Entry<String, Object> cap : capsList) {
-                Object value = cap.getValue();
+            eachCapabilities(capsMap, (key, value) -> {
                 if (value instanceof Object[])
                     value = StringUtils.join((Object[]) value, ", ");
-                result.append("  ").append(cap.getKey()).append('=').append(value).append("\n");
-            }
+                result.append("  ").append(key).append('=').append(value).append("\n");
+            });
             result.append(']');
             sep = "|";
         }
@@ -394,6 +492,13 @@ public class DriverOptions {
      * @return desired capabilities.
      */
     public DesiredCapabilities getCapabilities() {
+        Map<String, Object> capsMap = caps.asMap();
+        if (capsMap.isEmpty()) {
+            log.info("No capabilities.");
+        } else {
+            log.info("Capabilities:");
+            eachCapabilities(capsMap, (key, value) -> log.info("- {}: {}", key, value));
+        }
         return caps;
     }
 }

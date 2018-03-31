@@ -25,7 +25,7 @@ public class CommandLogInterceptor extends AbstractDoCommandInterceptor {
 
     private void logResult(LogRecorder clr, String indent, String cmdStr, Result result, Context context) {
         PageInformation prevInfo = context.getLatestPageInformation();
-        PageInformation info = new PageInformation(context);
+        PageInformation info = PageInformation.newInstance(context);
         CookieFilter cookieFilter = context.getCookieFilter();
         String prefix = indent + "- Cookie: ";
         if (result.isFailed()) {

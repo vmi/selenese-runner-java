@@ -3,11 +3,14 @@ package jp.vmi.selenium.selenese;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.webdriver.DriverOptions;
 
 import static org.hamcrest.Matchers.*;
@@ -62,5 +65,48 @@ public class MainTest {
         assertThat(value5.get("A"), is(1.0));
         assertThat(value5.get("B"), is(2.0));
         assertThat(value5.get("C"), is(3.0));
+    }
+
+    @Rule
+    public ExpectedException ee = ExpectedException.none();
+
+    @Test
+    public void testLogFilterOption() {
+        Main main = new Main();
+        Runner runner = new Runner();
+        IConfig config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--log-filter", "+pageinfo");
+        main.setupRunner(runner, config);
+        assertThat(runner.getLogFilter(), is(LogFilter.all()));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--log-filter", "-pageinfo",
+            "--log-filter", "+cookie",
+            "--log-filter", "+title");
+        main.setupRunner(runner, config);
+        assertThat(runner.getLogFilter().contains(LogFilter.COOKIE), is(true));
+        assertThat(runner.getLogFilter().contains(LogFilter.TITLE), is(true));
+        assertThat(runner.getLogFilter().contains(LogFilter.URL), is(false));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--log-filter", "-cookie",
+            "--log-filter", "-title");
+        main.setupRunner(runner, config);
+        assertThat(runner.getLogFilter().contains(LogFilter.COOKIE), is(false));
+        assertThat(runner.getLogFilter().contains(LogFilter.TITLE), is(false));
+        assertThat(runner.getLogFilter().contains(LogFilter.URL), is(true));
+
+        runner = new Runner();
+        config = new DefaultConfig(
+            "-d", "htmlunit",
+            "--log-filter", "foo");
+        ee.expect(IllegalArgumentException.class);
+        ee.expectMessage("Invalid value for --log-filter: foo");
+        main.setupRunner(runner, config);
     }
 }

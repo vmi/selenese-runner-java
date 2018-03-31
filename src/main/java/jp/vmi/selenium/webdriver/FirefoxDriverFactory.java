@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.io.File;
 import java.io.IOException;
 
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -12,8 +13,6 @@ import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -32,19 +31,26 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         return BROWSER_NAME;
     }
 
+    /**
+     * Create and initialize FirefoxOptions.
+     *
+     * @param driverOptions driver options.
+     * @return FirefoxOptions.
+     */
+    public static FirefoxOptions newFirefoxOptions(DriverOptions driverOptions) {
+        FirefoxOptions options = new FirefoxOptions();
+        if (driverOptions.has(HEADLESS))
+            options.setHeadless(driverOptions.getBoolean(HEADLESS));
+        Proxy proxy = newProxy(driverOptions);
+        if (proxy != null)
+            options.setProxy(proxy);
+        return options;
+    }
+
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        if (driverOptions.has(GECKODRIVER)) {
-            String executable = PathUtils.normalize(driverOptions.get(GECKODRIVER));
-            if (!new File(executable).canExecute())
-                throw new IllegalArgumentException("Missing GeckoDriver: " + executable);
-            System.setProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, executable);
-        }
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        DesiredCapabilities requiredCaps = new DesiredCapabilities();
-        setupProxy(requiredCaps, driverOptions);
-        firefoxOptions.merge(requiredCaps);
-        firefoxOptions.merge(driverOptions.getCapabilities());
+        GeckoDriverService service = setupBuilder(new GeckoDriverService.Builder(), driverOptions, GECKODRIVER).build();
+        FirefoxOptions firefoxOptions = newFirefoxOptions(driverOptions);
         String firefoxBin = getFirefoxBinary(driverOptions);
         if (firefoxBin != null)
             firefoxOptions.setBinary(firefoxBin);
@@ -53,7 +59,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         FirefoxProfile profile = getFirefoxProfile(driverOptions);
         if (profile != null)
             firefoxOptions.setProfile(profile);
-        FirefoxDriver driver = new FirefoxDriver(firefoxOptions);
+        firefoxOptions.merge(driverOptions.getCapabilities());
+        FirefoxDriver driver = new FirefoxDriver(service, firefoxOptions);
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }

@@ -19,6 +19,7 @@ public interface IConfig {
     // List of option name.
     // public static final String CONFIG = "config";
     public static final String DRIVER = "driver";
+    public static final String HEADLESS = "headless";
     public static final String PROFILE = "profile";
     public static final String PROFILE_DIR = "profile-dir";
     public static final String CHROME_EXTENSION = "chrome-extension";
@@ -43,6 +44,7 @@ public interface IConfig {
     public static final String GECKODRIVER = "geckodriver";
     public static final String CHROMEDRIVER = "chromedriver";
     public static final String IEDRIVER = "iedriver";
+    public static final String EDGEDRIVER = "edgedriver";
     public static final String PHANTOMJS = "phantomjs";
     public static final String XML_RESULT = "xml-result";
     public static final String HTML_RESULT = "html-result";
@@ -50,10 +52,12 @@ public interface IConfig {
     public static final String SET_SPEED = "set-speed";
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
+    public static final String ALERTS_POLICY = "alerts-policy";
     public static final String DEFINE = "define";
     public static final String VAR = "var";
     public static final String ROLLUP = "rollup";
     public static final String COOKIE_FILTER = "cookie-filter";
+    public static final String LOG_FILTER = "log-filter";
     public static final String COMMAND_FACTORY = "command-factory";
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
@@ -88,6 +92,8 @@ public interface IConfig {
     <T> T get(String opt, T defaultValue);
 
     String getDriver();
+
+    boolean isHeadless();
 
     String getProfile();
 
@@ -137,6 +143,8 @@ public interface IConfig {
 
     String getIedriver();
 
+    String getEdgedriver();
+
     String getPhantomjs();
 
     String getXmlResult();
@@ -158,6 +166,8 @@ public interface IConfig {
     String[] getRollup();
 
     String getCookieFilter();
+
+    String[] getLogFilter();
 
     String getCommandFactory();
 

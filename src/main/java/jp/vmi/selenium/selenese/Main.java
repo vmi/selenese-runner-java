@@ -20,6 +20,7 @@ import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
+import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -124,6 +125,8 @@ public class Main {
                 driverName = WebDriverManager.CHROME;
             else if (driverOptions.has(DriverOption.IEDRIVER))
                 driverName = WebDriverManager.IE;
+            else if (driverOptions.has(DriverOption.EDGEDRIVER))
+                driverName = WebDriverManager.EDGE;
             else if (driverOptions.has(DriverOption.PHANTOMJS))
                 driverName = WebDriverManager.PHANTOMJS;
         }
@@ -180,6 +183,9 @@ public class Main {
             String[] rollups = config.getRollup();
             for (String rollup : rollups)
                 runner.getRollupRules().load(rollup);
+        }
+        if (config.getLogFilter() != null) {
+            LogFilter.parse(runner.getLogFilter(), config.getLogFilter());
         }
         if (config.getCookieFilter() != null) {
             String cookieFilter = config.getCookieFilter();

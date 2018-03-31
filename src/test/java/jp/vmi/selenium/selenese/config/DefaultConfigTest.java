@@ -15,6 +15,7 @@ public class DefaultConfigTest {
 
     private final String[] args = {
         "--" + DRIVER + "=opt-firefox",
+        "--" + HEADLESS,
         "--" + PROFILE + "=opt-selenium",
         "--" + PROFILE_DIR + "=/opt/path/to/profile/directory",
         "--" + PROXY + "=opt-proxy-host",
@@ -37,6 +38,7 @@ public class DefaultConfigTest {
         "--" + GECKODRIVER + "=/opt/path/to/geckodriver",
         "--" + CHROMEDRIVER + "=/opt/path/to/chromedriver",
         "--" + IEDRIVER + "=/opt/path/to/iedriver",
+        "--" + EDGEDRIVER + "=/opt/path/to/edgedriver",
         "--" + PHANTOMJS + "=/opt/path/to/phantomjs",
         "--" + XML_RESULT + "=/opt/path/to/xml/result",
         "--" + HTML_RESULT + "=/opt/path/to/html/result",
@@ -48,14 +50,17 @@ public class DefaultConfigTest {
         "--" + DEFINE + "=opt-key2=opt-value2",
         "--" + DEFINE + "=opt-key3=opt-value3",
         "--" + ROLLUP + "=/opt/path/to/rollup",
+        "--" + ALERTS_POLICY + "=dismiss",
         "--" + COOKIE_FILTER + "=^OPT_SID",
         "--" + COMMAND_FACTORY + "=opt.full.qualify.class.Name",
+        "--" + LOG_FILTER + "=-cookie"
     };
 
     @Test
     public void testEmptyConfig() {
         IConfig config = new DefaultConfig();
         assertThat(config.get(DRIVER), is(nullValue()));
+        assertThat(config.get(HEADLESS), is(false));
         assertThat(config.get(PROFILE), is(nullValue()));
         assertThat(config.get(PROFILE_DIR), is(nullValue()));
         assertThat(config.get(PROXY), is(nullValue()));
@@ -77,6 +82,7 @@ public class DefaultConfigTest {
         assertThat(config.get(GECKODRIVER), is(nullValue()));
         assertThat(config.get(CHROMEDRIVER), is(nullValue()));
         assertThat(config.get(IEDRIVER), is(nullValue()));
+        assertThat(config.get(EDGEDRIVER), is(nullValue()));
         assertThat(config.get(PHANTOMJS), is(nullValue()));
         assertThat(config.get(XML_RESULT), is(nullValue()));
         assertThat(config.get(HTML_RESULT), is(nullValue()));
@@ -85,9 +91,11 @@ public class DefaultConfigTest {
         assertThat(config.get(HEIGHT), is(nullValue()));
         assertThat(config.get(WIDTH), is(nullValue()));
         assertThat(config.getDefine(), is(nullValue()));
+        assertThat(config.getAlertsPolicy(), is(nullValue()));
         assertThat(config.get(ROLLUP), is(nullValue()));
         assertThat(config.get(COOKIE_FILTER), is(nullValue()));
         assertThat(config.get(COMMAND_FACTORY), is(nullValue()));
+        assertThat(config.get(LOG_FILTER), is(nullValue()));
         assertThat(config.getArgs(), is(emptyArray()));
     }
 
@@ -96,6 +104,7 @@ public class DefaultConfigTest {
         String file = DefaultConfigTest.class.getResource("/config/test.config").getPath();
         IConfig config = new DefaultConfig(new String[] { "--config", file });
         assertThat((String) config.get(DRIVER), is("firefox"));
+        assertThat((boolean) config.get(HEADLESS), is(true));
         assertThat((String) config.get(PROFILE), is("selenium"));
         assertThat((String) config.get(PROFILE_DIR), is("/path/to/profile/directory"));
         assertThat((String) config.get(PROXY), is("proxy-host"));
@@ -117,6 +126,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(GECKODRIVER), is("/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/path/to/iedriver"));
+        assertThat((String) config.get(EDGEDRIVER), is("/path/to/edgedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/path/to/html/result"));
@@ -125,9 +135,11 @@ public class DefaultConfigTest {
         assertThat((String) config.get(HEIGHT), is("1024"));
         assertThat((String) config.get(WIDTH), is("768"));
         assertThat(config.getDefine(), equalTo(new String[] { "key1=value1", "key2=value2", "key3=value3" }));
+        assertThat((String) config.get(ALERTS_POLICY), is("accept"));
         assertThat(config.getRollup(), equalTo(new String[] { "/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("full.qualify.class.Name"));
+        assertThat(config.getLogFilter(), equalTo(new String[] { "-pageinfo", "+title", "+url" }));
     }
 
     @Test
@@ -136,6 +148,7 @@ public class DefaultConfigTest {
         String[] newArgs = ArrayUtils.addAll(args, "--config", file);
         IConfig config = new DefaultConfig(newArgs);
         assertThat((String) config.get(DRIVER), is("opt-firefox"));
+        assertThat((boolean) config.get(HEADLESS), is(true));
         assertThat((String) config.get(PROFILE), is("opt-selenium"));
         assertThat((String) config.get(PROFILE_DIR), is("/opt/path/to/profile/directory"));
         assertThat((String) config.get(PROXY), is("opt-proxy-host"));
@@ -157,6 +170,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(GECKODRIVER), is("/opt/path/to/geckodriver"));
         assertThat((String) config.get(CHROMEDRIVER), is("/opt/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/opt/path/to/iedriver"));
+        assertThat((String) config.get(EDGEDRIVER), is("/opt/path/to/edgedriver"));
         assertThat((String) config.get(PHANTOMJS), is("/opt/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/opt/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/opt/path/to/html/result"));
@@ -165,8 +179,10 @@ public class DefaultConfigTest {
         assertThat((String) config.get(HEIGHT), is("2048"));
         assertThat((String) config.get(WIDTH), is("1536"));
         assertThat(config.getDefine(), equalTo(new String[] { "opt-key1=opt-value1", "opt-key2=opt-value2", "opt-key3=opt-value3" }));
+        assertThat((String) config.get(ALERTS_POLICY), is("dismiss"));
         assertThat(config.getRollup(), equalTo(new String[] { "/opt/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^OPT_SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("opt.full.qualify.class.Name"));
+        assertThat(config.getLogFilter(), equalTo(new String[] { "-cookie" }));
     }
 }

@@ -115,6 +115,7 @@ click
 clickAt
 close
 comment
+contextMenu
 controlKeyDown
 controlKeyUp
 createCookie

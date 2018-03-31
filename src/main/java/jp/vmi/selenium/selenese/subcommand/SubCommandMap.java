@@ -42,6 +42,7 @@ public class SubCommandMap {
         register(new GetExpression());
         register(new GetHtmlSource());
         register(new GetLocation());
+        register(new GetNativeAlert());
         register(new GetPrompt());
         register(new GetSelectOptions());
         register(new GetSpeed());
@@ -56,6 +57,7 @@ public class SubCommandMap {
         register(new IsCookiePresent());
         register(new IsEditable());
         register(new IsElementPresent());
+        register(new IsNativeAlertPresent());
         register(new IsOrdered());
         register(new IsPromptPresent());
         register(new IsSomethingSelected());

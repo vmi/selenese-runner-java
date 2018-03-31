@@ -45,15 +45,19 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(AltKeyDown.class);
         addConstructor(AltKeyUp.class);
         addConstructor(AnswerOnNextPrompt.class);
+        addConstructor(AnswerOnNextNativeAlert.class);
         addConstructor(AssignId.class);
         addConstructor(AttachFile.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Check.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
+        addConstructor(ChooseCancelOnNextNativeAlert.class);
         addConstructor(ChooseOkOnNextConfirmation.class);
+        addConstructor(ChooseOkOnNextNativeAlert.class);
         addConstructor(Click.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);
+        addConstructor(ContextMenu.class);
         addConstructor(ControlKeyDown.class);
         addConstructor(ControlKeyUp.class);
         addConstructor(CreateCookie.class);
@@ -64,6 +68,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(DragAndDrop.class, "dragdrop");
         addConstructor(DragAndDropToObject.class);
         addConstructor(Echo.class);
+        addConstructor(EditContent.class);
         addConstructor(FireEvent.class);
         addConstructor(Focus.class);
         addConstructor(GoBack.class);

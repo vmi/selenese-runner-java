@@ -248,7 +248,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue76() {
-        assumeNot(SAFARI, FIREFOX); // FIXME don't work this test on SafariDriver / this test hung up on FirefoxDriver.
+        assumeNot(SAFARI); // FIXME don't work this test on SafariDriver.
         execute("issue76");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -301,8 +301,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue190() {
-        // FIXME Don't work with FirefoxDriver of Selenium 3.3.1.
-        assumeNot(FIREFOX);
         runner.setTimeout(3000);
         execute("testcase_issue190");
         assertThat(result, is(instanceOf(Error.class)));
@@ -387,7 +385,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void selenium3() {
-        assumeNot(FIREFOX);
         execute("testcase_selenium3");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -395,7 +392,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     @Test
     @Ignore("Don't work on any drivers.")
     public void dnd() {
-        assumeNot(HTMLUNIT, FIREFOX);
+        assumeNot(HTMLUNIT);
         execute("testcase_dnd");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -422,6 +419,20 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     @Test
     public void testHiddenText() {
         execute("testcase_hidden_text");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void testContextMenu() {
+        assumeNot(HTMLUNIT, PHANTOMJS);
+        execute("contextMenu");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void testNativeAlert() {
+        assumeNot(HTMLUNIT, PHANTOMJS);
+        execute("testcase_native_alert");
         assertThat(result, is(instanceOf(Success.class)));
     }
 }

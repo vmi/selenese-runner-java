@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.log;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,27 +26,15 @@ public class PageInformation {
     public final String origin; // error if origin is null.
     public final CookieMap cookieMap = new CookieMap();
 
-    private String getMessage(Exception e) {
-        String msg = e.getMessage();
-        if (msg != null) {
-            return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
-        } else {
-            List<String> msgs = new ArrayList<>();
-            msgs.add(e.toString());
-            String pkgName = PageInformation.class.getPackage().getName() + ".";
-            for (StackTraceElement ste : e.getStackTrace()) {
-                if (ste.getClassName().startsWith(pkgName))
-                    break;
-                msgs.add(ste.toString().trim());
-            }
-            return StringUtils.join(msgs, " / at ");
-        }
+    public static PageInformation newInstance(Context context) {
+        return context.getLogFilter().isEmpty() ? EMPTY : new PageInformation(context);
     }
 
-    public PageInformation(Context context) {
+    private PageInformation(Context context) {
         String message;
         String origin;
         WebDriver driver = context.getWrappedDriver();
+        EnumSet<LogFilter> logFilter = context.getLogFilter();
         try {
             // ChromeDriver may return the unavailable window handle.
             // When getCurrentUrl() is called in this state, ChromeDriver hangs up.
@@ -54,12 +43,13 @@ public class PageInformation {
             // Other WebDriver throws NoSuchWindowException when getWindowHandle() is called.
             String handle = driver.getWindowHandle();
             driver.switchTo().window(handle);
-            String url = driver.getCurrentUrl();
-            String title = driver.getTitle();
+            String url = logFilter.contains(LogFilter.URL) ? driver.getCurrentUrl() : null;
+            String title = logFilter.contains(LogFilter.TITLE) ? driver.getTitle() : null;
             message = formatUrlAndTitle(url, title);
-            origin = getOrigin(url);
-            for (Cookie cookie : driver.manage().getCookies())
-                cookieMap.add(cookie);
+            origin = (url == null) ? "" : getOrigin(url);
+            if (logFilter.contains(LogFilter.COOKIE))
+                for (Cookie cookie : driver.manage().getCookies())
+                    cookieMap.add(cookie);
         } catch (NotFoundException | StaleElementReferenceException e) {
             message = "No focused window/frame.";
             origin = "";
@@ -79,8 +69,33 @@ public class PageInformation {
         this.origin = "";
     }
 
+    private String getMessage(Exception e) {
+        String msg = e.getMessage();
+        if (msg != null) {
+            return msg.replaceFirst("(?s)\r?\nBuild info:.*", "");
+        } else {
+            List<String> msgs = new ArrayList<>();
+            msgs.add(e.toString());
+            String pkgName = PageInformation.class.getPackage().getName() + ".";
+            for (StackTraceElement ste : e.getStackTrace()) {
+                if (ste.getClassName().startsWith(pkgName))
+                    break;
+                msgs.add(ste.toString().trim());
+            }
+            return StringUtils.join(msgs, " / at ");
+        }
+    }
+
     private String formatUrlAndTitle(String url, String title) {
-        return "URL: [" + url + "] / Title: [" + title + "]";
+        StringBuilder s = new StringBuilder();
+        if (url != null)
+            s.append("URL: [" + url + "]");
+        if (title != null) {
+            if (s.length() > 0)
+                s.append(" / ");
+            s.append("Title: [" + title + "]");
+        }
+        return s.toString();
     }
 
     private String getOrigin(String url) {

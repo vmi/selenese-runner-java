@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>ContextMenu test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ContextMenu Test</td></tr>
+</thead><tbody>
+<tr>
+    <td>open</td>
+    <td>/contextmenu.html</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertNotVisible</td>
+    <td>id=contextMenu</td>
+    <td></td>
+</tr>
+<tr>
+    <td>contextMenu</td>
+    <td>id=target</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertVisible</td>
+    <td>id=contextMenu</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=not_target</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertNotVisible</td>
+    <td>id=contextMenu</td>
+    <td></td>
+</tr>
+<tr>
+    <td>contextMenu</td>
+    <td>id=target</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td><![CDATA[css=#contextMenu > div:nth-child(3) > span]]></td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertAlert</td>
+    <td>Clicked!</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td><![CDATA[css=#contextMenu > div:nth-child(2) > a]]></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForTitle</td>
+    <td>Index for Unit Test</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertTitle</td>
+    <td>Index for Unit Test</td>
+    <td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

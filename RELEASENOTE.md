@@ -1,11 +1,44 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.13.0
+
+* Catch up Selenium 3.10.0.
+* Update dependency versions.
+
+### 3.12.0
+
+* Add support EdgeDriver.
+* Catch up Selenium 3.9.1.
+* Update dependency versions.
+* Update Maven plugin versions.
+
+### 3.11.0
+
+* Add new command: `contextMenu`. (PR #262 by @kokichirok)
+* Add new option `--headless` which enables the headless mode for Chrome and Firefox.
+* Add following new conmands: (PR #263 by @koichirok with refactoring by @vmi)
+** `answerOnNextNativeAlert`
+** `chooseCancelOnNextNativeAlert`
+** `chooseOkOnNextNativeAlert`
+** `(assert|verify|waitFor|store)Alert`
+** `(assert|verify|waitFor|store)AlertPresent`
+** `(assert|verify|waitFor)NotAlert`
+** `(assert|verify|waitFor)AlertNotPresent`
+* Update dependency versions.
+
+### 3.10.0
+
+* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
+* Refactor the code of initializing WebDriver for Selenium 3.8.1.
+
 ### 3.9.0
 
 * Catch up Selenium 3.8.1.
     * Fix some problems.
 * Update dependency versions.
+* Add new command: `editContent`. (PR #261 by @apcros)
+* If the value of the variable is mathematically an integer, it is expanded as an integer. (#258)
 
 ### 3.8.0
 

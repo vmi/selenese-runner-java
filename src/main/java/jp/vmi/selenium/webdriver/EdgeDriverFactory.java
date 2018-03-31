@@ -4,19 +4,19 @@ import org.apache.commons.exec.OS;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeDriverService;
+import org.openqa.selenium.edge.EdgeOptions;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
 /**
- * Factory of {@link InternetExplorerDriver}.
+ * Factory of {@link EdgeDriver}.
  */
-public class IEDriverFactory extends WebDriverFactory {
+public class EdgeDriverFactory extends WebDriverFactory {
 
     @SuppressWarnings("javadoc")
-    public static final String BROWSER_NAME = "ie";
+    public static final String BROWSER_NAME = "edge";
 
     @Override
     public String getBrowserName() {
@@ -29,8 +29,8 @@ public class IEDriverFactory extends WebDriverFactory {
      * @param driverOptions driver options.
      * @return InternetExplorerOptions.
      */
-    public static InternetExplorerOptions newInternetExplorerOptions(DriverOptions driverOptions) {
-        InternetExplorerOptions options = new InternetExplorerOptions();
+    public static EdgeOptions newEdgeOptions(DriverOptions driverOptions) {
+        EdgeOptions options = new EdgeOptions();
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);
@@ -41,10 +41,10 @@ public class IEDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         if (!OS.isFamilyWindows())
             throw new UnsupportedOperationException("Unsupported platform: " + Platform.getCurrent());
-        InternetExplorerDriverService service = setupBuilder(new InternetExplorerDriverService.Builder(), driverOptions, IEDRIVER).build();
-        InternetExplorerOptions options = newInternetExplorerOptions(driverOptions);
+        EdgeDriverService service = setupBuilder(new EdgeDriverService.Builder(), driverOptions, EDGEDRIVER).build();
+        EdgeOptions options = newEdgeOptions(driverOptions);
         options.merge(driverOptions.getCapabilities());
-        InternetExplorerDriver driver = new InternetExplorerDriver(service, options);
+        EdgeDriver driver = new EdgeDriver(service, options);
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }

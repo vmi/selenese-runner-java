@@ -35,6 +35,11 @@ public class WebDriverManager implements WebDriverPreparator {
     public static final String IE = IEDriverFactory.BROWSER_NAME;
 
     /**
+     * Edge.
+     */
+    public static final String EDGE = EdgeDriverFactory.BROWSER_NAME;
+
+    /**
      * Html Unit.
      */
     public static final String HTMLUNIT = HtmlUnitDriverFactory.BROWSER_NAME;
@@ -57,6 +62,7 @@ public class WebDriverManager implements WebDriverPreparator {
     /**
      * PhantomJS
      */
+    @SuppressWarnings("deprecation")
     public static final String PHANTOMJS = PhantomJSDriverFactory.BROWSER_NAME;
 
     private static class Builder {
@@ -162,6 +168,7 @@ public class WebDriverManager implements WebDriverPreparator {
      *
      * @return WebDriverFactory instance.
      */
+    @SuppressWarnings("deprecation")
     public WebDriverFactory lookupWebDriverFactory(String factoryName) {
         if (StringUtils.isBlank(factoryName))
             factoryName = FIREFOX;
@@ -172,6 +179,8 @@ public class WebDriverManager implements WebDriverPreparator {
             return new ChromeDriverFactory();
         case IE:
             return new IEDriverFactory();
+        case EDGE:
+            return new EdgeDriverFactory();
         case SAFARI:
             return new SafariDriverFactory();
         case HTMLUNIT:

@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -14,8 +15,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
-
-import jp.vmi.selenium.selenese.utils.PathUtils;
 
 import static jp.vmi.selenium.webdriver.DriverOptions.DriverOption.*;
 
@@ -35,17 +34,18 @@ public class ChromeDriverFactory extends WebDriverFactory {
     }
 
     /**
-     * set driver specific capabilities.
+     * Create ChromeOptions.
      *
-     * @param caps desired capabilities.
      * @param driverOptions driver options.
+     * @return ChromeOptions
      */
-    public static void setDriverSpecificCapabilities(DesiredCapabilities caps, DriverOptions driverOptions) {
+    public static ChromeOptions newChromeOptions(DriverOptions driverOptions) {
         ChromeOptions options = new ChromeOptions();
-        if (driverOptions.has(PROXY))
-            options.addArguments("--proxy-server=http://" + driverOptions.get(PROXY));
-        if (driverOptions.has(NO_PROXY))
-            options.addArguments("--proxy-bypass-list=" + driverOptions.get(NO_PROXY));
+        if (driverOptions.has(HEADLESS))
+            options.setHeadless(driverOptions.getBoolean(HEADLESS));
+        Proxy proxy = newProxy(driverOptions);
+        if (proxy != null)
+            options.setProxy(proxy);
         if (driverOptions.has(CLI_ARGS))
             options.addArguments(driverOptions.getCliArgs());
         if (driverOptions.has(CHROME_EXTENSION))
@@ -63,22 +63,27 @@ public class ChromeDriverFactory extends WebDriverFactory {
             for (Entry<String, Object> entry : jsonObject.entrySet())
                 options.setExperimentalOption(entry.getKey(), entry.getValue());
         }
-        caps.setCapability(ChromeOptions.CAPABILITY, options);
+        return options;
+    }
+
+    /**
+     * set driver specific capabilities.
+     *
+     * @param caps desired capabilities.
+     * @param driverOptions driver options.
+     */
+    public static void setDriverSpecificCapabilities(DesiredCapabilities caps, DriverOptions driverOptions) {
+        ChromeOptions options = newChromeOptions(driverOptions);
+        caps.setCapability(ChromeOptions.CAPABILITY, options); // TODO need test it works.
         caps.merge(driverOptions.getCapabilities());
     }
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = DesiredCapabilities.chrome();
-        if (driverOptions.has(CHROMEDRIVER)) {
-            String executable = PathUtils.normalize(driverOptions.get(CHROMEDRIVER));
-            if (!new File(executable).canExecute())
-                throw new IllegalArgumentException("Missing ChromeDriver: " + executable);
-            System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, executable);
-        }
-        ChromeDriverService service = CustomChromeDriverService.createService(driverOptions.getEnvVars());
-        setDriverSpecificCapabilities(caps, driverOptions);
-        ChromeDriver driver = new ChromeDriver(service, caps);
+        ChromeDriverService service = setupBuilder(new ChromeDriverService.Builder(), driverOptions, CHROMEDRIVER).build();
+        ChromeOptions options = newChromeOptions(driverOptions);
+        options.merge(driverOptions.getCapabilities());
+        ChromeDriver driver = new ChromeDriver(service, options);
         setInitialWindowSize(driver, driverOptions);
         return driver;
     }

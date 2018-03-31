@@ -72,7 +72,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         }
         if (driverOptions.has(REMOTE_PLATFORM)) {
             String platform = driverOptions.get(REMOTE_PLATFORM);
-            caps.setCapability(CapabilityType.PLATFORM, platform);
+            caps.setCapability(CapabilityType.PLATFORM_NAME, platform);
             log.info("Remote platform: {}", platform);
         }
         if (driverOptions.has(REMOTE_VERSION)) {
