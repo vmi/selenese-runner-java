@@ -1,6 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.14.0
+
+* Add new option `--alert-policy` which change the behaviour in case of Unexpected alerts. (PR #270 by @apcros with refactoring by @vmi)
+* Ignore non text nodes from selenese html. (PR #271 by @janblok)
+    * Accept CDATA nodes. (by @vmi)
+* Catch up Selenium 3.11.0.
+* Update dependency versions.
+
 ### 3.13.0
 
 * Catch up Selenium 3.10.0.
