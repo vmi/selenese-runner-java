@@ -32,7 +32,7 @@ public class TestCaseParser extends Parser {
         for (Node node : each(td.getChildNodes())) {
             if ("BR".equals(node.getNodeName()))
                 value.append('\n');
-            else
+            else if (node.getNodeType() == Node.TEXT_NODE)
                 value.append(node.getTextContent());
         }
         return value.toString();
