@@ -81,6 +81,7 @@ public class NewDefaultConfigTest {
         "--define", "key1=value12",
         "--define", "key2+=value21",
         "--define", "key2+=value22",
+        "--alerts-policy", "accept",
         "--rollup", "rollup-file1",
         "--rollup", "rollup-file2",
         "--rollup", "rollup-file3",
@@ -135,6 +136,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getHeight(), is(nullValue()));
         assertThat(options.getWidth(), is(nullValue()));
         assertThat(options.getDefine(), is(nullValue()));
+        assertThat(options.getAlertsPolicy(), is(nullValue()));
         assertThat(options.getRollup(), is(nullValue()));
         assertThat(options.getCookieFilter(), is(nullValue()));
         assertThat(options.getCommandFactory(), is(nullValue()));
@@ -180,6 +182,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getHeight(), is("screen-height"));
         assertThat(options.getWidth(), is("screen-width"));
         assertThat(options.getDefine(), is(new String[] { "key1=value11", "key1=value12", "key2+=value21", "key2+=value22", "--define" }));
+        assertThat(options.getAlertsPolicy(), is("accept"));
         assertThat(options.getRollup(), is(new String[] { "rollup-file1", "rollup-file2", "rollup-file3", }));
         assertThat(options.getCookieFilter(), is("+RE"));
         assertThat(options.getCommandFactory(), is("com.example.CommandFactory"));

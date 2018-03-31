@@ -59,6 +59,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         FirefoxProfile profile = getFirefoxProfile(driverOptions);
         if (profile != null)
             firefoxOptions.setProfile(profile);
+        firefoxOptions.merge(driverOptions.getCapabilities());
         FirefoxDriver driver = new FirefoxDriver(service, firefoxOptions);
         setInitialWindowSize(driver, driverOptions);
         return driver;

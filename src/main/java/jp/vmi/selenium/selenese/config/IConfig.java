@@ -52,6 +52,7 @@ public interface IConfig {
     public static final String SET_SPEED = "set-speed";
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
+    public static final String ALERTS_POLICY = "alerts-policy";
     public static final String DEFINE = "define";
     public static final String VAR = "var";
     public static final String ROLLUP = "rollup";
@@ -62,7 +63,6 @@ public interface IConfig {
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
     public static final String HELP = "help";
-    public static final String ALERTS_POLICY = "alerts-policy";
 
     /**
      * Get command line arguments without parsed options.

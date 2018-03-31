@@ -185,6 +185,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + WIDTH, metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
+    @Option(name = "--alerts-policy", usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
+    private String alertsPolicy;
+
     @Option(name = "--" + DEFINE, aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
         usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
@@ -217,9 +220,6 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
-
-    @Option(name = "--alerts-policy", usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
-    private String alertsPolicy;
 
     @Argument
     private String[] args = LangUtils.EMPTY_STRING_ARRAY;
@@ -433,11 +433,6 @@ public class DefaultConfig implements IConfig {
     }
 
     @Override
-    public String getAlertsPolicy() {
-        return alertsPolicy;
-    }
-
-    @Override
     public String getBaseurl() {
         return baseurl != null ? baseurl : (parentOptions != null ? parentOptions.getBaseurl() : null);
     }
@@ -552,6 +547,15 @@ public class DefaultConfig implements IConfig {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    @Override
+    public String getAlertsPolicy() {
+        return alertsPolicy != null ? alertsPolicy : (parentOptions != null ? parentOptions.getAlertsPolicy() : null);
+    }
+
+    public void setAlertsPolicy(String alertsPolicy) {
+        this.alertsPolicy = alertsPolicy;
     }
 
     @Override
