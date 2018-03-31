@@ -74,6 +74,7 @@ Usage
      --set-speed <speed>                     : same as executing setSpeed(ms) command first.
      --height <height>                       : set initial height. (excluding mobile)
      --width <width>                         : set initial width. (excluding mobile)
+     --alerts-policy VAL                     : The default behaviour for unexpected alerts (accept/ignore/dismiss)
      --define (-D) <key>[:<type>][+]=<value> : define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)
      --var (-V) <var-name>=<json-value>      : set JSON value to variable with a specified name. (multiple)
      --rollup <file>                         : define rollup rule by JavaScript. (multiple)

@@ -50,6 +50,7 @@ public class DefaultConfigTest {
         "--" + DEFINE + "=opt-key2=opt-value2",
         "--" + DEFINE + "=opt-key3=opt-value3",
         "--" + ROLLUP + "=/opt/path/to/rollup",
+        "--" + ALERTS_POLICY + "=dismiss",
         "--" + COOKIE_FILTER + "=^OPT_SID",
         "--" + COMMAND_FACTORY + "=opt.full.qualify.class.Name",
         "--" + LOG_FILTER + "=-cookie"
@@ -90,6 +91,7 @@ public class DefaultConfigTest {
         assertThat(config.get(HEIGHT), is(nullValue()));
         assertThat(config.get(WIDTH), is(nullValue()));
         assertThat(config.getDefine(), is(nullValue()));
+        assertThat(config.getAlertsPolicy(), is(nullValue()));
         assertThat(config.get(ROLLUP), is(nullValue()));
         assertThat(config.get(COOKIE_FILTER), is(nullValue()));
         assertThat(config.get(COMMAND_FACTORY), is(nullValue()));
@@ -133,6 +135,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(HEIGHT), is("1024"));
         assertThat((String) config.get(WIDTH), is("768"));
         assertThat(config.getDefine(), equalTo(new String[] { "key1=value1", "key2=value2", "key3=value3" }));
+        assertThat((String) config.get(ALERTS_POLICY), is("accept"));
         assertThat(config.getRollup(), equalTo(new String[] { "/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("full.qualify.class.Name"));
@@ -176,6 +179,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(HEIGHT), is("2048"));
         assertThat((String) config.get(WIDTH), is("1536"));
         assertThat(config.getDefine(), equalTo(new String[] { "opt-key1=opt-value1", "opt-key2=opt-value2", "opt-key3=opt-value3" }));
+        assertThat((String) config.get(ALERTS_POLICY), is("dismiss"));
         assertThat(config.getRollup(), equalTo(new String[] { "/opt/path/to/rollup" }));
         assertThat((String) config.get(COOKIE_FILTER), is("^OPT_SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("opt.full.qualify.class.Name"));
