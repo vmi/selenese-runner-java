@@ -30,10 +30,13 @@ public class TestCaseParser extends Parser {
     private String getTdString(Node td) {
         StringBuilder value = new StringBuilder();
         for (Node node : each(td.getChildNodes())) {
-            if ("BR".equals(node.getNodeName()))
+            if ("BR".equals(node.getNodeName())) {
                 value.append('\n');
-            else if (node.getNodeType() == Node.TEXT_NODE)
-                value.append(node.getTextContent());
+            } else {
+                short nodeType = node.getNodeType();
+                if (nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE)
+                    value.append(node.getTextContent());
+            }
         }
         return value.toString();
     }
