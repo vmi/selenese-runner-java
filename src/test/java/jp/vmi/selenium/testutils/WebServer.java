@@ -20,9 +20,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.text.StrLookup;
-import org.apache.commons.text.StrSubstitutor;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.lookup.StringLookup;
 import org.openqa.selenium.net.PortProber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,7 +172,7 @@ public class WebServer {
                 Content content = new Content(getContentType(path));
                 if (content.type.startsWith("text/html")) {
                     String tmpl = IOUtils.toString(Files.newInputStream(path), StandardCharsets.UTF_8);
-                    content.body = new StrSubstitutor(new StrLookup<String>() {
+                    content.body = new StringSubstitutor(new StringLookup() {
                         @Override
                         public String lookup(String key) {
                             String value = params.get(key);
