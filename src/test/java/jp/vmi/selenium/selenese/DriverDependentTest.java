@@ -431,7 +431,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testNativeAlert() {
-        assumeNot(HTMLUNIT, PHANTOMJS);
+        assumeNot(HTMLUNIT, FIREFOX, PHANTOMJS); // TODO: remove FIREFOX when fix that Selenium don't stop alert and confirm on Firefox.
         execute("testcase_native_alert");
         assertThat(result, is(instanceOf(Success.class)));
     }
