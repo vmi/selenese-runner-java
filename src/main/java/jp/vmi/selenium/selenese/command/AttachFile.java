@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.io.TemporaryFilesystem;
 
@@ -59,31 +60,46 @@ public class AttachFile extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String name = curArgs[ARG_FILENAME];
-        URL url;
-        try {
-            url = new URL(name);
-        } catch (MalformedURLException e) {
-            return new Error("Malformed URL: " + name);
-        }
-        File dir = TemporaryFilesystem.getDefaultTmpFS().createTempDir("attachFile", "dir");
-        File outputTo = new File(dir, new File(url.getFile()).getName());
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(outputTo);
-            Resources.copy(url, fos);
-        } catch (IOException e) {
-            return new Error("Can't access file to upload: " + url, e);
-        } finally {
+        File outputTo = null;
+        if (name.contains("://")) {
+            // process (remote) url
+            URL url;
             try {
-                if (fos != null) {
-                    fos.close();
-                }
+                url = new URL(name);
+            } catch (MalformedURLException e) {
+                return new Error("Malformed URL: " + name);
+            }
+            File dir = TemporaryFilesystem.getDefaultTmpFS().createTempDir("attachFile", "dir");
+            outputTo = new File(dir, new File(url.getFile()).getName());
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(outputTo);
+                Resources.copy(url, fos);
             } catch (IOException e) {
-                return new Warning("Unable to close stream used for reading file: " + name, e);
+                return new Error("Can't access file to upload: " + url, e);
+            } finally {
+                try {
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    return new Warning("Unable to close stream used for reading file: " + name, e);
+                }
+            }
+        } else {
+            // process file besides testcase file
+            outputTo = new File(FilenameUtils.getPath(context.getCurrentTestCase().getFilename()), name);
+            if (!outputTo.exists()) {
+                return new Error("Can't access file: " + outputTo);
             }
         }
+
         WebElement element = context.findElement(curArgs[ARG_LOCATOR]);
-        element.clear();
+        try {
+            element.clear();
+        } catch (Exception e) {
+            // ignore exceptions from some drivers when file-input cannot be cleared;
+        }
         element.sendKeys(outputTo.getAbsolutePath());
         return SUCCESS;
     }
