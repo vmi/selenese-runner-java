@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.15.0
+
+* Ignore driver errors on clear and allow relative files on `attachFile`. (PR #273 by janblok)
+* Catch up Selenium 3.12.0.
+* Update dependency versions.
+
 ### 3.14.0
 
 * Add new option `--alert-policy` which change the behaviour in case of Unexpected alerts. (PR #270 by @apcros with refactoring by @vmi)
