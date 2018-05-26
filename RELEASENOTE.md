@@ -4,6 +4,8 @@ Selenese Runner Java Relase Note
 ### 3.15.0
 
 * Ignore driver errors on clear and allow relative files on `attachFile`. (PR #273 by janblok)
+* Add support `.side` format script file. (**experimental**) (PR #274)
+    * Don't work on HtmlUnit and Firefox.
 * Catch up Selenium 3.12.0.
 * Update dependency versions.
 
