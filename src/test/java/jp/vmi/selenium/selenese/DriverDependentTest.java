@@ -435,4 +435,11 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_native_alert");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void testSide() {
+        assumeNot(HTMLUNIT, FIREFOX); // Don't work HtmlUnit and Firefox.
+        execute("testsuite_simple.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }
