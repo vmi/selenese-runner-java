@@ -13,7 +13,6 @@ import java.util.Map;
 public class SideCommandMapper {
 
     private final Map<String, String> commands = new HashMap<>();
-    private final Map<String, String> revCommands = new HashMap<>();
 
     /**
      * Constructor.
@@ -29,7 +28,6 @@ public class SideCommandMapper {
                 String cmdName = entry[0];
                 String cmdStr = entry[1].replaceFirst("\"\\s*,?", "");
                 commands.put(cmdStr, cmdName);
-                revCommands.put(cmdName, cmdStr);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -53,15 +51,6 @@ public class SideCommandMapper {
      */
     public Map<String, String> getCommandMap() {
         return commands;
-    }
-
-    /**
-     * Get reverse command map.
-     *
-     * @return reverse command map.
-     */
-    public Map<String, String> getRevCommandMap() {
-        return revCommands;
     }
 
     @Override

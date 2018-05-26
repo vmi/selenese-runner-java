@@ -20,8 +20,11 @@ public final class TestCaseParser {
     public static Selenese parse(CommandIterator iter, ICommandFactory commandFactory) {
         TestCase testCase = Binder.newTestCase(iter.getFilename(), iter.getName(), iter.getBaseURL());
         try {
-            for (CommandEntry entry : iter)
+            for (CommandEntry entry : iter) {
+                if (entry.comment != null && !entry.comment.isEmpty())
+                    testCase.addCommand(commandFactory, "comment", entry.comment);
                 testCase.addCommand(commandFactory, entry.name, entry.args);
+            }
         } catch (RuntimeException e) {
             return Binder.newErrorTestCase(iter.getFilename(), new InvalidSeleneseException(e, iter.getFilename(), iter.getName()));
         }

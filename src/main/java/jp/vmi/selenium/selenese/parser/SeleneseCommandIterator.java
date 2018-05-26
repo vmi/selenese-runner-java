@@ -86,10 +86,10 @@ public class SeleneseCommandIterator extends AbstractTestElementIterator<Command
                 }
                 String cmdName = cmdWithArgs.remove(0);
                 String[] cmdArgs = cmdWithArgs.toArray(new String[cmdWithArgs.size()]);
-                return new CommandEntry(nextId(), cmdName, cmdArgs);
+                return new CommandEntry(nextId(), null, cmdName, cmdArgs);
 
             case Node.COMMENT_NODE:
-                return new CommandEntry(nextId(), "comment", tr.getNodeValue().trim());
+                return new CommandEntry(nextId(), null, "comment", tr.getNodeValue().trim());
 
             default: // skip whitespace text.
                 continue;

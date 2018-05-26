@@ -11,8 +11,6 @@ import jp.vmi.selenium.selenese.side.SideTest;
  */
 public class SideCommandIterator extends AbstractTestElementIterator<CommandEntry> implements CommandIterator {
 
-    private static final SideCommandMapper sideCommandMapper = new SideCommandMapper();
-
     private final String baseURL;
     private final Iterator<SideCommand> iter;
 
@@ -44,7 +42,6 @@ public class SideCommandIterator extends AbstractTestElementIterator<CommandEntr
     @Override
     public CommandEntry next() {
         SideCommand command = iter.next();
-        String mappedCommand = sideCommandMapper.getMappedCommand(command.getCommand());
-        return new CommandEntry(command.getId(), mappedCommand, command.getTarget(), command.getValue());
+        return new CommandEntry(command.getId(), command.getComment(), command.getCommand(), command.getTarget(), command.getValue());
     }
 }

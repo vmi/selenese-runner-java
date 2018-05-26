@@ -10,6 +10,7 @@ public class SideCommand {
     private String command;
     private String target;
     private String value;
+    private String comment;
 
     public String getId() {
         return id;
@@ -41,5 +42,13 @@ public class SideCommand {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
