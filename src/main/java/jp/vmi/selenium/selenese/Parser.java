@@ -1,108 +1,39 @@
 package jp.vmi.selenium.selenese;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import org.apache.xpath.XPathAPI;
-import org.cyberneko.html.parsers.DOMParser;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
-import jp.vmi.selenium.selenese.utils.PathUtils;
-
-import static org.apache.xerces.impl.Constants.*;
+import jp.vmi.selenium.selenese.parser.ParserUtils;
+import jp.vmi.selenium.selenese.parser.SeleneseTestSuiteIterator;
+import jp.vmi.selenium.selenese.parser.SideTestSuiteIterator;
+import jp.vmi.selenium.selenese.parser.TestSuiteIterator;
 
 /**
  * Abstract class of selenese parser.
  */
 public abstract class Parser {
 
-    private static final String TEST_CASE_PROFILE = "http://selenium-ide.openqa.org/profiles/test-case";
-    private static final String DEFAULT_BASE_URL = "about:blank";
-
-    protected static class NodeIterator implements Iterator<Node> {
-        private final NodeList nodeList;
-        private int index = 0;
-
-        protected NodeIterator(NodeList nodeList) {
-            this.nodeList = nodeList;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return index < nodeList.getLength();
-        }
-
-        @Override
-        public Node next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            return nodeList.item(index++);
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    protected static Iterable<Node> each(final NodeList nodeList) {
-        return new Iterable<Node>() {
-            @Override
-            public Iterator<Node> iterator() {
-                return new NodeIterator(nodeList);
-            }
-        };
-    }
-
     /**
      * Parse input stream.
      *
-     * @param filename selenese script file. (not open. used for label or generating output filename)
+     * @param filename selenese script file. (Don't use to open a file. It is used as a label and is used to generate filenames based on it)
      * @param is input stream of script file. (test-case or test-suite)
      * @param commandFactory command factory.
      * @return TestCase or TestSuite.
      */
     public static Selenese parse(String filename, InputStream is, ICommandFactory commandFactory) {
+        TestSuiteIterator iter = null;
         try {
-            DOMParser dp = new DOMParser();
-            dp.setEntityResolver(null);
-            dp.setFeature("http://xml.org/sax/features/namespaces", false);
-            dp.setFeature(XERCES_FEATURE_PREFIX + INCLUDE_COMMENTS_FEATURE, true);
-            dp.setFeature("http://cyberneko.org/html/features/scanner/cdata-sections", true);
-            dp.parse(new InputSource(is));
-            Document document = dp.getDocument();
-            Node seleniumBase = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href");
-            if (seleniumBase != null) {
-                String baseURL = seleniumBase.getNodeValue();
-                return new TestCaseParser(filename, document, baseURL).parse(commandFactory);
-            }
-            Node profile = XPathAPI.selectSingleNode(document, "/HTML/HEAD/@profile");
-            if (profile != null && TEST_CASE_PROFILE.equals(profile.getNodeValue())) {
-                return new TestCaseParser(filename, document, DEFAULT_BASE_URL).parse(commandFactory);
-            }
-            Node suiteTable = XPathAPI.selectSingleNode(document, "/HTML/BODY/TABLE[@id='suiteTable']");
-            if (suiteTable != null) {
-                return new TestSuiteParser(filename, document).parse(commandFactory);
-            }
-            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(
-                "Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id"));
-        } catch (Exception e) {
-            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e));
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                // no operation.
-            }
+            if (filename.toLowerCase().endsWith(".side"))
+                iter = new SideTestSuiteIterator(filename, is);
+            else
+                iter = new SeleneseTestSuiteIterator(filename, is);
+            return TestSuitesParser.parse(iter, commandFactory);
+        } catch (InvalidSeleneseException e) {
+            return Binder.newErrorTestSuite(filename, e);
         }
     }
 
@@ -114,19 +45,12 @@ public abstract class Parser {
      * @return TestCase or TestSuite.
      */
     public static Selenese parse(String filename, ICommandFactory commandFactory) {
-        try {
-            return parse(filename, new FileInputStream(filename), commandFactory);
-        } catch (FileNotFoundException e) {
-            return Binder.newErrorTestCase(filename, new InvalidSeleneseException(e.getMessage()));
+        try (InputStream is = new FileInputStream(filename)) {
+            return parse(filename, is, commandFactory);
+        } catch (IOException e) {
+            String name = ParserUtils.getNameFromFilename(filename);
+            return Binder.newErrorTestSuite(filename, new InvalidSeleneseException(e.getMessage(), filename, name));
         }
-    }
-
-    protected final String filename;
-    protected final Document docucment;
-
-    protected Parser(String filename, Document document) {
-        this.filename = PathUtils.normalize(filename);
-        this.docucment = document;
     }
 
     protected abstract Selenese parse(ICommandFactory commandFactory);

@@ -74,7 +74,11 @@ public abstract class TestCaseTestBase extends TestBase {
             if (testSuites.isEmpty()) {
                 xmlResult = null;
             } else {
-                String xmlFile = String.format("TEST-%s.xml", testSuites.get(0).getBaseName());
+                TestSuite testSuite = testSuites.get(0);
+                Selenese child = testSuite.getSeleneseList().get(0);
+                if (child instanceof TestSuite)
+                    testSuite = (TestSuite) child;
+                String xmlFile = testSuite.getFileBaseName("xml");
                 xmlResult = FileUtils.readFileToString(new File(xmlResultDir.getRoot(), xmlFile), "UTF-8");
             }
         } catch (IOException e) {

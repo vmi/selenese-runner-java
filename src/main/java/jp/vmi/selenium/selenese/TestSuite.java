@@ -22,10 +22,12 @@ import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 /**
  * test-suite object for execution.
  */
-public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
+public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHtmlResultTestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(TestSuite.class);
 
+    private ITreedFileGenerator parent = null;
+    private int index = 0;
     private String filename = null;
     private String baseName = null;
     private String name = null;
@@ -62,6 +64,16 @@ public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
     }
 
     @Override
+    public ITreedFileGenerator getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(ITreedFileGenerator parent) {
+        this.parent = parent;
+    }
+
+    @Override
     public Type getType() {
         return Type.TEST_SUITE;
     }
@@ -79,6 +91,16 @@ public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
     @Override
     public String getBaseName() {
         return baseName;
+    }
+
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
+    @Override
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     /**
@@ -105,6 +127,11 @@ public class TestSuite implements Selenese, ITestSuite, IHtmlResultTestSuite {
      * @param selenese Selenese instance.
      */
     public void addSelenese(Selenese selenese) {
+        if (selenese instanceof ITreedFileGenerator) {
+            ITreedFileGenerator tfg = (ITreedFileGenerator) selenese;
+            tfg.setParent(this);
+            tfg.setIndex(seleneseList.size() + 1);
+        }
         seleneseList.add(selenese);
     }
 

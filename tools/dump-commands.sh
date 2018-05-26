@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
-cd "$(dirname "$0")/.."
+cd $(dirname "$0")/..
+cp=$(./tools/classpath.sh)
 
-mvn -P package
-java -cp target/selenese-runner.jar \
-     jp.vmi.selenium.selenese.utils.CommandDumper | tee tmp/commands.csv
+java -cp "$cp" \
+     jp.vmi.selenium.selenese.utils.CommandDumper "$@" | tee tmp/commands.csv

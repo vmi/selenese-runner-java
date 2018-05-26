@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
-cd ..
-mvn -P package
+cd $(dirname "$0")/..
+cp=$(./tools/classpath.sh)
 
-java -cp target/selenese-runner.jar jp.vmi.selenium.selenese.utils.CommandDumper | sed 's/,.*//' | dos2unix > docs/selenese-runner-command-list.txt
+java -cp "$cp" jp.vmi.selenium.selenese.utils.CommandDumper | sed 's/,.*//' | dos2unix > docs/selenese-runner-command-list.txt

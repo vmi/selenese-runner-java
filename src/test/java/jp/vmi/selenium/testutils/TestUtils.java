@@ -38,7 +38,7 @@ public final class TestUtils {
      * @return script file path.
      */
     public static String getScriptFile(String name) {
-        String html = "/selenese/" + name + ".html";
+        String html = "/selenese/" + name + (name.endsWith(".side") ? "" : ".html");
         URL resource = TestUtils.class.getResource(html);
         if (resource == null)
             throw new RuntimeException(new FileNotFoundException(html));

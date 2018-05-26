@@ -114,7 +114,7 @@ public final class JUnitResult {
             //marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             mkdirs();
-            File file = new File(xmlResultDir, "TEST-" + suiteResult.getBaseName() + ".xml");
+            File file = new File(xmlResultDir, testSuite.getFileBaseName("xml"));
             marshaller.marshal(suiteResult, file);
             log.info("Generated JUnit result: {}", file);
         } catch (JAXBException e) {

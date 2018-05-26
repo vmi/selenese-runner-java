@@ -196,7 +196,7 @@ public class HtmlResult {
         model.put("numCommandErrors", summary.numCommandErrors);
         model.put("commandLine", commandLineArgs);
         String html = getEngine().transform(getTemplate("result.html"), model);
-        File file = new File(dir, "TEST-" + testSuite.getBaseName() + ".html");
+        File file = new File(dir, testSuite.getFileBaseName("html"));
         try {
             FileUtils.write(file, html, StandardCharsets.UTF_8);
             log.info("Generated HTML result: {}", file);

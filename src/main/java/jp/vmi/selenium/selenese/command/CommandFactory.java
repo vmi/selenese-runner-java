@@ -45,15 +45,16 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(AltKeyDown.class);
         addConstructor(AltKeyUp.class);
         addConstructor(AnswerOnNextPrompt.class);
-        addConstructor(AnswerOnNextNativeAlert.class);
+        addConstructor(AnswerOnNextNativeAlert.class, "webdriverAnswerOnNextPrompt");
         addConstructor(AssignId.class);
         addConstructor(AttachFile.class);
         addConstructor(CaptureEntirePageScreenshot.class);
         addConstructor(Check.class);
         addConstructor(ChooseCancelOnNextConfirmation.class);
-        addConstructor(ChooseCancelOnNextNativeAlert.class);
+        addConstructor(ChooseCancelOnNextPrompt.class);
+        addConstructor(ChooseCancelOnNextNativeAlert.class, "webdriverChooseCancelOnNextConfirmation", "webdriverChooseCancelOnNextPrompt");
         addConstructor(ChooseOkOnNextConfirmation.class);
-        addConstructor(ChooseOkOnNextNativeAlert.class);
+        addConstructor(ChooseOkOnNextNativeAlert.class, "webdriverChooseOkOnNextConfirmation");
         addConstructor(Click.class);
         addConstructor(ClickAt.class);
         addConstructor(Close.class);
@@ -65,6 +66,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(DeleteCookie.class);
         addConstructor(DeselectPopUp.class);
         addConstructor(DoubleClick.class);
+        addConstructor(DoubleClickAt.class);
         addConstructor(DragAndDrop.class, "dragdrop");
         addConstructor(DragAndDropToObject.class);
         addConstructor(Echo.class);

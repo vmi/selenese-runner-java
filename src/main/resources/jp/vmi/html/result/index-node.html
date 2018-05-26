@@ -1,4 +1,4 @@
-<li><a href="TEST-${node.testSuite.baseName;h}.html">${node.testSuite.name;h}</a> (${node.testSuite.result})
+<li><a href="${node.testSuite.fileBaseName;h}.html">${node.testSuite.name;h}</a> (${node.testSuite.result})
 <ul>
 ${foreach node.children child}
   ${child}

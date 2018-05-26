@@ -61,7 +61,7 @@ public class ExecuteTestSuiteInterceptor extends AbstractExecuteTestSuiteInterce
             sw.end();
             if (jUnitResult != null)
                 jUnitResult.endTestSuite(testSuite);
-            if (htmlResult != null)
+            if (testSuite.getParent() == null && htmlResult != null)
                 htmlResult.generate(testSuite);
         }
     }
