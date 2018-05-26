@@ -8,7 +8,10 @@ import jp.vmi.selenium.selenese.result.Result;
 /**
  * Test-suite with errors.
  */
-public class ErrorTestSuite extends ErrorSource implements ITestSuite, IHtmlResultTestSuite {
+public class ErrorTestSuite extends ErrorSource implements ITreedFileGenerator, ITestSuite, IHtmlResultTestSuite {
+
+    private ITreedFileGenerator parent = null;
+    private int index = 0;
 
     @Override
     public ErrorTestSuite initialize(String filename, InvalidSeleneseException e) {
@@ -18,6 +21,26 @@ public class ErrorTestSuite extends ErrorSource implements ITestSuite, IHtmlResu
     @Override
     public Type getType() {
         return Type.TEST_SUITE;
+    }
+
+    @Override
+    public ITreedFileGenerator getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(ITreedFileGenerator parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
+    @Override
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @ExecuteTestSuite

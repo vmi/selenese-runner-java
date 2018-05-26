@@ -309,7 +309,7 @@ ${end}
           <tr class="title status_${testSuite.result}"><th>${testSuite.name}</th></tr>
 ${foreach seleneseList selenese}
   ${if selenese.type="TEST_SUITE"}
-          <tr class="status_${selenese.result}"><td><a href="TEST-${selenese.name}.html">${selenese.name;h}</a> (test-suite)</td></tr>
+          <tr class="status_${selenese.result}"><td><a href="${selenese.fileBaseName}.html">${selenese.name;h}</a> (test-suite)</td></tr>
   ${end}
   ${if selenese.type="TEST_CASE"}
           <tr class="status_${selenese.result}"><td><a href="#testCase${index_selenese}">${selenese.name;h}</a></td></tr>
@@ -385,12 +385,12 @@ ${foreach seleneseList selenese}
           <div class="contents">
             <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
 ${end}</pre>
-  ${end}
           </div>
         </li>
       </ul>
     </div><!-- tabs -->
     <p>[<a href="#">Top</a>]</p>
+  ${end}
 ${end}
   </body>
 </html>

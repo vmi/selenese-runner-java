@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import jp.vmi.selenium.selenese.ITreedFileGenerator;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
@@ -100,7 +101,23 @@ public class JUnitResultTest {
         Calendar start = Calendar.getInstance();
         start.set(Calendar.MILLISECOND, 0);
         final ITestSuite testSuite = new ITestSuite() {
+            private int index = 0;
             private final StopWatch stopWatch = new StopWatch();
+
+            @Override
+            public ITreedFileGenerator getParent() {
+                return null;
+            }
+
+            @Override
+            public int getIndex() {
+                return index;
+            }
+
+            @Override
+            public void setIndex(int index) {
+                this.index = index;
+            }
 
             @Override
             public String getBaseName() {
