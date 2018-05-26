@@ -1,8 +1,18 @@
 #!/bin/sh
 
+set -eu
+
 if [ x"$1" = x--build ]; then
   shift
   mvn -P package
+  opt=-jar
+  param="target/selenese-runner.jar"
+  main=""
+else
+  dir="$(dirname "$0")/tools"
+  opt="-cp"
+  param="$("$dir"/classpath.sh)"
+  main="jp.vmi.selenium.selenese.Main"
 fi
 
 rm -rf tmp/img tmp/xml tmp/html logs/run.log
@@ -26,6 +36,6 @@ do_script() {
   esac
 }
 
-do_script logs/$log_file java -Dsrj.log.level=DEBUG -jar target/selenese-runner.jar \
-  --config tools/run.config \
-  "$@"
+do_script logs/$log_file java -Dsrj.log.level=DEBUG \
+  "$opt" "$param" $main \
+  --config tools/run.config "$@"
