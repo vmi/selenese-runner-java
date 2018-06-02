@@ -8,9 +8,9 @@ import jp.vmi.selenium.selenese.parser.TestSuiteEntry;
 import jp.vmi.selenium.selenese.parser.TestSuiteIterator;
 
 /**
- * Parser of test-suites script.
+ * Parser of test-project (test-suite including test-suites) script.
  */
-public final class TestSuitesParser {
+public final class TestProjectParser {
 
     /**
      * Parse test-suites script.
@@ -20,17 +20,17 @@ public final class TestSuitesParser {
      * @return Selenese instance.
      */
     public static Selenese parse(TestSuiteIterator suiteIter, ICommandFactory commandFactory) {
-        TestSuite testSuites = Binder.newTestSuite(suiteIter.getFilename(), suiteIter.getName());
+        TestProject testProject = Binder.newTestProject(suiteIter.getFilename(), suiteIter.getName());
         try {
             TestElementIteratorFactory<TestCaseIterator, TestSuiteEntry> caseIterFactory = suiteIter.getTestCaseIteratorFactory();
             for (TestSuiteEntry entry : suiteIter) {
                 TestCaseIterator caseIter = caseIterFactory.getTestElementIterator(entry);
                 Selenese selenese = TestSuiteParser.parse(caseIter, commandFactory);
-                testSuites.addSelenese(selenese);
+                testProject.addSelenese(selenese);
             }
         } catch (InvalidSeleneseException e) {
-            testSuites.addSelenese(Binder.newErrorTestSuite(e.getFilename(), e));
+            testProject.addSelenese(Binder.newErrorTestSuite(e.getFilename(), e));
         }
-        return suiteIter.isDummy() ? testSuites.getSeleneseList().get(0) : testSuites;
+        return suiteIter.isDummy() ? testProject.getSeleneseList().get(0) : testProject;
     }
 }

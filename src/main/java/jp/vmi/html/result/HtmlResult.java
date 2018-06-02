@@ -129,6 +129,7 @@ public class HtmlResult {
         summary = new TestSuiteSummary();
         for (Selenese selenese : seleneseList) {
             switch (selenese.getType()) {
+            case TEST_PROJECT:
             case TEST_SUITE:
                 if (selenese.isError())
                     break;

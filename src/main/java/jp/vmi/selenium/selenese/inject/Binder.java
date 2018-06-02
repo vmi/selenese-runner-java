@@ -4,9 +4,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import jp.vmi.selenium.selenese.ErrorTestCase;
+import jp.vmi.selenium.selenese.ErrorTestProject;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
 import jp.vmi.selenium.selenese.TestCase;
+import jp.vmi.selenium.selenese.TestProject;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandList;
 
@@ -47,11 +49,22 @@ public class Binder {
      * Constructs TestSuite applied aspect.
      *
      * @param filename Selenese script file.
-     * @param name test-case name.
+     * @param name test-suite name.
      * @return TestSuite instance.
      */
     public static TestSuite newTestSuite(String filename, String name) {
         return injector.getInstance(TestSuite.class).initialize(filename, name);
+    }
+
+    /**
+     * Constructs TestProject applied aspect.
+     *
+     * @param filename Selenese script file.
+     * @param name test-project name.
+     * @return TestProject instance.
+     */
+    public static TestProject newTestProject(String filename, String name) {
+        return injector.getInstance(TestProject.class).initialize(filename, name);
     }
 
     /**
@@ -71,11 +84,23 @@ public class Binder {
      *
      * @param filename Selenese script file.
      * @param e InvalidSeleneseException instance.
-     * @return ErrorSuiteCase instance.
+     * @return ErrorTestSuite instance.
      */
     public static ErrorTestSuite newErrorTestSuite(String filename, InvalidSeleneseException e) {
         ErrorTestSuite errorTestSuite = injector.getInstance(ErrorTestSuite.class);
         return errorTestSuite.initialize(filename, e);
+    }
+
+    /**
+     * Constructs ErrorTestProject applied aspect.
+     *
+     * @param filename Selenese script file.
+     * @param e InvalidSeleneseException instance.
+     * @return ErrorTestProject instance.
+     */
+    public static ErrorTestProject newErrorTestProject(String filename, InvalidSeleneseException e) {
+        ErrorTestProject errorTestProject = injector.getInstance(ErrorTestProject.class);
+        return errorTestProject.initialize(filename, e);
     }
 
     /**

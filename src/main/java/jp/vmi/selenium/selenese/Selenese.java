@@ -13,7 +13,7 @@ public interface Selenese extends ITestTarget {
      */
     @SuppressWarnings("javadoc")
     public enum Type {
-        TEST_SUITE, TEST_CASE
+        TEST_PROJECT, TEST_SUITE, TEST_CASE
     }
 
     /**

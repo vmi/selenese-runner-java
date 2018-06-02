@@ -196,11 +196,15 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
         return result;
     }
 
+    protected String toStringImpl(String className) {
+        StringBuilder s = new StringBuilder(className).append('[').append(name).append(']');
+        if (filename != null)
+            s.append(" (").append(filename).append(')');
+        return s.toString();
+    }
+
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("TestSuite[").append(name).append("]");
-        if (filename != null)
-            s.append(" (").append(filename).append(")");
-        return s.toString();
+        return toStringImpl("TestSuite");
     }
 }

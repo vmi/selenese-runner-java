@@ -668,6 +668,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 continue;
             }
             switch (selenese.getType()) {
+            case TEST_PROJECT:
             case TEST_SUITE:
                 testSuiteList.add((TestSuite) selenese);
                 break;

@@ -25,15 +25,16 @@ public abstract class Parser {
      * @return TestCase or TestSuite.
      */
     public static Selenese parse(String filename, InputStream is, ICommandFactory commandFactory) {
+        boolean isSide = filename.toLowerCase().endsWith(".side");
         TestSuiteIterator iter = null;
         try {
-            if (filename.toLowerCase().endsWith(".side"))
+            if (isSide)
                 iter = new SideTestSuiteIterator(filename, is);
             else
                 iter = new SeleneseTestSuiteIterator(filename, is);
-            return TestSuitesParser.parse(iter, commandFactory);
+            return TestProjectParser.parse(iter, commandFactory);
         } catch (InvalidSeleneseException e) {
-            return Binder.newErrorTestSuite(filename, e);
+            return isSide ? Binder.newErrorTestProject(filename, e) : Binder.newErrorTestSuite(filename, e);
         }
     }
 
