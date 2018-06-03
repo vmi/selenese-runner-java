@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.subcommand;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
+import jp.vmi.selenium.selenese.utils.MouseUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -181,19 +183,19 @@ public class MouseEventHandler implements ISubCommand<Void> {
         Point elemLocation = element.getLocation();
         log.debug("Viewport Size: ({}, {}) / Element Location: {} / Element Size: {}",
             vpWidth, vpHeight, elemLocation, elemSize);
-        Actions actions = new Actions(driver);
+        Function<Actions, Actions> afterMovingMouse;
         Point coord;
         switch (eventType) {
         case MOUSE_OVER:
         case MOUSE_MOVE:
             coord = calcOffset(vpWidth, vpHeight, elemLocation, elemSize);
-            actions.moveToElement(element, coord.x, coord.y);
+            afterMovingMouse = actions -> actions;
             break;
         case MOUSE_OUT:
             coord = calcOffsetOutsideElement(vpWidth, vpHeight, elemLocation, elemSize);
             if (coord != null) {
                 log.debug("Move to: ({}, {}) on {}", coord.x, coord.y, element);
-                actions.moveToElement(element, coord.x, coord.y);
+                afterMovingMouse = actions -> actions;
             } else {
                 log.debug("Fire \"mouseleave\" and \"mouseout\" events by JS.");
                 eval(driver, FIRE_MOUSE_OUT_EVENT, element);
@@ -202,29 +204,29 @@ public class MouseEventHandler implements ISubCommand<Void> {
             break;
         case MOUSE_MOVE_AT:
             coord = coordToPoint(args[ARG_COORD]);
-            actions.moveToElement(element, coord.x, coord.y);
+            afterMovingMouse = actions -> actions;
             break;
         case MOUSE_DOWN:
             coord = calcOffset(vpWidth, vpHeight, elemLocation, elemSize);
-            actions.moveToElement(element, coord.x, coord.y).clickAndHold();
+            afterMovingMouse = actions -> actions.clickAndHold();
             break;
         case MOUSE_DOWN_AT:
             coord = coordToPoint(args[ARG_COORD]);
-            actions.moveToElement(element, coord.x, coord.y).clickAndHold();
+            afterMovingMouse = actions -> actions.clickAndHold();
             break;
         case MOUSE_UP:
             coord = calcOffset(vpWidth, vpHeight, elemLocation, elemSize);
-            actions.moveToElement(element, coord.x, coord.y).release();
+            afterMovingMouse = actions -> actions.release();
             break;
         case MOUSE_UP_AT:
             coord = coordToPoint(args[ARG_COORD]);
-            actions.moveToElement(element, coord.x, coord.y).release();
+            afterMovingMouse = actions -> actions.release();
             break;
         default:
             throw new UnsupportedOperationException("Unsupported command: " + eventType.commandName);
         }
         try {
-            actions.build().perform();
+            afterMovingMouse.apply(MouseUtils.moveTo(context, element, coord)).build().perform();
         } catch (MoveTargetOutOfBoundsException e) {
             log.warn("Cannot mouse pointer move to element: {}", e.getMessage());
             log.warn("Only fire \"{}\" event by JS.", eventType.eventName);

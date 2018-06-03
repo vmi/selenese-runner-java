@@ -47,6 +47,7 @@ import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import jp.vmi.selenium.selenese.utils.MouseUtils;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.webdriver.WebDriverPreparator;
 
@@ -75,6 +76,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private boolean isIgnoredScreenshotCommand = false;
     private boolean isHighlight = false;
     private boolean isInteractive = false;
+    private Boolean isW3cAction = null;
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
@@ -414,6 +416,20 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public boolean isInteractive() {
         return isInteractive;
+    }
+
+    @Override
+    public boolean isW3cAction() {
+        return isW3cAction != null ? isW3cAction : MouseUtils.isW3cAction(getBrowserName());
+    }
+
+    /**
+     * Set W3C action compatibility.
+     *
+     * @param isW3cAction true if Action command is W3C compatible.
+     */
+    public void setW3cAction(Boolean isW3cAction) {
+        this.isW3cAction = isW3cAction;
     }
 
     class AlertActionImpl implements AlertActionListener {

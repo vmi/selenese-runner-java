@@ -3,10 +3,10 @@ package jp.vmi.selenium.selenese.command;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.MouseUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -39,7 +39,7 @@ public class ClickAt extends AbstractCommand {
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
         context.getJSLibrary().replaceAlertMethod(driver, element);
-        new Actions(driver).moveToElement(element, coord.x, coord.y).click().perform();
+        MouseUtils.moveTo(context, element, coord).click().perform();
         return SUCCESS;
     }
 }

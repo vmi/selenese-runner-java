@@ -301,6 +301,15 @@ public interface Context extends WrapsDriver {
     AlertActionListener getNextNativeAlertActionListener();
 
     /**
+     * Is Action command W3C compatible?
+     *
+     * @return true if Action command is W3C compatible.
+     */
+    default boolean isW3cAction() {
+        return false;
+    }
+
+    /**
      * Executes JavaScript in the context of the currently selected frame or window.
      *
      * see {@link JavascriptExecutor#executeScript(String, Object...)}.
