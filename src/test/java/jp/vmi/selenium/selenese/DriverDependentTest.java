@@ -30,7 +30,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testSimple() {
-        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("simple");
         assertThat(result, is(instanceOf(Success.class)));
         assertThat(xmlResult, containsString("Command#4"));
@@ -45,7 +44,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testAssertFail() {
-        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("assertFail");
         assertThat(result, is(instanceOf(Failure.class)));
         assertThat(result.getMessage(), containsString("Result: [selenium] / Expected: [no such text]"));
@@ -82,7 +80,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void highlight() {
-        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         runner.setHighlight(true);
         runner.setOverridingBaseURL(wsr.getBaseURL());
         execute("highlight");
@@ -91,37 +88,36 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void locator() {
-        // don't work this test-case on SafariDriver and HtmlUnitDriver.
-        assumeNot(HTMLUNIT, SAFARI);
+        // don't work this test-case on SafariDriver.
+        assumeNot(SAFARI);
         execute("locator");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void iframe() {
-        // don't work this test-case on SafariDriver and HtmlUnitDriver.
-        assumeNot(HTMLUNIT, SAFARI);
+        // don't work this test-case on SafariDriver.
+        assumeNot(SAFARI);
         execute("iframe");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void sendkeys() {
-        assumeNot(HTMLUNIT, FIREFOX);
+        // don't work this test-case on FirefoxDriver.
+        assumeNot(FIREFOX);
         execute("sendkeys");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void clickableImage() {
-        assumeNot(HTMLUNIT, FIREFOX);
         execute("clickable_image_test");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void rollup() {
-        assumeNot(HTMLUNIT);
         runner.getRollupRules().load(getClass().getResourceAsStream("/rollup/user-extention-rollup.js"));
         execute("rollup");
         assertThat(result, is(instanceOf(Success.class)));
@@ -241,7 +237,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue55() {
-        assumeNot(HTMLUNIT); // don't work this test on HtmlUnitDriver.
         execute("issue55");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -274,7 +269,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue99() {
-        assumeNot(HTMLUNIT, PHANTOMJS);
+        assumeNot(HTMLUNIT);
         execute("issue99");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -287,14 +282,13 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void mouseEvent() {
-        assumeNot(HTMLUNIT, FIREFOX);
+        assumeNot(HTMLUNIT, FIREFOX); // the result is "mouseover" instead of "mouseout".
         execute("testsuite_mouse");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void issue179() {
-        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -314,7 +308,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue195() {
-        assumeNot(HTMLUNIT);
         execute("testcase_issue195");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -346,14 +339,12 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void test203_01() {
-        assumeNot(HTMLUNIT);
         execute("testcase_issue203_01");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void test203_02() {
-        assumeNot(HTMLUNIT, FIREFOX);
         execute("testcase_issue203_02");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -392,7 +383,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     @Test
     @Ignore("Don't work on any drivers.")
     public void dnd() {
-        assumeNot(HTMLUNIT);
         execute("testcase_dnd");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -405,7 +395,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void test224() {
-        assumeNot(HTMLUNIT);
         execute("testcase_issue224");
         assertThat(result, is(instanceOf(Success.class)));
     }
