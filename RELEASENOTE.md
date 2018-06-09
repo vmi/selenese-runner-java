@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.16.0
+
+* Fix some bugs on `.side` format script file.
+
 ### 3.15.0
 
 * Ignore driver errors on clear and allow relative files on `attachFile`. (PR #273 by @janblok)
