@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
-import jp.vmi.selenium.selenese.parser.SideCommandMapper;
+import jp.vmi.selenium.selenese.parser.SideCommandList;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -94,10 +94,10 @@ public class CommandDumper {
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
-            Map<String, String> cmdMap = new SideCommandMapper().getCommandMap();
-            List<String> cmdList = cmdMap.values().stream().sorted().collect(Collectors.toList());
-            int width = cmdList.stream().mapToInt(String::length).max().getAsInt();
-            cmdList.forEach(cmd -> System.out.printf("%-" + width + "s %s\n", cmd, commandInfo.containsKey(cmd) ? "OK" : "Missing"));
+            SideCommandList cmdList = new SideCommandList();
+            List<String> list = cmdList.stream().map(elem -> elem.cmd).sorted().collect(Collectors.toList());
+            int width = list.stream().mapToInt(cmd -> cmd.length()).max().getAsInt();
+            list.forEach(cmd -> System.out.printf("%-" + width + "s %s\n", cmd, commandInfo.containsKey(cmd) ? "OK" : "Missing"));
         }
     }
 }
