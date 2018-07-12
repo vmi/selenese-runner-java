@@ -13,6 +13,15 @@ public interface ScreenshotHandler {
     boolean isIgnoredScreenshotCommand();
 
     /**
+     * Take entire page screenshot to filename. (override directory if --screenshot-dir option specified)
+     *
+     * @param filename filename.
+     * @return screenshot image path.
+     * @exception UnsupportedOperationException WebDriver does not supoort capturing screenshot.
+     */
+    String takeEntirePageScreenshot(String filename) throws UnsupportedOperationException;
+
+    /**
      * Take screenshot to filename. (override directory if --screenshot-dir option specified)
      *
      * @param filename filename.
