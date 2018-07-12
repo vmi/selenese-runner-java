@@ -62,6 +62,7 @@ public interface IConfig {
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
+    public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String HELP = "help";
 
     /**
@@ -169,6 +170,8 @@ public interface IConfig {
     String[] getLogFilter();
 
     String getCommandFactory();
+
+    String getScreenshotScrollTimeout();
 
     boolean isNoExit();
 

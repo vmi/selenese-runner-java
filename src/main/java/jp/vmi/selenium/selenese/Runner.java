@@ -84,6 +84,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
+    private int screenshotScrollTimeout = 100; /* ms */
 
     private final Eval eval;
     private final SubCommandMap subCommandMap;
@@ -223,7 +224,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
                 Map initialCoord = (Map)je.executeScript(getScrollCoord);
 
-                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS)
+                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS, screenshotScrollTimeout)
                         .withName(FilenameUtils.removeExtension(tmp.getName()))
                         .save(dir.getPath());
 
@@ -465,6 +466,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setW3cAction(Boolean isW3cAction) {
         this.isW3cAction = isW3cAction;
+    }
+
+    public void setScreenshotScrollTimeout(int timeout) {
+        this.screenshotScrollTimeout = timeout;
     }
 
     class AlertActionImpl implements AlertActionListener {

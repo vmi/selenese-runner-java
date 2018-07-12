@@ -218,6 +218,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + MAX_TIME, metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
 
+    @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
+    private String screenshotTimeout;
+
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
@@ -610,6 +613,15 @@ public class DefaultConfig implements IConfig {
 
     public void setCommandFactory(String commandFactory) {
         this.commandFactory = commandFactory;
+    }
+
+    @Override
+    public String getScreenshotScrollTimeout() {
+        return screenshotTimeout != null ? screenshotTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
+    }
+
+    public void setScreenshotTimeout(String timeout) {
+        this.screenshotTimeout = timeout;
     }
 
     @Override
