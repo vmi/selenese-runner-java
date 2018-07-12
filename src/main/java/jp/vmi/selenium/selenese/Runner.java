@@ -290,7 +290,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
             File file = new File(screenshotOnFailDir, filename);
-            return takeScreenshot(tss, file);
+            return takeScreenshot(tss, file, true);
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;
