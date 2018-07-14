@@ -87,6 +87,7 @@ Usage
      --no-exit                               : don't call System.exit at end.
      --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)
      --max-time <max-time>                   : Maximum time in seconds that you allow the entire operation to take.
+     --screenshot-scroll-timeout <timeout>   : set scroll timeout (ms) for taking screenshot. (default: 100)
      --help (-h)                             : show this message.
     
     [Note]

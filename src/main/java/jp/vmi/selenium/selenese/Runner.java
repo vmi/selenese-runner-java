@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.assertthat.selenium_shutterbug.core.Shutterbug;
-import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -31,6 +29,9 @@ import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
@@ -222,11 +223,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                 JavascriptExecutor je = (JavascriptExecutor) tss;
                 String getScrollCoord = "return { top: window.scrollY||0, left: window.scrollX };";
 
-                Map initialCoord = (Map)je.executeScript(getScrollCoord);
+                Map<?, ?> initialCoord = (Map<?, ?>) je.executeScript(getScrollCoord);
 
                 Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS, screenshotScrollTimeout)
-                        .withName(FilenameUtils.removeExtension(tmp.getName()))
-                        .save(dir.getPath());
+                    .withName(FilenameUtils.removeExtension(tmp.getName()))
+                    .save(dir.getPath());
 
                 if (!initialCoord.equals(je.executeScript(getScrollCoord))) {
                     je.executeScript("scrollTo(arguments[0]); return false;", initialCoord);
@@ -468,6 +469,11 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.isW3cAction = isW3cAction;
     }
 
+    /**
+     * Set screenshot scroll timeout.
+     *
+     * @param timeout timeout (ms)
+     */
     public void setScreenshotScrollTimeout(int timeout) {
         this.screenshotScrollTimeout = timeout;
     }
