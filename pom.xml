@@ -659,6 +659,17 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <version>1.3.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.assertthat</groupId>
+      <artifactId>selenium-shutterbug</artifactId>
+      <version>0.7</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>

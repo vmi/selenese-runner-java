@@ -13,12 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -80,6 +84,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private int timeout = 30 * 1000; /* ms */
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
+    private int screenshotScrollTimeout = 100; /* ms */
 
     private final Eval eval;
     private final SubCommandMap subCommandMap;
@@ -192,6 +197,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     private String takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
+        return takeScreenshot(tss, file, false);
+    }
+
+    private String takeScreenshot(TakesScreenshot tss, File file, boolean entirePage) throws WebDriverException {
         file = file.getAbsoluteFile();
         try {
             // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
@@ -200,12 +209,30 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
             // some times switching to default context throws exceptions like:
             // Method threw 'org.openqa.selenium.UnhandledAlertException' exception.
         }
-        File tmp = tss.getScreenshotAs(OutputType.FILE);
+        File tmp;
         try {
             File dir = file.getParentFile();
             if (!dir.exists()) {
                 dir.mkdirs();
                 log.info("Make the directory for screenshot: {}", dir);
+            }
+            if (entirePage) {
+                tmp = File.createTempFile("sstmp-", ".png", dir);
+
+                JavascriptExecutor je = (JavascriptExecutor) tss;
+                String getScrollCoord = "return { top: window.scrollY||0, left: window.scrollX };";
+
+                Map initialCoord = (Map)je.executeScript(getScrollCoord);
+
+                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS, screenshotScrollTimeout)
+                        .withName(FilenameUtils.removeExtension(tmp.getName()))
+                        .save(dir.getPath());
+
+                if (!initialCoord.equals(je.executeScript(getScrollCoord))) {
+                    je.executeScript("scrollTo(arguments[0]); return false;", initialCoord);
+                }
+            } else {
+                tmp = tss.getScreenshotAs(OutputType.FILE);
             }
             FileUtils.moveFile(tmp, file);
         } catch (IOException e) {
@@ -218,14 +245,23 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
+    public String takeEntirePageScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
+        return takeScreenshot(filename, true);
+    }
+
+    @Override
     public String takeScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
+        return takeScreenshot(filename, false);
+    }
+
+    private String takeScreenshot(String filename, boolean entirePage) throws WebDriverException, UnsupportedOperationException {
         TakesScreenshot tss = getTakesScreenshot();
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         File file = new File(PathUtils.normalize(filename));
         if (screenshotDir != null)
             file = new File(screenshotDir, file.getName());
-        return takeScreenshot(tss, file);
+        return takeScreenshot(tss, file, entirePage);
     }
 
     @Override
@@ -255,7 +291,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
             File file = new File(screenshotOnFailDir, filename);
-            return takeScreenshot(tss, file);
+            return takeScreenshot(tss, file, true);
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;
@@ -430,6 +466,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setW3cAction(Boolean isW3cAction) {
         this.isW3cAction = isW3cAction;
+    }
+
+    public void setScreenshotScrollTimeout(int timeout) {
+        this.screenshotScrollTimeout = timeout;
     }
 
     class AlertActionImpl implements AlertActionListener {

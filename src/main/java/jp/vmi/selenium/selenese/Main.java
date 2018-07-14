@@ -221,6 +221,10 @@ public class Main {
             noExit = true;
         if (config.isStrictExitCode())
             exitStrictly = true;
+        int sstimeout = NumberUtils.toInt(config.getScreenshotScrollTimeout(), 100);
+        if (sstimeout < 0)
+            throw new IllegalArgumentException("Invalid screenshot scroll timeout value. (" + config.getScreenshotScrollTimeout() + ")");
+        runner.setScreenshotScrollTimeout(sstimeout);
         runner.setPrintStream(System.out);
     }
 
