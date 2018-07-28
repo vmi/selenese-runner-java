@@ -1,0 +1,32 @@
+{
+  "id": "da81f1c8-c659-453e-963f-d7cde6daa837",
+  "name": "screenshot",
+  "url": "",
+  "tests": [{
+    "id": "5ac2337b-62d6-4453-aadd-ecb03a0f6ec6",
+    "name": "screenshot01",
+    "commands": [{
+      "id": "d2d2db24-d230-431f-ac57-9af92dfd20dd",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost/long_page.html",
+      "value": ""
+    }, {
+      "id": "50a192ec-23e4-4da0-9ab6-b0c71b4ada51",
+      "comment": "",
+      "command": "captureEntirePageScreenshot",
+      "target": "tmp/long_page.png",
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "81939791-31cf-47d2-be87-8fd4d3c449f7",
+    "name": "Default Suite",
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["5ac2337b-62d6-4453-aadd-ecb03a0f6ec6"]
+  }],
+  "urls": [],
+  "plugins": [],
+  "version": "1.0"
+}
