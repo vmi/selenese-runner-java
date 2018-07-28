@@ -1,6 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.17.0
+
+* Real entire page screenshot support. (PR #276 by @koichirok)
+    * Add new option `--screenshot-scroll-timeout`.
+* Fix: html-result is not output (#277)
+* Catch up Selenium 3.13.0.
+* Update dependency versions.
+
 ### 3.16.0
 
 * Fix some bugs on `.side` format script file.
@@ -49,7 +57,7 @@ Selenese Runner Java Relase Note
 
 ### 3.10.0
 
-* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by koichirok)
+* Add `--log-filter` support to suppress page information in log. (#260, PR #253 by @koichirok)
 * Refactor the code of initializing WebDriver for Selenium 3.8.1.
 
 ### 3.9.0
@@ -185,11 +193,11 @@ Selenese Runner Java Relase Note
 
 ### 2.11.0
 
-* Add new option `--interactive` which enables the interactive mode. (#210, #217 by tgianko)
+* Add new option `--interactive` which enables the interactive mode. (#210, #217 by @tgianko)
 
 ### 2.10.0
 
-* Add new option `--max-time` which limits processing time. (#207 by koichirok)
+* Add new option `--max-time` which limits processing time. (#207 by @koichirok)
 * Fix incorrect screenshot links in HTML result if target directories do not exist. (#211)
 * Re-implement `(assert|verify|waitFor|store)TextPresent` for frame/iframe.
 * Re-implement the following commands for handling dialogs: (#203, #206)
@@ -275,7 +283,7 @@ Selenese Runner Java Relase Note
 ### 2.5.0
 
 * Replace command line arguments parser from commons-cli to args4j. **Note:** There are too many changes in `IConfig`, `DefaultConfig`, and `SeleneseRunnerOptions` classes.
-* Refine code. (PR #185, #187 by AymanDF)
+* Refine code. (PR #185, #187 by @AymanDF)
 * Update dependency versions.
 * Add utility script.
 
@@ -287,14 +295,14 @@ Selenese Runner Java Relase Note
 
 ### 2.3.1
 
-* Fix problem with path relativize double URI escaping items like spaces. (PR #183 by stevenebutler)
+* Fix problem with path relativize double URI escaping items like spaces. (PR #183 by @stevenebutler)
 * Catch up Selenium 2.50.1.
 
 ### 2.3.0
 
-* Avoid NPE if TestCase has no LogRecorder. (PR #176 by deki)
+* Avoid NPE if TestCase has no LogRecorder. (PR #176 by @deki)
 * Add new API to register custom interceptors for test-case/test-suite execution. (#175)
-* Add "class" locator type. (#173, PR #177 by deki)
+* Add "class" locator type. (#173, PR #177 by @deki)
 * Revise implementation of mouse event commands: (#179)
     * `mouseOver`
     * `mouseOut`
@@ -304,12 +312,12 @@ Selenese Runner Java Relase Note
     * `mouseDownAt`
     * `mouseUp`
     * `mouseUpAt`
-* Catch up Selenium 2.50.0. (PR #181 by deki)
+* Catch up Selenium 2.50.0. (PR #181 by @deki)
 * Update dependency versions.
 
 ### 2.2.0
 
-* Change default behaviour of FirefoxDriver: (#172, PR #174 by Harinus)
+* Change default behaviour of FirefoxDriver: (#172, PR #174 by @Harinus)
     * Don't show default welcome page. (show "about:blank" instead)
     * Empty "no proxy" hosts by default. (Firefox default is "localhost, 127.0.0.1")  
       https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Mozilla_networking_preferences#Proxy
@@ -327,11 +335,11 @@ Selenese Runner Java Relase Note
 
 ### 2.0.2
 
-* Manage leading and trailing whitespaces in link_handler in both "exact" and "glob" features. (PR #166 by AndreaColoru)
+* Manage leading and trailing whitespaces in link_handler in both "exact" and "glob" features. (PR #166 by @AndreaColoru)
 
 ### 2.0.1
 
-* Fix error on constructing xpath expression in link locator by "glob". (PR #165 by AndreaColoru)
+* Fix error on constructing xpath expression in link locator by "glob". (PR #165 by @AndreaColoru)
 
 ### 2.0.0
 
@@ -340,14 +348,14 @@ Selenese Runner Java Relase Note
 * Update dependency versions.
 * Refine travis-ci configuration.
 * Fix a bug failed in GLOB matching. (issue #163)
-* Fix a bug of link locator in case of "a" tag with nested elements. (suggested by AndreaColoru in issue #162)
+* Fix a bug of link locator in case of "a" tag with nested elements. (suggested by @AndreaColoru in issue #162)
 
 ### 1.11.0
 
 * Refine log format.
 * Refine code.
 * Update dependency versions. Note: Cannot update netty's version to 3.10.x because unit tests crashed.
-* Add command line options to support Chrome-specific capability (PR #160 by uchida):
+* Add command line options to support Chrome-specific capability (PR #160 by @uchida):
     * `--chrome-extension` option to specify chrome extension crx files.
     * `--chrome-experimental-option` option to specify path to json file describe various objects in ChromeOptions.
 * Catch up Selenium 2.46.0.
@@ -356,7 +364,7 @@ Selenese Runner Java Relase Note
 
 ### 1.10.0
 
-* Add strict-exit-code option to isolate selenese results. (#157 by uchida)
+* Add strict-exit-code option to isolate selenese results. (#157 by @uchida)
 
 ### 1.9.1
 
@@ -376,7 +384,7 @@ Selenese Runner Java Relase Note
 
 ### 1.8.4
 
-* Ignore exceptions on taking a screenshot. (#147 by lukian-tabandzhov)
+* Ignore exceptions on taking a screenshot. (#147 by @lukian-tabandzhov)
 
 ### 1.8.3
 
@@ -385,7 +393,7 @@ Selenese Runner Java Relase Note
 
 ### 1.8.2
 
-* Fix an issue wuth CSS locator recorded by the Selenium IDE. Still the IDE successfuly replays the badly recorded CSS selector by fixing it before the actual execution. (#145 by lukian-tabandzhov)
+* Fix an issue wuth CSS locator recorded by the Selenium IDE. Still the IDE successfuly replays the badly recorded CSS selector by fixing it before the actual execution. (#145 by @lukian-tabandzhov)
 
 ### 1.8.1
 
@@ -403,19 +411,19 @@ Selenese Runner Java Relase Note
 * Fix failed to load test-case file without Base URL. (#135)
 * Add new option `--cli-args`, it adds command line options at starting up driver binary. It affects only firefox, chrome, and phantomjs. (#134)
 * Add new option `--command-factory`, it registers user defined command factory. Note: Use "java -cp ...:selenese-runner.jar Main --command-factory ...". Because "java" command ignores all class path settings, when using "-jar" option. (#137)
-* Don't create RollupRules until necessary to be able to work with some Java installations that lack Javascript ScriptEngine support. (#138 by koichirok)
-* Use firefox options for capabilities if remote browser is "firefox". (#136 by koichirok & vmi)
-* Add IntelliJ IDEA's project files to .gitignore. (#139 by koichirok)
+* Don't create RollupRules until necessary to be able to work with some Java installations that lack Javascript ScriptEngine support. (#138 by @koichirok)
+* Use firefox options for capabilities if remote browser is "firefox". (#136 by @koichirok & @vmi)
+* Add IntelliJ IDEA's project files to .gitignore. (#139 by @koichirok)
 
 ### 1.6.0
 
-* [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by patchpump & vmi)
+* [BACKWARD INCOMPATIBLE CHANGE] Change the default test suite name into the same as the test case name when the passed file is not a test suite but is a test case. (PR #133 by @patchpump & @vmi)
 * Catch up Selenium 2.44.0.
 * Update dependency versions.
 
 ### 1.5.5
 
-* Add start time to HTML result. (PR #132 by patchpump)
+* Add start time to HTML result. (PR #132 by @patchpump)
 * Add system information and command line arguments to HTML/JUnit result.
 
 ### 1.5.4
@@ -425,7 +433,7 @@ Selenese Runner Java Relase Note
 ### 1.5.3
 
 * Catch up Selenium 2.43.1.
-* Add hardcoded UTF-8 encoding for HTML result. (PR #130 by patchpump)
+* Add hardcoded UTF-8 encoding for HTML result. (PR #130 by @patchpump)
 * Add screenshot link for "captureEntirePageScreenshot" in HTML result.
 * Add screenshot label in HTML result.
 
@@ -435,8 +443,8 @@ Selenese Runner Java Relase Note
 * Add links to screenshot image to HTML result.
 * Add new commands: "keyDownNative", "keyUpNative", and "keyPressNative". (on Selenium 2.40 or later)
 * Add the feature in which "javascript{...}" can be used in any arguments.
-* Fix unhandled exception fired while screensshot is executed. (PR #128 by lukian-tabandzhov)
-* Add initial width and height for remote driver. (PR #129 by patchpump)
+* Fix unhandled exception fired while screensshot is executed. (PR #128 by @lukian-tabandzhov)
+* Add initial width and height for remote driver. (PR #129 by @patchpump)
 * Add new option `--firefox`, it specifies firefox binary path. (issue #127)
 
 ### 1.5.1
@@ -477,7 +485,7 @@ Selenese Runner Java Relase Note
 
 ### 1.4.3
 
-* Add support initial width and height for browsers excluding mobile. (PR #106 by markkimsal, and refined by vmi)
+* Add support initial width and height for browsers excluding mobile. (PR #106 by @markkimsal, and refined by @vmi)
 * Fix issue #100.
 
 ### 1.4.2
@@ -523,7 +531,7 @@ Selenese Runner Java Relase Note
 ### 1.3.2
 
 * Add --set-spped option. It is same as setSpeed(ms) command first.
-* Add Appium support. (by yec)
+* Add Appium support. (by @yec)
 * Fix issues #76, #77, #78, #82, #85.
 * Update Selenium version to 2.38.0.
 
