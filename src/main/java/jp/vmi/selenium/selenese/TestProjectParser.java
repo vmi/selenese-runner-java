@@ -31,6 +31,6 @@ public final class TestProjectParser {
         } catch (InvalidSeleneseException e) {
             testProject.addSelenese(Binder.newErrorTestSuite(e.getFilename(), e));
         }
-        return suiteIter.isDummy() ? testProject.getSeleneseList().get(0) : testProject;
+        return suiteIter.isDummy() ? testProject.pullOutFirstFromSeleneseList() : testProject;
     }
 }
