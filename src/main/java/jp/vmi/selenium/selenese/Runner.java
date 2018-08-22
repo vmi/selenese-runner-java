@@ -103,7 +103,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
     private JSLibrary jsLibrary = new JSLibrary();
-    private final ModifierKeyState modifierKeyState = new ModifierKeyState();
+    private ModifierKeyState modifierKeyState;
 
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
@@ -317,6 +317,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setDriver(WebDriver driver) {
         this.driver = driver;
         this.initialWindowHandle = driver.getWindowHandle();
+        this.modifierKeyState = new ModifierKeyState(driver);
         setDriverTimeout();
     }
 
