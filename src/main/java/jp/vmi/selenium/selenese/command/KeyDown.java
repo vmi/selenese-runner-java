@@ -13,7 +13,9 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "keyDown".
+ * Deprecated in selenese
  */
+@Deprecated
 public class KeyDown extends AbstractCommand {
 
     private static final int ARG_LOCATOR = 0;
