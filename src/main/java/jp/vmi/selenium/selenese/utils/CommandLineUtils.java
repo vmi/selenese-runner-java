@@ -25,7 +25,8 @@ public final class CommandLineUtils {
     /**
      * Add command line escaped argument to StringBuilder on Windows.
      *
-     * <table summary="Escapse rules on Windows">
+     * <table>
+     * <caption>Escape rules on Windows</caption>
      * <thead>
      * <tr> <th>Plain</th>    <th></th>       <th>Escaped</th>               </tr>
      * </thead>
@@ -78,7 +79,8 @@ public final class CommandLineUtils {
     /**
      * Add command line escaped argument to StringBuilder on Unix.
      *
-     * <table summary="Escape rules on Unix">
+     * <table>
+     * <caption>Escape rules on Unix</caption>
      * <thead>
      * <tr> <th>Plain</th> <th></th>       <th>Escaped</th>       </tr>
      * </thead>
