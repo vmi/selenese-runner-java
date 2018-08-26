@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/" />
+<title>IE test with Document Modes</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">IE test with Document Modes</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/ie/index.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addCollection</td>
+	<td>MODES</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>11</td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>10</td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>9</td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>8</td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>7</td>
+</tr>
+<tr>
+	<td>addToCollection</td>
+	<td>MODES</td>
+	<td>5</td>
+</tr>
+<tr>
+	<td>storeFor</td>
+	<td>MODES</td>
+	<td>MODE</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>MODE=${MODE}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=IE=${MODE}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>javascript{"Document Mode: " + (document.documentMode || "Unsupported")}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=alert</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlert</td>
+	<td>open alert dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=alert_result</td>
+	<td>done.</td>
+</tr>
+<tr>
+	<td>verifyAlertNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>answerOnNextPrompt</td>
+	<td>prompt answer.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=prompt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyPromptPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyPrompt</td>
+	<td>open prompt dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=prompt_result</td>
+	<td>prompt answer.</td>
+</tr>
+<tr>
+	<td>verifyPromptNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmationPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmation</td>
+	<td>open confirm dialog.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=confirm_result</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyConfirmationNotPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseCancelOnNextConfirmation</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyConfirmationPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>id=confirm_result</td>
+	<td>false</td>
+</tr>
+<tr>
+        <td>storeText</td>
+        <td>id=text_with_hidden</td>
+        <td>text</td>
+</tr>
+<tr>
+        <td>echo</td>
+        <td>&lt;${text}&gt;</td>
+        <td></td>
+</tr>
+<tr>
+        <td>assertExpression</td>
+        <td>${text}</td>
+        <td>begin end</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

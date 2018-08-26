@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>IE9 Mode Test Page</title>
+    <script><!--
+      if (!window.console) window.console = {};
+      if (!window.console.log) window.console.log = function () {};
+      function setTextContent(element, value) {
+        if ('textContent' in element)
+          element.textContent = value;
+        else if ('innerText' in element)
+          element.innerText = value;
+      }
+      function $(id) {
+        return document.getElementById(id);
+      }
+      function alert_test() {
+        console.log('alert_test');
+        alert('open alert dialog.');
+        setTextContent($('alert_result'), "done.");
+      }
+      function confirm_test() {
+        console.log('confirm_test');
+        var result = confirm('open confirm dialog.');
+        setTextContent($('confirm_result'), result);
+      }
+      function prompt_test() {
+        console.log('prompt_test');
+        var result = prompt('open prompt dialog.');
+        setTextContent($('prompt_result'), result);
+      }
+    //--></script>
+  </head>
+  <body>
+    <h1>IE9 Mode Test Page</h1>
+    <hr>
+    <ul>
+      <li>alert
+        <button id="alert" onclick="alert_test()">alert</button><br>
+        Result: <span id="alert_result">-</span>
+      </li>
+      <li>confirm
+        <button id="confirm" onclick="confirm_test()">confirm</button><br>
+        Result: <span id="confirm_result">-</span>
+      </li>
+      <li>prompt
+        <button id="prompt" onclick="prompt_test()">prompt</button><br>
+        Result: <span id="prompt_result">-</span>
+      </li>
+    </ul>
+    <hr>
+    <div id="text_with_hidden">
+      <span> begin </span>
+      <span style="display:none">display:none</span>
+      <span style="visibility:hidden">visibility:hidden</span>
+      <span> end </span>
+    </div>
+    <hr>
+    <a href="index.html" id="back">Back</a>
+  </body>
+</html>

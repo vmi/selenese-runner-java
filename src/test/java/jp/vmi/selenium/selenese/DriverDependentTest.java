@@ -430,4 +430,11 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testsuite_simple.side");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void testIE() {
+        assumeThat(currentFactoryName, is(IE));
+        execute("testcase_ie");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }
