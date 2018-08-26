@@ -13,7 +13,9 @@ import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "keyUp".
+ * Deprecated in selenese
  */
+@Deprecated
 public class KeyUp extends AbstractCommand {
 
     private static final int ARG_LOCATOR = 0;

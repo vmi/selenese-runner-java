@@ -171,6 +171,7 @@ public class JSLibrary {
 
     /**
      * Trigger key event.
+     * Deprecated must use Actions and sendKeys
      *
      * @param driver WebDriver object.
      * @param element target element.
@@ -178,6 +179,7 @@ public class JSLibrary {
      * @param keySequence key sequence.
      * @param keyState modifier key state.
      */
+    @Deprecated
     public void triggerKeyEvent(WebDriver driver, WebElement element, KeyEventType eventType, String keySequence, ModifierKeyState keyState) {
         int keyCode;
         if (keySequence.codePointCount(0, keySequence.length()) == 1) {

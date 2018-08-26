@@ -12,8 +12,10 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
- * Command "keyDown".
+ * Command "keyPress".
+ * Deprecated in selenese
  */
+@Deprecated
 public class KeyPress extends AbstractCommand {
 
     private static final int ARG_LOCATOR = 0;
