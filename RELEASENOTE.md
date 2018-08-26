@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.18.0
+
+* Catch up Selenium 3.14.0.
+* Update dependency versions.
+
 ### 3.17.0
 
 * Real entire page screenshot support. (PR #276 by @koichirok)

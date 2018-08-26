@@ -27,7 +27,17 @@
     </rule>
     <rule groupId="com.floreysoft" artifactId="jmte">
       <ignoreVersions>
-        <ignoreVersion type="regex">4\..*</ignoreVersion>
+        <ignoreVersion type="regex">[45]\..*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="javax.xml.bind" artifactId="jaxb-api">
+      <ignoreVersions>
+        <ignoreVersion type="regex">\d+(\.\d+)+-b\d+\.\d+</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="com.sun.xml.bind" artifactId="jaxb-impl">
+      <ignoreVersions>
+        <ignoreVersion type="regex">\d+(\.\d+)+-b\d+\.\d+</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>
