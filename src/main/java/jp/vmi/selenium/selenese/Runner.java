@@ -103,7 +103,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private CookieFilter cookieFilter = CookieFilter.ALL_PASS;
 
     private JSLibrary jsLibrary = new JSLibrary();
-    private final ModifierKeyState modifierKeyState = new ModifierKeyState();
+    private final ModifierKeyState modifierKeyState = new ModifierKeyState(this);
 
     private final JUnitResult jUnitResult = new JUnitResult();
     private final HtmlResult htmlResult = new HtmlResult();
@@ -704,6 +704,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
             return selenese.execute(null, this);
         } catch (InvalidSeleneseException e) {
             throw new RuntimeException(e);
+        } finally {
+            resetState();
         }
     }
 

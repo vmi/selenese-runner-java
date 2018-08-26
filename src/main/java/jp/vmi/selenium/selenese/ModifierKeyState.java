@@ -1,24 +1,67 @@
 package jp.vmi.selenium.selenese;
 
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Modifier key state.
  */
 @SuppressWarnings("javadoc")
 public class ModifierKeyState {
 
+    private static final Logger log = LoggerFactory.getLogger(ModifierKeyState.class);
+
+    private final Context context;
     private boolean metaKeyDown = false;
     private boolean altKeyDown = false;
     private boolean controlKeyDown = false;
     private boolean shiftKeyDown = false;
 
+    public ModifierKeyState(Context context) {
+        this.context = context;
+    }
+
+    private Actions newActions() {
+        return new Actions(context.getWrappedDriver());
+    }
+
     /**
      * Reset all modifier key state.
      */
     public void reset() {
-        metaKeyDown = false;
-        altKeyDown = false;
-        controlKeyDown = false;
-        shiftKeyDown = false;
+        Actions actions = newActions();
+        boolean perform = false;
+        StringBuilder buf = new StringBuilder(4);
+        if (metaKeyDown) {
+            actions.keyUp(Keys.META);
+            metaKeyDown = false;
+            perform = true;
+            buf.append('M');
+        }
+        if (altKeyDown) {
+            actions.keyUp(Keys.ALT);
+            altKeyDown = false;
+            perform = true;
+            buf.append('A');
+        }
+        if (controlKeyDown) {
+            actions.keyUp(Keys.CONTROL);
+            controlKeyDown = false;
+            perform = true;
+            buf.append('C');
+        }
+        if (shiftKeyDown) {
+            actions.keyUp(Keys.SHIFT);
+            shiftKeyDown = false;
+            perform = true;
+            buf.append('S');
+        }
+        if (perform) {
+            actions.build().perform();
+            log.debug("Reset modifier keys: {}", buf);
+        }
     }
 
     public boolean isMetaKeyDown() {
@@ -26,11 +69,19 @@ public class ModifierKeyState {
     }
 
     public void metaKeyDown() {
-        this.metaKeyDown = true;
+        if (metaKeyDown)
+            return;
+        newActions().keyDown(Keys.META).perform();
+        metaKeyDown = true;
+        log.debug("Meta key down: {}", getStateString());
     }
 
     public void metaKeyUp() {
-        this.metaKeyDown = false;
+        if (!metaKeyDown)
+            return;
+        newActions().keyUp(Keys.META).perform();
+        metaKeyDown = false;
+        log.debug("Meta key up: {}", getStateString());
     }
 
     public boolean isAltKeyDown() {
@@ -38,11 +89,19 @@ public class ModifierKeyState {
     }
 
     public void altKeyDown() {
-        this.altKeyDown = true;
+        if (altKeyDown)
+            return;
+        newActions().keyDown(Keys.ALT).perform();
+        altKeyDown = true;
+        log.debug("Alt key down: {}", getStateString());
     }
 
     public void altKeyUp() {
-        this.altKeyDown = false;
+        if (!altKeyDown)
+            return;
+        newActions().keyUp(Keys.ALT).perform();
+        altKeyDown = false;
+        log.debug("Alt key up: {}", getStateString());
     }
 
     public boolean isControlKeyDown() {
@@ -50,11 +109,19 @@ public class ModifierKeyState {
     }
 
     public void controlKeyDown() {
-        this.controlKeyDown = true;
+        if (controlKeyDown)
+            return;
+        newActions().keyDown(Keys.CONTROL).perform();
+        controlKeyDown = true;
+        log.debug("Control key down: {}", getStateString());
     }
 
     public void controlKeyUp() {
-        this.controlKeyDown = false;
+        if (!controlKeyDown)
+            return;
+        newActions().keyUp(Keys.CONTROL).perform();
+        controlKeyDown = false;
+        log.debug("Control key up: {}", getStateString());
     }
 
     public boolean isShiftKeyDown() {
@@ -62,10 +129,31 @@ public class ModifierKeyState {
     }
 
     public void shiftKeyDown() {
-        this.shiftKeyDown = true;
+        if (shiftKeyDown)
+            return;
+        newActions().keyDown(Keys.SHIFT).perform();
+        shiftKeyDown = true;
+        log.debug("Shift key down: {}", getStateString());
     }
 
     public void shiftKeyUp() {
-        this.shiftKeyDown = false;
+        if (!shiftKeyDown)
+            return;
+        newActions().keyUp(Keys.SHIFT).perform();
+        shiftKeyDown = false;
+        log.debug("Shift key up: {}", getStateString());
+    }
+
+    public String getStateString() {
+        StringBuilder buf = new StringBuilder(4);
+        if (metaKeyDown)
+            buf.append('M');
+        if (altKeyDown)
+            buf.append('A');
+        if (controlKeyDown)
+            buf.append('C');
+        if (shiftKeyDown)
+            buf.append('S');
+        return buf.toString();
     }
 }
