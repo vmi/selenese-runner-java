@@ -5,6 +5,9 @@ Selenese Runner Java Relase Note
 
 * Catch up Selenium 3.14.0.
 * Update dependency versions.
+* Improve old IE support. (PR #280 by @koichirok)
+* Fix behavior when combining modifier key and mouse operation. (based on PR #281 by @janblok)
+* Fix javadoc for Java11. (PR #281 by @janblok)
 
 ### 3.17.0
 
