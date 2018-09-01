@@ -14,4 +14,4 @@ before_script:
   - echo "$PATH"
 script:
   - mvn -B -DskipTests=false -Dmaven.javadoc.skip=true -Dtest.drivers=htmlunit,phantomjs test
-sudo: false
+sudo: required
