@@ -1,14 +1,17 @@
 language: java
 jdk:
   - oraclejdk8
-before_install:
-  - phantomjs_ver=2.1.1
-  - phantomjs=phantomjs-${phantomjs_ver}-linux-x86_64
-  - while [ ! -s "${phantomjs}.tar.bz2" ] || [ $(stat -c %s "${phantomjs}.tar.bz2") -lt 20971520 ]; do curl -LO https://bitbucket.org/ariya/phantomjs/downloads/${phantomjs}.tar.bz2; done
-  - tar xvf ${phantomjs}.tar.bz2
-  - export PATH="${phantomjs}/bin:$PATH"
+cache:
+  directories:
+    - $HOME/.m2
+install:
+  - gd_url=https://github.com/mozilla/geckodriver/releases/download
+  - gd_ver=v0.21.0
+  - ( mkdir -pv bin; cd bin ; curl -L "${gd_url}/${gd_ver}/geckodriver-${gd_ver}-linux64.tar.gz" | gunzip | tar xf - ; chmod +x geckodriver )
+  - mvn -B -V dependency:resolve
 before_script:
-  - "phantomjs --version"
-install: /bin/true
-script: mvn -U -DskipTests=false -Dtest.drivers=htmlunit,phantomjs clean test
+  - export PATH="$PATH:$HOME/bin"
+  - echo "$PATH"
+script:
+  - mvn -B -DskipTests=false -Dmaven.javadoc.skip=true -Dtest.drivers=htmlunit,phantomjs test
 sudo: false
