@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese.utils;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -95,9 +93,10 @@ public class CommandDumper {
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
             CommandJs commandJs = CommandJs.load();
-            List<String> list = new ArrayList<>(commandJs.getCommandList().keySet());
-            int width = list.stream().mapToInt(cmd -> cmd.length()).max().getAsInt();
-            list.forEach(cmd -> System.out.printf("%-" + width + "s %s\n", cmd, commandInfo.containsKey(cmd) ? "OK" : "Missing"));
+            System.out.println("* Supported status of Selenium IDE commands:");
+            commandJs.getCommandList().keySet().forEach(cmd -> {
+                System.out.printf("  [%s] %s%n", commandInfo.containsKey(cmd) ? "OK" : "--", cmd);
+            });
         }
     }
 }
