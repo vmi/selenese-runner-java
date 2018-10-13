@@ -4,7 +4,6 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "select".
@@ -23,7 +22,6 @@ public class Select extends AbstractCommand {
         SelectElement select = new SelectElement(context, curArgs[ARG_SELECT_LOCATOR]);
         if (select.isMultiple)
             select.unsetOptions();
-        select.selectOptions(curArgs[ARG_OPTION_LOCATOR], true);
-        return SUCCESS;
+        return select.selectOptions(curArgs[ARG_OPTION_LOCATOR], true);
     }
 }

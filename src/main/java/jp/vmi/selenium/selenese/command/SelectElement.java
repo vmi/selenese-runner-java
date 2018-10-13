@@ -1,14 +1,18 @@
 package jp.vmi.selenium.selenese.command;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.locator.OptionLocator;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
+import jp.vmi.selenium.selenese.result.Failure;
+import jp.vmi.selenium.selenese.result.Result;
+
+import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Select element.
@@ -17,8 +21,8 @@ public class SelectElement {
 
     private final WebDriverElementFinder finder;
 
-    /** "select" element. */
-    public final WebElement select;
+    private final WebElement select;
+    private final Select selectUI;
 
     /** true if "select" element is multiple select box. */
     public final boolean isMultiple;
@@ -34,29 +38,63 @@ public class SelectElement {
         finder = context.getElementFinder();
         select = finder.findElement(driver, selectLocator);
         context.getJSLibrary().replaceAlertMethod(driver, select);
-        String multiple = select.getAttribute("multiple");
-        isMultiple = multiple != null && (multiple.equalsIgnoreCase("true") || multiple.equalsIgnoreCase("multiple"));
+        selectUI = new Select(select);
+        isMultiple = selectUI.isMultiple();
     }
 
     /**
      * Unset options if "select" is multiple.
      */
     public void unsetOptions() {
-        for (WebElement option : select.findElements(By.tagName("option")))
-            if (option.isSelected())
-                option.click();
+        selectUI.deselectAll();
     }
 
     /**
      * Select or remove the specified options.
      *
      * @param optionLocator option locator.
-     * @param doSelect do select the option if true, or do remove if false.
+     * @param selectOrDeselect select the option if true, or deselect it if false.
+     * @return result of selecting options.
      */
-    public void selectOptions(String optionLocator, boolean doSelect) {
-        List<WebElement> options = finder.findOptions(select, new OptionLocator(optionLocator));
-        for (WebElement option : options)
-            if (doSelect ^ option.isSelected())
-                option.click();
+    public Result selectOptions(String optionLocator, boolean selectOrDeselect) {
+        try {
+            OptionLocator oLoc = new OptionLocator(optionLocator);
+            switch (oLoc.type) {
+            case "label":
+                if (selectOrDeselect)
+                    selectUI.selectByVisibleText(oLoc.arg);
+                else
+                    selectUI.deselectByVisibleText(oLoc.arg);
+                break;
+            case "value":
+                if (selectOrDeselect)
+                    selectUI.selectByValue(oLoc.arg);
+                else
+                    selectUI.deselectByValue(oLoc.arg);
+                break;
+            case "id":
+                WebElement option = select.findElement(By.id(oLoc.arg));
+                if (option.isSelected() ^ selectOrDeselect)
+                    option.click();
+                break;
+            case "index":
+                int index = Integer.parseInt(oLoc.arg);
+                if (selectOrDeselect)
+                    selectUI.selectByIndex(index);
+                else
+                    selectUI.deselectByIndex(index);
+                break;
+            }
+        } catch (NoSuchElementException e) {
+            String msg = e.getMessage();
+            int nlIndex = msg.indexOf('\n');
+            if (nlIndex > 0) {
+                if (msg.charAt(nlIndex - 1) == '\r')
+                    nlIndex--;
+                msg = msg.substring(0, nlIndex);
+            }
+            return new Failure(msg);
+        }
+        return SUCCESS;
     }
 }

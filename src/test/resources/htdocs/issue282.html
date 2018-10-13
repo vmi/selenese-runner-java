@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Issue #282</title>
+  </head>
+  <script type="text/javascript"><!--
+  var now = new Date();
+
+  function setupYaer() {
+    var yearForm = document.date.year;
+    var year = now.getFullYear();
+    for (var i = 0; i < 3; i++) {
+      var opt = document.createElement('option');
+      opt.value = year + i;
+      opt.innerText = year + i;
+      yearForm.appendChild(opt);
+    }
+  }
+
+  function setupMonth() {
+    var monthForm = document.date.month;
+    monthForm.value = now.getMonth() + 1;
+  }
+
+  function setupDay() {
+    var dayForm = document.date.day;
+    dayForm.value = now.getDate();
+  }
+  // --></script>
+  <body>
+    <form name="date">
+      <ul>
+        <li>Year:
+          <select id="year" name="year"></select>
+          <script type="text/javascript"><!--
+            setupYaer();
+          // --></script>
+        </li>
+        <li>Month:
+          <select id="month" name="month">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <script type="text/javascript"><!--
+            setupMonth();
+          // --></script>
+        </li>
+        <li>Day:
+          <select id="day" name="day">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+          <script type="text/javascript"><!--
+            setupDay();
+          // --></script>
+        </li>
+      </ul>
+    </form>
+  </body>
+</html>

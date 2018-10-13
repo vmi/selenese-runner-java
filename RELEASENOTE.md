@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.19.0
+
+* Update dependency versions.
+* Fix: Select a absent item in select options return success status (#282)
+
 ### 3.18.0
 
 * Catch up Selenium 3.14.0.

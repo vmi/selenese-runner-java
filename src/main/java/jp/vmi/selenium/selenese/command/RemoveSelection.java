@@ -5,7 +5,6 @@ import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
-import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
  * Command "removeSelection".
@@ -24,7 +23,6 @@ public class RemoveSelection extends AbstractCommand {
         SelectElement select = new SelectElement(context, curArgs[ARG_SELECT_LOCATOR]);
         if (!select.isMultiple)
             throw new SeleneseRunnerRuntimeException("You may only add a selection to a select that supports multiple selections");
-        select.selectOptions(curArgs[ARG_OPTION_LOCATOR], false);
-        return SUCCESS;
+        return select.selectOptions(curArgs[ARG_OPTION_LOCATOR], false);
     }
 }
