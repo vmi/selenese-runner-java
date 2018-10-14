@@ -34,6 +34,9 @@ import jp.vmi.selenium.selenese.utils.SeleniumUtils;
  */
 public class WebDriverElementFinder {
 
+    private static final int MIN_TIMEOUT = 3000; // ms
+    private static final long RETRY_INTERVAL = 100; // ms
+
     private static final Logger log = LoggerFactory.getLogger(WebDriverElementFinder.class);
 
     /**
@@ -331,6 +334,48 @@ public class WebDriverElementFinder {
      */
     public WebElement findElement(WebDriver driver, String locator) {
         return findElement(driver, new Locator(locator));
+    }
+
+    /**
+     * Find an element.
+     *
+     * @param driver WebDriver.
+     * @param ploc parsed locator.
+     * @param isRetryable retry finding an element. If false, this is the same as {@link #findElement(WebDriver, Locator)}.
+     * @param timeout timeout (ms).
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
+    public WebElement findElementWithTimeout(WebDriver driver, Locator ploc, boolean isRetryable, int timeout) {
+        if (timeout < MIN_TIMEOUT)
+            timeout = MIN_TIMEOUT;
+        long limit = System.nanoTime() /* ns */ + timeout /* ms */ * 1000L * 1000L;
+        while (true) {
+            List<WebElement> elements = findElements(driver, ploc);
+            if (!elements.isEmpty())
+                return elements.get(0);
+            if (!isRetryable || System.nanoTime() > limit)
+                throw new NoSuchElementException(ploc.toString());
+            try {
+                Thread.sleep(RETRY_INTERVAL);
+            } catch (InterruptedException e) {
+                throw new SeleneseRunnerRuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Find an element.
+     *
+     * @param driver WebDriver.
+     * @param locator locator.
+     * @param isRetryable retry finding an element. If false, this is the same as {@link #findElement(WebDriver, Locator)}.
+     * @param timeout timeout (ms).
+     * @return found element.
+     * @throws NoSuchElementException throw if element not found.
+     */
+    public WebElement findElementWithTimeout(WebDriver driver, String locator, boolean isRetryable, int timeout) {
+        return findElementWithTimeout(driver, new Locator(locator), isRetryable, timeout);
     }
 
     /**

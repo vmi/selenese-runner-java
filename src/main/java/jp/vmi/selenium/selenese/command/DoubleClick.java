@@ -25,7 +25,9 @@ public class DoubleClick extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
-        WebElement element = context.getElementFinder().findElement(driver, locator);
+        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
+        int timeout = context.getTimeout(); /* ms */
+        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).doubleClick(element).perform();
         return SUCCESS;

@@ -37,7 +37,9 @@ public class ClickAt extends AbstractCommand {
         String locator = curArgs[ARG_LOCATOR];
         Point coord = coordToPoint(curArgs[ARG_COORD]);
         WebDriver driver = context.getWrappedDriver();
-        WebElement element = context.getElementFinder().findElement(driver, locator);
+        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
+        int timeout = context.getTimeout(); /* ms */
+        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         MouseUtils.moveTo(context, element, coord).click().perform();
         return SUCCESS;

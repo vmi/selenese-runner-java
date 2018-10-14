@@ -26,7 +26,9 @@ public class Click extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
-        WebElement element = context.getElementFinder().findElement(driver, locator);
+        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
+        int timeout = context.getTimeout(); /* ms */
+        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
         context.getJSLibrary().replaceAlertMethod(driver, element);
         try {
             element.click();
