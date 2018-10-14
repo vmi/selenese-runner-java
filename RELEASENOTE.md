@@ -5,6 +5,7 @@ Selenese Runner Java Relase Note
 
 * Update dependency versions.
 * Fix: Select a absent item in select options return success status (#282)
+* Wait for the target element to be accessible with the click type command. (#278)
 
 ### 3.18.0
 
