@@ -13,12 +13,13 @@ public final class TestCaseParser {
     /**
      * Parse test-case script.
      *
+     * @param sourceType test-case source type.
      * @param iter command iterator.
      * @param commandFactory command factory.
      * @return Selenese instance.
      */
-    public static Selenese parse(CommandIterator iter, ICommandFactory commandFactory) {
-        TestCase testCase = Binder.newTestCase(iter.getFilename(), iter.getName(), iter.getBaseURL());
+    public static Selenese parse(SourceType sourceType, CommandIterator iter, ICommandFactory commandFactory) {
+        TestCase testCase = Binder.newTestCase(sourceType, iter.getFilename(), iter.getName(), iter.getBaseURL());
         try {
             for (CommandEntry entry : iter) {
                 if (entry.comment != null && !entry.comment.isEmpty())

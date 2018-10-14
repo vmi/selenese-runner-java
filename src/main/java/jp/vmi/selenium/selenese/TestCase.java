@@ -32,6 +32,7 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
 
+    private SourceType sourceType = SourceType.SELENESE;
     private String filename = null;
     private String baseName = null;
     private String name = null;
@@ -49,16 +50,18 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     /**
      * Initialize after constructed.
      *
+     * @param sourceType test-case source type.
      * @param filename selenese script filename. (This base name is used for generating screenshot file)
      * @param name test-case name.
      * @param baseURL effective base URL.
      * @return this.
      */
-    public TestCase initialize(String filename, String name, String baseURL) {
+    public TestCase initialize(SourceType sourceType, String filename, String name, String baseURL) {
         filename = PathUtils.normalize(filename);
         String baseName = filename != null ? FilenameUtils.getBaseName(filename) : name;
         if (name == null)
             name = baseName;
+        this.sourceType = sourceType;
         this.filename = filename;
         this.baseName = baseName;
         this.name = name;
@@ -69,6 +72,15 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public Type getType() {
         return Type.TEST_CASE;
+    }
+
+    /**
+     * Test-case source type.
+     *
+     * @return source type.
+     */
+    public SourceType getSourceType() {
+        return sourceType;
     }
 
     @Override

@@ -26,13 +26,17 @@ public abstract class Parser {
      */
     public static Selenese parse(String filename, InputStream is, ICommandFactory commandFactory) {
         boolean isSide = filename.toLowerCase().endsWith(".side");
-        TestSuiteIterator iter = null;
         try {
-            if (isSide)
+            TestSuiteIterator iter;
+            SourceType sourceType;
+            if (isSide) {
+                sourceType = SourceType.SIDE;
                 iter = new SideTestSuiteIterator(filename, is);
-            else
+            } else {
+                sourceType = SourceType.SELENESE;
                 iter = new SeleneseTestSuiteIterator(filename, is);
-            return TestProjectParser.parse(iter, commandFactory);
+            }
+            return TestProjectParser.parse(sourceType, iter, commandFactory);
         } catch (InvalidSeleneseException e) {
             return isSide ? Binder.newErrorTestProject(filename, e) : Binder.newErrorTestSuite(filename, e);
         }

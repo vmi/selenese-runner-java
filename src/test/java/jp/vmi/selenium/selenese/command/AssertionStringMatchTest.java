@@ -10,6 +10,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Failure;
@@ -90,7 +91,7 @@ public class AssertionStringMatchTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(manager.get());
         CommandFactory cf = runner.getCommandFactory();
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", wsr.getBaseURL());
         testCase.addCommand(cf, "open", "/assertion.html");
         testCase.addCommand(cf, commandName, locator, pattern);
         Result result = runner.execute(testCase);

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
@@ -32,7 +33,7 @@ public class BuiltInCommandTest extends TestBase {
         runner.setDriver(manager.get());
         runner.setOverridingBaseURL(wsr.getBaseURL());
         CommandFactory cf = runner.getCommandFactory();
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", wsr.getBaseURL());
         testCase.addCommand(cf, "open", "/index.html");
         testCase.addCommand(cf, "click", "link=linktext");
         Result result = runner.execute(testCase);

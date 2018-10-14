@@ -7,6 +7,7 @@ import jp.vmi.selenium.selenese.ErrorTestCase;
 import jp.vmi.selenium.selenese.ErrorTestProject;
 import jp.vmi.selenium.selenese.ErrorTestSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestProject;
 import jp.vmi.selenium.selenese.TestSuite;
@@ -36,13 +37,27 @@ public class Binder {
     /**
      * Constructs TestCase applied aspect.
      *
+     * @param sourceType test-case source type.
      * @param filename Selenese script file.
      * @param name test-case name.
      * @param baseURL base URL in script.
      * @return TestCase instance.
      */
+    public static TestCase newTestCase(SourceType sourceType, String filename, String name, String baseURL) {
+        return injector.getInstance(TestCase.class).initialize(sourceType, filename, name, baseURL);
+    }
+
+    /**
+     * Constructs TestCase applied aspect.
+     *
+     * @param filename Selenese script file.
+     * @param name test-case name.
+     * @param baseURL base URL in script.
+     * @return TestCase instance.
+     */
+    @Deprecated
     public static TestCase newTestCase(String filename, String name, String baseURL) {
-        return injector.getInstance(TestCase.class).initialize(filename, name, baseURL);
+        return injector.getInstance(TestCase.class).initialize(SourceType.SELENESE, filename, name, baseURL);
     }
 
     /**

@@ -13,19 +13,20 @@ import jp.vmi.selenium.selenese.parser.TestSuiteIterator;
 public final class TestProjectParser {
 
     /**
-     * Parse test-suites script.
+     * Parse test-project script.
      *
+     * @param sourceType test-project source type.
      * @param suiteIter test-suite iterator.
      * @param commandFactory command factory.
      * @return Selenese instance.
      */
-    public static Selenese parse(TestSuiteIterator suiteIter, ICommandFactory commandFactory) {
+    public static Selenese parse(SourceType sourceType, TestSuiteIterator suiteIter, ICommandFactory commandFactory) {
         TestProject testProject = Binder.newTestProject(suiteIter.getFilename(), suiteIter.getName());
         try {
             TestElementIteratorFactory<TestCaseIterator, TestSuiteEntry> caseIterFactory = suiteIter.getTestCaseIteratorFactory();
             for (TestSuiteEntry entry : suiteIter) {
                 TestCaseIterator caseIter = caseIterFactory.getTestElementIterator(entry);
-                Selenese selenese = TestSuiteParser.parse(caseIter, commandFactory);
+                Selenese selenese = TestSuiteParser.parse(sourceType, caseIter, commandFactory);
                 testProject.addSelenese(selenese);
             }
         } catch (InvalidSeleneseException e) {

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Result;
@@ -48,7 +49,7 @@ public class UserDefinedCommandFactoryTest extends TestBase {
                 }
             }
         });
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", "http://localhost/");
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", "http://localhost/");
         testCase.addCommand(cf, "test");
         testCase.addCommand(cf, "echo", "test");
         CommandList commandList = testCase.getCommandList();

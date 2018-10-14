@@ -17,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
@@ -141,7 +142,7 @@ public class LinkHandlerTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(driver);
         CommandFactory cf = runner.getCommandFactory();
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", wsr.getBaseURL());
         testCase.addCommand(cf, "open", "/link_handler.html");
         testCase.addCommand(cf, commandName, "link=" + argument);
         Result result = runner.execute(testCase);

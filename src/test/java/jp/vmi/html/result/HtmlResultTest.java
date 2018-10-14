@@ -9,6 +9,7 @@ import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
 
 import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandFactory;
@@ -64,14 +65,14 @@ public class HtmlResultTest extends TestBase {
         String s2name = "suite2";
         TestSuite s2 = Binder.newTestSuite(filename(root, s2name), s2name);
         String c1name = "case1";
-        TestCase c1 = Binder.newTestCase(filename(root, c1name), c1name, "http://localhost");
+        TestCase c1 = Binder.newTestCase(SourceType.SELENESE, filename(root, c1name), c1name, "http://localhost");
         c1.addCommand(cf, "store", "3", "index");
         c1.addCommand(cf, "while", "${index} > 0");
         c1.addCommand(cf, "open", "/form.html");
         c1.addCommand(cf, "storeEval", "${index} - 1", "index");
         c1.addCommand(cf, "endWhile");
         String c2name = "case2";
-        TestCase c2 = Binder.newTestCase(filename(root, c2name), c2name, "http://localhost");
+        TestCase c2 = Binder.newTestCase(SourceType.SELENESE, filename(root, c2name), c2name, "http://localhost");
         c2.addCommand(cf, "open", "/form2.html");
         s2.addSelenese(c2);
         s1.addSelenese(c1);

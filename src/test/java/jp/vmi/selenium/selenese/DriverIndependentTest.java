@@ -114,7 +114,7 @@ public class DriverIndependentTest extends TestCaseTestBase {
         runner.setDriver(driver);
         runner.setOverridingBaseURL(wsr.getBaseURL());
         CommandFactory cf = runner.getCommandFactory();
-        TestCase testCase = Binder.newTestCase("dummy", "dummy", wsr.getBaseURL());
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", wsr.getBaseURL());
         testCase.addCommand(cf, "open", "/index.html");
         testCase.addCommand(cf, "store", "javascript{'x'}", "a");
         runner.execute(testCase);

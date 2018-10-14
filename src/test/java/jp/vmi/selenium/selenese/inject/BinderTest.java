@@ -12,6 +12,7 @@ import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.Selenese;
+import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.CommandFactory;
@@ -36,7 +37,7 @@ public class BinderTest extends TestBase {
         runner.setDriver(manager.get());
         CommandFactory cf = runner.getCommandFactory();
         File testCaseFile = File.createTempFile("testCase", ".html");
-        TestCase testCase = Binder.newTestCase(testCaseFile.getPath(), "testCase", "http://example.com");
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, testCaseFile.getPath(), "testCase", "http://example.com");
         testCase.addCommand(cf, "echo", "test intercepters");
         File testSuiteFile = File.createTempFile("testSuite", ".html");
         TestSuite testSuite = Binder.newTestSuite(testSuiteFile.getPath(), "testSuite");
