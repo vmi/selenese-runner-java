@@ -1,0 +1,55 @@
+{
+  "id": "fe08f004-c7d4-4239-a6af-579083108f77",
+  "version": "1.1",
+  "name": "Issue #278",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "6f66b1f3-2c85-4860-af2d-53e9c4933d7a",
+    "name": "Test",
+    "commands": [{
+      "id": "b1f4b616-d292-4b02-99b5-cb8d5b76cde1",
+      "comment": "",
+      "command": "open",
+      "target": "/issue278.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "544b8a6b-52c8-4175-b1d8-6cf11b81d42f",
+      "comment": "",
+      "command": "assertTitle",
+      "target": "Issue #278",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "18c1c883-33f6-456e-9b15-bf59e384ade9",
+      "comment": "",
+      "command": "click",
+      "target": "id=next2",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "134a821c-6b86-4579-be9b-e269036dff51",
+      "comment": "",
+      "command": "click",
+      "target": "id=next3",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e53a4b59-214d-4543-87a2-620399688f3d",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ok",
+      "targets": [],
+      "value": "OK"
+    }]
+  }],
+  "suites": [{
+    "id": "213ff280-f9f9-4aa6-b0ba-787d118827ca",
+    "name": "Test Suite",
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["6f66b1f3-2c85-4860-af2d-53e9c4933d7a"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
