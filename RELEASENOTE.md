@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.19.1
+
+* Fix: Wait for the target element to be accessible with the click type command. (#278)
+
 ### 3.19.0
 
 * Update dependency versions.

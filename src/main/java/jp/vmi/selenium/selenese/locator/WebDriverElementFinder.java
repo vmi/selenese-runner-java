@@ -351,9 +351,13 @@ public class WebDriverElementFinder {
             timeout = MIN_TIMEOUT;
         long limit = System.nanoTime() /* ns */ + timeout /* ms */ * 1000L * 1000L;
         while (true) {
-            List<WebElement> elements = findElements(driver, ploc);
-            if (!elements.isEmpty())
-                return elements.get(0);
+            try {
+                List<WebElement> elements = findElements(driver, ploc);
+                if (!elements.isEmpty())
+                    return elements.get(0);
+            } catch (NoSuchElementException e) {
+                // no operation.
+            }
             if (!isRetryable || System.nanoTime() > limit)
                 throw new NoSuchElementException(ploc.toString());
             try {
