@@ -1,5 +1,6 @@
 package jp.vmi.selenium.testutils;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +15,11 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.commons.text.lookup.StringLookup;
 import org.openqa.selenium.net.PortProber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +67,7 @@ public class WebServer {
         String ext = FilenameUtils.getExtension(path.toString()).toLowerCase();
         switch (ext) {
         case "html":
-            return "text/html; charset=UTF-8";
+            return Content.TEXT_HTML;
         case "js":
             return "application/javascript";
         case "jpg":
@@ -121,9 +125,13 @@ public class WebServer {
     }
 
     private static enum Status {
+        // OK
         OK(200, "OK"),
+        // not found.
         NOT_FOUND(403, "Not Found"),
+        // forbidden
         FORBIDDEN(404, "Forbidden"),
+        // internal server error.
         INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
         ;
         private final int code;
@@ -141,13 +149,15 @@ public class WebServer {
     }
 
     private static class Content {
+        public static final String TEXT_HTML = "text/html; charset=UTF-8";
+
         public Status status;
         public String type;
         public byte[] body;
 
         public Content(Status status, String message) {
             this.status = status;
-            this.type = "text/html; charset=UTF-8";
+            this.type = TEXT_HTML;
             this.body = message.getBytes(StandardCharsets.UTF_8);
         }
 
@@ -167,17 +177,63 @@ public class WebServer {
             this.htdocs = htdocs;
         }
 
+        private static final Pattern TITLE_RE = Pattern.compile("<title>(.*)</title>", Pattern.CASE_INSENSITIVE);
+
+        private static String getTitle(Path path) {
+            try (BufferedReader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                String line;
+                while ((line = r.readLine()) != null) {
+                    Matcher matcher = TITLE_RE.matcher(line);
+                    if (matcher.find())
+                        return matcher.group(1);
+                }
+                return path.getFileName().toString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private static Content handleIndex(Path path, final Map<String, String> params) throws HttpErrorException {
+            try {
+                TreeMap<String, String> entries = new TreeMap<>();
+                Files.newDirectoryStream(path).forEach(entry -> {
+                    String fileName = entry.getFileName().toString();
+                    String link;
+                    if (Files.isRegularFile(entry)) {
+                        if (fileName.equals("index.html") || fileName.equals("template.html") || !fileName.endsWith(".html"))
+                            return;
+                        link = "<li><a href=\"" + fileName + "\">" + getTitle(entry) + "</a></li>";
+                    } else if (Files.isDirectory(entry)) {
+                        link = "<li><a href=\"" + fileName + "/\">" + fileName + "/</a></li>";
+                    } else {
+                        return;
+                    }
+                    entries.put(fileName, link);
+                });
+                Content content = new Content(Content.TEXT_HTML);
+                String tmpl = IOUtils.toString(Files.newInputStream(path.resolve("index.html")), StandardCharsets.UTF_8);
+                content.body = new StringSubstitutor(key -> {
+                    switch (key) {
+                    case "entries":
+                        return entries.values().stream().collect(Collectors.joining("\n"));
+                    default:
+                        return "";
+                    }
+                }).replace(tmpl).getBytes(StandardCharsets.UTF_8);
+                return content;
+            } catch (Exception e) {
+                throw new HttpErrorException(Status.INTERNAL_SERVER_ERROR);
+            }
+        }
+
         private static Content handleContent(Path path, final Map<String, String> params) throws HttpErrorException {
             try {
                 Content content = new Content(getContentType(path));
                 if (content.type.startsWith("text/html")) {
                     String tmpl = IOUtils.toString(Files.newInputStream(path), StandardCharsets.UTF_8);
-                    content.body = new StringSubstitutor(new StringLookup() {
-                        @Override
-                        public String lookup(String key) {
-                            String value = params.get(key);
-                            return value != null ? StringEscapeUtils.escapeHtml4(value) : "";
-                        }
+                    content.body = new StringSubstitutor(key -> {
+                        String value = params.get(key);
+                        return value != null ? StringEscapeUtils.escapeHtml4(value) : "";
                     }).replace(tmpl).getBytes(StandardCharsets.UTF_8);
                 } else {
                     content.body = Files.readAllBytes(path);
@@ -242,17 +298,21 @@ public class WebServer {
                 // no operation.
             }
             parseQuery(params, uri.getRawQuery());
-            Path path = Paths.get(htdocs, uriPath);
-            if (Files.isRegularFile(path)) {
-                return handleContent(path, params);
-            } else if (Files.isDirectory(path)) {
-                Path index = path.resolve("index.html");
-                if (Files.isRegularFile(index))
-                    return handleContent(index, params);
-                else
-                    return dirList(path, uri.getPath());
+            if (uriPath.equals("/")) {
+                return handleIndex(Paths.get(htdocs), params);
             } else {
-                throw new HttpErrorException(Status.NOT_FOUND);
+                Path path = Paths.get(htdocs, uriPath);
+                if (Files.isRegularFile(path)) {
+                    return handleContent(path, params);
+                } else if (Files.isDirectory(path)) {
+                    Path index = path.resolve("index.html");
+                    if (Files.isRegularFile(index))
+                        return handleContent(index, params);
+                    else
+                        return dirList(path, uri.getPath());
+                } else {
+                    throw new HttpErrorException(Status.NOT_FOUND);
+                }
             }
         }
 
