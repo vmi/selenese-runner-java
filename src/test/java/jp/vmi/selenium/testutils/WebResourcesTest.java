@@ -30,8 +30,8 @@ public class WebResourcesTest {
     @Test
     public void testWebResources() throws IOException {
         String baseURL = wsr.getBaseURL();
-        String expect = IOUtils.toString(getClass().getResource("/htdocs/index.html"), StandardCharsets.UTF_8);
-        URL url = new URL(baseURL);
+        String expect = IOUtils.toString(getClass().getResource("/htdocs/hello.html"), StandardCharsets.UTF_8);
+        URL url = new URL(baseURL + "hello.html");
         Object content = url.getContent();
         String actualDirect = IOUtils.toString((InputStream) content, StandardCharsets.UTF_8);
         assertThat(actualDirect, is(expect));
