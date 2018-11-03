@@ -1,7 +1,13 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 3.19.1
+### 3.19.2
+
+* Catch up Selenium 3.141.0 (a typo in 3.14.1?) and update dependency versions.
+* Fix bugs in handling "no such element".
+* Add workaround when failing to maximize window with Chrome 70.0 and ChromDriver 2.36.
+
+### 3.19.1 (not released)
 
 * Fix: Wait for the target element to be accessible with the click type command. (#278)
 
