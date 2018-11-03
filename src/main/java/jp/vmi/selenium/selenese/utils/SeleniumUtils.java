@@ -1,5 +1,10 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
@@ -8,8 +13,15 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver.Window;
+import org.openqa.selenium.WebDriverException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utilities for Selenium.
@@ -17,6 +29,8 @@ import org.openqa.selenium.StaleElementReferenceException;
 public class SeleniumUtils {
 
     private static final DecimalFormatSymbols US_FORMAT = DecimalFormatSymbols.getInstance(Locale.US);
+
+    private static final Logger log = LoggerFactory.getLogger(SeleniumUtils.class);
 
     private SeleniumUtils() {
     }
@@ -211,5 +225,63 @@ public class SeleniumUtils {
             || e instanceof StaleElementReferenceException
             || e.getCause() instanceof NotFoundException
             || e.getCause() instanceof StaleElementReferenceException;
+    }
+
+    private static Rectangle getWindowSafeBoundsFromEnvVars() {
+        String widthStr = System.getenv("SCREEN_WIDTH");
+        String heightStr = System.getenv("SCREEN_HEIGHT");
+        if (widthStr == null || heightStr == null)
+            return null;
+        try {
+            int width = Integer.parseInt(widthStr);
+            int height = Integer.parseInt(heightStr);
+            log.warn("Get screen size from environment variables: SCREEN_WIDTH and SCREEN_HEIGHT");
+            return new Rectangle(0, 0, width, height);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static Rectangle getWindowSafeBoundsFromGraphEnv() {
+        // https://stackoverflow.com/questions/32555329/java-get-maximized-state-window-size
+        GraphicsEnvironment gc = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        if (gc.isHeadlessInstance())
+            return null;
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        Rectangle bounds = gd.getDefaultConfiguration().getBounds();
+        Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gd.getDefaultConfiguration());
+        int x = bounds.x + insets.left;
+        int y = bounds.y + insets.top;
+        int width = bounds.width - (insets.left + insets.right);
+        int height = bounds.height - (insets.top + insets.bottom);
+        log.warn("Get screen size from grahics environment.");
+        return new Rectangle(x, y, width, height);
+    }
+
+    /**
+     * Maximize window with workaround.
+     *
+     * @param driver WebDriver instance.
+     */
+    public static void windowMaximize(WebDriver driver) {
+        Window window = driver.manage().window();
+        try {
+            window.maximize();
+        } catch (WebDriverException e) {
+            String message = e.getMessage();
+            if (!message.contains("failed to change window state to maximized"))
+                throw e;
+            log.warn("Can't maximize: {}", message);
+            Rectangle bounds = getWindowSafeBoundsFromEnvVars();
+            if (bounds == null)
+                bounds = getWindowSafeBoundsFromGraphEnv();
+            if (bounds == null)
+                throw e;
+            Point position = new Point(bounds.x, bounds.y);
+            Dimension size = new Dimension(bounds.width, bounds.height);
+            window.setPosition(position);
+            window.setSize(size);
+            log.warn("Window changed: (x, y) = {}, (width, height) = {}", position, size);
+        }
     }
 }

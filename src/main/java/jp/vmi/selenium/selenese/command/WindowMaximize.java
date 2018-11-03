@@ -1,10 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Window;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
 
@@ -20,8 +20,7 @@ public class WindowMaximize extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         WebDriver driver = context.getWrappedDriver();
-        Window window = driver.manage().window();
-        window.maximize();
+        SeleniumUtils.windowMaximize(driver);
         return SUCCESS;
     }
 }
