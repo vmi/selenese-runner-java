@@ -40,6 +40,30 @@ public class WebDriverElementFinder {
     private static final Logger log = LoggerFactory.getLogger(WebDriverElementFinder.class);
 
     /**
+     * NoSuchElementException for WebDriverElementFinder.
+     */
+    public static class ElementFinderNoSuchElementException extends NoSuchElementException {
+
+        private static final long serialVersionUID = 1L;
+
+        private final String message;
+
+        private static String newMessage(Locator ploc) {
+            return "Element " + ploc + " not found";
+        }
+
+        ElementFinderNoSuchElementException(Locator ploc) {
+            super(newMessage(ploc));
+            message = newMessage(ploc);
+        }
+
+        @Override
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    /**
      * Convert to option locator with parent.
      *
      * @param parentLocator parent locator.
@@ -230,7 +254,7 @@ public class WebDriverElementFinder {
             throw new UnsupportedOperationException("Unknown locator type: " + ploc);
         List<WebElement> elements = findElementsByLocator(handler, driver, ploc, selectedFrameLocators);
         if (elements == null)
-            throw new NoSuchElementException("Element " + ploc + " not found", new NoSuchElementException(ploc.toString()));
+            throw new ElementFinderNoSuchElementException(ploc);
         return ploc.poptloc == null ? elements : findOptions(elements, ploc.poptloc);
     }
 
@@ -300,12 +324,12 @@ public class WebDriverElementFinder {
      * @param ploc parsed locator.
      * @param selectedFrameLocators selected frame locators.
      * @return found element.
-     * @throws NoSuchElementException throw if element not found.
+     * @throws ElementFinderNoSuchElementException throw if element not found.
      */
     public WebElement findElement(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {
         List<WebElement> elements = findElements(driver, ploc, selectedFrameLocators);
         if (elements.isEmpty())
-            throw new NoSuchElementException(ploc.toString());
+            throw new ElementFinderNoSuchElementException(ploc);
         return elements.get(0);
     }
 
@@ -315,12 +339,12 @@ public class WebDriverElementFinder {
      * @param driver WebDriver.
      * @param ploc parsed locator.
      * @return found element.
-     * @throws NoSuchElementException throw if element not found.
+     * @throws ElementFinderNoSuchElementException throw if element not found.
      */
     public WebElement findElement(WebDriver driver, Locator ploc) {
         List<WebElement> elements = findElements(driver, ploc);
         if (elements.isEmpty())
-            throw new NoSuchElementException(ploc.toString());
+            throw new ElementFinderNoSuchElementException(ploc);
         return elements.get(0);
     }
 
@@ -330,7 +354,7 @@ public class WebDriverElementFinder {
      * @param driver WebDriver.
      * @param locator locator.
      * @return found element.
-     * @throws NoSuchElementException throw if element not found.
+     * @throws ElementFinderNoSuchElementException throw if element not found.
      */
     public WebElement findElement(WebDriver driver, String locator) {
         return findElement(driver, new Locator(locator));
@@ -344,7 +368,7 @@ public class WebDriverElementFinder {
      * @param isRetryable retry finding an element. If false, this is the same as {@link #findElement(WebDriver, Locator)}.
      * @param timeout timeout (ms).
      * @return found element.
-     * @throws NoSuchElementException throw if element not found.
+     * @throws ElementFinderNoSuchElementException throw if element not found.
      */
     public WebElement findElementWithTimeout(WebDriver driver, Locator ploc, boolean isRetryable, int timeout) {
         if (timeout < MIN_TIMEOUT)
@@ -359,7 +383,7 @@ public class WebDriverElementFinder {
                 // no operation.
             }
             if (!isRetryable || System.nanoTime() > limit)
-                throw new NoSuchElementException(ploc.toString());
+                throw new ElementFinderNoSuchElementException(ploc);
             try {
                 Thread.sleep(RETRY_INTERVAL);
             } catch (InterruptedException e) {
@@ -376,7 +400,7 @@ public class WebDriverElementFinder {
      * @param isRetryable retry finding an element. If false, this is the same as {@link #findElement(WebDriver, Locator)}.
      * @param timeout timeout (ms).
      * @return found element.
-     * @throws NoSuchElementException throw if element not found.
+     * @throws ElementFinderNoSuchElementException throw if element not found.
      */
     public WebElement findElementWithTimeout(WebDriver driver, String locator, boolean isRetryable, int timeout) {
         return findElementWithTimeout(driver, new Locator(locator), isRetryable, timeout);

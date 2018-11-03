@@ -35,7 +35,7 @@ public class GetCssCount extends AbstractSubCommand<Number> {
             List<WebElement> elements = context.findElements(cssLocator);
             return elements.size();
         } catch (WebDriverException e) {
-            if (e.getCause() instanceof NoSuchElementException)
+            if (e instanceof NoSuchElementException || e.getCause() instanceof NoSuchElementException)
                 return 0;
             throw e;
         }
