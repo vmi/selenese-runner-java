@@ -126,7 +126,15 @@ public class CommandList extends ArrayList<ICommand> {
                 int prevSSIndex = (ss == null) ? 0 : ss.size();
                 String[] curArgs = context.getVarsMap().replaceVarsForArray(command.getArguments());
                 evalCurArgs(context, curArgs);
-                Result result = doCommand(context, command, curArgs);
+                Result result = null;
+                context.setRetries(0);
+                do {
+                    result = doCommand(context, command, curArgs);
+                    if (result.isSuccess())
+                        break;
+                    context.setRetries(context.getRetries() + 1);
+                    context.waitSpeed();
+                } while (context.getRetries() < context.getMaxRetries());
                 if (result.isAborted())
                     isContinued = false;
                 else

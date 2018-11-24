@@ -74,6 +74,7 @@ public class NewDefaultConfigTest {
         "--xml-result", "xml-result-dir",
         "--html-result", "html-result-dir",
         "--timeout", "timeout",
+        "--max-retries", "max-retries",
         "--set-speed", "speed",
         "--height", "screen-height",
         "--width", "screen-width",
@@ -132,6 +133,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getXmlResult(), is(nullValue()));
         assertThat(options.getHtmlResult(), is(nullValue()));
         assertThat(options.getTimeout(), is(nullValue()));
+        assertThat(options.getMaxRetries(), is(nullValue()));
         assertThat(options.getSetSpeed(), is(nullValue()));
         assertThat(options.getHeight(), is(nullValue()));
         assertThat(options.getWidth(), is(nullValue()));
@@ -178,6 +180,7 @@ public class NewDefaultConfigTest {
         assertThat(options.getXmlResult(), is("xml-result-dir"));
         assertThat(options.getHtmlResult(), is("html-result-dir"));
         assertThat(options.getTimeout(), is("timeout"));
+        assertThat(options.getMaxRetries(), is("max-retries"));
         assertThat(options.getSetSpeed(), is("speed"));
         assertThat(options.getHeight(), is("screen-height"));
         assertThat(options.getWidth(), is("screen-width"));
