@@ -132,8 +132,10 @@ public class CommandList extends ArrayList<ICommand> {
                     result = doCommand(context, command, curArgs);
                     if (result.isSuccess())
                         break;
-                    context.setRetries(context.getRetries() + 1);
-                    context.waitSpeed();
+		    if (context.getMaxRetries() > 0) {
+                        context.setRetries(context.getRetries() + 1);
+                        context.waitSpeed();
+		    }
                 } while (context.getRetries() < context.getMaxRetries());
                 if (result.isAborted())
                     isContinued = false;
