@@ -136,7 +136,7 @@ public class CommandList extends ArrayList<ICommand> {
                         context.setRetries(context.getRetries() + 1);
                         context.waitSpeed();
 		    }
-                } while (context.getRetries() < context.getMaxRetries());
+                } while ((context.getMaxRetries() > 0) && (context.getRetries() < context.getMaxRetries()));
                 if (result.isAborted())
                     isContinued = false;
                 else
