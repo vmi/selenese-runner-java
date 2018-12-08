@@ -1,5 +1,6 @@
 package jp.vmi.selenium.runner.model.side;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.vmi.selenium.runner.model.ISuite;
@@ -10,9 +11,13 @@ import jp.vmi.selenium.runner.model.ISuite;
 @SuppressWarnings("javadoc")
 public class SideSuite extends SideBase implements ISuite<SideTest, SideCommand> {
 
-    private boolean isParallel;
-    private int timeout;
-    private List<SideTest> tests;
+    private boolean isParallel = false;
+    private int timeout = 300;
+    private List<SideTest> tests = null;
+
+    public SideSuite(boolean isGen) {
+        super(isGen);
+    }
 
     public void setParallel(boolean isParallel) {
         this.isParallel = isParallel;
@@ -39,5 +44,11 @@ public class SideSuite extends SideBase implements ISuite<SideTest, SideCommand>
     @Override
     public List<SideTest> getTests() {
         return tests;
+    }
+
+    public void addTest(SideTest test) {
+        if (tests == null)
+            tests = new ArrayList<>();
+        tests.add(test);
     }
 }

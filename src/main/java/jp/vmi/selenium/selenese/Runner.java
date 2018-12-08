@@ -148,7 +148,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.eval = new Eval();
         this.elementFinder = new WebDriverElementFinder();
         this.subCommandMap = new SubCommandMap();
-        this.commandFactory = new CommandFactory(this);
+        this.commandFactory = new CommandFactory((SubCommandMapProvider) this);
         this.varsMap = new VarsMap();
         this.styleBackups = new ArrayDeque<>();
     }

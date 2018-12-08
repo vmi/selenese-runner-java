@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.SubCommandMapProvider;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -141,15 +142,39 @@ public class CommandFactory implements ICommandFactory {
 
     private final List<ICommandFactory> commandFactories = new ArrayList<>();
 
-    private Context context = null;
+    private SubCommandMapProvider subCommandMapProvider = null;
+
+    private static SubCommandMapProvider newSubCommandMapProvider() {
+        SubCommandMap subCommandMap = new SubCommandMap();
+        return () -> subCommandMap;
+    }
+
+    /**
+     * Constructor.
+     */
+    public CommandFactory() {
+        this(newSubCommandMapProvider());
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param subCommandMapProvider Sub command map supplier.
+     */
+    public CommandFactory(SubCommandMapProvider subCommandMapProvider) {
+        this.subCommandMapProvider = subCommandMapProvider;
+    }
 
     /**
      * Constructor.
      *
      * @param context Selenese Runner context.
+     *
+     * @deprecated use {@link #CommandFactory(SubCommandMapProvider)}.
      */
+    @Deprecated
     public CommandFactory(Context context) {
-        this.context = context;
+        this((SubCommandMapProvider) context);
     }
 
     /**
@@ -184,7 +209,7 @@ public class CommandFactory implements ICommandFactory {
         }
 
         // command supported by WebDriverCommandProcessor
-        SubCommandMap subCommandMap = context.getSubCommandMap();
+        SubCommandMap subCommandMap = subCommandMapProvider.getSubCommandMap();
         ISubCommand<?> subCommand = subCommandMap.get(realName);
         if (subCommand != null)
             return new BuiltInCommand(index, name, args, subCommand, andWait);

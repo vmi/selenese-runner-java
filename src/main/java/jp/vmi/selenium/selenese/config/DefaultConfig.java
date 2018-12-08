@@ -32,8 +32,8 @@ import static jp.vmi.selenium.selenese.result.Result.Level.*;
 @SuppressWarnings("javadoc")
 public class DefaultConfig implements IConfig {
 
-    private static final int HELP_WIDTH = 80;
-    private static final int HELP_PADDING = 2;
+    public static final int HELP_WIDTH = 80;
+    public static final int HELP_PADDING = 2;
 
     // default values.
     public static final int DEFAULT_TIMEOUT_MILLISEC_N = 30000;

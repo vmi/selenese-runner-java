@@ -27,9 +27,13 @@ import jp.vmi.selenium.selenese.parser.ParserUtils;
 public class SideFile extends SideBase {
 
     private String url;
-    private List<SideTest> tests;
-    private List<SideSuite> suites;
-    private List<Object> urls;
+    private List<SideTest> tests = null;
+    private List<SideSuite> suites = null;
+    private List<Object> urls = null;
+
+    public SideFile(boolean isGen) {
+        super(isGen);
+    }
 
     public String getUrl() {
         return url;
@@ -47,12 +51,24 @@ public class SideFile extends SideBase {
         this.tests = tests;
     }
 
+    public void addTest(SideTest test) {
+        if (tests == null)
+            tests = new ArrayList<>();
+        tests.add(test);
+    }
+
     public List<SideSuite> getSuites() {
         return suites;
     }
 
     public void setSuites(List<SideSuite> suites) {
         this.suites = suites;
+    }
+
+    public void addSuite(SideSuite suite) {
+        if (suites == null)
+            suites = new ArrayList<>();
+        suites.add(suite);
     }
 
     public List<Object> getUrls() {
@@ -87,7 +103,7 @@ public class SideFile extends SideBase {
 
             @Override
             public SideSuite read(JsonReader in) throws IOException {
-                SideSuite suite = new SideSuite();
+                SideSuite suite = new SideSuite(false);
                 in.beginObject();
                 while (in.peek() != JsonToken.END_OBJECT) {
                     // expect JsonToken.NAME
@@ -108,7 +124,7 @@ public class SideFile extends SideBase {
                         in.beginArray();
                         List<SideTest> tests = new ArrayList<>();
                         while (in.peek() != JsonToken.END_ARRAY) {
-                            SideTest test = new SideTest();
+                            SideTest test = new SideTest(false);
                             test.setId(in.nextString());
                             tests.add(test);
                         }

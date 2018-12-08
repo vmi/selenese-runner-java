@@ -1,5 +1,7 @@
 package jp.vmi.selenium.runner.model.side;
 
+import java.util.UUID;
+
 import jp.vmi.selenium.runner.model.ICommand;
 
 /**
@@ -11,8 +13,14 @@ public class SideCommand implements ICommand {
     private String id;
     private String command;
     private String target;
+    private String[] targets = new String[0]; // is not used?
     private String value;
     private String comment;
+
+    public SideCommand(boolean isGen) {
+        if (isGen)
+            id = UUID.randomUUID().toString();
+    }
 
     @Override
     public String getId() {
@@ -39,6 +47,14 @@ public class SideCommand implements ICommand {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String[] getTargets() {
+        return targets;
+    }
+
+    public void setTargets(String[] targets) {
+        this.targets = targets;
     }
 
     @Override
