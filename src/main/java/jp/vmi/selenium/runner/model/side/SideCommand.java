@@ -1,10 +1,12 @@
 package jp.vmi.selenium.runner.model.side;
 
+import jp.vmi.selenium.runner.model.ICommand;
+
 /**
  * "command" element of side format.
  */
 @SuppressWarnings("javadoc")
-public class SideCommand {
+public class SideCommand implements ICommand {
 
     private String id;
     private String command;
@@ -12,6 +14,7 @@ public class SideCommand {
     private String value;
     private String comment;
 
+    @Override
     public String getId() {
         return id;
     }
@@ -20,6 +23,7 @@ public class SideCommand {
         this.id = id;
     }
 
+    @Override
     public String getCommand() {
         return command;
     }
@@ -28,6 +32,7 @@ public class SideCommand {
         this.command = command;
     }
 
+    @Override
     public String getTarget() {
         return target;
     }
@@ -36,6 +41,7 @@ public class SideCommand {
         this.target = target;
     }
 
+    @Override
     public String getValue() {
         return value;
     }
@@ -44,6 +50,7 @@ public class SideCommand {
         this.value = value;
     }
 
+    @Override
     public String getComment() {
         return comment;
     }

@@ -3,7 +3,8 @@ package jp.vmi.selenium.selenese.parser;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import jp.vmi.selenium.runner.model.side.Side;
+import jp.vmi.selenium.runner.model.side.SideFile;
+import jp.vmi.selenium.runner.model.side.SideProject;
 import jp.vmi.selenium.runner.model.side.SideSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
 
@@ -12,7 +13,7 @@ import jp.vmi.selenium.selenese.InvalidSeleneseException;
  */
 public class SideTestSuiteIterator extends AbstractTestElementIterator<TestSuiteEntry> implements TestSuiteIterator {
 
-    private final Side side;
+    private final SideProject side;
     private final Iterator<SideSuite> iter;
 
     /**
@@ -24,7 +25,7 @@ public class SideTestSuiteIterator extends AbstractTestElementIterator<TestSuite
      */
     public SideTestSuiteIterator(String filename, InputStream is) throws InvalidSeleneseException {
         super(filename);
-        this.side = Side.parse(filename, is);
+        this.side = SideFile.parse(filename, is);
         setName(this.side.getName());
         setId(this.side.getId());
         this.iter = side.getSuites().iterator();

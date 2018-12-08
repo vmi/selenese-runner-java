@@ -2,7 +2,7 @@ package jp.vmi.selenium.selenese.parser;
 
 import java.util.Iterator;
 
-import jp.vmi.selenium.runner.model.side.Side;
+import jp.vmi.selenium.runner.model.side.SideProject;
 import jp.vmi.selenium.runner.model.side.SideSuite;
 import jp.vmi.selenium.runner.model.side.SideTest;
 
@@ -11,8 +11,8 @@ import jp.vmi.selenium.runner.model.side.SideTest;
  */
 public class SideTestCaseIterator extends AbstractTestElementIterator<TestCaseEntry> implements TestCaseIterator {
 
-    private final Side side;
-    private final Iterator<String> iter;
+    private final SideProject side;
+    private final Iterator<SideTest> iter;
 
     /**
      * Constructor.
@@ -20,7 +20,7 @@ public class SideTestCaseIterator extends AbstractTestElementIterator<TestCaseEn
      * @param side side format data.
      * @param testSuiteId test suite id.
      */
-    public SideTestCaseIterator(Side side, String testSuiteId) {
+    public SideTestCaseIterator(SideProject side, String testSuiteId) {
         super(side.getFilename());
         this.side = side;
         SideSuite suite = side.getSuiteMap().get(testSuiteId);
@@ -36,8 +36,7 @@ public class SideTestCaseIterator extends AbstractTestElementIterator<TestCaseEn
 
     @Override
     public TestCaseEntry next() {
-        String testId = iter.next();
-        SideTest test = side.getTestMap().get(testId);
+        SideTest test = iter.next();
         return new TestCaseEntry(true, test.getId(), test.getName());
     }
 
