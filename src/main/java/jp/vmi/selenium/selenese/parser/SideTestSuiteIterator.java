@@ -3,9 +3,9 @@ package jp.vmi.selenium.selenese.parser;
 import java.io.InputStream;
 import java.util.Iterator;
 
+import jp.vmi.selenium.runner.model.side.Side;
+import jp.vmi.selenium.runner.model.side.SideSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
-import jp.vmi.selenium.selenese.side.Side;
-import jp.vmi.selenium.selenese.side.SideSuite;
 
 /**
  * Iterator and iterable of test suite of SideFile format.

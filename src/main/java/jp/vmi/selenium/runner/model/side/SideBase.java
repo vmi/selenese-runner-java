@@ -1,4 +1,4 @@
-package jp.vmi.selenium.selenese.side;
+package jp.vmi.selenium.runner.model.side;
 
 /**
  * base element of side format.

@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import jp.vmi.selenium.runner.model.side.Side;
+import jp.vmi.selenium.runner.model.side.SideSuite;
+import jp.vmi.selenium.runner.model.side.SideTest;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
 
 import static org.hamcrest.CoreMatchers.is;
