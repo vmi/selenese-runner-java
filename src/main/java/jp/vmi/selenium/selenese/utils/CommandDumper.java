@@ -1,19 +1,19 @@
 package jp.vmi.selenium.selenese.utils;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.selenium.runner.model.utils.CommandJs;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
-import jp.vmi.selenium.selenese.parser.SideCommandList;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -94,8 +94,8 @@ public class CommandDumper {
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
-            SideCommandList cmdList = new SideCommandList();
-            List<String> list = cmdList.stream().map(elem -> elem.cmd).sorted().collect(Collectors.toList());
+            CommandJs commandJs = CommandJs.load();
+            List<String> list = new ArrayList<>(commandJs.getCommandList().keySet());
             int width = list.stream().mapToInt(cmd -> cmd.length()).max().getAsInt();
             list.forEach(cmd -> System.out.printf("%-" + width + "s %s\n", cmd, commandInfo.containsKey(cmd) ? "OK" : "Missing"));
         }
