@@ -127,15 +127,20 @@ public enum ArgType {
     // END OF ArgTypes
     ;
 
+    private static final String PREFIX = "ArgTypes.";
     private static final Map<String, ArgType> MAP = new HashMap<>();
 
     /**
-     * Get ArgType from string.
+     * Lookup ArgType from string.
      *
      * @param id id.
      * @return ArgType.
      */
-    public static ArgType get(String id) {
+    public static ArgType lookup(String id) {
+        if (id == null)
+            return null;
+        if (id.startsWith(PREFIX))
+            id = id.substring(PREFIX.length());
         return MAP.get(id);
     }
 
