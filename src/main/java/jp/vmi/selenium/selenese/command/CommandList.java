@@ -19,17 +19,41 @@ import jp.vmi.selenium.selenese.result.Result;
 /**
  * Command list.
  */
-public class CommandList extends ArrayList<ICommand> {
-
-    private static final long serialVersionUID = 1L;
+public class CommandList implements Iterable<ICommand> {
 
     private final Map<Object, Integer> indexCache = new HashMap<>();
+    private final List<ICommand> commandList = new ArrayList<>();
 
-    @Override
+    /**
+     * Returns <tt>true</tt> if this list contains no elements.
+     *
+     * @return <tt>true</tt> if this list contains no elements
+     */
+    public boolean isEmpty() {
+        return commandList.isEmpty();
+    }
+
+    /**
+     * Returns the number of elements in this list.  If this list contains
+     * more than <tt>Integer.MAX_VALUE</tt> elements, returns
+     * <tt>Integer.MAX_VALUE</tt>.
+     *
+     * @return the number of elements in this list
+     */
+    public int size() {
+        return commandList.size();
+    }
+
+    /**
+     * Add command.
+     *
+     * @param command command.
+     * @return true if this collection changed as a result of the call. (for keeping compatibility)
+     */
     public boolean add(ICommand command) {
         if (command instanceof ILabel)
-            indexCache.put(((ILabel) command).getLabel(), size());
-        return super.add(command);
+            indexCache.put(((ILabel) command).getLabel(), commandList.size());
+        return commandList.add(command);
     }
 
     /**
@@ -38,11 +62,10 @@ public class CommandList extends ArrayList<ICommand> {
      * @param key label string or ICommand object.
      * @return index or -1.
      */
-    @Override
     public int indexOf(Object key) {
         Integer index = indexCache.get(key);
         if (index == null) {
-            index = super.indexOf(key);
+            index = commandList.indexOf(key);
             indexCache.put(key, index);
         }
         return index;
@@ -57,7 +80,7 @@ public class CommandList extends ArrayList<ICommand> {
      * @return ListIterator.
      */
     protected ListIterator<ICommand> originalListIterator(int index) {
-        return super.listIterator(index);
+        return commandList.listIterator(index);
     }
 
     @Override
@@ -145,5 +168,10 @@ public class CommandList extends ArrayList<ICommand> {
             context.popCommandListIterator();
         }
         return cresultList.getResult();
+    }
+
+    @Override
+    public String toString() {
+        return commandList.toString();
     }
 }
