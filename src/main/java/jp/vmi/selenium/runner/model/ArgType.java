@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public enum ArgType {
 
+    /** no argument */
+    NO_ARG("noArg", "no argument",
+        "There is no argument."),
+
     /** css locator */
     CSS_LOCATOR("cssLocator", "css locator",
         "An element locator specified by css."),
@@ -132,7 +136,12 @@ public enum ArgType {
     ;
 
     private static final String PREFIX = "ArgTypes.";
-    private static final Map<String, ArgType> MAP = new HashMap<>();
+    private static final Map<String, ArgType> lookupMap = new HashMap<>();
+
+    static {
+        for (ArgType value : values())
+            lookupMap.put(value.id, value);
+    }
 
     /**
      * Lookup ArgType from string.
@@ -142,10 +151,15 @@ public enum ArgType {
      */
     public static ArgType lookup(String id) {
         if (id == null)
-            return null;
+            return NO_ARG;
         if (id.startsWith(PREFIX))
             id = id.substring(PREFIX.length());
-        return MAP.get(id);
+        if ("option".equals(id))
+            id = "optionLocator";
+        ArgType type = lookupMap.get(id);
+        if (type == null)
+            throw new IllegalArgumentException("No such argument type: " + PREFIX + id);
+        return type;
     }
 
     private final String id;
