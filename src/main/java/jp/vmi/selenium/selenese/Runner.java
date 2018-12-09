@@ -95,7 +95,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private final CommandFactory commandFactory;
     private TestCase currentTestCase = null;
     private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<>();
-    private VarsMap varsMap = new VarsMap();
+    private VarsMap varsMap;
     private final Map<ICommand, FlowControlState> flowControlMap = new IdentityHashMap<>();
     private final CollectionMap collectionMap = new CollectionMap();
     private RollupRules rollupRules = null; // lazy initialization
@@ -726,7 +726,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public boolean isTrue(String expr) {
-        return (Boolean) eval.eval(this, varsMap.replaceVars(expr), "Boolean");
+        boolean isScript = getCurrentTestCase().getSourceType() == SourceType.SIDE;
+        return (Boolean) eval.eval(this, varsMap.replaceVars(isScript, expr), "Boolean");
     }
 
     /**

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SourceType;
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
 
@@ -32,6 +34,17 @@ public interface ICommand {
      * @return command arguments.
      */
     String[] getArguments();
+
+    /**
+     * Get command arguments where variables resolved.
+     *
+     * @param sourceType source type.
+     * @param varsMap map of variables.
+     * @return arguments.
+     */
+    default String[] getVariableResolvedArguments(SourceType sourceType, VarsMap varsMap) {
+        return Arrays.stream(getArguments()).map(arg -> varsMap.replaceVars(false, arg)).toArray(String[]::new);
+    }
 
     /**
      * Get command name.

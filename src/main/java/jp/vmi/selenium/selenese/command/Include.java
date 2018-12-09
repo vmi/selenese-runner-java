@@ -29,7 +29,7 @@ public class Include extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         TestCase current = context.getCurrentTestCase();
-        String filename = context.getVarsMap().replaceVars(curArgs[ARG_FILENAME]);
+        String filename = context.getVarsMap().replaceVars(false, curArgs[ARG_FILENAME]);
         if (FilenameUtils.getPrefixLength(filename) == 0) {
             String path = FilenameUtils.getFullPathNoEndSeparator(current.getFilename());
             filename = FilenameUtils.concat(path, filename);

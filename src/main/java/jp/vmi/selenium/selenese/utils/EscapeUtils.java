@@ -39,7 +39,8 @@ public final class EscapeUtils {
     // see: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
     private static Pattern URI_RE = Pattern.compile("[^;,/?:@&=+$A-Za-z0-9\\-_.!~*'()#]+");
 
-    private static Pattern JSSTR_RE = Pattern.compile("[\\\"]");
+    // Regex pattern for JavaScript String.
+    private static Pattern JSSTR_RE = Pattern.compile("[\\u0000-\\u001f\u2028\u2029\\\\\"']");
 
     /**
      * HTML escape.
@@ -111,7 +112,36 @@ public final class EscapeUtils {
             int endIndex = matcher.start();
             if (beginIndex < endIndex)
                 result.append(s.substring(beginIndex, endIndex));
-            result.append('\\').append(matcher.group());
+            char c = matcher.group().charAt(0);
+            result.append('\\');
+            switch (c) {
+            case '\b': // BACKSPACE (BS)
+                result.append('b');
+                break;
+            case '\t': // CHARACTER TABULATION (HT)
+                result.append('t');
+                break;
+            case '\n': // LINE FEED (LF)
+                result.append('n');
+                break;
+            case 0x000b: // \v / LINE TABULATION (VT)
+                result.append('v');
+                break;
+            case '\f': // FORM FEED (FF)
+                result.append('f');
+                break;
+            case '\r': // CARRIAGE RETURN (CR)
+                result.append('r');
+                break;
+            case '"': // QUOTATION MARK
+            case '\'': // APOSTROPHE
+            case '\\': // REVERSE SOLIDUS
+                result.append(c);
+                break;
+            default:
+                result.append(String.format("u%04x", (int) c));
+                break;
+            }
             beginIndex = matcher.end();
         } while (matcher.find(beginIndex));
         if (beginIndex < s.length())

@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public enum ArgType {
 
+    /** css locator */
+    CSS_LOCATOR("cssLocator", "css locator",
+        "An element locator specified by css."),
+
     // BEGINNING OF ArgTypes (*** DO NOT EDIT FROM HERE TO "END OF ArgTypes" ***)
 
     /** answer */
