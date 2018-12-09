@@ -11,6 +11,7 @@ import org.openqa.selenium.WrapsDriver;
 
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
@@ -114,6 +115,26 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
      * @return VarsMap.
      */
     VarsMap getVarsMap();
+
+    /**
+     * Get flow control state.
+     *
+     * @param command flow control command.
+     * @return flow control state.
+     */
+    default <T extends FlowControlState> T getFlowControlState(ICommand command) {
+        return null;
+    }
+
+    /**
+     * Set flow control state.
+     *
+     * @param command flow control command.
+     * @param state flow control state.
+     */
+    default <T extends FlowControlState> void setFlowControlState(ICommand command, T state) {
+        // no operation.
+    }
 
     /**
      * Get rollup rules.

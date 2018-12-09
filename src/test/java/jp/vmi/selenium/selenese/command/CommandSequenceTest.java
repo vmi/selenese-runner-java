@@ -22,9 +22,9 @@ public class CommandSequenceTest {
 
         private static final ArgumentType[] EMPTY_ARGUMENT_TYPE = new ArgumentType[0];
 
-        public DummyCommand(int index, String name, StartLoop startLoop) {
+        public DummyCommand(int index, String name, BlockStart blockStart) {
             super(index, name, ArrayUtils.EMPTY_STRING_ARRAY, EMPTY_ARGUMENT_TYPE);
-            setStartLoop(startLoop);
+            setBlockStart(blockStart);
         }
 
         @Override
@@ -33,14 +33,14 @@ public class CommandSequenceTest {
         }
     }
 
-    private static class DummyStartLoop extends DummyCommand implements StartLoop {
+    private static class DummyBlockStart extends DummyCommand implements BlockStart {
 
-        public DummyStartLoop(int index, String name, StartLoop startLoop) {
-            super(index, name, startLoop);
+        public DummyBlockStart(int index, String name, BlockStart blockStart) {
+            super(index, name, blockStart);
         }
 
         @Override
-        public void setEndLoop(EndLoop endLoop) {
+        public void setBlockEnd(BlockEnd blockEnd) {
         }
     }
 
@@ -50,15 +50,15 @@ public class CommandSequenceTest {
 
     private static List<ICommand> build(char... cmds) {
         List<ICommand> result = new ArrayList<>();
-        Deque<StartLoop> startLoopStack = new ArrayDeque<>();
-        startLoopStack.addFirst(StartLoop.NO_START_LOOP);
+        Deque<BlockStart> startLoopStack = new ArrayDeque<>();
+        startLoopStack.addFirst(BlockStart.NO_BLOCK_START);
         for (char cmd : cmds) {
             switch (cmd) {
             case C:
                 result.add(new DummyCommand(result.size(), String.valueOf(cmd), startLoopStack.peekFirst()));
                 break;
             case W:
-                DummyStartLoop w = new DummyStartLoop(result.size(), String.valueOf(cmd), startLoopStack.peekFirst());
+                DummyBlockStart w = new DummyBlockStart(result.size(), String.valueOf(cmd), startLoopStack.peekFirst());
                 startLoopStack.addFirst(w);
                 result.add(w);
                 break;

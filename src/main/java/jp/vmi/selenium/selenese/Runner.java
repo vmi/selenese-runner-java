@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Deque;
 import java.util.EnumSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +41,7 @@ import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.highlight.HighlightHandler;
 import jp.vmi.selenium.selenese.highlight.HighlightStyle;
 import jp.vmi.selenium.selenese.highlight.HighlightStyleBackup;
@@ -94,6 +96,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private TestCase currentTestCase = null;
     private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<>();
     private VarsMap varsMap = new VarsMap();
+    private final Map<ICommand, FlowControlState> flowControlMap = new IdentityHashMap<>();
     private final CollectionMap collectionMap = new CollectionMap();
     private RollupRules rollupRules = null; // lazy initialization
     private final Deque<HighlightStyleBackup> styleBackups;
@@ -626,6 +629,17 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public <T extends FlowControlState> T getFlowControlState(ICommand command) {
+        return (T) flowControlMap.get(command);
+    }
+
+    @Override
+    public <T extends FlowControlState> void setFlowControlState(ICommand command, T state) {
+        flowControlMap.put(command, state);
+    }
+
+    @Override
     public CollectionMap getCollectionMap() {
         return collectionMap;
     }
@@ -689,6 +703,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public void resetState() {
+        flowControlMap.clear();
         collectionMap.clear();
         modifierKeyState.reset();
     }

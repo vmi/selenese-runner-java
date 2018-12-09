@@ -3,10 +3,16 @@ package jp.vmi.selenium.selenese.command;
 /**
  * Interface for beginning-of-loop commands.
  */
-public interface StartLoop {
+@Deprecated
+public interface StartLoop extends BlockStart {
 
     /** Use NO_START_LOOP instaed of null. */
     public static final StartLoop NO_START_LOOP = new StartLoop() {
+
+        @Override
+        public void setBlockEnd(BlockEnd blockEnd) {
+            // no operation.
+        }
 
         @Override
         public void setEndLoop(EndLoop endLoop) {
@@ -18,7 +24,6 @@ public interface StartLoop {
             return "NO_START_LOOP";
         }
     };
-
     /** The separator of reached counts. */
     public static final String REACHED_COUNT_SEPARATOR = "-";
 
