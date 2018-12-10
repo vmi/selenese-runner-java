@@ -71,7 +71,7 @@ public class Assertion extends AbstractCommand {
     }
 
     private int getTimeout(Context context, String[] args) {
-        if (type != Type.WAIT_FOR)
+        if (type != Type.WAIT_FOR || args.length < 2)
             return context.getTimeout();
         int timeout = NumberUtils.toInt(args[1]);
         return timeout > 0 ? timeout : context.getTimeout();
