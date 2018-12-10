@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.runner.model.utils.CommandJs;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
@@ -84,18 +85,25 @@ public class CommandDumper {
      * @param args command line parameters.
      */
     public static void main(String[] args) {
-        Map<String, String> commandInfo = new HashMap<>();
-        addCommandInformationFromSubCommandMap(commandInfo);
-        addCommandInformationFromCommandFactory(commandInfo);
         if (args.length == 0) {
+            Map<String, String> commandInfo = new HashMap<>();
+            addCommandInformationFromSubCommandMap(commandInfo);
+            addCommandInformationFromCommandFactory(commandInfo);
             commandInfo.entrySet().stream()
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
+            CommandFactory commandFactory = new CommandFactory();
             CommandJs commandJs = CommandJs.load();
             System.out.println("* Supported status of Selenium IDE commands:");
-            commandJs.getCommandList().keySet().forEach(cmd -> {
-                System.out.printf("  [%s] %s%n", commandInfo.containsKey(cmd) ? "OK" : "--", cmd);
+            commandJs.getCommandList().keySet().forEach(name -> {
+                boolean exists = true;
+                try {
+                    commandFactory.newCommand(-1, name);
+                } catch (SeleneseRunnerRuntimeException e) {
+                    exists = false;
+                }
+                System.out.printf("  [%s] %s%n", exists ? "OK" : "--", name);
             });
         }
     }

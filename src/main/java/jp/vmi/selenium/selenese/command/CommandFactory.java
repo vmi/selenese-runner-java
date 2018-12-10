@@ -139,15 +139,17 @@ public class CommandFactory implements ICommandFactory {
 
     private static final String AND_WAIT = "AndWait";
 
-    private static final Pattern COMMAND_PATTERN = Pattern.compile(
-        "(?:(assert|verify|waitFor)(Not)?|store)(?:(.+?)(?:(Not)?(Present))?)?",
-        Pattern.CASE_INSENSITIVE);
+    private static final String ASSERTION = "assertion";
+    private static final String STORE = "store";
+    private static final String TARGET1 = "target1";
+    private static final String TARGET2 = "target2";
+    private static final String NOT1 = "not1";
+    private static final String NOT2 = "not2";
 
-    private static final int ASSERTION = 1;
-    private static final int IS_INVERSE = 2;
-    private static final int TARGET = 3;
-    private static final int IS_PRESENT_INVERSE = 4;
-    private static final int PRESENT = 5;
+    private static final Pattern COMMAND_PATTERN = Pattern.compile(
+        "(?:(?<" + ASSERTION + ">assert|verify|waitFor)(?<" + NOT1 + ">Not)?|(?<" + STORE + ">store))"
+            + "(?:(?<" + TARGET1 + ">.+?)(?:(?<" + NOT2 + ">Not)?(?<" + TARGET2 + ">Editable|Present|Visible))?)?",
+        Pattern.CASE_INSENSITIVE);
 
     private final List<ICommandFactory> commandFactories = new ArrayList<>();
 
@@ -229,11 +231,12 @@ public class CommandFactory implements ICommandFactory {
         if (!matcher.matches())
             throw new SeleneseRunnerRuntimeException("No such command: " + name);
         String assertion = matcher.group(ASSERTION);
-        String target = matcher.group(TARGET);
+        String target = matcher.group(TARGET1);
         if (target == null)
             target = "Expression";
-        if (matcher.group(PRESENT) != null)
-            target += "Present";
+        String target2 = matcher.group(TARGET2);
+        if (target2 != null)
+            target += target2;
         boolean isBoolean = false;
         String getter = "get" + target;
         ISubCommand<?> getterSubCommand = subCommandMap.get(getter);
@@ -245,9 +248,9 @@ public class CommandFactory implements ICommandFactory {
             isBoolean = true;
         }
         if (assertion != null) {
-            boolean isInverse = matcher.group(IS_INVERSE) != null || matcher.group(IS_PRESENT_INVERSE) != null;
+            boolean isInverse = matcher.group(NOT1) != null || matcher.group(NOT2) != null;
             return new Assertion(index, name, args, assertion, getterSubCommand, isBoolean, isInverse);
-        } else { // Accessor
+        } else { // matcher.group(STORE) != null
             return new Store(index, name, args, getterSubCommand);
         }
     }

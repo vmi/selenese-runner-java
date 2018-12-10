@@ -1,7 +1,7 @@
 * Supported status of Selenium IDE commands:
   [OK] addSelection
   [OK] answerOnNextPrompt
-  [--] assert
+  [OK] assert
   [OK] assertAlert
   [OK] assertChecked
   [OK] assertNotChecked
@@ -66,7 +66,7 @@
   [OK] times
   [OK] type
   [OK] uncheck
-  [--] verify
+  [OK] verify
   [OK] verifyChecked
   [OK] verifyNotChecked
   [OK] verifyEditable
@@ -80,12 +80,12 @@
   [OK] verifyTitle
   [OK] verifyValue
   [OK] verifySelectedLabel
-  [--] waitForElementEditable
-  [--] waitForElementNotEditable
+  [OK] waitForElementEditable
+  [OK] waitForElementNotEditable
   [OK] waitForElementPresent
   [OK] waitForElementNotPresent
-  [--] waitForElementVisible
-  [--] waitForElementNotVisible
+  [OK] waitForElementVisible
+  [OK] waitForElementNotVisible
   [--] webdriverAnswerOnVisiblePrompt
   [--] webdriverChooseCancelOnVisibleConfirmation
   [--] webdriverChooseCancelOnVisiblePrompt

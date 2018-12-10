@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -52,28 +53,28 @@ public class Assertion extends AbstractCommand {
     private final boolean isBoolean;
     private final boolean isInverse;
 
-    private static ArgumentType[] getArgumentTypesOfThisCommand(ArgumentType[] argTypes, boolean isBoolean) {
-        return isBoolean ? argTypes : ArrayUtils.add(argTypes, VALUE);
+    private static ArgumentType[] getArgumentTypes(String assertion, ISubCommand<?> getterSubCommand, boolean isBoolean) {
+        ArgumentType[] argTypes = getterSubCommand.getArgumentTypes();
+        if (Type.WAIT_FOR.assertion.equals(assertion) || !isBoolean)
+            return ArrayUtils.add(argTypes, VALUE);
+        else
+            return argTypes;
     }
 
     Assertion(int index, String name, String[] args, String assertion, ISubCommand<?> getterSubCommand, boolean isBoolean,
         boolean isInverse) {
-        super(index, name, args, getArgumentTypesOfThisCommand(getterSubCommand.getArgumentTypes(), isBoolean));
+        super(index, name, args, getArgumentTypes(assertion, getterSubCommand, isBoolean));
         this.type = Type.of(assertion);
         this.getterSubCommand = getterSubCommand;
         this.isBoolean = isBoolean;
         this.isInverse = isInverse;
-        //        // "getAttribute" has a special locator argument.
-        //        // Please check Store.java if want to modify following code.
-        //        if ("getAttribute".equalsIgnoreCase(getterSubCommand.name)) {
-        //            int at = locators[0].lastIndexOf('@');
-        //            if (at >= 0)
-        //                locators[0] = locators[0].substring(0, at);
-        //        }
-        //        if ("getCssCount".equalsIgnoreCase(getterSubCommand.name))
-        //            cssLocator = new String[] { "css=" + args[0] };
-        //        else
-        //            cssLocator = null;
+    }
+
+    private int getTimeout(Context context, String[] args) {
+        if (type != Type.WAIT_FOR)
+            return context.getTimeout();
+        int timeout = NumberUtils.toInt(args[1]);
+        return timeout > 0 ? timeout : context.getTimeout();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class Assertion extends AbstractCommand {
         }
         boolean found = true;
         String message = null;
-        int timeout = context.getTimeout();
+        int timeout = getTimeout(context, curArgs);
         long breakAfter = System.currentTimeMillis() + timeout;
         while (true) {
             found = true;
