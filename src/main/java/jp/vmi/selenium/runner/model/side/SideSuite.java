@@ -13,6 +13,7 @@ public class SideSuite extends SideBase implements ISuite<SideTest, SideCommand>
 
     private boolean isParallel = false;
     private int timeout = 300;
+    private boolean isPersistSession = false;
     private List<SideTest> tests = null;
 
     public SideSuite(boolean isGen) {
@@ -35,6 +36,15 @@ public class SideSuite extends SideBase implements ISuite<SideTest, SideCommand>
     @Override
     public int getTimeout() {
         return timeout;
+    }
+
+    @Override
+    public boolean isPersistSession() {
+        return isPersistSession;
+    }
+
+    public void setPersistSession(boolean isPersistSession) {
+        this.isPersistSession = isPersistSession;
     }
 
     public void setTests(List<SideTest> tests) {

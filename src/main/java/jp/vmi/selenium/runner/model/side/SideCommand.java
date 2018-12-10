@@ -1,5 +1,7 @@
 package jp.vmi.selenium.runner.model.side;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import jp.vmi.selenium.runner.model.ICommand;
@@ -13,7 +15,7 @@ public class SideCommand implements ICommand {
     private String id;
     private String command;
     private String target;
-    private String[] targets = new String[0]; // is not used?
+    private List<List<String>> targets = Collections.emptyList();
     private String value;
     private String comment;
 
@@ -49,11 +51,11 @@ public class SideCommand implements ICommand {
         this.target = target;
     }
 
-    public String[] getTargets() {
+    public List<List<String>> getTargets() {
         return targets;
     }
 
-    public void setTargets(String[] targets) {
+    public void setTargets(List<List<String>> targets) {
         this.targets = targets;
     }
 

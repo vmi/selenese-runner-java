@@ -120,6 +120,9 @@ public class SideFile extends SideBase {
                     case "timeout":
                         suite.setTimeout(in.nextInt());
                         break;
+                    case "persistSession":
+                        suite.setPersistSession(in.nextBoolean());
+                        break;
                     case "tests":
                         in.beginArray();
                         List<SideTest> tests = new ArrayList<>();
@@ -133,6 +136,7 @@ public class SideFile extends SideBase {
                         break;
                     default:
                         // unsupported member.
+                        in.skipValue();
                         break;
                     }
                 }
