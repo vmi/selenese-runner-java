@@ -2,6 +2,7 @@ package jp.vmi.selenium.selenese.locator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,11 +78,15 @@ public class Locator {
             String type = matcher.group(LOCATOR_TYPE);
             String arg = matcher.group(LOCATOR_ARG);
             if (isNotEmpty(type)) {
-                try {
-                    this.type = type.toLowerCase();
-                } catch (IllegalArgumentException e) {
-                    throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.poptloc), e);
+                char ch = type.charAt(0);
+                if ('A' <= ch && ch <= 'Z') {
+                    try {
+                        type.toLowerCase(Locale.ROOT);
+                    } catch (IllegalArgumentException e) {
+                        throw new UnsupportedOperationException("Unknown locator type: " + formatLocator(this.locator, this.poptloc), e);
+                    }
                 }
+                this.type = type;
                 this.arg = arg;
             } else if (isNotEmpty(matcher.group(DOM_LOCATOR))) {
                 // start with "document."

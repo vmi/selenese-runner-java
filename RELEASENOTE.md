@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.20.0
+
+* Add `linkText` locator support. (#287)
+
 ### 3.19.2
 
 * Catch up Selenium 3.141.0 (a typo in 3.14.1?) and update dependency versions.

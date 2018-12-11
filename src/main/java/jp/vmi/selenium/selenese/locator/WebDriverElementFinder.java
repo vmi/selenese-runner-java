@@ -94,6 +94,7 @@ public class WebDriverElementFinder {
         registerHandler(new LinkHandler());
         registerHandler(new CSSHandler());
         registerHandler(new ClassHandler());
+        registerHandler(new LinkTextHandler());
         registerOptionHandler(new OptionLabelHandler());
         registerOptionHandler(new OptionIdHandler());
         registerOptionHandler(new OptionIndexHandler());

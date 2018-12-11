@@ -445,6 +445,12 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     }
 
     @Test
+    public void testLinkText() {
+        execute("testcase_link_text.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void testIE() {
         assumeThat(currentFactoryName, is(IE));
         execute("testcase_ie");

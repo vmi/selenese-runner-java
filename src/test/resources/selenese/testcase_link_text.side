@@ -1,0 +1,42 @@
+{
+  "id": "1175cffc-124b-454c-a0cd-1ffa4b02e757",
+  "version": "1.1",
+  "name": "linkText",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "b9b4342e-62c2-4c69-972f-b575ed7d5b91",
+    "name": "linkText",
+    "commands": [{
+      "id": "310fa12a-f26f-4318-b85f-6a4d478433d9",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a1cee52a-0cc8-4176-a945-dacac5995aac",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=assertion test",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "42c30ddc-ee22-4dfd-b578-a777c13390a9",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.text1",
+      "targets": [],
+      "value": "assertion test"
+    }]
+  }],
+  "suites": [{
+    "id": "1bee5723-f9b2-44f2-ac2d-acb1c8bb0476",
+    "name": "linkText",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["b9b4342e-62c2-4c69-972f-b575ed7d5b91"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
