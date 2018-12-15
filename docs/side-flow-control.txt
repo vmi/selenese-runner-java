@@ -1,0 +1,20 @@
+packages/selenium-ide/src/neo/models/Command.js
+in https://github.com/SeleniumHQ/selenium-ide
+
+------------------------------------------------------------------------
+export const ControlFlowCommandNames = {
+  do: 'do',
+  else: 'else',
+  elseIf: 'elseIf',
+  end: 'end',
+  if: 'if',
+  repeatIf: 'repeatIf',
+  times: 'times',
+  while: 'while',
+}
+------------------------------------------------------------------------
+
+do ... repeatIf(COND_EXPR)
+if(COND_EXPR) ... elseIf(COND_EXPR) ... else ... end
+times(TIMES) ... end
+while(COND_EXPR) ... end
