@@ -97,9 +97,15 @@ public class VarsMap extends HashMap<String, Object> {
             if (prevEnd < nextStart)
                 result.append(expr.substring(prevEnd, nextStart));
             String name = matcher.group("name");
-            String value = SeleniumUtils.convertToString(get(name));
+            Object rawValue = get(name);
+            String value = SeleniumUtils.convertToString(rawValue);
             if (isScript) {
-                result.append('"').append(EscapeUtils.escapeJSString(value)).append('"');
+                if (rawValue == null)
+                    result.append("null");
+                else if (rawValue instanceof Number || rawValue instanceof Boolean)
+                    result.append(rawValue);
+                else
+                    result.append('"').append(EscapeUtils.escapeJSString(value)).append('"');
             } else {
                 result.append(value);
             }
