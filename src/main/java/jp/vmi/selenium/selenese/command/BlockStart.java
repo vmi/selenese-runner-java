@@ -23,18 +23,18 @@ public interface BlockStart {
     public static final String REACHED_COUNT_SEPARATOR = "-";
 
     /**
+     * True if the block is loop.
+     *
+     * @return true if the block is loop
+     */
+    default boolean isLoopBlock() {
+        return false;
+    }
+
+    /**
      * Set end-of-block command.
      *
      * @param blockEnd end-of-block command.
      */
     void setBlockEnd(BlockEnd blockEnd);
-
-    /**
-     * true if the next block is skipped.
-     *
-     * @return true if the next block is skipped..
-     */
-    default boolean isSkippedNextBlock() {
-        return false;
-    }
 }

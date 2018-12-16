@@ -40,6 +40,8 @@ public class CommandSequence {
     private static List<BlockStart> getListOfBlockStart(ICommand command) {
         List<BlockStart> result;
         BlockStart blockStart = command.getBlockStart();
+        while (blockStart instanceof BlockEnd)
+            blockStart = ((ICommand) blockStart).getBlockStart();
         if (blockStart == BlockStart.NO_BLOCK_START)
             result = new ArrayList<>();
         else
@@ -78,7 +80,7 @@ public class CommandSequence {
             }
             tail = counters.get(counters.size() - 1);
         }
-        if (command instanceof BlockStart)
+        if (command instanceof BlockStart && !(command instanceof BlockEnd))
             counters.add(tail = new Counter((BlockStart) command, 1));
     }
 

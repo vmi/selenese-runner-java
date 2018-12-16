@@ -16,11 +16,28 @@ public class Times extends BlockStartImpl {
 
     private static class TimesState implements FlowControlState {
 
-        final int times;
-        int count = 1;
+        private final long times;
+        private long count = 1;
 
-        TimesState(int times) {
+        TimesState(long times) {
             this.times = times;
+        }
+
+        void incrementCount() {
+            count++;
+        }
+
+        long getTimes() {
+            return times;
+        }
+
+        long getCount() {
+            return count;
+        }
+
+        @Override
+        public boolean isAlreadyFinished() {
+            return count > times;
         }
     }
 
@@ -29,16 +46,22 @@ public class Times extends BlockStartImpl {
     }
 
     @Override
+    public boolean isLoopBlock() {
+        return true;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         TimesState state = context.getFlowControlState(this);
         if (state != null) {
-            if (++state.count > state.times) {
+            state.incrementCount();
+            if (state.isAlreadyFinished()) {
                 context.setFlowControlState(this, null);
                 context.getCommandListIterator().jumpToNextOf(blockEnd);
-                return new Success("Finished " + state.times + " times repitition");
+                return new Success("Finished " + state.getTimes() + " times repitition");
             }
         } else {
-            int times = context.executeScript(curArgs[ARG_TIMES]);
+            long times = ((Number) context.executeScript("return (" + curArgs[ARG_TIMES] + ")")).longValue();
             if (times <= 0) {
                 context.getCommandListIterator().jumpToNextOf(blockEnd);
                 return new Success("Skip: times is " + times);
@@ -46,6 +69,6 @@ public class Times extends BlockStartImpl {
             state = new TimesState(times);
             context.setFlowControlState(this, state);
         }
-        return new Success(String.format("Times: %d/%d", state.count, state.times));
+        return new Success(String.format("Times: %d/%d", state.getCount(), state.getTimes()));
     }
 }

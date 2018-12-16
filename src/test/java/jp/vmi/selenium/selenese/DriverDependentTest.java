@@ -457,6 +457,12 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     }
 
     @Test
+    public void testSideFlowControl() {
+        execute("testcase_flowcontrol.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void testIE() {
         assumeThat(currentFactoryName, is(IE));
         execute("testcase_ie");

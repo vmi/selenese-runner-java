@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.FlowControlState;
 import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -22,7 +23,11 @@ public abstract class BlockEndImpl extends AbstractCommand implements BlockEnd {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         BlockStart blockStart = getBlockStart();
-        context.getCommandListIterator().jumpTo(blockStart);
+        if (blockStart.isLoopBlock()) {
+            FlowControlState state = context.getFlowControlState((ICommand) blockStart);
+            if (!state.isAlreadyFinished())
+                context.getCommandListIterator().jumpTo(blockStart);
+        }
         return SUCCESS;
     }
 }
