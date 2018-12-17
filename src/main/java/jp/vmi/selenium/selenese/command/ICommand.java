@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SourceType;
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Result;
 
@@ -32,6 +34,17 @@ public interface ICommand {
      * @return command arguments.
      */
     String[] getArguments();
+
+    /**
+     * Get command arguments where variables resolved.
+     *
+     * @param sourceType source type.
+     * @param varsMap map of variables.
+     * @return arguments.
+     */
+    default String[] getVariableResolvedArguments(SourceType sourceType, VarsMap varsMap) {
+        return Arrays.stream(getArguments()).map(arg -> varsMap.replaceVars(false, arg)).toArray(String[]::new);
+    }
 
     /**
      * Get command name.
@@ -86,17 +99,37 @@ public interface ICommand {
     Result getResult();
 
     /**
+     * Set beginning-of-block command.
+     *
+     * @param blockStart beginning-of-block command.
+     */
+    void setBlockStart(BlockStart blockStart);
+
+    /**
+     * Get beginning-of-block command.
+     *
+     * @return beginning-of-block command.
+     */
+    BlockStart getBlockStart();
+
+    /**
      * Set beginning-of-loop command.
      *
      * @param startLoop beginning-of-loop command.
+     *
+     * @deprecated use {@link #setBlockStart(BlockStart)} instaed.
      */
+    @Deprecated
     void setStartLoop(StartLoop startLoop);
 
     /**
      * Get beginning-of-loop command.
      *
      * @return beginning-of-loop command.
+     *
+     * @deprecated use {@link #getBlockStart()} instaed.
      */
+    @Deprecated
     StartLoop getStartLoop();
 
     /**

@@ -4,6 +4,19 @@ Selenese Runner Java Relase Note
 ### 3.20.0
 
 * Add `linkText` locator support. (#287)
+* Add flow control conmands of SIDE format: (PR #288)
+    * `do` ... `repeatIf`
+    * `if` ... `elseIf` ... `else` ... `end`
+    * `times` ... `end`
+    * `while` ... `end`
+* Add new commands of SIDE format: (the comment by @xiaospider in #278, PR #288)
+    * `assert`
+    * `verify`
+    * `waitForElementEditable`
+    * `waitForElementNotEditable`
+    * `waitForElementVisible`
+    * `waitForElementNotVisible`
+    * `executeScript`
 
 ### 3.19.2
 
@@ -74,13 +87,13 @@ Selenese Runner Java Relase Note
 * Add new command: `contextMenu`. (PR #262 by @kokichirok)
 * Add new option `--headless` which enables the headless mode for Chrome and Firefox.
 * Add following new conmands: (PR #263 by @koichirok with refactoring by @vmi)
-** `answerOnNextNativeAlert`
-** `chooseCancelOnNextNativeAlert`
-** `chooseOkOnNextNativeAlert`
-** `(assert|verify|waitFor|store)Alert`
-** `(assert|verify|waitFor|store)AlertPresent`
-** `(assert|verify|waitFor)NotAlert`
-** `(assert|verify|waitFor)AlertNotPresent`
+    * `answerOnNextNativeAlert`
+    * `chooseCancelOnNextNativeAlert`
+    * `chooseOkOnNextNativeAlert`
+    * `(assert|verify|waitFor|store)Alert`
+    * `(assert|verify|waitFor|store)AlertPresent`
+    * `(assert|verify|waitFor)NotAlert`
+    * `(assert|verify|waitFor)AlertNotPresent`
 * Update dependency versions.
 
 ### 3.10.0

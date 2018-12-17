@@ -31,4 +31,12 @@ public class EscapeUtilsTest {
         System.out.println("* URI\n  exp: [" + expected + "]\n  act: [" + actual + "]");
         assertThat(actual, equalTo(expected));
     }
+
+    @Test
+    public void testEscapeJSString() {
+        String expected = "\\u0000\\b\\t\\n\\v\\f\\r\\\"\\'\\\\\\u2028\\u2029";
+        String actual = EscapeUtils.escapeJSString("\u0000\b\t\n\u000b\f\r\"\'\\\u2028\u2029");
+        System.out.println("* JSString\n  exp: [" + expected + "]\n  act: [" + actual + "]");
+        assertThat(actual, equalTo(expected));
+    }
 }

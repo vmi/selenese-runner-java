@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import jp.vmi.selenium.runner.converter.Converter;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
@@ -22,6 +24,7 @@ import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.utils.CommandDumper;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -36,9 +39,10 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    private static final String PROG_TITLE = "Selenese Runner";
-
     private static final Pattern EXPR_RE = Pattern.compile("\\s*(?<varName>\\w+)\\s*=\\s*(?<jsonValue>.*)");
+
+    /** Program title */
+    public static final String PROG_TITLE = "Selenese Runner";
 
     private boolean noExit = false;
     private boolean exitStrictly = false;
@@ -51,8 +55,8 @@ public class Main {
      * </p>
      * @return version string.
      */
-    public String getVersion() {
-        try (InputStream is = getClass().getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties")) {
+    public static String getVersion() {
+        try (InputStream is = Main.class.getResourceAsStream("/META-INF/maven/jp.vmi/selenese-runner-java/pom.properties")) {
             if (is != null) {
                 Properties prop = new Properties();
                 prop.load(is);
@@ -270,6 +274,19 @@ public class Main {
      */
     public static void main(String[] args) {
         LoggerUtils.initLogger();
-        new Main().run(args);
+        Main main = new Main();
+        if (args.length == 0)
+            main.help();
+        switch (args[0]) {
+        case "convert":
+            Converter.main(Arrays.copyOfRange(args, 1, args.length));
+            break;
+        case "commands":
+            CommandDumper.main(Arrays.copyOfRange(args, 1, args.length));
+            break;
+        default:
+            main.run(args);
+            break;
+        }
     }
 }

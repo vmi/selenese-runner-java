@@ -85,7 +85,10 @@ public class CommandListIterator implements ListIterator<ICommand> {
      * Jump to next of label or command.
      *
      * @param key label string or ICommand object.
+     *
+     * @deprecated use {@link jp.vmi.selenium.selenese.FlowControlState} and {@link #jumpTo(Object)}.
      */
+    @Deprecated
     public void jumpToNextOf(Object key) {
         int index;
         if (key == null) {

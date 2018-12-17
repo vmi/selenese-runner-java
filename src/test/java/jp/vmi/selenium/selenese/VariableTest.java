@@ -33,12 +33,15 @@ public class VariableTest extends TestBase {
     public void replaceVars() {
         VarsMap varsMap = runner.getVarsMap();
         varsMap.put("a", "XYZ");
-        assertThat(varsMap.replaceVars("${a}"), is(equalTo("XYZ")));
+        assertThat(varsMap.replaceVars(false, "${a}"), is(equalTo("XYZ")));
+        assertThat(varsMap.replaceVars(true, "${a}"), is(equalTo("\"XYZ\"")));
+        assertThat(varsMap.replaceVars(true, "\"${a}\""), is(equalTo("\"XYZ\"")));
     }
 
     /**
      * Test of replaceVariables(String[]).
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void replaceVarsForArray() {
         VarsMap varsMap = runner.getVarsMap();
@@ -56,8 +59,8 @@ public class VariableTest extends TestBase {
         varsMap.put("a1", 1);
         varsMap.put("a2", 1.0);
         varsMap.put("a3", 1.5);
-        assertThat(varsMap.replaceVars("${a1}"), is(equalTo("1")));
-        assertThat(varsMap.replaceVars("${a2}"), is(equalTo("1")));
-        assertThat(varsMap.replaceVars("${a3}"), is(equalTo("1.5")));
+        assertThat(varsMap.replaceVars(false, "${a1}"), is(equalTo("1")));
+        assertThat(varsMap.replaceVars(false, "${a2}"), is(equalTo("1")));
+        assertThat(varsMap.replaceVars(false, "${a3}"), is(equalTo("1.5")));
     }
 }

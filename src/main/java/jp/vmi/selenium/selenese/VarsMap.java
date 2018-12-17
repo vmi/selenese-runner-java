@@ -1,11 +1,12 @@
 package jp.vmi.selenium.selenese;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.commons.text.StringSubstitutor;
-import org.apache.commons.text.lookup.StringLookup;
 import org.openqa.selenium.Keys;
 
+import jp.vmi.selenium.selenese.utils.EscapeUtils;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static org.openqa.selenium.Keys.*;
@@ -16,6 +17,9 @@ import static org.openqa.selenium.Keys.*;
 public class VarsMap extends HashMap<String, Object> {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Pattern SCRIPT_RE = Pattern.compile("(?<quote>[\"'`]?)\\$\\{(?<name>\\w+)\\}\\k<quote>", Pattern.DOTALL);
+    private static final Pattern STRING_RE = Pattern.compile("\\$\\{(?<name>.+?)\\}", Pattern.DOTALL);
 
     /**
      * Constructor.
@@ -66,15 +70,50 @@ public class VarsMap extends HashMap<String, Object> {
      *
      * @param expr expression string.
      * @return replaced string.
+     *
+     * @deprecated use {@link #replaceVars(boolean, String)} instead.
      */
+    @Deprecated
     public String replaceVars(String expr) {
-        StringSubstitutor s = new StringSubstitutor(new StringLookup() {
-            @Override
-            public String lookup(String key) {
-                return SeleniumUtils.convertToString(get(key));
+        return replaceVars(false, expr);
+    }
+
+    /**
+     * Replace variable reference to value.
+     *
+     * @param isScript true if expr is ECMA script string.
+     * @param expr expression string.
+     * @return replaced string.
+     */
+    public String replaceVars(boolean isScript, String expr) {
+        if (!expr.contains("${"))
+            return expr;
+        StringBuilder result = new StringBuilder();
+        Pattern re = isScript ? SCRIPT_RE : STRING_RE;
+        Matcher matcher = re.matcher(expr);
+        int prevEnd = 0;
+        while (matcher.find(prevEnd)) {
+            int nextStart = matcher.start();
+            if (prevEnd < nextStart)
+                result.append(expr.substring(prevEnd, nextStart));
+            String name = matcher.group("name");
+            Object rawValue = get(name);
+            String value = SeleniumUtils.convertToString(rawValue);
+            if (isScript) {
+                if (rawValue == null)
+                    result.append("null");
+                else if (rawValue instanceof Number || rawValue instanceof Boolean)
+                    result.append(rawValue);
+                else
+                    result.append('"').append(EscapeUtils.escapeJSString(value)).append('"');
+            } else {
+                result.append(value);
             }
-        });
-        return s.replace(expr);
+            prevEnd = matcher.end();
+        }
+        if (prevEnd < expr.length())
+            result.append(expr.substring(prevEnd));
+        return result.toString();
     }
 
     /**
@@ -82,7 +121,10 @@ public class VarsMap extends HashMap<String, Object> {
      *
      * @param exprs expression strings.
      * @return replaced strings.
+     *
+     * @deprecated use {@link #replaceVars(boolean, String)} sith {@link java.util.Arrays#stream(Object[])} instaed.
      */
+    @Deprecated
     public String[] replaceVarsForArray(String[] exprs) {
         String[] result = new String[exprs.length];
         for (int i = 0; i < exprs.length; i++)

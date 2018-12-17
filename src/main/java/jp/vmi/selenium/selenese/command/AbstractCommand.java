@@ -8,14 +8,18 @@ import java.util.List;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
+import jp.vmi.selenium.runner.model.ICommandSignature;
+import jp.vmi.selenium.runner.model.side.SideCommandMetadata;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.SourceType;
+import jp.vmi.selenium.selenese.VarsMap;
 import jp.vmi.selenium.selenese.locator.Locator;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 
-import static jp.vmi.selenium.selenese.command.StartLoop.*;
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
@@ -28,8 +32,9 @@ public abstract class AbstractCommand implements ICommand {
     private final String[] args;
     private final ArgumentType[] argTypes;
     private final int[] locatorIndexes;
+    private final ICommandSignature commandSignature;
     private Result result = UNEXECUTED;
-    private StartLoop startLoop = NO_START_LOOP;
+    private BlockStart blockStart = BlockStart.NO_BLOCK_START;
     private List<Screenshot> screenshots = null;
 
     /**
@@ -69,6 +74,7 @@ public abstract class AbstractCommand implements ICommand {
             }
         }
         this.locatorIndexes = Arrays.copyOf(locatorIndexes, locCnt);
+        this.commandSignature = SideCommandMetadata.getInstance().getSignature(name);
     }
 
     @Override
@@ -101,6 +107,28 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public String[] getArguments() {
         return args;
+    }
+
+    @Override
+    public String[] getVariableResolvedArguments(SourceType sourceType, VarsMap varsMap) {
+        if (sourceType == SourceType.SIDE && commandSignature != null) {
+            String[] curArgs = new String[args.length];
+            switch (args.length) {
+            case 2:
+                curArgs[1] = varsMap.replaceVars(commandSignature.isValueScript(), args[1]);
+                // fall through.
+            case 1:
+                curArgs[0] = varsMap.replaceVars(commandSignature.isTargetScript(), args[0]);
+                // fall through.
+            case 0:
+                break;
+            default:
+                throw new SeleneseRunnerRuntimeException("Don't support 3 or more arguments.");
+            }
+            return curArgs;
+        } else {
+            return Arrays.stream(getArguments()).map(arg -> varsMap.replaceVars(false, arg)).toArray(String[]::new);
+        }
     }
 
     @Override
@@ -167,13 +195,40 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     @Override
-    public void setStartLoop(StartLoop startLoop) {
-        this.startLoop = startLoop;
+    public void setBlockStart(BlockStart blockStart) {
+        this.blockStart = blockStart;
     }
 
     @Override
-    public StartLoop getStartLoop() {
-        return startLoop;
+    public BlockStart getBlockStart() {
+        return blockStart;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    final public void setStartLoop(StartLoop startLoop) {
+        setBlockStart(startLoop);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    final public StartLoop getStartLoop() {
+        BlockStart blockStart = getBlockStart();
+        if (blockStart instanceof StartLoop)
+            return (StartLoop) blockStart;
+        else
+            return new StartLoop() {
+
+                @Override
+                public void setBlockEnd(BlockEnd blockEnd) {
+                    blockStart.setBlockEnd(blockEnd);
+                }
+
+                @Override
+                public void setEndLoop(EndLoop endLoop) {
+                    blockStart.setBlockEnd(endLoop);
+                }
+            };
     }
 
     @Override

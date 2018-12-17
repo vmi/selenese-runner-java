@@ -2,9 +2,9 @@ package jp.vmi.selenium.selenese.parser;
 
 import java.util.Iterator;
 
-import jp.vmi.selenium.selenese.side.Side;
-import jp.vmi.selenium.selenese.side.SideCommand;
-import jp.vmi.selenium.selenese.side.SideTest;
+import jp.vmi.selenium.runner.model.side.SideCommand;
+import jp.vmi.selenium.runner.model.side.SideProject;
+import jp.vmi.selenium.runner.model.side.SideTest;
 
 /**
  * Iterator and iterable of test case of SideFile format.
@@ -17,15 +17,15 @@ public class SideCommandIterator extends AbstractTestElementIterator<CommandEntr
     /**
      * Constructor.
      *
-     * @param side side format data.
+     * @param sideProject side format data.
      * @param testCaseId test case id.
      */
-    public SideCommandIterator(Side side, String testCaseId) {
-        super(side.getFilename());
-        SideTest test = side.getTestMap().get(testCaseId);
+    public SideCommandIterator(SideProject sideProject, String testCaseId) {
+        super(sideProject.getFilename());
+        SideTest test = sideProject.getTestMap().get(testCaseId);
         setName(test.getName());
         setId(test.getId());
-        this.baseURL = side.getUrl();
+        this.baseURL = sideProject.getUrl();
         this.iter = test.getCommands().iterator();
     }
 

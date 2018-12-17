@@ -1,5 +1,8 @@
 package jp.vmi.selenium.selenese.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import jp.vmi.selenium.selenese.Context;
@@ -53,6 +56,8 @@ public class UserDefinedCommandFactoryTest extends TestBase {
         testCase.addCommand(cf, "test");
         testCase.addCommand(cf, "echo", "test");
         CommandList commandList = testCase.getCommandList();
-        assertThat(commandList.toArray(), is(array(instanceOf(TestCommandNew.class), instanceOf(Echo.class))));
+        List<ICommand> list = new ArrayList<>();
+        commandList.forEach(list::add);
+        assertThat(list.toArray(), is(array(instanceOf(TestCommandNew.class), instanceOf(Echo.class))));
     }
 }

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  *  String escape utilities.
  */
-public class EscapeUtils {
+public final class EscapeUtils {
 
     private EscapeUtils() {
         // no operation
@@ -33,13 +33,14 @@ public class EscapeUtils {
         HTML_ESC_MAP.put("\r", "<br>\n");
     }
 
-    /**
-     * Regex pattern for URI encode.
-     *
-     * This pattern equivalent to JavaScript encodeURI().
-     * see: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
-     */
-    public static Pattern URI_RE = Pattern.compile("[^;,/?:@&=+$A-Za-z0-9\\-_.!~*'()#]+");
+    // Regex pattern for URI encode.
+    //
+    // This pattern equivalent to JavaScript encodeURI().
+    // see: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/encodeURI
+    private static Pattern URI_RE = Pattern.compile("[^;,/?:@&=+$A-Za-z0-9\\-_.!~*'()#]+");
+
+    // Regex pattern for JavaScript String.
+    private static Pattern JSSTR_RE = Pattern.compile("[\\u0000-\\u001f\u2028\u2029\\\\\"']");
 
     /**
      * HTML escape.
@@ -92,6 +93,59 @@ public class EscapeUtils {
         }
         if (index < s.length())
             result.append(s, index, s.length());
+        return result.toString();
+    }
+
+    /**
+     * JavaScript String.
+     *
+     * @param s raw string.
+     * @return JS escaped string.
+     */
+    public static String escapeJSString(String s) {
+        Matcher matcher = JSSTR_RE.matcher(s);
+        if (!matcher.find())
+            return s;
+        StringBuilder result = new StringBuilder();
+        int beginIndex = 0;
+        do {
+            int endIndex = matcher.start();
+            if (beginIndex < endIndex)
+                result.append(s.substring(beginIndex, endIndex));
+            char c = matcher.group().charAt(0);
+            result.append('\\');
+            switch (c) {
+            case '\b': // BACKSPACE (BS)
+                result.append('b');
+                break;
+            case '\t': // CHARACTER TABULATION (HT)
+                result.append('t');
+                break;
+            case '\n': // LINE FEED (LF)
+                result.append('n');
+                break;
+            case 0x000b: // \v / LINE TABULATION (VT)
+                result.append('v');
+                break;
+            case '\f': // FORM FEED (FF)
+                result.append('f');
+                break;
+            case '\r': // CARRIAGE RETURN (CR)
+                result.append('r');
+                break;
+            case '"': // QUOTATION MARK
+            case '\'': // APOSTROPHE
+            case '\\': // REVERSE SOLIDUS
+                result.append(c);
+                break;
+            default:
+                result.append(String.format("u%04x", (int) c));
+                break;
+            }
+            beginIndex = matcher.end();
+        } while (matcher.find(beginIndex));
+        if (beginIndex < s.length())
+            result.append(s.substring(beginIndex));
         return result.toString();
     }
 }

@@ -55,14 +55,18 @@ public class SubCommandMap {
         register(new IsChecked());
         register(new IsConfirmationPresent());
         register(new IsCookiePresent());
-        register(new IsEditable());
+        IsEditable isEditable = new IsEditable();
+        register(isEditable);
+        register(isEditable, "isElementEditable");
         register(new IsElementPresent());
         register(new IsNativeAlertPresent());
         register(new IsOrdered());
         register(new IsPromptPresent());
         register(new IsSomethingSelected());
         register(new IsTextPresent());
-        register(new IsVisible());
+        IsVisible isVisible = new IsVisible();
+        register(isVisible);
+        register(isVisible, "isElementVisible");
 
         for (MouseEventType type : MouseEventType.values())
             register(new MouseEventHandler(type));

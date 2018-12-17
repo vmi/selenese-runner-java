@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese.utils;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -12,6 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.runner.model.utils.CommandJs;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
@@ -86,18 +85,26 @@ public class CommandDumper {
      * @param args command line parameters.
      */
     public static void main(String[] args) {
-        Map<String, String> commandInfo = new HashMap<>();
-        addCommandInformationFromSubCommandMap(commandInfo);
-        addCommandInformationFromCommandFactory(commandInfo);
         if (args.length == 0) {
+            Map<String, String> commandInfo = new HashMap<>();
+            addCommandInformationFromSubCommandMap(commandInfo);
+            addCommandInformationFromCommandFactory(commandInfo);
             commandInfo.entrySet().stream()
                 .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
+            CommandFactory commandFactory = new CommandFactory();
             CommandJs commandJs = CommandJs.load();
-            List<String> list = new ArrayList<>(commandJs.getCommandList().keySet());
-            int width = list.stream().mapToInt(cmd -> cmd.length()).max().getAsInt();
-            list.forEach(cmd -> System.out.printf("%-" + width + "s %s\n", cmd, commandInfo.containsKey(cmd) ? "OK" : "Missing"));
+            System.out.println("* Supported status of Selenium IDE commands:");
+            commandJs.getCommandList().keySet().forEach(name -> {
+                boolean exists = true;
+                try {
+                    commandFactory.newCommand(-1, name);
+                } catch (SeleneseRunnerRuntimeException e) {
+                    exists = false;
+                }
+                System.out.printf("  [%s] %s%n", exists ? "OK" : "--", name);
+            });
         }
     }
 }

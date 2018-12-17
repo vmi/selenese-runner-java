@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Form Test</title>
+  <script type="text/javascript">
+    function pageLoaded() {
+      window.setTimeout(enableEditable, 1000);
+    }
+    function enableEditable() {
+      var text = document.getElementById("text");
+      text.disabled = false;
+      console.log("to editable.");
+    }
+  </script>
+</head>
+<body onload="pageLoaded()">
+  <h1>Form Test</h1>
+  <hr>
+  <form id="form" name="form" action="form_posted.html" method="POST" target="_top">
+    <input id="text" name="text" class="simple" disabled><input type="submit" class="simple">
+  </form>
+</body>
+</html>

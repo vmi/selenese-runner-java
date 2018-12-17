@@ -1,25 +1,18 @@
-package jp.vmi.selenium.selenese.side;
+package jp.vmi.selenium.runner.model.side;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import jp.vmi.selenium.selenese.InvalidSeleneseException;
-import jp.vmi.selenium.selenese.parser.ParserUtils;
+import jp.vmi.selenium.runner.model.IProject;
 
 /**
  * parsed side format data.
  */
-@SuppressWarnings("javadoc")
-public class Side {
+public class SideProject implements IProject<SideSuite, SideTest, SideCommand> {
 
     private final String filename;
     private final String name;
@@ -29,58 +22,57 @@ public class Side {
     private final Map<String, SideSuite> suiteMap = new HashMap<>();
     private final Map<String, SideTest> testMap = new HashMap<>();
 
-    private Side(String filename, SideFile sideFile) {
+    SideProject(String filename, SideFile sideFile) {
         this.filename = filename;
         this.name = sideFile.getName();
         this.id = sideFile.getId();
         this.url = sideFile.getUrl();
         this.suites = sideFile.getSuites();
-        suites.stream().forEach(suite -> suiteMap.put(suite.getId(), suite));
         sideFile.getTests().stream().forEach(test -> testMap.put(test.getId(), test));
+        suites.stream().forEach(suite -> {
+            ListIterator<SideTest> iter = suite.getTests().listIterator();
+            while (iter.hasNext()) {
+                SideTest unresolved = iter.next();
+                SideTest resolved = testMap.get(unresolved.getId());
+                iter.set(resolved);
+            }
+            suiteMap.put(suite.getId(), suite);
+        });
     }
 
+    @Override
     public String getFilename() {
         return filename;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
 
+    @Override
     public List<SideSuite> getSuites() {
         return suites;
     }
 
+    @Override
     public Map<String, SideSuite> getSuiteMap() {
         return suiteMap;
     }
 
+    @Override
     public Map<String, SideTest> getTestMap() {
         return testMap;
-    }
-
-    /**
-     * Read side format data.
-     *
-     * @param filename filename of side format file. (only label)
-     * @param is input stream of side format file.
-     * @return SideFile data.
-     * @throws InvalidSeleneseException invalid selenese exception.
-     */
-    public static Side parse(String filename, InputStream is) throws InvalidSeleneseException {
-        try (Reader r = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-            return new Side(filename, new Gson().fromJson(r, SideFile.class));
-        } catch (IOException e) {
-            throw new InvalidSeleneseException(e, filename, ParserUtils.getNameFromFilename(filename));
-        }
     }
 
     /**

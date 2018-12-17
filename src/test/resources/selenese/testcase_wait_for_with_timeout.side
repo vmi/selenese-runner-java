@@ -1,0 +1,50 @@
+{
+  "id": "ee8c3d33-01bd-4891-8232-c52c2bd7017f",
+  "version": "1.1",
+  "name": "WaitFor test",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "d5bfd8b3-5f38-4bc5-a13c-f30e58336302",
+    "name": "WaitFor test",
+    "commands": [{
+      "id": "eb53d6ff-bb8e-48cb-b93c-e1155428da47",
+      "comment": "",
+      "command": "open",
+      "target": "/form_timeout.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4ec06dee-5b91-4d9a-8e69-35807762d6f8",
+      "comment": "",
+      "command": "assertNotEditable",
+      "target": "id=text",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b4e2b258-4db1-44d5-b886-c3293b599757",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=text",
+      "targets": [
+        ["id=text", "id"],
+        ["name=text", "name"],
+        ["css=#text", "css"],
+        ["css=#text", "css:finder"],
+        ["xpath=//input[@id='text']", "xpath:attributes"],
+        ["xpath=//form[@id='form']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "3000"
+    }]
+  }],
+  "suites": [{
+    "id": "7f9b7f54-10d0-4e58-bd90-e2b5e9decfe1",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["d5bfd8b3-5f38-4bc5-a13c-f30e58336302"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

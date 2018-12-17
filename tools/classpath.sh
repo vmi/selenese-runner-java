@@ -2,7 +2,7 @@
 
 set -eu
 
-cd $(dirname "$0")/..
+cd "$(dirname "$0")/.."
 
 # set classpath separator
 if [ "$OSTYPE" != "cygwin" ]; then
@@ -37,4 +37,4 @@ else
   mvn -Dmdep.outputFile="$cp_conf" dependency:build-classpath
   mv "$pom_xml_md5.new" "$pom_xml_md5"
 fi
-echo "target/classes${sep}target/test-classes${sep}$(< "$cp_conf")"
+echo "$PWD/target/classes${sep}$PWD/target/test-classes${sep}$(< "$cp_conf")"

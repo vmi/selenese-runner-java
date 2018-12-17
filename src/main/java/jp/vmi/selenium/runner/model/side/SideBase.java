@@ -1,4 +1,6 @@
-package jp.vmi.selenium.selenese.side;
+package jp.vmi.selenium.runner.model.side;
+
+import java.util.UUID;
 
 /**
  * base element of side format.
@@ -9,6 +11,11 @@ public abstract class SideBase {
     private String id;
     private String name;
 
+    public SideBase(boolean isGen) {
+        if (isGen)
+            id = UUID.randomUUID().toString();
+    }
+
     public String getId() {
         return id;
     }
@@ -17,16 +24,16 @@ public abstract class SideBase {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return Side.toJson(this);
+        return SideProject.toJson(this);
     }
 }

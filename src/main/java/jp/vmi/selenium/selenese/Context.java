@@ -11,18 +11,18 @@ import org.openqa.selenium.WrapsDriver;
 
 import jp.vmi.selenium.rollup.RollupRules;
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.javascript.JSLibrary;
 import jp.vmi.selenium.selenese.locator.WebDriverElementFinder;
 import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
-import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
 /**
  * Selenese Runner Context.
  */
-public interface Context extends WrapsDriver {
+public interface Context extends WrapsDriver, SubCommandMapProvider {
 
     /**
      * Prepare WebDriver.
@@ -117,6 +117,26 @@ public interface Context extends WrapsDriver {
     VarsMap getVarsMap();
 
     /**
+     * Get flow control state.
+     *
+     * @param command flow control command.
+     * @return flow control state.
+     */
+    default <T extends FlowControlState> T getFlowControlState(ICommand command) {
+        return null;
+    }
+
+    /**
+     * Set flow control state.
+     *
+     * @param command flow control command.
+     * @param state flow control state.
+     */
+    default <T extends FlowControlState> void setFlowControlState(ICommand command, T state) {
+        // no operation.
+    }
+
+    /**
      * Get rollup rules.
      *
      * @return RollupRules object.
@@ -179,13 +199,6 @@ public interface Context extends WrapsDriver {
      * @return cast from result of expr to Javascript Boolean.
      */
     boolean isTrue(String expr);
-
-    /**
-     * Get SubCommandMap instance.
-     *
-     * @return SubCommandMap instance.
-     */
-    SubCommandMap getSubCommandMap();
 
     /**
      * Get timeout for waiting. (ms)

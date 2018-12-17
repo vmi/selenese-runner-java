@@ -1,17 +1,30 @@
-package jp.vmi.selenium.selenese.side;
+package jp.vmi.selenium.runner.model.side;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import jp.vmi.selenium.runner.model.ICommand;
 
 /**
  * "command" element of side format.
  */
 @SuppressWarnings("javadoc")
-public class SideCommand {
+public class SideCommand implements ICommand {
 
     private String id;
     private String command;
     private String target;
+    private List<List<String>> targets = Collections.emptyList();
     private String value;
     private String comment;
 
+    public SideCommand(boolean isGen) {
+        if (isGen)
+            id = UUID.randomUUID().toString();
+    }
+
+    @Override
     public String getId() {
         return id;
     }
@@ -20,6 +33,7 @@ public class SideCommand {
         this.id = id;
     }
 
+    @Override
     public String getCommand() {
         return command;
     }
@@ -28,6 +42,7 @@ public class SideCommand {
         this.command = command;
     }
 
+    @Override
     public String getTarget() {
         return target;
     }
@@ -36,6 +51,15 @@ public class SideCommand {
         this.target = target;
     }
 
+    public List<List<String>> getTargets() {
+        return targets;
+    }
+
+    public void setTargets(List<List<String>> targets) {
+        this.targets = targets;
+    }
+
+    @Override
     public String getValue() {
         return value;
     }
@@ -44,6 +68,7 @@ public class SideCommand {
         this.value = value;
     }
 
+    @Override
     public String getComment() {
         return comment;
     }

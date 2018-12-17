@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.SubCommandMapProvider;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
 
@@ -110,7 +111,7 @@ public class CommandFactory implements ICommandFactory {
 
         // commands of selenium-ide-flowcontrol
         // https://github.com/davehunt/selenium-ide-flowcontrol
-        addConstructor(While.class);
+        addConstructor(While.class); // support Selenium IDE (TNG)
         addConstructor(EndWhile.class);
         addConstructor(AddCollection.class);
         addConstructor(AddToCollection.class);
@@ -119,6 +120,18 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(Label.class);
         addConstructor(Gotolabel.class, "gotoLabel");
         addConstructor(GotoIf.class);
+
+        // flow control commands of Selenium IDE (TNG)
+        addConstructor(If.class);
+        addConstructor(ElseIf.class);
+        addConstructor(Else.class);
+        addConstructor(End.class);
+        addConstructor(Do.class);
+        addConstructor(RepeatIf.class);
+        addConstructor(Times.class);
+
+        // Selenium IDE (TNG)
+        addConstructor(ExecuteScript.class);
 
         // commands for comment
         addConstructor(Comment.class);
@@ -129,27 +142,53 @@ public class CommandFactory implements ICommandFactory {
 
     private static final String AND_WAIT = "AndWait";
 
-    private static final Pattern COMMAND_PATTERN = Pattern.compile(
-        "(?:(assert|verify|waitFor)(Not)?|store)(?:(.+?)(?:(Not)?(Present))?)?",
-        Pattern.CASE_INSENSITIVE);
+    private static final String ASSERTION = "assertion";
+    private static final String STORE = "store";
+    private static final String TARGET1 = "target1";
+    private static final String TARGET2 = "target2";
+    private static final String NOT1 = "not1";
+    private static final String NOT2 = "not2";
 
-    private static final int ASSERTION = 1;
-    private static final int IS_INVERSE = 2;
-    private static final int TARGET = 3;
-    private static final int IS_PRESENT_INVERSE = 4;
-    private static final int PRESENT = 5;
+    private static final Pattern COMMAND_PATTERN = Pattern.compile(
+        "(?:(?<" + ASSERTION + ">assert|verify|waitFor)(?<" + NOT1 + ">Not)?|(?<" + STORE + ">store))"
+            + "(?:(?<" + TARGET1 + ">.+?)(?:(?<" + NOT2 + ">Not)?(?<" + TARGET2 + ">Editable|Present|Visible))?)?",
+        Pattern.CASE_INSENSITIVE);
 
     private final List<ICommandFactory> commandFactories = new ArrayList<>();
 
-    private Context context = null;
+    private SubCommandMapProvider subCommandMapProvider = null;
+
+    private static SubCommandMapProvider newSubCommandMapProvider() {
+        SubCommandMap subCommandMap = new SubCommandMap();
+        return () -> subCommandMap;
+    }
+
+    /**
+     * Constructor.
+     */
+    public CommandFactory() {
+        this(newSubCommandMapProvider());
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param subCommandMapProvider Sub command map supplier.
+     */
+    public CommandFactory(SubCommandMapProvider subCommandMapProvider) {
+        this.subCommandMapProvider = subCommandMapProvider;
+    }
 
     /**
      * Constructor.
      *
      * @param context Selenese Runner context.
+     *
+     * @deprecated use {@link #CommandFactory(SubCommandMapProvider)}.
      */
+    @Deprecated
     public CommandFactory(Context context) {
-        this.context = context;
+        this((SubCommandMapProvider) context);
     }
 
     /**
@@ -184,7 +223,7 @@ public class CommandFactory implements ICommandFactory {
         }
 
         // command supported by WebDriverCommandProcessor
-        SubCommandMap subCommandMap = context.getSubCommandMap();
+        SubCommandMap subCommandMap = subCommandMapProvider.getSubCommandMap();
         ISubCommand<?> subCommand = subCommandMap.get(realName);
         if (subCommand != null)
             return new BuiltInCommand(index, name, args, subCommand, andWait);
@@ -195,11 +234,12 @@ public class CommandFactory implements ICommandFactory {
         if (!matcher.matches())
             throw new SeleneseRunnerRuntimeException("No such command: " + name);
         String assertion = matcher.group(ASSERTION);
-        String target = matcher.group(TARGET);
+        String target = matcher.group(TARGET1);
         if (target == null)
             target = "Expression";
-        if (matcher.group(PRESENT) != null)
-            target += "Present";
+        String target2 = matcher.group(TARGET2);
+        if (target2 != null)
+            target += target2;
         boolean isBoolean = false;
         String getter = "get" + target;
         ISubCommand<?> getterSubCommand = subCommandMap.get(getter);
@@ -211,9 +251,9 @@ public class CommandFactory implements ICommandFactory {
             isBoolean = true;
         }
         if (assertion != null) {
-            boolean isInverse = matcher.group(IS_INVERSE) != null || matcher.group(IS_PRESENT_INVERSE) != null;
+            boolean isInverse = matcher.group(NOT1) != null || matcher.group(NOT2) != null;
             return new Assertion(index, name, args, assertion, getterSubCommand, isBoolean, isInverse);
-        } else { // Accessor
+        } else { // matcher.group(STORE) != null
             return new Store(index, name, args, getterSubCommand);
         }
     }

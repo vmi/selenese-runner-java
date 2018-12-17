@@ -8,10 +8,10 @@ import org.apache.commons.io.FilenameUtils;
 import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
 import jp.vmi.selenium.selenese.command.CommandList;
-import jp.vmi.selenium.selenese.command.EndLoop;
+import jp.vmi.selenium.selenese.command.BlockEnd;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
-import jp.vmi.selenium.selenese.command.StartLoop;
+import jp.vmi.selenium.selenese.command.BlockStart;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.CommandResultList;
@@ -20,7 +20,7 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
-import static jp.vmi.selenium.selenese.command.StartLoop.*;
+import static jp.vmi.selenium.selenese.command.BlockStart.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
 
 /**
@@ -39,8 +39,8 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
 
     private String baseURL = null;
 
-    private StartLoop currentStartLoop = NO_START_LOOP;
-    private final Deque<StartLoop> loopCommandStack = new ArrayDeque<>();
+    private BlockStart currentBlockStart = NO_BLOCK_START;
+    private final Deque<BlockStart> blockStack = new ArrayDeque<>();
     private final CommandList commandList = Binder.newCommandList();
     private final CommandResultList cresultList = new CommandResultList();
 
@@ -170,13 +170,14 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
      * @param command command.
      */
     public void addCommand(ICommand command) {
-        command.setStartLoop(currentStartLoop);
-        if (command instanceof StartLoop) {
-            loopCommandStack.push(currentStartLoop);
-            currentStartLoop = (StartLoop) command;
-        } else if (command instanceof EndLoop) {
-            currentStartLoop.setEndLoop((EndLoop) command);
-            currentStartLoop = loopCommandStack.pop();
+        command.setBlockStart(currentBlockStart);
+        if (command instanceof BlockEnd) {
+            currentBlockStart.setBlockEnd((BlockEnd) command);
+            currentBlockStart = blockStack.pop();
+        }
+        if (command instanceof BlockStart) {
+            blockStack.push(currentBlockStart);
+            currentBlockStart = (BlockStart) command;
         }
         commandList.add(command);
     }
