@@ -33,7 +33,7 @@
   [OK] else
   [OK] elseIf
   [OK] end
-  [--] executeScript
+  [OK] executeScript
   [--] executeAsyncScript
   [OK] editContent
   [OK] if
