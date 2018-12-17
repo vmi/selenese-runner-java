@@ -46,7 +46,7 @@ public class While extends BlockStartImpl {
         }
         if (!context.isTrue(curArgs[ARG_CONDITION])) {
             state.setAlreadyFinished(true);
-            context.getCommandListIterator().jumpToNextOf(blockEnd);
+            context.getCommandListIterator().jumpTo(blockEnd);
             return new Success("Break");
         } else {
             return new Success("Continue");

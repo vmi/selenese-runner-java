@@ -53,17 +53,17 @@ public class Times extends BlockStartImpl {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         TimesState state = context.getFlowControlState(this);
-        if (state != null) {
+        if (state != null && !state.isAlreadyFinished()) {
             state.incrementCount();
             if (state.isAlreadyFinished()) {
-                context.setFlowControlState(this, null);
-                context.getCommandListIterator().jumpToNextOf(blockEnd);
+                context.getCommandListIterator().jumpTo(blockEnd);
                 return new Success("Finished " + state.getTimes() + " times repitition");
             }
         } else {
             long times = ((Number) context.executeScript("return (" + curArgs[ARG_TIMES] + ")")).longValue();
             if (times <= 0) {
-                context.getCommandListIterator().jumpToNextOf(blockEnd);
+                context.setFlowControlState(this, new TimesState(0));
+                context.getCommandListIterator().jumpTo(blockEnd);
                 return new Success("Skip: times is " + times);
             }
             state = new TimesState(times);

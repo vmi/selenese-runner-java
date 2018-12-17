@@ -11,14 +11,6 @@ import static jp.vmi.selenium.selenese.result.Success.*;
  */
 public class Do extends BlockStartImpl {
 
-    private final FlowControlState state = new FlowControlState() {
-
-        @Override
-        public boolean isAlreadyFinished() {
-            return false;
-        }
-    };
-
     Do(int index, String name, String... args) {
         super(index, name, args);
     }
@@ -30,7 +22,7 @@ public class Do extends BlockStartImpl {
 
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
-        context.setFlowControlState(this, state);
+        context.setFlowControlState(this, FlowControlState.CONTINUED_STATE);
         return SUCCESS;
     }
 }

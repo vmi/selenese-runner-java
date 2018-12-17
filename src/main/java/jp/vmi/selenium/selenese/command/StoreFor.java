@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.FlowControlState;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
@@ -19,12 +20,19 @@ public class StoreFor extends BlockStartImpl {
     }
 
     @Override
+    public boolean isLoopBlock() {
+        return true;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String value = context.getCollectionMap().pollFromCollection(curArgs[ARG_COLLECTION_NAME]);
         if (value == null) {
-            context.getCommandListIterator().jumpToNextOf(blockEnd);
+            context.setFlowControlState(this, FlowControlState.FINISHED_STATE);
+            context.getCommandListIterator().jumpTo(blockEnd);
             return new Success("Break");
         } else {
+            context.setFlowControlState(this, FlowControlState.CONTINUED_STATE);
             context.getVarsMap().put(curArgs[ARG_VAR_NAME], value);
             return new Success("Continue");
         }
