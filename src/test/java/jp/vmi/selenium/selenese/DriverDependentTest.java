@@ -464,6 +464,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testSideSetWindowSize() {
+        assumeNot(PHANTOMJS);
         execute("testcase_setwindowsize.side");
         assertThat(result, is(instanceOf(Success.class)));
     }

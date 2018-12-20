@@ -47,6 +47,6 @@ public class Assert extends AbstractCommand {
         if (isExpected(value, expected))
             return SUCCESS;
         else
-            return new Failure(String.format("Assertion failed (Result: [%s] / %sExpected: [%s])", value, expected));
+            return new Failure(String.format("Assertion failed (Result: [%s] / Expected: [%s])", value, expected));
     }
 }
