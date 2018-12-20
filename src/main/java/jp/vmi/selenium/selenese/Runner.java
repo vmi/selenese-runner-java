@@ -190,7 +190,12 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return ps;
     }
 
-    private TakesScreenshot getTakesScreenshot() {
+    /**
+     * Get TakesScreenshot instance.
+     *
+     * @return TakesScreenshot instance.
+     */
+    protected TakesScreenshot getTakesScreenshot() {
         if (driver instanceof TakesScreenshot) {
             return (TakesScreenshot) driver;
         } else if (driver instanceof RemoteWebDriver && ((HasCapabilities) driver).getCapabilities().is(TAKES_SCREENSHOT)) {
@@ -200,11 +205,18 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    private String takeScreenshot(TakesScreenshot tss, File file) throws WebDriverException {
-        return takeScreenshot(tss, file, false);
-    }
-
-    private String takeScreenshot(TakesScreenshot tss, File file, boolean entirePage) throws WebDriverException {
+    /**
+     * Take screenshot.
+     *
+     * @param file file instance.
+     * @param entirePage true if take screenshot of entire page.
+     * @throws UnsupportedOperationException throw this exception if {@code getTakesScreenshot()} returns null.
+     * @throws WebDriverException throw this exception if it fails to get the screenshot.
+     */
+    protected String takeScreenshot(File file, boolean entirePage) throws UnsupportedOperationException, WebDriverException {
+        TakesScreenshot tss = getTakesScreenshot();
+        if (tss == null)
+            throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         file = file.getAbsoluteFile();
         try {
             // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
@@ -248,37 +260,62 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return path;
     }
 
+    /**
+     * Normalize filename for screenshot.
+     *
+     * @param filename filename for screenshot.
+     * @return normalized file instance.
+     */
+    protected File normalizeScreenshotFilename(String filename) {
+        File file = new File(PathUtils.normalize(filename));
+        if (screenshotDir != null)
+            return new File(screenshotDir, file.getName());
+        else
+            return file;
+    }
+
+    /**
+     * Get filename for screenshot all.
+     *
+     * @param prefix filename prefix.
+     * @param index filename index.
+     * @return File instance for screenshot all.
+     */
+    protected File getFilenameForScreenshotAll(String prefix, int index) {
+        String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        return new File(screenshotAllDir, filename);
+    }
+
+    /**
+     * Get filename for screenshot on fail.
+     *
+     * @param prefix filename prefix.
+     * @param index filename index.
+     * @return File instance for screenshot on fail.
+     */
+    protected File getFilenameForScreenshotOnFail(String prefix, int index) {
+        String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        return new File(screenshotOnFailDir, filename);
+    }
+
     @Override
     public String takeEntirePageScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
-        return takeScreenshot(filename, true);
+        return takeScreenshot(normalizeScreenshotFilename(filename), true);
     }
 
     @Override
     public String takeScreenshot(String filename) throws WebDriverException, UnsupportedOperationException {
-        return takeScreenshot(filename, false);
-    }
-
-    private String takeScreenshot(String filename, boolean entirePage) throws WebDriverException, UnsupportedOperationException {
-        TakesScreenshot tss = getTakesScreenshot();
-        if (tss == null)
-            throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
-        File file = new File(PathUtils.normalize(filename));
-        if (screenshotDir != null)
-            file = new File(screenshotDir, file.getName());
-        return takeScreenshot(tss, file, entirePage);
+        return takeScreenshot(normalizeScreenshotFilename(filename), false);
     }
 
     @Override
     public String takeScreenshotAll(String prefix, int index) {
         if (screenshotAllDir == null)
             return null;
-        TakesScreenshot tss = getTakesScreenshot();
-        if (tss == null)
-            return null;
-        String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
-            File file = new File(screenshotAllDir, filename);
-            return takeScreenshot(tss, file);
+            return takeScreenshot(getFilenameForScreenshotAll(prefix, index), false);
+        } catch (UnsupportedOperationException e) {
+            return null;
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;
@@ -289,13 +326,10 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public String takeScreenshotOnFail(String prefix, int index) {
         if (screenshotOnFailDir == null)
             return null;
-        TakesScreenshot tss = getTakesScreenshot();
-        if (tss == null)
-            return null;
-        String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
         try {
-            File file = new File(screenshotOnFailDir, filename);
-            return takeScreenshot(tss, file, true);
+            return takeScreenshot(getFilenameForScreenshotOnFail(prefix, index), true);
+        } catch (UnsupportedOperationException e) {
+            return null;
         } catch (WebDriverException e) {
             log.warn("- failed to capture screenshot: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;

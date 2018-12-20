@@ -17,6 +17,7 @@ Selenese Runner Java Relase Note
     * `waitForElementVisible`
     * `waitForElementNotVisible`
     * `executeScript`
+* Rfine screenshot handling. (#283)
 
 ### 3.19.2
 
