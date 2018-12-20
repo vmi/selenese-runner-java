@@ -9,7 +9,7 @@ Selenese Runner Java Relase Note
     * `if` ... `elseIf` ... `else` ... `end`
     * `times` ... `end`
     * `while` ... `end`
-* Add new commands of SIDE format: (the comment by @xiaospider in #278, PR #288)
+* Add new commands of SIDE format: (the comment by @xiaospider in #278, #285, PR #288)
     * `assert`
     * `verify`
     * `waitForElementEditable`
@@ -17,7 +17,8 @@ Selenese Runner Java Relase Note
     * `waitForElementVisible`
     * `waitForElementNotVisible`
     * `executeScript`
-* Rfine screenshot handling. (#283)
+    * `setWindowSize`
+* Refine screenshot handling. (#283)
 
 ### 3.19.2
 

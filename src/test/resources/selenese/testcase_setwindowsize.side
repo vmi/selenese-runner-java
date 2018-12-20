@@ -1,0 +1,63 @@
+{
+  "id": "302af604-035a-41f6-96c9-b4c386896608",
+  "version": "1.1",
+  "name": "SetWindowSize",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "30e16afb-e10c-40c9-b65c-d5c42643aa5e",
+    "name": "SetWindowSize",
+    "commands": [{
+      "id": "12f859f6-cd07-40f1-a3ad-4eedf41a1b04",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c347105-ee89-4b87-a07b-49693719be01",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "640x480",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "49c7e9ef-b0f2-44a2-ae3c-26520b8f177c",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.outerWidth",
+      "targets": [],
+      "value": "width"
+    }, {
+      "id": "93feb76f-7915-4b30-a9fe-08ff4265d86e",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.outerHeight",
+      "targets": [],
+      "value": "height"
+    }, {
+      "id": "9a12b5e6-d583-4c8b-a234-0130a32978a2",
+      "comment": "",
+      "command": "assert",
+      "target": "width",
+      "targets": [],
+      "value": "640"
+    }, {
+      "id": "17610aa6-2016-4cca-9124-163231c7ffee",
+      "comment": "",
+      "command": "assert",
+      "target": "height",
+      "targets": [],
+      "value": "480"
+    }]
+  }],
+  "suites": [{
+    "id": "6cb04853-6692-4ba0-97b4-fb2d0f7a53c9",
+    "name": "SetWindowSize",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["30e16afb-e10c-40c9-b65c-d5c42643aa5e"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

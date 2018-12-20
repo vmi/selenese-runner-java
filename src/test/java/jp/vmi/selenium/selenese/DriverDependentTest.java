@@ -463,6 +463,12 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     }
 
     @Test
+    public void testSideSetWindowSize() {
+        execute("testcase_setwindowsize.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
     public void testIE() {
         assumeThat(currentFactoryName, is(IE));
         execute("testcase_ie");

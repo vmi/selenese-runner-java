@@ -54,7 +54,7 @@
   [OK] close
   [OK] sendKeys
   [OK] setSpeed
-  [--] setWindowSize
+  [OK] setWindowSize
   [OK] store
   [OK] storeAttribute
   [OK] storeText
