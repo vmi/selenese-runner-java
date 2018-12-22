@@ -85,6 +85,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private boolean isInteractive = false;
     private Boolean isW3cAction = null;
     private int timeout = 30 * 1000; /* ms */
+    private int retries = 0;
+    private int maxRetries = 0;
     private long initialSpeed = 0; /* ms */
     private long speed = 0; /* ms */
     private int screenshotScrollTimeout = 100; /* ms */
@@ -575,6 +577,29 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (driver != null)
             setDriverTimeout();
         log.info("Timeout: {} ms", timeout);
+    }
+
+    @Override
+    public int getRetries() {
+        return retries;
+    }
+
+    @Override
+    public void setRetries(int retries) {
+        this.retries = retries;
+        if (retries > 0)
+          log.info("Retry: {}", retries);
+    }
+
+    @Override
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+
+    @Override
+    public void setMaxRetries(int maxRetries) {
+        this.maxRetries = maxRetries;
+        log.info("MaxRetries: {}", maxRetries);
     }
 
     /**

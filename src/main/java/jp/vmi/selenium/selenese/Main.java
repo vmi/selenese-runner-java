@@ -217,6 +217,10 @@ public class Main {
         if (timeout <= 0)
             throw new IllegalArgumentException("Invalid timeout value. (" + config.getTimeout() + ")");
         runner.setTimeout(timeout);
+        int maxRetries = NumberUtils.toInt(config.getMaxRetries(), DEFAULT_MAX_RETRIES);
+        if ((maxRetries < 0) || (maxRetries > 10))
+            throw new IllegalArgumentException("Invalid value: 0 <= maxRetries <= 10. (" + config.getMaxRetries() + ")");
+        runner.setMaxRetries(maxRetries);
         int speed = NumberUtils.toInt(config.getSetSpeed(), 0);
         if (speed < 0)
             throw new IllegalArgumentException("Invalid speed value. (" + config.getSetSpeed() + ")");

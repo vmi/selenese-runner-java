@@ -149,7 +149,17 @@ public class CommandList implements Iterable<ICommand> {
                 int prevSSIndex = (ss == null) ? 0 : ss.size();
                 String[] curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
                 evalCurArgs(context, curArgs);
-                Result result = doCommand(context, command, curArgs);
+                Result result = null;
+                context.setRetries(0);
+                do {
+                    result = doCommand(context, command, curArgs);
+                    if (result.isSuccess())
+                        break;
+		    if (context.getMaxRetries() > 0) {
+                        context.setRetries(context.getRetries() + 1);
+                        context.waitSpeed();
+		    }
+                } while ((context.getMaxRetries() > 0) && (context.getRetries() < context.getMaxRetries()));
                 if (result.isAborted())
                     isContinued = false;
                 else

@@ -337,4 +337,32 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
         T result = (T) ((JavascriptExecutor) getWrappedDriver()).executeScript(script, args);
         return result;
     }
+
+    /**
+     * Get number of actually used retries.
+     *
+     * @return number of actually used retries.
+     */
+    int getRetries();
+
+    /**
+     * Update the actual number of used retries.
+     *
+     * @param retries
+     */
+    void setRetries(int retries);
+
+    /**
+     * Get maximum number of retries allowed for a given test.
+     *
+     * @return the maximum number of retries allowed for a given test.
+     */
+    int getMaxRetries();
+
+    /**
+     * Set the maximum number of retries allowed for a given test.
+     *
+     * @param maxRetries
+     */
+    void setMaxRetries(int maxRetries);
 }

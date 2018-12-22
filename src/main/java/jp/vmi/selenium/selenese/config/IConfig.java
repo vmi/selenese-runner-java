@@ -49,6 +49,7 @@ public interface IConfig {
     public static final String XML_RESULT = "xml-result";
     public static final String HTML_RESULT = "html-result";
     public static final String TIMEOUT = "timeout";
+    public static final String MAXRETRIES = "max-retries";
     public static final String SET_SPEED = "set-speed";
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
@@ -182,4 +183,6 @@ public interface IConfig {
     boolean isHelp();
 
     String getAlertsPolicy();
+
+    String getMaxRetries();
 }

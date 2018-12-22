@@ -39,6 +39,8 @@ public class DefaultConfig implements IConfig {
     public static final int DEFAULT_TIMEOUT_MILLISEC_N = 30000;
     public static final String DEFAULT_TIMEOUT_MILLISEC = Integer.toString(DEFAULT_TIMEOUT_MILLISEC_N);
 
+    public static final int DEFAULT_MAX_RETRIES = 0;
+
     // parts of help message.
     private static final String[] HEADER = {
         "Selenese script interpreter implemented by Java.",
@@ -175,6 +177,10 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--" + TIMEOUT, aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
     private String timeout;
+
+    @Option(name = "--" + MAXRETRIES, metaVar = "<maxRetries>",
+        usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
+    private String maxRetries;
 
     @Option(name = "--" + SET_SPEED, metaVar = "<speed>", usage = "same as executing setSpeed(ms) command first.")
     private String setSpeed;
@@ -523,6 +529,15 @@ public class DefaultConfig implements IConfig {
 
     public void setTimeout(String timeout) {
         this.timeout = timeout;
+    }
+
+    @Override
+    public String getMaxRetries() {
+        return maxRetries != null ? maxRetries : (parentOptions != null ? parentOptions.getMaxRetries() : null);
+    }
+
+    public void setMaxRetries(String maxRetries) {
+        this.maxRetries = maxRetries;
     }
 
     @Override
