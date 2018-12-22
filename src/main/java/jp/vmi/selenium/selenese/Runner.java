@@ -212,6 +212,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      *
      * @param file file instance.
      * @param entirePage true if take screenshot of entire page.
+     * @return path of screenshot or null.
      * @throws UnsupportedOperationException throw this exception if {@code getTakesScreenshot()} returns null.
      * @throws WebDriverException throw this exception if it fails to get the screenshot.
      */

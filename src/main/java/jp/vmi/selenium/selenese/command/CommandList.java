@@ -25,9 +25,9 @@ public class CommandList implements Iterable<ICommand> {
     private final List<ICommand> commandList = new ArrayList<>();
 
     /**
-     * Returns <tt>true</tt> if this list contains no elements.
+     * Returns {@code true} if this list contains no elements.
      *
-     * @return <tt>true</tt> if this list contains no elements
+     * @return {@code true} if this list contains no elements.
      */
     public boolean isEmpty() {
         return commandList.isEmpty();
@@ -35,10 +35,10 @@ public class CommandList implements Iterable<ICommand> {
 
     /**
      * Returns the number of elements in this list.  If this list contains
-     * more than <tt>Integer.MAX_VALUE</tt> elements, returns
-     * <tt>Integer.MAX_VALUE</tt>.
+     * more than {@code Integer.MAX_VALUE} elements, returns
+     * {@code Integer.MAX_VALUE}.
      *
-     * @return the number of elements in this list
+     * @return the number of elements in this list.
      */
     public int size() {
         return commandList.size();

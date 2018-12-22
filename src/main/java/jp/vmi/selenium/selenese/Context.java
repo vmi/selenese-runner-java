@@ -120,6 +120,7 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
      * Get flow control state.
      *
      * @param command flow control command.
+     * @param <T> the class implements FlowControlState.
      * @return flow control state.
      */
     default <T extends FlowControlState> T getFlowControlState(ICommand command) {
@@ -131,6 +132,7 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
      *
      * @param command flow control command.
      * @param state flow control state.
+     * @param <T> the class implements FlowControlState.
      */
     default <T extends FlowControlState> void setFlowControlState(ICommand command, T state) {
         // no operation.
@@ -380,7 +382,7 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
     /**
      * Set the maximum number of retries allowed for a given test.
      *
-     * @param maxRetries
+     * @param maxRetries the maximum number of retries allowed for a given test.
      */
     default void setMaxRetries(int maxRetries) {
     }
