@@ -9,8 +9,10 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.openqa.selenium.WebDriver;
 
+import jp.vmi.selenium.selenese.command.AbstractCommand;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
 import jp.vmi.selenium.selenese.config.IConfig;
+import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
@@ -18,6 +20,7 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static jp.vmi.selenium.selenese.result.Success.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -67,5 +70,32 @@ public class RunnerTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(driver);
         runner.run(tmp.getPath(), tmp.getPath());
+    }
+
+    @Test
+    public void testRetries() {
+        Runner runner = new Runner();
+        runner.setMaxRetries(3);
+        runner.setDriver(driver);
+        TestCase testCase = Binder.newTestCase(SourceType.SIDE, "", "testRetries", wsr.getBaseURL());
+        testCase.addCommand(new AbstractCommand(1, "Error2Count", new String[0]) {
+            private int count = 0;
+
+            @Override
+            protected Result executeImpl(Context context, String... curArgs) {
+                if (++count <= 2)
+                    return new Error("Error3Count: " + count);
+                else
+                    return SUCCESS;
+            }
+        });
+        testCase.addCommand(new AbstractCommand(2, "ErrorAlways", new String[0]) {
+            @Override
+            protected Result executeImpl(Context context, String... curArgs) {
+                return new Error("ErrorAlways");
+            }
+        });
+        Result result = runner.execute(testCase);
+        assertThat(result.getMessage(), is("Error: ErrorAlways"));
     }
 }

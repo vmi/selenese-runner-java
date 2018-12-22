@@ -580,15 +580,23 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     @Override
-    public int getRetries() {
-        return retries;
+    public void resetRetries() {
+        retries = 1;
     }
 
     @Override
-    public void setRetries(int retries) {
-        this.retries = retries;
-        if (retries > 0)
-          log.info("Retry: {}", retries);
+    public void incrementRetries() {
+        retries++;
+    }
+
+    @Override
+    public boolean hasReachedMaxRetries() {
+        return retries >= maxRetries;
+    }
+
+    @Override
+    public int getRetries() {
+        return retries;
     }
 
     @Override
@@ -599,7 +607,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setMaxRetries(int maxRetries) {
         this.maxRetries = maxRetries;
-        log.info("MaxRetries: {}", maxRetries);
+        log.info("Max retries: {}", maxRetries);
     }
 
     /**

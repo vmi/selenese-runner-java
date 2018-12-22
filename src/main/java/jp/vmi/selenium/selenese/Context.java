@@ -339,30 +339,49 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
     }
 
     /**
+     * Reset number of actually used retries.
+     */
+    default void resetRetries() {
+    }
+
+    /**
+     * Increment number of actually used retries.
+     */
+    default void incrementRetries() {
+    }
+
+    /**
+     * True if number of actually used retries has reached maximum number of retries.
+     *
+     * @return true if retries has reached max retries.
+     */
+    default boolean hasReachedMaxRetries() {
+        return true;
+    }
+
+    /**
      * Get number of actually used retries.
      *
      * @return number of actually used retries.
      */
-    int getRetries();
-
-    /**
-     * Update the actual number of used retries.
-     *
-     * @param retries
-     */
-    void setRetries(int retries);
+    default int getRetries() {
+        return 0;
+    }
 
     /**
      * Get maximum number of retries allowed for a given test.
      *
      * @return the maximum number of retries allowed for a given test.
      */
-    int getMaxRetries();
+    default int getMaxRetries() {
+        return 0;
+    }
 
     /**
      * Set the maximum number of retries allowed for a given test.
      *
      * @param maxRetries
      */
-    void setMaxRetries(int maxRetries);
+    default void setMaxRetries(int maxRetries) {
+    }
 }

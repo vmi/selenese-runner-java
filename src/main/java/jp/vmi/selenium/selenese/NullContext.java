@@ -187,28 +187,4 @@ public class NullContext implements Context {
     public AlertActionListener getNextNativeAlertActionListener() {
         return null;
     }
-
-    @Override
-    public int getRetries() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void setRetries(int retries) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public int getMaxRetries() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void setMaxRetries(int maxRetries) {
-        // TODO Auto-generated method stub
-
-    }
 }

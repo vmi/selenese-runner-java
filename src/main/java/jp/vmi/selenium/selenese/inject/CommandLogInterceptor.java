@@ -64,7 +64,12 @@ public class CommandLogInterceptor extends AbstractDoCommandInterceptor {
         LogRecorder clr = context.getCurrentTestCase().getLogRecorder();
         String indent = StringUtils.repeat("  ", commandSequence.getLevel() - 1);
         String cmdStr = command.toString();
-        String firstMsg = indent + "<" + commandSequence + "> " + cmdStr;
+        int retries = context.getRetries();
+        int maxRetries = context.getMaxRetries();
+        StringBuilder firstMsgBuf = new StringBuilder(indent).append('<').append(commandSequence).append("> ");
+        if (retries >= 2)
+            firstMsgBuf.append("(Retries:").append(retries).append('/').append(maxRetries).append(") ");
+        String firstMsg = firstMsgBuf.append(cmdStr).toString();
         log.info(firstMsg);
         if (clr != null)
             clr.info(firstMsg);
