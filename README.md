@@ -74,6 +74,7 @@ Usage
      --xml-result <dir>                      : output XML JUnit results to specified directory.
      --html-result <dir>                     : output HTML results to specified directory.
      --timeout (-t) <timeout>                : set timeout (ms) for waiting. (default: 30000 ms)
+     --max-retries <maxRetries>              : set maximum number of retries for a given step. (default: 0)
      --set-speed <speed>                     : same as executing setSpeed(ms) command first.
      --height <height>                       : set initial height. (excluding mobile)
      --width <width>                         : set initial width. (excluding mobile)

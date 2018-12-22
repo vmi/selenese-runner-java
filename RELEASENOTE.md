@@ -19,6 +19,7 @@ Selenese Runner Java Relase Note
     * `executeScript`
     * `setWindowSize`
 * Refine screenshot handling. (#283)
+* Add new option `--max-retries`. (PR #286 by @jbrazile with refactoring by @vmi)
 
 ### 3.19.2
 
