@@ -8,6 +8,19 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 public interface ITestTarget {
 
     /**
+     * Selenese lifecycle types.
+     */
+    @SuppressWarnings("javadoc")
+    public enum Lifecycle {
+        FINAL, DRAFT
+    }
+
+    /**
+     * Flag for triggering LIFECYCLE_DRAFT in a selenese test.
+     */
+    public static final String FLAG_LIFECYCLE_DRAFT = "### lifecycle=" + Lifecycle.DRAFT.name() + " ###";
+
+    /**
      * Get test-target file base name.
      *
      * For example, return "def" when file name is "/abc/def.html".
@@ -36,4 +49,18 @@ public interface ITestTarget {
      * @return stop watch.
      */
     StopWatch getStopWatch();
+
+    /**
+     * Get the lifecycle type.
+     *
+     * @return lifecycle type.
+     */
+    Lifecycle getLifecycle();
+
+    /**
+     * Set the lifecycle type.
+     *
+     * @param lifecycle
+     */
+    void setLifecycle(Lifecycle lifecycle);
 }

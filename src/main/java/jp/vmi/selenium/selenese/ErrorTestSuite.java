@@ -12,6 +12,7 @@ public class ErrorTestSuite extends ErrorSource implements ITreedFileGenerator, 
 
     private ITreedFileGenerator parent = null;
     private int index = 0;
+    private Lifecycle lifecycle = Lifecycle.FINAL;
 
     @Override
     public ErrorTestSuite initialize(String filename, InvalidSeleneseException e) {
@@ -21,6 +22,16 @@ public class ErrorTestSuite extends ErrorSource implements ITreedFileGenerator, 
     @Override
     public Type getType() {
         return Type.TEST_SUITE;
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycle;
+    }
+
+    @Override
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = lifecycle;
     }
 
     @Override

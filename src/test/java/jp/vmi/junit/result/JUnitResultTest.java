@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import jp.vmi.junit.result.ITestTarget.Lifecycle;
 import jp.vmi.selenium.selenese.ITreedFileGenerator;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
@@ -103,6 +104,7 @@ public class JUnitResultTest {
         final ITestSuite testSuite = new ITestSuite() {
             private int index = 0;
             private final StopWatch stopWatch = new StopWatch();
+            private Lifecycle lifecycle = Lifecycle.FINAL;
 
             @Override
             public ITreedFileGenerator getParent() {
@@ -117,6 +119,16 @@ public class JUnitResultTest {
             @Override
             public void setIndex(int index) {
                 this.index = index;
+            }
+
+            @Override
+            public Lifecycle getLifecycle() {
+                return lifecycle;
+            }
+
+            @Override
+            public void setLifecycle(Lifecycle lifecycle) {
+                this.lifecycle = lifecycle;
             }
 
             @Override
@@ -139,12 +151,13 @@ public class JUnitResultTest {
                 return stopWatch;
             }
         };
-        ITestCase[] testCases = new ITestCase[4];
+        ITestCase[] testCases = new ITestCase[5];
         for (int i = 0; i < testCases.length; i++) {
             final int num = i;
             testCases[i] = new ITestCase() {
                 private final StopWatch stopWatch = new StopWatch();
                 private final LogRecorder logRecorder = new LogRecorder(System.out);
+                private Lifecycle lifecycle = Lifecycle.FINAL;
 
                 @Override
                 public String getBaseName() {
@@ -154,6 +167,16 @@ public class JUnitResultTest {
                 @Override
                 public String getName() {
                     return "test-case" + num;
+                }
+
+                @Override
+                public Lifecycle getLifecycle() {
+                    return lifecycle;
+                }
+
+                @Override
+                public void setLifecycle(Lifecycle lifecycle) {
+                    this.lifecycle = lifecycle;
                 }
 
                 @Override
@@ -228,6 +251,14 @@ public class JUnitResultTest {
         sw.start();
         sw.end();
         jur.endTestCase(tc);
+        tc = testCases[4];
+        tc.setLifecycle(Lifecycle.DRAFT);
+        sw = tc.getStopWatch();
+        jur.startTestCase(testSuite, tc);
+        sw.start();
+        jur.setFailure(tc, "defailt4", "trace4");
+        sw.end();
+        jur.endTestCase(tc);
         testSuite.getStopWatch().end();
         jur.endTestSuite(testSuite);
         jur.generateFailsafeSummary();
@@ -244,7 +275,7 @@ public class JUnitResultTest {
 
         // test-case test.
         NodeList caseResults = getChild(suiteResult, "testcase", NODESET);
-        assertThat("test-case:count", caseResults.getLength(), is(4));
+        assertThat("test-case:count", caseResults.getLength(), is(5));
 
         Element caseResult;
         Element error;
@@ -303,7 +334,18 @@ public class JUnitResultTest {
         skipped = getChild(caseResult, "skipped", BOOLEAN);
         assertThat("test-case[3]:error", error, is(nullValue()));
         assertThat("test-case[3]:failure", failure, is(nullValue()));
-        assertThat("test-case[2]:skipped", skipped, is(TRUE));
+        assertThat("test-case[3]:skipped", skipped, is(TRUE));
+
+        // test-case 4 test.
+        caseResult = (Element) caseResults.item(4);
+        assertThat("test-case[4]:name", caseResult.getAttribute("name"), is("test-case4"));
+
+        error = getChild(caseResult, "error", NODE);
+        failure = getChild(caseResult, "failure", NODE);
+        skipped = getChild(caseResult, "skipped", BOOLEAN);
+        assertThat("test-case[4]:error", error, is(nullValue()));
+        assertThat("test-case[4]:failure", failure, is(nullValue()));
+        assertThat("test-case[4]:skipped", skipped, is(TRUE));
 
         // failsafe summary.
         File summaryFile = new File(tmp.getRoot(), JUnitResult.FAILSAFE_SUMMARY_FILENAME);
@@ -314,7 +356,7 @@ public class JUnitResultTest {
         assertThat("failsafe-summary/completed", (String) getChild(summary, "completed", STRING), is("3"));
         assertThat("failsafe-summary/errors", (String) getChild(summary, "errors", STRING), is("1"));
         assertThat("failsafe-summary/failures", (String) getChild(summary, "failures", STRING), is("1"));
-        assertThat("failsafe-summary/skipped", (String) getChild(summary, "skipped", STRING), is("1"));
+        assertThat("failsafe-summary/skipped", (String) getChild(summary, "skipped", STRING), is("2"));
         assertThat("failsafe-summary/failureMessage", (String) getChild(summary, "failureMessage", STRING), isEmptyString());
     }
 

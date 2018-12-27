@@ -272,6 +272,22 @@ You can use variables in FILENAME.
 
 See [the test-case example](src/test/resources/selenese/testcase_include.html).
 
+Tests in DRAFT mode
+-------------------
+
+Sometimes tests exist before the application-under-test has completely
+implemented the feature being tested (in Test-Driven-Development, for
+example). You can mark such tests to be in DRAFT (as opposed to FINAL)
+mode, whereby they are executed normally and their results are shown.
+But for build purposes, they will be accounted as "skipped" rather than
+"success" or "fail" - thereby allowing builds including them to succeed.
+
+This is done by way of a ###-tagged "lifecycle" directive in a comment:
+
+	<!-- ### lifecycle=DRAFT ### -->
+
+The default lifecycle state is FINAL.
+
 License
 -------
 

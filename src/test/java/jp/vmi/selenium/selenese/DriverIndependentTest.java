@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 
+import jp.vmi.junit.result.ITestTarget.Lifecycle;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
@@ -125,5 +126,16 @@ public class DriverIndependentTest extends TestCaseTestBase {
     public void issue163() {
         execute("issue163");
         assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void lifecycleDraft() {
+        Runner runner = new Runner();
+        runner.setDriver(driver);
+        CommandFactory cf = runner.getCommandFactory();
+        TestCase testCase = Binder.newTestCase(SourceType.SELENESE, "dummy", "dummy", wsr.getBaseURL());
+        testCase.addCommand(cf, "comment", "<!-- ### lifecycle=DRAFT ### -->");
+        runner.execute(testCase);
+        assertThat(testCase.getLifecycle(), is(Lifecycle.DRAFT));
     }
 }

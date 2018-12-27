@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import jp.vmi.junit.result.ITestTarget.Lifecycle;
 import jp.vmi.selenium.selenese.utils.LogRecorder.LogMessage;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
@@ -44,7 +45,8 @@ public class TestCaseResult extends TestResult<ITestCase> {
      * Set success result.
      */
     public void setSuccess() {
-        this.success = true;
+        if (this.testTarget.getLifecycle() != Lifecycle.DRAFT)
+            this.success = true;
     }
 
     /**
@@ -54,7 +56,8 @@ public class TestCaseResult extends TestResult<ITestCase> {
      * @param value error value.
      */
     public void setError(String message, String value) {
-        error = factory.createError(message, value);
+        if (this.testTarget.getLifecycle() != Lifecycle.DRAFT)
+            error = factory.createError(message, value);
     }
 
     /**
@@ -64,7 +67,8 @@ public class TestCaseResult extends TestResult<ITestCase> {
      * @param value failure value.
      */
     public void setFailure(String message, String value) {
-        failure = factory.createFailure(message, value);
+        if (this.testTarget.getLifecycle() != Lifecycle.DRAFT)
+            failure = factory.createFailure(message, value);
     }
 
     /**
@@ -93,7 +97,7 @@ public class TestCaseResult extends TestResult<ITestCase> {
     @XmlElementRef
     @XmlJavaTypeAdapter(SkippedAdapter.class)
     public Integer getSkipped() {
-        return (!success && error == null && failure == null) ? 1 : 0;
+        return ((this.testTarget.getLifecycle() == Lifecycle.DRAFT) || (!success && error == null && failure == null)) ? 1 : 0;
     }
 
     /**

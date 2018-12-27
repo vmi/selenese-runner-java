@@ -11,6 +11,7 @@ import javax.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.vmi.junit.result.ITestTarget.Lifecycle;
 import jp.vmi.selenium.selenese.utils.CommandLineUtils;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
@@ -102,7 +103,7 @@ public final class JUnitResult {
     /**
      * End test-suite.
      *
-     * @param testSuite test-suite instatnce.
+     * @param testSuite test-suite instance.
      */
     public void endTestSuite(ITestSuite testSuite) {
         TestSuiteResult suiteResult = (TestSuiteResult) map.remove(testSuite);
@@ -125,7 +126,7 @@ public final class JUnitResult {
     /**
      * Add property in test-suite.
      *
-     * @param testSuite test-suite instatnce.
+     * @param testSuite test-suite instance.
      * @param name property name.
      * @param value property value.
      */
@@ -166,7 +167,8 @@ public final class JUnitResult {
     public void setSuccess(ITestCase testCase) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setSuccess();
-        failsafeSummary.completed++;
+        if (testCase.getLifecycle() != Lifecycle.DRAFT)
+            failsafeSummary.completed++;
     }
 
     /**
@@ -179,8 +181,10 @@ public final class JUnitResult {
     public void setError(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setError(message, trace);
-        failsafeSummary.completed++;
-        failsafeSummary.errors++;
+        if (testCase.getLifecycle() != Lifecycle.DRAFT) {
+            failsafeSummary.completed++;
+            failsafeSummary.errors++;
+        }
     }
 
     /**
@@ -193,8 +197,10 @@ public final class JUnitResult {
     public void setFailure(ITestCase testCase, String message, String trace) {
         TestCaseResult caseResult = (TestCaseResult) map.get(testCase);
         caseResult.setFailure(message, trace);
-        failsafeSummary.completed++;
-        failsafeSummary.failures++;
+        if (testCase.getLifecycle() != Lifecycle.DRAFT) {
+            failsafeSummary.completed++;
+            failsafeSummary.failures++;
+        }
     }
 
     /**

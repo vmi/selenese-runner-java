@@ -39,6 +39,8 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
     private final StopWatch stopWatch = new StopWatch();
     private Result result = UNEXECUTED;
 
+    private Lifecycle lifecycle = Lifecycle.FINAL;
+
     /**
      * Initialize after constructed.
      *
@@ -76,6 +78,16 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
     @Override
     public Type getType() {
         return Type.TEST_SUITE;
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycle;
+    }
+
+    @Override
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = lifecycle;
     }
 
     @Override

@@ -14,6 +14,7 @@ import jp.vmi.selenium.selenese.utils.LogRecorder;
 public class ErrorTestCase extends ErrorSource implements ITestCase, IHtmlResultTestCase {
 
     private LogRecorder logRecorder = null;
+    private Lifecycle lifecycle = Lifecycle.FINAL;
 
     @Override
     public void setLogRecorder(LogRecorder logRecorder) {
@@ -33,6 +34,16 @@ public class ErrorTestCase extends ErrorSource implements ITestCase, IHtmlResult
     @Override
     public Type getType() {
         return Type.TEST_CASE;
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycle;
+    }
+
+    @Override
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = lifecycle;
     }
 
     @ExecuteTestCase
