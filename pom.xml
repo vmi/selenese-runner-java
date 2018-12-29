@@ -502,6 +502,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <artifactId>httpcore</artifactId>
         <version>${httpcore.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.0.56.Final</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -578,11 +583,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty</artifactId>
-      <version>3.9.9.Final</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

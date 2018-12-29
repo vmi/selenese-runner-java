@@ -15,9 +15,9 @@
         <ignoreVersion type="regex">.*preview.*</ignoreVersion>
       </ignoreVersions>
     </rule>
-    <rule groupId="io.netty" artifactId="netty">
+    <rule groupId="io.netty" artifactId="netty-all">
       <ignoreVersions>
-        <ignoreVersion type="regex">3\.10\..*</ignoreVersion>
+        <ignoreVersion type="regex">5\..*|4\.1\..*</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="com.google.inject" artifactId="guice">
