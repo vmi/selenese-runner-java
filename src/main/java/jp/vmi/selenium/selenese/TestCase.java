@@ -47,6 +47,8 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     private final StopWatch stopWatch = new StopWatch();
     private LogRecorder logRecorder = null;
 
+    private Lifecycle lifecycle = Lifecycle.FINAL;
+
     /**
      * Initialize after constructed.
      *
@@ -72,6 +74,16 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public Type getType() {
         return Type.TEST_CASE;
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycle;
+    }
+
+    @Override
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = lifecycle;
     }
 
     /**
