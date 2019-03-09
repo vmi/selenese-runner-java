@@ -142,7 +142,7 @@ public class Main {
             ICommandFactory factory;
             try {
                 Class<?> factoryClass = Class.forName(factoryName);
-                factory = (ICommandFactory) factoryClass.newInstance();
+                factory = (ICommandFactory) factoryClass.getConstructor().newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IllegalArgumentException("invalid user defined command factory: " + factoryName);
