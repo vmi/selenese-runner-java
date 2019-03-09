@@ -34,7 +34,7 @@
   [OK] elseIf
   [OK] end
   [OK] executeScript
-  [--] executeAsyncScript
+  [OK] executeAsyncScript
   [OK] editContent
   [OK] if
   [OK] mouseDownAt
@@ -60,7 +60,7 @@
   [OK] storeText
   [OK] storeValue
   [OK] storeTitle
-  [--] storeWindowHandle
+  [OK] storeWindowHandle
   [OK] storeXpathCount
   [OK] submit
   [OK] times
