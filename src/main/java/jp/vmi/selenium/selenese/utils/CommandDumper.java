@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import jp.vmi.selenium.runner.model.utils.CommandJs;
+import jp.vmi.selenium.runner.model.utils.CommandsJs;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.command.ICommand;
@@ -79,6 +79,13 @@ public class CommandDumper {
         commandInfo.put("store", info); // rewrite storeExpression
     }
 
+    private static void showValue(Map<String, String> map, String key) {
+        String value = map.get(key);
+        if (value == null)
+            return;
+        System.out.printf("- %s: %s%n", key, value);
+    }
+
     /**
      * main.
      *
@@ -94,9 +101,9 @@ public class CommandDumper {
                 .forEach(entry -> System.out.println(entry.getKey() + "," + entry.getValue()));
         } else if ("--side".equals(args[0])) {
             CommandFactory commandFactory = new CommandFactory();
-            CommandJs commandJs = CommandJs.load();
+            CommandsJs commandsJs = CommandsJs.load();
             System.out.println("* Supported status of Selenium IDE commands:");
-            commandJs.getCommandList().keySet().forEach(name -> {
+            commandsJs.getCommands().keySet().forEach(name -> {
                 boolean exists = true;
                 try {
                     commandFactory.newCommand(-1, name);
@@ -104,6 +111,18 @@ public class CommandDumper {
                     exists = false;
                 }
                 System.out.printf("  [%s] %s%n", exists ? "OK" : "--", name);
+            });
+        } else if ("--side-commands-info".equals(args[0])) {
+            CommandsJs commandsJs = CommandsJs.load();
+            System.out.println("* Information of Selenium IDE commands:");
+            System.out.println();
+            commandsJs.getCommands().forEach((name, info) -> {
+                System.out.printf("[%s] - %s%n", name, info.get("name"));
+                showValue(info, "type");
+                showValue(info, "description");
+                showValue(info, "target");
+                showValue(info, "value");
+                System.out.println();
             });
         }
     }
