@@ -1,0 +1,92 @@
+{
+  "id": "73bfe695-bbf9-4da8-863c-e83d4306b381",
+  "version": "2.0",
+  "name": "testcase_execute_async_script",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "8f50bf34-2619-42cf-90e1-b6e51c2c6bfb",
+    "name": "01resolve",
+    "commands": [{
+      "id": "5d4fbdf6-46eb-4b86-8c9a-0a36b6763436",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "08869254-3e9c-40dd-9c23-bb6a9462e125",
+      "comment": "",
+      "command": "executeAsyncScript",
+      "target": "return Promise.resolve(\"OK\")",
+      "targets": [],
+      "value": "value"
+    }, {
+      "id": "a1418761-2cc3-44e9-befa-16890b224abf",
+      "comment": "",
+      "command": "assert",
+      "target": "value",
+      "targets": [],
+      "value": "OK"
+    }]
+  }, {
+    "id": "0fcc357c-c8d6-4f11-8e8d-98119bf59d04",
+    "name": "02reject",
+    "commands": [{
+      "id": "67abc760-6aec-4584-8d1a-53ea9130aec1",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ff135346-483f-4b44-afb4-ded6c4824f9b",
+      "comment": "",
+      "command": "executeAsyncScript",
+      "target": "return Promise.reject(\"NG\")",
+      "targets": [],
+      "value": "value"
+    }, {
+      "id": "ea99c4c2-cdc1-4958-83a6-42745fe98dd8",
+      "comment": "",
+      "command": "assert",
+      "target": "value",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "54eb5380-41f3-4d9b-a036-8a0c1858945c",
+    "name": "03not_promise",
+    "commands": [{
+      "id": "cd4ff04e-4e3d-46fe-8d25-c86998b2b893",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e36628d6-3cd3-4d0f-bf38-1ec9c7d60a7f",
+      "comment": "",
+      "command": "executeAsyncScript",
+      "target": "return \"not Promise\"",
+      "targets": [],
+      "value": "value"
+    }, {
+      "id": "4489cc01-685b-4d59-a5b3-af158800e0c2",
+      "comment": "",
+      "command": "assert",
+      "target": "value",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "0a569033-8369-4741-965d-01cd83dd6bfc",
+    "name": "testcase_execute_async_script",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["8f50bf34-2619-42cf-90e1-b6e51c2c6bfb", "0fcc357c-c8d6-4f11-8e8d-98119bf59d04", "54eb5380-41f3-4d9b-a036-8a0c1858945c"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

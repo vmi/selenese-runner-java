@@ -133,6 +133,7 @@ public class CommandFactory implements ICommandFactory {
         // Selenium IDE (TNG)
         addConstructor(Assert.class);
         addConstructor(ExecuteScript.class);
+        addConstructor(ExecuteAsyncScript.class);
         addConstructor(SetWindowSize.class);
 
         // commands for comment

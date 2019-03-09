@@ -341,6 +341,22 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
     }
 
     /**
+     * Executes JavaScript in the context of the currently selected frame or window.
+     *
+     * see {@link JavascriptExecutor#executeAsyncScript(String, Object...)}.
+     *
+     * @param <T> type of return value.
+     * @param script The JavaScript to execute
+     * @param args The arguments to the script. May be empty
+     * @return One of Boolean, Long, String, List or WebElement. Or null.
+     */
+    default <T> T executeAsyncScript(String script, Object... args) {
+        @SuppressWarnings("unchecked")
+        T result = (T) ((JavascriptExecutor) getWrappedDriver()).executeAsyncScript(script, args);
+        return result;
+    }
+
+    /**
      * Reset number of actually used retries.
      */
     default void resetRetries() {
