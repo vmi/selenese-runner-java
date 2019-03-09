@@ -162,6 +162,26 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>jdk11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalJOptions>
+                <additionalJOption>--release</additionalJOption>
+                <additionalJOption>8</additionalJOption>
+              </additionalJOptions>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
@@ -392,6 +412,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <locale>en</locale>
+          <additionalJOption>-J-Duser.language=en</additionalJOption>
         </configuration>
         <executions>
           <execution>
