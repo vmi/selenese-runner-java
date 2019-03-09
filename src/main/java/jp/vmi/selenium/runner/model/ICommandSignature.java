@@ -31,14 +31,14 @@ public interface ICommandSignature {
      *
      * @return type of target
      */
-    ArgType getTargetType();
+    ArgTypes getTargetType();
 
     /**
      * Get type of value.
      *
      * @return type of value.
      */
-    ArgType getValueType();
+    ArgTypes getValueType();
 
     /**
      * Test that target argument is script.
@@ -61,6 +61,6 @@ public interface ICommandSignature {
      * @return true if value argument is script
      */
     default boolean isValueScript() {
-        return getValueType() == ArgType.SCRIPT;
+        return getValueType() == ArgTypes.SCRIPT;
     }
 }

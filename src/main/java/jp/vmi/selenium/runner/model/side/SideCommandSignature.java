@@ -1,6 +1,6 @@
 package jp.vmi.selenium.runner.model.side;
 
-import jp.vmi.selenium.runner.model.ArgType;
+import jp.vmi.selenium.runner.model.ArgTypes;
 import jp.vmi.selenium.runner.model.ICommandSignature;
 
 /**
@@ -11,8 +11,8 @@ public class SideCommandSignature implements ICommandSignature {
     private final String id;
     private final String name;
     private final String description;
-    private final ArgType targetType;
-    private final ArgType valueType;
+    private final ArgTypes targetType;
+    private final ArgTypes valueType;
 
     /**
      * Constructor.
@@ -23,7 +23,7 @@ public class SideCommandSignature implements ICommandSignature {
      * @param targetType type of target argument
      * @param valueType type of value argument
      */
-    public SideCommandSignature(String id, String name, String description, ArgType targetType, ArgType valueType) {
+    public SideCommandSignature(String id, String name, String description, ArgTypes targetType, ArgTypes valueType) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -47,12 +47,12 @@ public class SideCommandSignature implements ICommandSignature {
     }
 
     @Override
-    public ArgType getTargetType() {
+    public ArgTypes getTargetType() {
         return targetType;
     }
 
     @Override
-    public ArgType getValueType() {
+    public ArgTypes getValueType() {
         return valueType;
     }
 }

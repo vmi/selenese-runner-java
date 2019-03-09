@@ -3,12 +3,53 @@
 require 'yaml'
 
 main = File.expand_path("#{__dir__}/../src/main")
-COMMAND_JS = "#{main}/resources/selenium-ide/Command.js"
-ARG_TYPE = "#{main}/java/jp/vmi/selenium/runner/model/ArgType.java"
+ARG_TYPES_JS = "#{main}/resources/selenium-ide/ArgTypes.js"
+COMMANDS_JS = "#{main}/resources/selenium-ide/Commands.js"
+ARG_TYPES = "#{main}/java/jp/vmi/selenium/runner/model/ArgTypes.java"
 
 class Command
 
-  attr_reader :arg_types, :command_list
+  attr_reader :arg_types, :commands
+
+  class Lines
+
+    def initialize(*args)
+      @lines = args.dup
+      @state = :js
+    end
+
+    def dq(s)
+      s.gsub(/\"/, '\"')
+    end
+
+    def push(line)
+      line.strip!
+      case @state
+      when :js
+        line.gsub!(/\`(.*?)\`/) { '"' + dq($1) + '"' }
+        if line.include?("`")
+          line.sub!(/\`(.*)$/) { '"' + dq($1) }
+          @state = :mlstr
+        end
+      when :mlstr
+        if line.include?("`")
+          line.sub!(/(.*?)\`/) { dq($1) + '"' }
+          if line.include?("`")
+            raise "Unsupported format."
+          end
+          @state = :js
+        else
+          line = dq(line)
+        end
+      end
+      @lines.push(line)
+    end
+
+    def join
+      @lines.join(' ')
+    end
+
+  end
 
   def start_reading(mstr)
     $stderr.puts("* Start reading #{mstr}")
@@ -18,66 +59,49 @@ class Command
     $stderr.puts("* End reading #{mstr}")
   end
 
-  def push_line(list, line)
-    line.strip!
-    if list[-1].end_with?('\\')
-      list[-1].sub!(/\\$/, line)
-    else
-      list.push(line)
-    end
-  end
-
   def read_top_level(list, line)
     # no operation
   end
 
-  def read_arg_types(list, line)
+  def read_commands(list, line)
     next_reader = nil
-    if /^\}\s*$/ =~ line
-      list.push('}')
-      end_reading("ArgTypes")
+    case line
+    when /^\]\s*$/
+      list.push(']')
+      end_reading("Commands")
       next_reader = :read_top_level
     else
-      push_line(list, line)
+      list.push(line)
     end
     next_reader
   end
 
-  def read_command_list(list, line)
-    next_reader = nil
-    if list.empty?
-      case line
-      when /^\s*list\s+=\s+new\s+Map\(\[\s*$/
-        list.push('[')
-      else
-        # skip
-      end
-    else
-      case line
-      when /^\s*\]\)\s*$/
-        list.push(']')
-        end_reading("CommandList")
-        next_reader = :read_top_level
-      else
-        push_line(list, line)
-      end
-    end
-    next_reader
-  end
-
-  def read_command_js
-    parts = {}
-    reader = :read_top_level
-    File.foreach(COMMAND_JS) do |line|
+  def read_arg_types_js(parts)
+    list = parts[:read_arg_types] = Lines.new
+    File.foreach(ARG_TYPES_JS) do |line|
       case line
       when /^export\s+const\s+ArgTypes\s+=\s+\{\s*$/
-        reader = :read_arg_types
-        parts[reader] = ['{']
         start_reading("ArgTypes")
-      when /^class\s+CommandList\s*\{\s*/
-        reader = :read_command_list
-        parts[reader] = []
-        start_reading("CommandList")
+        list.push('{')
+      when /^\}\s*$/
+        list.push('}')
+        end_reading("ArgTypes")
+      else
+        list.push(line)
+      end
+    end
+  end
+
+  def read_commands_js
+    parts = {}
+    read_arg_types_js(parts)
+    reader = :read_top_level
+    File.foreach(COMMANDS_JS) do |line|
+      case line
+      when /^export\s+const\s+Commands\s+=\s+\[\s*$/
+        reader = :read_commands
+        parts[reader] = Lines.new('[')
+        start_reading("Commands")
       else
         if next_reader = method(reader).call(parts[reader], line)
           reader = next_reader
@@ -88,19 +112,19 @@ class Command
   end
 
   def parse_string(list)
-    YAML.load(list.join(' '))
+    YAML.load(list.join)
   end
 
   def load
-    parts = read_command_js
+    parts = read_commands_js
     @arg_types = {}
     parse_string(parts[:read_arg_types]).each do |key, info|
       @arg_types[key] = info
     end
-    @command_list = {}
-    parse_string(parts[:read_command_list]).each do |item|
+    @commands = {}
+    parse_string(parts[:read_commands]).each do |item|
       key, info = *item
-      @command_list[key] = info
+      @commands[key] = info
     end
   end
 end
@@ -114,13 +138,13 @@ def quote(s)
 end
 
 def update_arg_types(cmd)
-  $stderr.puts "* Update #{ARG_TYPE}"
+  $stderr.puts "* Update #{ARG_TYPES}"
   boa = "// BEGINNING OF ArgTypes"
   eoa = "// END OF ArgTypes"
   lines = {}
   mode = :prologue
   lines[mode] = []
-  File.foreach(ARG_TYPE) do |line|
+  File.foreach(ARG_TYPES) do |line|
     case line
     when /#{boa}/
       lines[mode].push(line, '')
@@ -144,7 +168,7 @@ def update_arg_types(cmd)
 
     EOF
   end
-  open(ARG_TYPE, 'wb') do |io|
+  open(ARG_TYPES, 'wb') do |io|
     io.puts lines.values_at(:prologue, :items, :epilogue)
   end
 end

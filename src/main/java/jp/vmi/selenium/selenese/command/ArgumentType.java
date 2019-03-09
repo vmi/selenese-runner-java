@@ -1,32 +1,32 @@
 package jp.vmi.selenium.selenese.command;
 
-import jp.vmi.selenium.runner.model.ArgType;
+import jp.vmi.selenium.runner.model.ArgTypes;
 
 /**
  * Type of command arguments.
  */
 public enum ArgumentType {
     /** Value not locator */
-    VALUE(ArgType.VALUE),
+    VALUE(ArgTypes.VALUE),
 
     /** Locator */
-    LOCATOR(ArgType.LOCATOR),
+    LOCATOR(ArgTypes.LOCATOR),
 
     /** Attribute locator (with '@attribute_name') */
-    ATTRIBUTE_LOCATOR(ArgType.ATTRIBUTE_LOCATOR),
+    ATTRIBUTE_LOCATOR(ArgTypes.ATTRIBUTE_LOCATOR),
 
     /** CSS locator (implies "css=") */
-    CSS_LOCATOR(ArgType.CSS_LOCATOR),
+    CSS_LOCATOR(ArgTypes.CSS_LOCATOR),
 
     /** Option locator */
-    OPTION_LOCATOR(ArgType.OPTION_LOCATOR),
+    OPTION_LOCATOR(ArgTypes.OPTION_LOCATOR),
 
     /* end of enum list */;
 
     /** Argument type of Selenium IDE TNG */
-    public final ArgType argType;
+    public final ArgTypes argType;
 
-    ArgumentType(ArgType argType) {
+    ArgumentType(ArgTypes argType) {
         this.argType = argType;
     }
 }
