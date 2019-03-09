@@ -1,0 +1,49 @@
+{
+  "id": "e3a9541d-b9ea-4b01-9f19-1fb6b5a89f2e",
+  "version": "2.0",
+  "name": "testcase_window_handle",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "3b3a121a-05e4-417a-b5de-575f3313b31e",
+    "name": "window_handle",
+    "commands": [{
+      "id": "455af973-6c0a-4102-bdc7-1d7b2064a208",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c950678e-bb9e-461f-b943-c03e58d538fa",
+      "comment": "",
+      "command": "storeWindowHandle",
+      "target": "wh",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9d9b9bd3-a187-41e4-8ede-d62c5574ba70",
+      "comment": "",
+      "command": "echo",
+      "target": "${wh}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "617a61de-b5ec-4d21-af33-4f985ad120cc",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${wh}",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "3c7bea27-93e2-4507-981f-ab730fb532af",
+    "name": "window_handle",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["3b3a121a-05e4-417a-b5de-575f3313b31e"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

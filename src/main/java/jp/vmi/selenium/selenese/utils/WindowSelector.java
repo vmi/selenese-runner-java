@@ -92,11 +92,12 @@ public class WindowSelector {
      * If that happens, this locator will just pick one.
      * </dd>
      *
-     * <dt>name=myWindow</dt>
+     * <dt>name=myWindow, handle=myWindow</dt>
      * <dd>
-     * Finds the window using its internal JavaScript "name" property.
-     * This is the second parameter "windowName" passed to the JavaScript
-     * method window.open(url, windowName, windowFeatures, replaceFlag)
+     * Finds the window using its internal JavaScript "name" property or
+     * the window specified by window handle of Selenium.
+     * The "name" property is the second parameter "windowName" passed
+     * to the JavaScript method window.open(url, windowName, windowFeatures, replaceFlag)
      * (which Selenium intercepts).
      * </dd>
      *
@@ -182,6 +183,7 @@ public class WindowSelector {
         case "title":
             return selectWindowWithTitle(context, wloc.getValue());
         case "name":
+        case "handle":
             return switchToWindow(driver, wloc.getValue());
         default:
             throw new UnsupportedOperationException(windowID);

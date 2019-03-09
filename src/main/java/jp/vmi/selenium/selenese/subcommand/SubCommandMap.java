@@ -50,6 +50,7 @@ public class SubCommandMap {
         register(new GetText());
         register(new GetTitle());
         register(new GetValue());
+        register(new GetWindowHandle());
         register(new GetXpathCount());
         register(new IsAlertPresent());
         register(new IsChecked());
