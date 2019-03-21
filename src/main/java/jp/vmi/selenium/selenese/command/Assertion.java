@@ -140,4 +140,14 @@ public class Assertion extends AbstractCommand {
             return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
         }
     }
+
+    @Override
+    public int getArgumentCount() {
+        int count = getterSubCommand.getArgumentCount();
+        if (!isBoolean)
+            count++;
+        if (type == Type.WAIT_FOR)
+            count++;
+        return count;
+    }
 }

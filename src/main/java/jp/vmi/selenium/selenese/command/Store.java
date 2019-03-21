@@ -37,4 +37,9 @@ public class Store extends AbstractCommand {
         context.getVarsMap().put(varName, result);
         return new Success(SeleniumUtils.convertToString(result));
     }
+
+    @Override
+    public int getArgumentCount() {
+        return getterSubCommand.getArgumentCount() + 1;
+    }
 }

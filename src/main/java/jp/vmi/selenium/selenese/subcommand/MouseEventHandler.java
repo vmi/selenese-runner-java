@@ -244,4 +244,9 @@ public class MouseEventHandler implements ISubCommand<Void> {
         }
         return null;
     }
+
+    @Override
+    public int getArgumentCount() {
+        return eventType.argTypes.length;
+    }
 }

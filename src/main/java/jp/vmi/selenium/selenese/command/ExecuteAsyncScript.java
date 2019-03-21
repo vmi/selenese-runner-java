@@ -17,6 +17,7 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 public class ExecuteAsyncScript extends AbstractCommand {
 
     private static final int ARG_SCRIPT = 0;
+    private static final int ARG_VAR_NAME = 1;
 
     ExecuteAsyncScript(int index, String name, String... args) {
         super(index, name, args, VALUE, VALUE);
@@ -45,7 +46,7 @@ public class ExecuteAsyncScript extends AbstractCommand {
         String valueStr = SeleniumUtils.convertToString(value);
         if (isResolved) {
             if (curArgs.length == 2) {
-                String varName = curArgs[1];
+                String varName = curArgs[ARG_VAR_NAME];
                 if (!varName.isEmpty()) {
                     context.getVarsMap().put(varName, value);
                 }

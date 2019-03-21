@@ -191,6 +191,18 @@ public class CommandsJs {
             String key = (String) item.get(0);
             @SuppressWarnings("unchecked")
             Map<String, String> value = (Map<String, String>) item.get(1);
+            // workaround.
+            switch (key) {
+            case "assertConfirmation":
+            case "assertPrompt":
+                if (!value.containsKey("target"))
+                    value.put("target", "ArgTypes.alertText");
+                break;
+            case "storeTitle":
+                if (!value.containsKey("value"))
+                    value.put("value", "ArgTypes.variableName");
+                break;
+            }
             commandJs.commands.put(key, value);
         });
         return commandJs;

@@ -1,5 +1,6 @@
 package jp.vmi.selenium.selenese.subcommand;
 
+import jp.vmi.selenium.selenese.ArgumentInfo;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
 
@@ -8,7 +9,7 @@ import jp.vmi.selenium.selenese.command.ArgumentType;
  *
  * @param <T> the result type of this sub-command.
  */
-public interface ISubCommand<T> {
+public interface ISubCommand<T> extends ArgumentInfo {
 
     /**
      * Get sub-command name.

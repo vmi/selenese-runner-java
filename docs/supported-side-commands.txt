@@ -1,93 +1,95 @@
 * Supported status of Selenium IDE commands:
-  [OK] addSelection
-  [OK] answerOnNextPrompt
-  [OK] assert
-  [OK] assertAlert
-  [OK] assertChecked
-  [OK] assertNotChecked
-  [OK] assertConfirmation
-  [OK] assertEditable
-  [OK] assertNotEditable
-  [OK] assertElementPresent
-  [OK] assertElementNotPresent
-  [OK] assertPrompt
-  [OK] assertSelectedValue
-  [OK] assertNotSelectedValue
-  [OK] assertSelectedLabel
-  [OK] assertText
-  [OK] assertNotText
-  [OK] assertTitle
-  [OK] assertValue
-  [OK] chooseCancelOnNextConfirmation
-  [OK] chooseCancelOnNextPrompt
-  [OK] chooseOkOnNextConfirmation
-  [OK] click
-  [OK] clickAt
-  [OK] check
-  [--] debugger
-  [OK] do
-  [OK] doubleClick
-  [OK] doubleClickAt
-  [OK] dragAndDropToObject
-  [OK] echo
-  [OK] else
-  [OK] elseIf
-  [OK] end
-  [OK] executeScript
-  [OK] executeAsyncScript
-  [OK] editContent
-  [OK] if
-  [OK] mouseDownAt
-  [OK] mouseMoveAt
-  [OK] mouseOut
-  [OK] mouseOver
-  [OK] mouseUpAt
-  [OK] open
-  [OK] pause
-  [OK] removeSelection
-  [OK] repeatIf
-  [--] run
-  [OK] runScript
-  [OK] select
-  [OK] selectFrame
-  [OK] selectWindow
-  [OK] close
-  [OK] sendKeys
-  [OK] setSpeed
-  [OK] setWindowSize
-  [OK] store
-  [OK] storeAttribute
-  [OK] storeText
-  [OK] storeValue
-  [OK] storeTitle
-  [OK] storeWindowHandle
-  [OK] storeXpathCount
-  [OK] submit
-  [OK] times
-  [OK] type
-  [OK] uncheck
-  [OK] verify
-  [OK] verifyChecked
-  [OK] verifyNotChecked
-  [OK] verifyEditable
-  [OK] verifyNotEditable
-  [OK] verifyElementPresent
-  [OK] verifyElementNotPresent
-  [OK] verifySelectedValue
-  [OK] verifyNotSelectedValue
-  [OK] verifyText
-  [OK] verifyNotText
-  [OK] verifyTitle
-  [OK] verifyValue
-  [OK] verifySelectedLabel
-  [OK] waitForElementEditable
-  [OK] waitForElementNotEditable
-  [OK] waitForElementPresent
-  [OK] waitForElementNotPresent
-  [OK] waitForElementVisible
-  [OK] waitForElementNotVisible
-  [--] webdriverAnswerOnVisiblePrompt
-  [--] webdriverChooseCancelOnVisibleConfirmation
-  [--] webdriverChooseCancelOnVisiblePrompt
-  [--] webdriverChooseOkOnVisibleConfirmation
-  [OK] while
+  [IC] addSelection (2/1)
+  [OK] answerOnNextPrompt (1/1)
+  [OK] assert (2/2)
+  [OK] assertAlert (1/1)
+  [OK] assertChecked (1/1)
+  [OK] assertConfirmation (1/1)
+  [OK] assertEditable (1/1)
+  [OK] assertElementPresent (1/1)
+  [OK] assertElementNotPresent (1/1)
+  [OK] assertNotChecked (1/1)
+  [OK] assertNotEditable (1/1)
+  [OK] assertNotSelectedValue (2/2)
+  [OK] assertNotText (2/2)
+  [OK] assertPrompt (1/1)
+  [OK] assertSelectedValue (2/2)
+  [OK] assertSelectedLabel (2/2)
+  [OK] assertText (2/2)
+  [OK] assertTitle (1/1)
+  [OK] assertValue (2/2)
+  [OK] check (1/1)
+  [OK] chooseCancelOnNextConfirmation (0/0)
+  [OK] chooseCancelOnNextPrompt (0/0)
+  [OK] chooseOkOnNextConfirmation (0/0)
+  [OK] click (1/1)
+  [OK] clickAt (2/2)
+  [OK] close (0/0)
+  [--] debugger (0/0)
+  [OK] do (0/0)
+  [OK] doubleClick (1/1)
+  [OK] doubleClickAt (2/2)
+  [OK] dragAndDropToObject (2/2)
+  [OK] echo (1/1)
+  [OK] editContent (2/2)
+  [OK] else (0/0)
+  [OK] elseIf (1/1)
+  [OK] end (0/0)
+  [OK] executeScript (2/2)
+  [OK] executeAsyncScript (2/2)
+  [OK] if (1/1)
+  [OK] mouseDown (1/1)
+  [OK] mouseDownAt (2/2)
+  [OK] mouseMoveAt (2/2)
+  [OK] mouseOut (1/1)
+  [OK] mouseOver (1/1)
+  [OK] mouseUp (1/1)
+  [OK] mouseUpAt (2/2)
+  [OK] open (1/1)
+  [OK] pause (1/1)
+  [OK] removeSelection (2/2)
+  [OK] repeatIf (1/1)
+  [--] run (0/1)
+  [OK] runScript (1/1)
+  [OK] select (2/2)
+  [OK] selectFrame (1/1)
+  [OK] selectWindow (1/1)
+  [OK] sendKeys (2/2)
+  [OK] setSpeed (1/1)
+  [OK] setWindowSize (1/1)
+  [OK] store (2/2)
+  [OK] storeAttribute (2/2)
+  [OK] storeText (2/2)
+  [OK] storeTitle (1/1)
+  [OK] storeValue (2/2)
+  [OK] storeWindowHandle (1/1)
+  [OK] storeXpathCount (2/2)
+  [OK] submit (1/1)
+  [OK] times (2/2)
+  [OK] type (2/2)
+  [OK] uncheck (1/1)
+  [OK] verify (2/2)
+  [OK] verifyChecked (1/1)
+  [OK] verifyEditable (1/1)
+  [OK] verifyElementPresent (1/1)
+  [OK] verifyElementNotPresent (1/1)
+  [OK] verifyNotChecked (1/1)
+  [OK] verifyNotEditable (1/1)
+  [OK] verifyNotSelectedValue (2/2)
+  [OK] verifyNotText (2/2)
+  [OK] verifySelectedLabel (2/2)
+  [OK] verifySelectedValue (2/2)
+  [OK] verifyText (2/2)
+  [OK] verifyTitle (1/1)
+  [OK] verifyValue (2/2)
+  [OK] waitForElementEditable (2/2)
+  [OK] waitForElementNotEditable (2/2)
+  [OK] waitForElementNotPresent (2/2)
+  [OK] waitForElementNotVisible (2/2)
+  [OK] waitForElementPresent (2/2)
+  [OK] waitForElementVisible (2/2)
+  [--] webdriverAnswerOnVisiblePrompt (0/1)
+  [--] webdriverChooseCancelOnVisibleConfirmation (0/0)
+  [--] webdriverChooseCancelOnVisiblePrompt (0/0)
+  [--] webdriverChooseOkOnVisibleConfirmation (0/0)
+  [OK] while (2/2)
