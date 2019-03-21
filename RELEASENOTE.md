@@ -1,6 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.21.0
+
+* Add `nop` command to convert from empty command. (#291)
+* Add new commands of SIDE format:
+    * `executeAsyncScript`
+    * `storeWindowHandle` (#292)
+* Update dependency versions.
+
 ### 3.20.0
 
 * Add `linkText` locator support. (#287)
