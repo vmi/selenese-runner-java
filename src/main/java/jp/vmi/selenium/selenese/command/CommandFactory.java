@@ -81,6 +81,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(KeyUp.class);
         addConstructor(MetaKeyDown.class);
         addConstructor(MetaKeyUp.class);
+        addConstructor(Nop.class);
         addConstructor(Open.class);
         addConstructor(OpenWindow.class);
         addConstructor(Pause.class);
@@ -205,6 +206,9 @@ public class CommandFactory implements ICommandFactory {
 
     @Override
     public ICommand newCommand(int index, String name, String... args) {
+        if (name == null || name.isEmpty())
+            name = "nop";
+
         // user defined command.
         for (ICommandFactory factory : commandFactories) {
             ICommand command = factory.newCommand(index, name, args);
