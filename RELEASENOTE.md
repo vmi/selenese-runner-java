@@ -7,6 +7,9 @@ Selenese Runner Java Relase Note
 * Add new commands of SIDE format:
     * `executeAsyncScript`
     * `storeWindowHandle` (#292)
+* Improve compatibility with Selenium IDE.
+    * add `handle=` parameter to `selectWindow`. (#292)
+    * add loop limit parameter to `while` and `times`.
 * Update dependency versions.
 
 ### 3.20.0
