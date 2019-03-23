@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
@@ -13,6 +14,7 @@ import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Failure;
+import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.testutils.DriverDependentTestCaseTestBase;
@@ -460,6 +462,18 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     public void testSideFlowControl() {
         execute("testcase_flowcontrol.side");
         assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void testLoopLimit() {
+        execute("testcase_loop_limit.side");
+        // test-project -> test-suite -> test-case
+        List<Entry<Selenese, Result>> results = result.collectChildResults(Selenese.Type.TEST_CASE);
+        assertThat(results.get(0).getValue(), is(instanceOf(Error.class)));
+        assertThat(results.get(1).getValue(), is(instanceOf(Error.class)));
+        assertThat(results.get(2).getValue(), is(instanceOf(Success.class)));
+        assertThat(results.get(3).getValue(), is(instanceOf(Success.class)));
+        assertThat(results.get(4).getValue(), is(instanceOf(Error.class)));
     }
 
     @Test

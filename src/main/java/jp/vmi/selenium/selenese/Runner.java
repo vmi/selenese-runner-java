@@ -837,7 +837,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
                     log.error(e.getMessage());
                     throw e;
                 }
-                totalResult = totalResult.update(result);
+                totalResult = totalResult.updateWithChildResult(testSuite, result);
             }
         }
         maxTimeTimer.stop();

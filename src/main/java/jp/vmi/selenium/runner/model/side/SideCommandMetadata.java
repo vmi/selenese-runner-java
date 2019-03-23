@@ -3,10 +3,10 @@ package jp.vmi.selenium.runner.model.side;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.vmi.selenium.runner.model.ArgType;
+import jp.vmi.selenium.runner.model.ArgTypes;
 import jp.vmi.selenium.runner.model.ICommandMetadata;
 import jp.vmi.selenium.runner.model.ICommandSignature;
-import jp.vmi.selenium.runner.model.utils.CommandJs;
+import jp.vmi.selenium.runner.model.utils.CommandsJs;
 
 /**
  * Side command metadata.
@@ -27,13 +27,13 @@ public class SideCommandMetadata implements ICommandMetadata {
     private final Map<String, SideCommandSignature> commandSignatureMap = new HashMap<>();
 
     private SideCommandMetadata() {
-        CommandJs commandJs = CommandJs.load();
-        commandJs.getCommandList().forEach((id, map) -> {
+        CommandsJs commandsJs = CommandsJs.load();
+        commandsJs.getCommands().forEach((id, map) -> {
             String name = map.get("name");
             String description = map.get("description");
             String target = map.get("target");
             String value = map.get("value");
-            SideCommandSignature info = new SideCommandSignature(id, name, description, ArgType.lookup(target), ArgType.lookup(value));
+            SideCommandSignature info = new SideCommandSignature(id, name, description, ArgTypes.lookup(target), ArgTypes.lookup(value));
             commandSignatureMap.put(id, info);
         });
     }

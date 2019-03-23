@@ -31,6 +31,15 @@ public class MaxTimeExceeded extends Result {
         super("Maximum execution time exceeded", cause);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public MaxTimeExceeded(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.MAX_TIME_EXCEEDED;

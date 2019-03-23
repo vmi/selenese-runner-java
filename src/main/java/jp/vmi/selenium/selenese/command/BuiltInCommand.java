@@ -40,4 +40,9 @@ public class BuiltInCommand extends AbstractCommand {
         }
         return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
     }
+
+    @Override
+    public int getArgumentCount() {
+        return subCommand.getArgumentCount();
+    }
 }

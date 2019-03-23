@@ -24,6 +24,15 @@ public class Warning extends Result {
         super("Warning", message, e);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public Warning(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.WARNING;

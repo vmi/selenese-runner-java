@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 import java.util.List;
 
+import jp.vmi.selenium.selenese.ArgumentInfo;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SourceType;
 import jp.vmi.selenium.selenese.VarsMap;
@@ -12,7 +13,7 @@ import jp.vmi.selenium.selenese.result.Result;
 /**
  * Command interface.
  */
-public interface ICommand {
+public interface ICommand extends ArgumentInfo {
 
     /**
      * Get source elements.

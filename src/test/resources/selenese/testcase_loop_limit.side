@@ -1,0 +1,205 @@
+{
+  "id": "a17e1b17-9290-4f1b-9f97-d3af631be3fb",
+  "version": "2.0",
+  "name": "testcase_loop_limit",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "891db47d-aaf6-468b-b381-1183cd59ed88",
+    "name": "loop_limit_02",
+    "commands": [{
+      "id": "5f376b2f-923e-48d8-a48e-d08e158fc013",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3176be18-8010-49c4-b9ac-13ecb1370cff",
+      "comment": "",
+      "command": "times",
+      "target": "1",
+      "targets": [],
+      "value": "1"
+    }, {
+      "id": "f7999caf-4bb4-4418-9ac8-69f01e44887c",
+      "comment": "",
+      "command": "echo",
+      "target": "In loop (2)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bb33456d-8f14-40b7-955b-2491cb333713",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "b4bb313e-0e0f-47c9-8c21-baff93b0870b",
+    "name": "loop_limit_01",
+    "commands": [{
+      "id": "f5a6a0b6-0646-4b3a-be3b-48df123165c3",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3564cd17-a5ec-45f5-9a32-94f89b48ee98",
+      "comment": "",
+      "command": "times",
+      "target": "0",
+      "targets": [],
+      "value": "0"
+    }, {
+      "id": "29d73e48-88b5-4f52-b28c-8967b178dd8d",
+      "comment": "",
+      "command": "echo",
+      "target": "In loop (1)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "162d49d8-b42e-4189-bce9-e5beef8d5235",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "b575e552-c2ce-4793-9d67-c15116bbc0a3",
+    "name": "loop_limit_03",
+    "commands": [{
+      "id": "cf9eee5a-f63e-431f-9462-9405ab4e8e6c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "29c0079a-a80e-433e-aff4-ca9b56cec5dd",
+      "comment": "",
+      "command": "times",
+      "target": "1",
+      "targets": [],
+      "value": "2"
+    }, {
+      "id": "fd60d02c-79b7-4eb8-b0bc-98742e782658",
+      "comment": "",
+      "command": "echo",
+      "target": "In loop (3)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b219fdb3-5f55-44a1-9c8e-aa2091f15c94",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "bebb0e62-31ea-4789-bebc-2971c9abe1ca",
+    "name": "loop_limit_04",
+    "commands": [{
+      "id": "950fd5a3-6eb3-4272-bb7a-5117548ec407",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7c484f7d-9d7b-41c2-a002-9acd8f60922d",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return 1",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "101f8ed3-fcba-44b6-8305-1bc867cf8231",
+      "comment": "",
+      "command": "while",
+      "target": "${count} < 3",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c188c902-6c8b-4913-8872-299e6ec63ccd",
+      "comment": "",
+      "command": "echo",
+      "target": "In loop count=${count} (4)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7e3e4534-1907-4cff-81d9-41306c221fa2",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return ${count} + 1",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "bbff76c9-ab66-4ab1-a8f2-17a9c248a752",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "2b99340e-a9bc-4f2c-a343-31525a4d528a",
+    "name": "loop_limit_05",
+    "commands": [{
+      "id": "f52be818-3ed5-4c2b-a2bf-b9e9f278267c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "06b89ce7-bd49-47a4-b173-88684340d7af",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return 1",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "8e471d0f-6240-4a43-a618-6d683ee2bca2",
+      "comment": "",
+      "command": "while",
+      "target": "${count} < 3",
+      "targets": [],
+      "value": "2"
+    }, {
+      "id": "bd04f8d6-9228-48f0-a645-c6701d6ed9fe",
+      "comment": "",
+      "command": "echo",
+      "target": "In loop count=${count} (4)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c2a9cd37-9319-41d8-a70b-dd62396343eb",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return ${count} + 1",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "23bd0a4f-f8bf-431e-8adc-ed1321bc0f08",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2113d9b5-31f5-46ee-bcea-eef3fda73253",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["b4bb313e-0e0f-47c9-8c21-baff93b0870b", "891db47d-aaf6-468b-b381-1183cd59ed88", "b575e552-c2ce-4793-9d67-c15116bbc0a3", "bebb0e62-31ea-4789-bebc-2971c9abe1ca", "2b99340e-a9bc-4f2c-a343-31525a4d528a"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

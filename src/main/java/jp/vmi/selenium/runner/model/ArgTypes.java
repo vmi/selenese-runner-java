@@ -6,9 +6,9 @@ import java.util.Map;
 /**
  * Argument types.
  *
- * This definition is generated from Command.js by "tools/convert-ide-command.rb".
+ * This definition is generated from ArgTypes.js by "tools/convert-ide-command.rb".
  */
-public enum ArgType {
+public enum ArgTypes {
 
     /** no argument */
     NO_ARG("noArg", "no argument",
@@ -20,13 +20,13 @@ public enum ArgType {
 
     // BEGINNING OF ArgTypes (*** DO NOT EDIT FROM HERE TO "END OF ArgTypes" ***)
 
-    /** answer */
-    ANSWER("answer", "answer",
-        "The answer to give in response to the prompt pop-up."),
-
     /** alert text */
     ALERT_TEXT("alertText", "alert text",
         "text to check"),
+
+    /** answer */
+    ANSWER("answer", "answer",
+        "The answer to give in response to the prompt pop-up."),
 
     /** attribute locator */
     ATTRIBUTE_LOCATOR("attributeLocator", "attribute locator",
@@ -36,13 +36,13 @@ public enum ArgType {
     CONDITIONAL_EXPRESSION("conditionalExpression", "conditional expression",
         "JavaScript expression that returns a boolean result for use in control flow commands."),
 
-    /** coord String */
-    COORD("coord", "coord String",
+    /** coord string */
+    COORD("coord", "coord string",
         "Specifies the x,y position (e.g., - 10,20) of the mouse event relative to the element found from a locator."),
 
     /** expected value */
     EXPECTED_VALUE("expectedValue", "expected value",
-        "The result you expect a variable to contain (e.g., true, false,or some other value)."),
+        "The result you expect a variable to contain (e.g., true, false, or some other value)."),
 
     /** expression */
     EXPRESSION("expression", "expression",
@@ -58,27 +58,31 @@ public enum ArgType {
 
     /** key sequence */
     KEY_SEQUENCE("keySequence", "key sequence",
-        "A sequence of keys to type, can be used to send key strokes (e.g.${KEY_ENTER})."),
+        "A sequence of keys to type, can be used to send key strokes (e.g. ${KEY_ENTER})."),
 
     /** locator */
     LOCATOR("locator", "locator",
         "An element locator."),
 
-    /** locator of object to be dragged */
-    LOCATOR_OF_OBJECT_TO_BE_DRAGGED("locatorOfObjectToBeDragged", "locator of object to be dragged",
-        "The locator of element to be dragged."),
-
     /** locator of drag destination object */
     LOCATOR_OF_DRAG_DESTINATION_OBJECT("locatorOfDragDestinationObject", "locator of drag destination object",
         "The locator of an element whose location (e.g., the center-most pixel within it) will be the point where locator of object to be dragged is dropped."),
 
-    /** option */
-    OPTION_LOCATOR("optionLocator", "option",
-        "An option locator, typically just an option label (e.g. \"John Smith\")."),
+    /** locator of object to be dragged */
+    LOCATOR_OF_OBJECT_TO_BE_DRAGGED("locatorOfObjectToBeDragged", "locator of object to be dragged",
+        "The locator of element to be dragged."),
+
+    /** loop limit */
+    LOOP_LIMIT("loopLimit", "loop limit",
+        "Maximum number of times a looping control flow command can execute to protect against infinite loops."),
 
     /** message */
     MESSAGE("message", "message",
         "The message to print."),
+
+    /** option */
+    OPTION_LOCATOR("optionLocator", "option",
+        "An option locator, typically just an option label (e.g. \"John Smith\")."),
 
     /** text */
     PATTERN("pattern", "text",
@@ -136,27 +140,27 @@ public enum ArgType {
     ;
 
     private static final String PREFIX = "ArgTypes.";
-    private static final Map<String, ArgType> lookupMap = new HashMap<>();
+    private static final Map<String, ArgTypes> lookupMap = new HashMap<>();
 
     static {
-        for (ArgType value : values())
+        for (ArgTypes value : values())
             lookupMap.put(value.id, value);
     }
 
     /**
-     * Lookup ArgType from string.
+     * Lookup ArgTypes from string.
      *
      * @param id id.
-     * @return ArgType.
+     * @return ArgTypes.
      */
-    public static ArgType lookup(String id) {
+    public static ArgTypes lookup(String id) {
         if (id == null)
             return NO_ARG;
         if (id.startsWith(PREFIX))
             id = id.substring(PREFIX.length());
         if ("option".equals(id))
             id = "optionLocator";
-        ArgType type = lookupMap.get(id);
+        ArgTypes type = lookupMap.get(id);
         if (type == null)
             throw new IllegalArgumentException("No such argument type: " + PREFIX + id);
         return type;
@@ -166,7 +170,7 @@ public enum ArgType {
     private final String name;
     private final String description;
 
-    ArgType(String id, String name, String description) {
+    ArgTypes(String id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;

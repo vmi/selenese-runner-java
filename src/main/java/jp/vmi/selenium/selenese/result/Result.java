@@ -1,6 +1,15 @@
 package jp.vmi.selenium.selenese.result;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
+
+import jp.vmi.selenium.selenese.Selenese;
 
 /**
  * Result of command execution.
@@ -33,6 +42,7 @@ public abstract class Result implements Comparable<Result> {
         + "|^org\\.eclipse\\.jdt\\.");
 
     private final String message;
+    private List<Entry<Selenese, Result>> childResults = null;
 
     /**
      * Constructor.
@@ -73,6 +83,21 @@ public abstract class Result implements Comparable<Result> {
     public Result(String prefix, String message, Exception e) {
         StringBuilder result = new StringBuilder(prefix).append(": ").append(message).append(" - ");
         this.message = generateExceptionMessage(result, e);
+    }
+
+    protected Result(Result childResult) {
+        this.message = childResult.message;
+    }
+
+    protected Result newUpdatedResult(Result targetResult) {
+        try {
+            Constructor<? extends Result> c = targetResult.getClass().getConstructor(Result.class);
+            Result newResult = c.newInstance(targetResult);
+            newResult.childResults = childResults;
+            return newResult;
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new UnsupportedOperationException("Cannot construct " + getClass() + " with Result", e);
+        }
     }
 
     /**
@@ -172,9 +197,65 @@ public abstract class Result implements Comparable<Result> {
      *
      * @param newResult new result.
      * @return updated total result.
+     *
+     * @deprecated use {@code #updateWithChildResult(Selenese, Result)} instead.
      */
+    @Deprecated
     public Result update(Result newResult) {
         return newResult.getLevel().value > this.getLevel().value ? newResult : this;
+    }
+
+    /**
+     * Update total result with child result.
+     *
+     * @param childSource child result source.
+     * @param childResult child result.
+     * @return updated total result.
+     */
+    public Result updateWithChildResult(Selenese childSource, Result childResult) {
+        Result newResult;
+        if (childResult.getLevel().value > getLevel().value)
+            newResult = newUpdatedResult(childResult);
+        else
+            newResult = this;
+        if (newResult.childResults == null)
+            newResult.childResults = new ArrayList<>();
+        newResult.childResults.add(new SimpleEntry<Selenese, Result>(childSource, childResult));
+        return newResult;
+    }
+
+    /**
+     * Get child results.
+     *
+     * @return child results.
+     */
+    public List<Entry<Selenese, Result>> getChildResults() {
+        if (childResults == null)
+            return Collections.emptyList();
+        else
+            return Collections.unmodifiableList(childResults);
+    }
+
+    private List<Entry<Selenese, Result>> collectChildResults(Selenese.Type type, List<Entry<Selenese, Result>> results) {
+        if (childResults != null) {
+            for (Entry<Selenese, Result> entry : childResults) {
+                if (entry.getKey().getType() == type)
+                    results.add(entry);
+                else
+                    entry.getValue().collectChildResults(type, results);
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Collect child results specified Selenese.Type.
+     *
+     * @param type Selenese type.
+     * @return child results.
+     */
+    public List<Entry<Selenese, Result>> collectChildResults(Selenese.Type type) {
+        return collectChildResults(type, new ArrayList<>());
     }
 
     @Override

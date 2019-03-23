@@ -12,6 +12,15 @@ public class Unexecuted extends Result {
         super("Unexecuted");
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public Unexecuted(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.UNEXECUTED;

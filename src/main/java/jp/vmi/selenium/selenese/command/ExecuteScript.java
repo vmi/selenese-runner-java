@@ -13,6 +13,7 @@ import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 public class ExecuteScript extends AbstractCommand {
 
     private static final int ARG_SCRIPT = 0;
+    private static final int ARG_VAR_NAME = 1;
 
     ExecuteScript(int index, String name, String... args) {
         super(index, name, args, VALUE, VALUE);
@@ -27,7 +28,7 @@ public class ExecuteScript extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         Object result = context.executeScript(curArgs[ARG_SCRIPT]);
         if (curArgs.length == 2) {
-            String varName = curArgs[1];
+            String varName = curArgs[ARG_VAR_NAME];
             if (!varName.isEmpty())
                 context.getVarsMap().put(varName, result);
         }

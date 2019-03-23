@@ -35,6 +35,15 @@ public class Error extends Result {
         super("Error", message, e);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public Error(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.ERROR;
