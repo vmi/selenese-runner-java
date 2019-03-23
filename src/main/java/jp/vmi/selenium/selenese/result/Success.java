@@ -17,6 +17,15 @@ public class Success extends Result {
         super(message);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public Success(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.SUCCESS;

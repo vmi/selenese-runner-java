@@ -25,6 +25,15 @@ public class Failure extends Result {
         super("Failure", e);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param childResult child result.
+     */
+    public Failure(Result childResult) {
+        super(childResult);
+    }
+
     @Override
     public Level getLevel() {
         return Level.FAILURE;

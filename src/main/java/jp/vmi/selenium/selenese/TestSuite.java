@@ -191,7 +191,7 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
             } catch (InvalidSeleneseException e) {
                 r = new Error(e);
             }
-            result = result.update(r);
+            result = result.updateWithChildResult(selenese, r);
         }
         return result;
     }
