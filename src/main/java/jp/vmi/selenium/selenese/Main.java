@@ -24,6 +24,7 @@ import jp.vmi.selenium.selenese.log.CookieFilter;
 import jp.vmi.selenium.selenese.log.CookieFilter.FilterType;
 import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.result.Result;
+import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.CommandDumper;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
@@ -73,7 +74,8 @@ public class Main {
         if (StringUtils.isBlank(progName))
             progName = "java -jar selenese-runner.jar";
         new DefaultConfig().showHelp(new PrintWriter(System.out), PROG_TITLE, getVersion(), progName, msgs);
-        exit(1);
+        noExit = false;
+        exit(Level.USAGE);
     }
 
     /**
@@ -82,7 +84,7 @@ public class Main {
      * @param args command line arguments.
      */
     public void run(String[] args) {
-        int exitCode = 1;
+        Level exitLevel = Level.UNEXECUTED;
         try {
             IConfig config = new DefaultConfig(args);
             String[] filenames = config.getArgs();
@@ -94,16 +96,14 @@ public class Main {
             setupRunner(runner, config, filenames);
             Result totalResult = runner.run(filenames);
             runner.finish();
-            if (exitStrictly)
-                exitCode = totalResult.getLevel().strictExitCode;
-            else
-                exitCode = totalResult.getLevel().exitCode;
+            exitLevel = totalResult.getLevel();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
+            exitLevel = Level.FATAL;
         }
-        exit(exitCode);
+        exit(exitLevel);
     }
 
     /**
@@ -253,8 +253,8 @@ public class Main {
             });
     }
 
-    protected void exit(int exitCode) {
-        this.exitCode = exitCode;
+    protected void exit(Level exitLevel) {
+        exitCode = exitStrictly ? exitLevel.strictExitCode : exitLevel.exitCode;
         log.info("Exit code: {}", exitCode);
         WebDriverManager.quitDriversOnAllManagers();
         if (!noExit)

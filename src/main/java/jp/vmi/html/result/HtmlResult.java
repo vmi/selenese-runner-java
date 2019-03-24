@@ -144,6 +144,7 @@ public class HtmlResult {
                 TestCase testCase = (TestCase) selenese;
                 switch (testCase.getResult().getLevel()) {
                 case UNEXECUTED:
+                case USAGE:
                     // no count.
                     break;
                 case SUCCESS:
@@ -153,12 +154,14 @@ public class HtmlResult {
                 case FAILURE:
                 case ERROR:
                 case MAX_TIME_EXCEEDED:
+                case FATAL:
                     summary.numTestFailures++;
                     break;
                 }
                 for (ICommand command : testCase.getCommandList()) {
                     switch (command.getResult().getLevel()) {
                     case UNEXECUTED:
+                    case USAGE:
                         // no count
                         break;
                     case SUCCESS:
@@ -170,6 +173,7 @@ public class HtmlResult {
                         break;
                     case ERROR:
                     case MAX_TIME_EXCEEDED:
+                    case FATAL:
                         summary.numCommandErrors++;
                         break;
                     }

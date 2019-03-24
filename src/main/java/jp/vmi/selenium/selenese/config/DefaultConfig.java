@@ -49,7 +49,7 @@ public class DefaultConfig implements IConfig {
     };
 
     private static String statusListItem(Level level) {
-        return "- " + level.strictExitCode + ": " + level.name();
+        return String.format("- %d/%d: %s", level.strictExitCode, level.exitCode, level.name());
     }
 
     private static final String[] FOOTER = {
@@ -66,13 +66,15 @@ public class DefaultConfig implements IConfig {
         "*3 Use \"java -cp ..." + File.pathSeparator + "selenese-runner.jar Main --command-factory ...\". ",
         "Because \"java\" command ignores all class path settings, when using \"-jar\" option.",
         "",
-        "*4 The list of strict exit code is follows:",
+        "*4 The list of exit code (strict/normal) is follows:",
         statusListItem(SUCCESS),
         statusListItem(WARNING),
         statusListItem(FAILURE),
         statusListItem(ERROR),
         statusListItem(UNEXECUTED),
-        statusListItem(MAX_TIME_EXCEEDED)
+        statusListItem(MAX_TIME_EXCEEDED),
+        statusListItem(FATAL),
+        statusListItem(USAGE)
     };
 
     private final CmdLineParser parser;

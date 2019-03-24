@@ -99,13 +99,15 @@ Usage
     *3 Use "java -cp ...:selenese-runner.jar Main --command-factory ...".
        Because "java" command ignores all class path settings, when using "-jar" option.
     
-    *4 The list of strict exit code is follows:
-       - 0: SUCCESS
-       - 2: WARNING
-       - 3: FAILURE
-       - 4: ERROR
-       - 5: UNEXECUTED
-       - 6: MAX_TIME_EXCEEDED
+    *4 The list of exit code (strict/normal) is follows:
+       - 0/0: SUCCESS
+       - 2/0: WARNING
+       - 3/3: FAILURE
+       - 4/3: ERROR
+       - 5/0: UNEXECUTED
+       - 6/3: MAX_TIME_EXCEEDED
+       - 7/3: FATAL
+       - 64/64: USAGE
 
 Requirements
 ------------

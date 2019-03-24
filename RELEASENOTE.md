@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.21.1
+
+* Refine exit code handling. (#296)
+
 ### 3.21.0
 
 * Add `nop` command to convert from empty command. (#291)
