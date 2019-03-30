@@ -1,7 +1,7 @@
 {
   "id": "2ed67837-dcd1-4ce4-857a-bf6ba553ea42",
-  "version": "1.1",
-  "name": "FlowControl",
+  "version": "2.0",
+  "name": "testcase_flowcontrol",
   "url": "http://localhost/",
   "tests": [{
     "id": "f1676730-3df0-4fd0-a05c-e44b50dcf443",
@@ -425,6 +425,94 @@
       "targets": [],
       "value": "3"
     }]
+  }, {
+    "id": "4281d043-50ba-4f0e-8ffe-e80881d6d9ef",
+    "name": "WhileEndNested",
+    "commands": [{
+      "id": "89f4ac7a-d2a8-4b10-ab4c-9e5a2d0eb331",
+      "comment": "",
+      "command": "open",
+      "target": "/indicate.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f4b17fbf-bc93-45ef-8a4c-8a55ecad63d8",
+      "comment": "",
+      "command": "executeScript",
+      "target": "document.getElementById(\"name\").textContent = \"while count\"",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d9c66718-628e-455e-b9d6-b6bca47adb87",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return 3",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "a7ae1ad1-32ac-4d51-8a7e-4cc45f2bb69a",
+      "comment": "",
+      "command": "while",
+      "target": "${count} > 0",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8c388714-aca4-4001-bc02-145613ee70f5",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return ${count} - 1",
+      "targets": [],
+      "value": "count"
+    }, {
+      "id": "b3f025ff-ced2-42ca-8e1c-9d5aff709b93",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return 3",
+      "targets": [],
+      "value": "count2"
+    }, {
+      "id": "3de3b18a-cecf-43db-a35e-856b8b0dda5a",
+      "comment": "",
+      "command": "while",
+      "target": "${count2} > 0",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "50342f6c-8463-4c85-9145-849dd962c0e2",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return ${count2} - 1",
+      "targets": [],
+      "value": "count2"
+    }, {
+      "id": "8da9552e-4053-41be-a6ec-61f5e4669e12",
+      "comment": "",
+      "command": "executeScript",
+      "target": "document.getElementById(\"value\").textContent = ${count} + \"/\" + ${count2}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "29d23e50-b70b-47ae-8129-ec65f039209e",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dfa5cc1b-e215-40ed-b379-06b7d5933139",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f716e9a5-db5e-47bb-bd7e-3c18e589d456",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=value",
+      "targets": [],
+      "value": "0/0"
+    }]
   }],
   "suites": [{
     "id": "4b553101-df2e-4078-a379-5b7d2cfa9077",
@@ -432,7 +520,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["f1676730-3df0-4fd0-a05c-e44b50dcf443", "edafe50d-e58b-4ce4-998d-85c198c52907", "3eb9b706-7c59-4212-aea7-0bd88e3190c3", "5dfddada-33b9-4c64-bdb3-8c47a22abc78"]
+    "tests": ["f1676730-3df0-4fd0-a05c-e44b50dcf443", "edafe50d-e58b-4ce4-998d-85c198c52907", "3eb9b706-7c59-4212-aea7-0bd88e3190c3", "5dfddada-33b9-4c64-bdb3-8c47a22abc78", "4281d043-50ba-4f0e-8ffe-e80881d6d9ef"]
   }],
   "urls": ["http://localhost/"],
   "plugins": []

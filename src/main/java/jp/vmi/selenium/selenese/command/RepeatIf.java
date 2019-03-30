@@ -26,8 +26,9 @@ public class RepeatIf extends AbstractCommand implements BlockEnd {
     protected Result executeImpl(Context context, String... curArgs) {
         if (context.isTrue(curArgs[ARG_CONDITION])) {
             BlockStart blockStart = getBlockStart();
+            int index = ((ICommand) blockStart).getIndex();
             context.getCommandListIterator().jumpTo(blockStart);
-            return new Success("Repeat");
+            return new Success("Repeat. Go to next loop (#" + index + ")");
         } else {
             return new Success("Break");
         }
