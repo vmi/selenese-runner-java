@@ -1,9 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
-### 3.21.1
+### 3.22.0
 
 * Refine exit code handling. (#296)
+* Fix a bug in flow control and improved flow control processing. (#297)
 
 ### 3.21.0
 
