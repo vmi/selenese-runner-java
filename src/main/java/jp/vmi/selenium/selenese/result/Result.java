@@ -27,8 +27,8 @@ public abstract class Result implements Comparable<Result> {
         FAILURE(2, 3, 3),
         ERROR(3, 3, 4),
         MAX_TIME_EXCEEDED(4, 3, 6),
-        FATAL(5, 3, 7),
-        USAGE(6, 64, 64),
+        FATAL(5, 70, 70), // EX_SOFTWARE in sysexits.h
+        USAGE(6, 64, 64), // EX_USAGE in sysexits.h
         ;
 
         public final int value;

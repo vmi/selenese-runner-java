@@ -106,7 +106,7 @@ Usage
        - 4/3: ERROR
        - 5/0: UNEXECUTED
        - 6/3: MAX_TIME_EXCEEDED
-       - 7/3: FATAL
+       - 70/70: FATAL
        - 64/64: USAGE
 
 Requirements

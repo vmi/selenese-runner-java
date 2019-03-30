@@ -255,8 +255,8 @@ public class Main {
 
     protected void exit(Level exitLevel) {
         exitCode = exitStrictly ? exitLevel.strictExitCode : exitLevel.exitCode;
-        log.info("Exit code: {}", exitCode);
         WebDriverManager.quitDriversOnAllManagers();
+        log.info("Exit code: {} ({})", exitCode, exitLevel);
         if (!noExit)
             System.exit(exitCode);
         dumpThreads();
