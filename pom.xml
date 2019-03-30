@@ -388,6 +388,9 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <configuration>
           <source>${source.version}</source>
           <target>${target.version}</target>
+	  <compilerArgs>
+            <arg>-Xlint:deprecation</arg>
+	  </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
