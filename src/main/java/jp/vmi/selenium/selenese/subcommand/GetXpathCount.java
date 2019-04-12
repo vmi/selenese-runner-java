@@ -27,6 +27,7 @@ package jp.vmi.selenium.selenese.subcommand;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.command.ArgumentType;
+import jp.vmi.selenium.selenese.locator.WebDriverElementFinder.ElementFinderNoSuchElementException;
 
 /**
  * Re-implementation of GetXpathCount.
@@ -44,6 +45,10 @@ public class GetXpathCount extends AbstractSubCommand<Integer> {
 
     @Override
     public Integer execute(Context context, String... args) {
-        return context.findElements(args[ARG_XPATH]).size();
+        try {
+            return context.findElements(args[ARG_XPATH]).size();
+        } catch (ElementFinderNoSuchElementException e) {
+            return 0;
+        }
     }
 }

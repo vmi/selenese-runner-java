@@ -1,0 +1,92 @@
+{
+  "id": "1d23f71d-f76c-4967-a1f4-3de400fb5d6b",
+  "version": "2.0",
+  "name": "testcase_xpathcount",
+  "url": "https://google.com/",
+  "tests": [{
+    "id": "35a82f39-24a4-420a-b709-b611a8f85357",
+    "name": "xpathcount01",
+    "commands": [{
+      "id": "23c7a8b8-3c1d-4646-83df-a68800bd072f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "aebb5eb3-e739-4398-883e-965819dcb9b3",
+      "comment": "",
+      "command": "storeXpathCount",
+      "target": "//input[@name='q']",
+      "targets": [],
+      "value": "q1"
+    }, {
+      "id": "8f16beab-0951-451d-87a6-acd27fb628cd",
+      "comment": "",
+      "command": "assert",
+      "target": "q1",
+      "targets": [],
+      "value": "1"
+    }]
+  }, {
+    "id": "d6ca0629-264e-491a-bce1-a401f44ab914",
+    "name": "xpathcount02",
+    "commands": [{
+      "id": "440c0bd3-7c6f-4eab-b086-4c2c9ae47c52",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "961b90c2-54d7-4b7b-bb79-54473dabd40d",
+      "comment": "",
+      "command": "storeXpathCount",
+      "target": "xpath=//input[@name='q']",
+      "targets": [],
+      "value": "q2"
+    }, {
+      "id": "2ba27cdf-db8f-4312-8232-49d936c0d76f",
+      "comment": "",
+      "command": "assert",
+      "target": "q2",
+      "targets": [],
+      "value": "1"
+    }]
+  }, {
+    "id": "6aab4175-2662-4bf7-b0b9-b920fc6030d6",
+    "name": "xpathcount03",
+    "commands": [{
+      "id": "266d2389-c6bb-4302-8e7e-8126bcc0a408",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "58c8c376-110f-4aa0-9506-a4b655ea427a",
+      "comment": "",
+      "command": "storeXpathCount",
+      "target": "xpath=//input[@name='qq']",
+      "targets": [],
+      "value": "q3"
+    }, {
+      "id": "7878da15-b505-4d0d-8d7e-a1582d6e34af",
+      "comment": "",
+      "command": "assert",
+      "target": "q3",
+      "targets": [],
+      "value": "0"
+    }]
+  }],
+  "suites": [{
+    "id": "5f8df264-21c0-4e53-9274-b3861dc5a821",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["35a82f39-24a4-420a-b709-b611a8f85357", "d6ca0629-264e-491a-bce1-a401f44ab914", "6aab4175-2662-4bf7-b0b9-b920fc6030d6"]
+  }],
+  "urls": ["https://google.com/"],
+  "plugins": []
+}
