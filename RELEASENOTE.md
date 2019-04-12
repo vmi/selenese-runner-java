@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.23.0
+
+* Fix `**XpathCount` commands to treat as 0 when the element can not be found. (#298)
+
 ### 3.22.0
 
 * Refine exit code handling. (#296)
