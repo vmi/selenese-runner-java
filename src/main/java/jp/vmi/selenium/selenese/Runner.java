@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Deque;
 import java.util.EnumSet;
 import java.util.IdentityHashMap;
@@ -18,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.JavascriptExecutor;
@@ -70,7 +70,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
-    private static final FastDateFormat FILE_DATE_TIME = FastDateFormat.getInstance("yyyyMMdd_HHmmssSSS");
+    private static final DateTimeFormatter FILE_DATE_TIME = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS");
 
     private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(new NullOutputStream());
 
@@ -287,7 +287,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @return File instance for screenshot all.
      */
     protected File getFilenameForScreenshotAll(String prefix, int index) {
-        String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        String filename = String.format("%s_%s_%d.png", prefix, FILE_DATE_TIME.format(ZonedDateTime.now()), index);
         return new File(screenshotAllDir, filename);
     }
 
@@ -299,7 +299,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * @return File instance for screenshot on fail.
      */
     protected File getFilenameForScreenshotOnFail(String prefix, int index) {
-        String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(Calendar.getInstance()), index);
+        String filename = String.format("%s_%s_%d_fail.png", prefix, FILE_DATE_TIME.format(ZonedDateTime.now()), index);
         return new File(screenshotOnFailDir, filename);
     }
 

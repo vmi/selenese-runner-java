@@ -3,7 +3,7 @@ package jp.vmi.junit.result;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
+import jp.vmi.selenium.selenese.utils.DateTimeUtils;
 
 /**
  * Test result interface. (for TestResult map in JUnitResult)
@@ -50,7 +50,7 @@ public abstract class TestResult<T extends ITestTarget> {
      */
     @XmlAttribute
     public String getTimestamp() {
-        return DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(testTarget.getStopWatch().getStartTime());
+        return DateTimeUtils.formatIso8601(testTarget.getStopWatch().getStartTime());
     }
 
     /**

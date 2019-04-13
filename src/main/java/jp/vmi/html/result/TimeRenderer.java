@@ -1,8 +1,10 @@
 package jp.vmi.html.result;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-
-import org.apache.commons.lang3.time.FastDateFormat;
 
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
@@ -30,6 +32,7 @@ public class TimeRenderer implements NamedRenderer {
     @Override
     public String render(Object o, String format, Locale locale) {
         long value = ((Number) o).longValue();
-        return FastDateFormat.getInstance(format).format(value);
+        ZonedDateTime dateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(value), ZoneId.systemDefault());
+        return DateTimeFormatter.ofPattern(format).format(dateTime);
     }
 }

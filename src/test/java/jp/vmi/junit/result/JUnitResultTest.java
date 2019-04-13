@@ -2,8 +2,8 @@ package jp.vmi.junit.result;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
@@ -11,7 +11,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.After;
@@ -25,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import jp.vmi.selenium.selenese.ITreedFileGenerator;
+import jp.vmi.selenium.selenese.utils.DateTimeUtils;
 import jp.vmi.selenium.selenese.utils.LogRecorder;
 import jp.vmi.selenium.selenese.utils.StopWatch;
 
@@ -98,8 +98,7 @@ public class JUnitResultTest {
      */
     @Test
     public void testJUnitResult() throws Exception {
-        Calendar start = Calendar.getInstance();
-        start.set(Calendar.MILLISECOND, 0);
+        Instant start = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         final ITestSuite testSuite = new ITestSuite() {
             private int index = 0;
             private final StopWatch stopWatch = new StopWatch();
@@ -239,8 +238,8 @@ public class JUnitResultTest {
         assertThat(suiteResult.getAttribute("name"), is("test-suite"));
         assertThat("test-suite:time", Double.parseDouble(suiteResult.getAttribute("time")), lessThan(1.0));
         String timestamp = suiteResult.getAttribute("timestamp");
-        Date suiteTimestamp = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.parse(timestamp);
-        assertThat(suiteTimestamp, greaterThanOrEqualTo(start.getTime()));
+        Instant suiteTimestamp = Instant.from(DateTimeUtils.parseIso8601(timestamp));
+        assertThat(suiteTimestamp, greaterThanOrEqualTo(start));
 
         // test-case test.
         NodeList caseResults = getChild(suiteResult, "testcase", NODESET);
