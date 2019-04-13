@@ -6,9 +6,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import org.apache.commons.lang3.StringUtils;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 
 /**
  * Parsed locator.
@@ -77,7 +77,7 @@ public class Locator {
         if (matcher.matches()) {
             String type = matcher.group(LOCATOR_TYPE);
             String arg = matcher.group(LOCATOR_ARG);
-            if (isNotEmpty(type)) {
+            if (StringUtils.isNotEmpty(type)) {
                 char ch = type.charAt(0);
                 if ('A' <= ch && ch <= 'Z') {
                     try {
@@ -88,11 +88,11 @@ public class Locator {
                 }
                 this.type = type;
                 this.arg = arg;
-            } else if (isNotEmpty(matcher.group(DOM_LOCATOR))) {
+            } else if (StringUtils.isNotEmpty(matcher.group(DOM_LOCATOR))) {
                 // start with "document."
                 this.type = DOM;
                 this.arg = this.locator;
-            } else if (isNotEmpty(matcher.group(XPATH_LOCATOR))) {
+            } else if (StringUtils.isNotEmpty(matcher.group(XPATH_LOCATOR))) {
                 // start with "//"
                 this.type = XPATH;
                 this.arg = this.locator;
