@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Strings;
+
 /**
  * Path utilities.
  */
@@ -66,7 +68,7 @@ public class PathUtils {
      * @return concatinated and normalized filename.
      */
     public static String concat(String parent, String child) {
-        if (StringUtils.isEmpty(parent))
+        if (Strings.isNullOrEmpty(parent))
             return normalize(child);
         StringBuilder s = new StringBuilder(normalizeSeparator(parent));
         if (!parent.endsWith(File.separator))

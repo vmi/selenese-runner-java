@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.selenese.utils.SeleniumUtils.SeleniumPattern;
 import jp.vmi.selenium.selenese.utils.XPathUtils;
@@ -43,7 +44,7 @@ class LinkHandler implements LocatorHandler {
         boolean and = false;
         StringBuilder xpath = new StringBuilder("//a[");
         for (String ss : sp.stringPattern.split("[*?]+")) {
-            if (StringUtils.isEmpty(ss))
+            if (Strings.isNullOrEmpty(ss))
                 continue;
             if (and)
                 xpath.append(" and ");

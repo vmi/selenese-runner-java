@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.StringSubstitutor;
@@ -31,6 +30,7 @@ import org.openqa.selenium.net.PortProber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -53,7 +53,7 @@ public class WebServer {
     }
 
     private static void parseQuery(Map<String, String> params, String queryString) {
-        if (StringUtils.isEmpty(queryString))
+        if (Strings.isNullOrEmpty(queryString))
             return;
         for (String entryString : queryString.split("&")) {
             String[] pair = entryString.split("=", 2);

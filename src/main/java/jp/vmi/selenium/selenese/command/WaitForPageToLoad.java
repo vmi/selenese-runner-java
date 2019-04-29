@@ -25,7 +25,6 @@
 
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -34,6 +33,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseCommandErrorException;
@@ -69,7 +70,7 @@ public class WaitForPageToLoad extends AbstractCommand {
         long timeout = 0; // no wait
         if (curArgs.length > 0) {
             String arg = curArgs[ARG_TIMEOUT];
-            if (!StringUtils.isEmpty(arg)) {
+            if (!Strings.isNullOrEmpty(arg)) {
                 try {
                     timeout = Long.parseLong(arg);
                 } catch (NumberFormatException e) {

@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
@@ -34,7 +35,7 @@ class NameHandler implements LocatorHandler {
         Matcher matcher = FILTER_RE.matcher(args[1]);
         matcher.matches();
         String indexString = matcher.group(1);
-        if (StringUtils.isNotEmpty(indexString)) {
+        if (!Strings.isNullOrEmpty(indexString)) {
             // use index
             int index = NumberUtils.toInt(indexString);
             if (index < result.size())

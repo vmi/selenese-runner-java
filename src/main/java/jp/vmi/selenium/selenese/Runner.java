@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
+import com.google.common.base.Strings;
 
 import jp.vmi.html.result.HtmlResult;
 import jp.vmi.html.result.HtmlResultHolder;
@@ -382,7 +383,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (preparator != null)
             return preparator.getBrowserName();
         String name = driver.getClass().getSimpleName();
-        if (StringUtils.isEmpty(name))
+        if (Strings.isNullOrEmpty(name))
             return "";
         else if (name.endsWith("WebDriver"))
             return name.substring(0, name.length() - "WebDriver".length()).toLowerCase();

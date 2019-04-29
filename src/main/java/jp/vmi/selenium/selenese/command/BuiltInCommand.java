@@ -1,6 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
@@ -38,7 +38,7 @@ public class BuiltInCommand extends AbstractCommand {
             int timeout = context.getTimeout();
             WaitForPageToLoad.execute(context, timeout);
         }
-        return StringUtils.isNotEmpty(resultString) ? new Success(resultString) : SUCCESS;
+        return Strings.isNullOrEmpty(resultString) ? SUCCESS : new Success(resultString);
     }
 
     @Override

@@ -20,6 +20,8 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
 
+import com.google.common.base.Strings;
+
 import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
@@ -731,11 +733,11 @@ public class DefaultConfig implements IConfig {
                 if (key != null) {
                     currentKey = key;
                     String value = matcher.group(2);
-                    if (StringUtils.isNotEmpty(value))
+                    if (!Strings.isNullOrEmpty(value))
                         setOrAddOptionValue(currentKey, value);
                 } else if (currentKey != null) {
                     String value = matcher.group(3);
-                    if (StringUtils.isNotEmpty(value))
+                    if (!Strings.isNullOrEmpty(value))
                         setOrAddOptionValue(currentKey, value);
                 }
             }

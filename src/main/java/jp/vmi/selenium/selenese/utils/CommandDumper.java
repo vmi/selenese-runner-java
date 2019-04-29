@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.runner.model.utils.CommandsJs;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
@@ -28,7 +28,7 @@ public class CommandDumper {
     }
 
     private static String append(String s1, String s2) {
-        if (StringUtils.isEmpty(s1))
+        if (Strings.isNullOrEmpty(s1))
             return s2;
         else
             return s1 + ", " + s2;

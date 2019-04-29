@@ -2,7 +2,6 @@ package jp.vmi.selenium.webdriver;
 
 import java.io.File;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Proxy;
@@ -13,6 +12,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -37,7 +38,7 @@ public abstract class WebDriverFactory {
      */
     public String getBrowserName() {
         String name = getClass().getSimpleName();
-        if (StringUtils.isEmpty(name))
+        if (Strings.isNullOrEmpty(name))
             return "";
         else if (name.endsWith("WebDriverFactory"))
             return name.substring(0, name.length() - "WebDriverFactory".length()).toLowerCase();
