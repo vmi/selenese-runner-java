@@ -2,12 +2,11 @@ package jp.vmi.selenium.rollup;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
 
@@ -62,8 +61,8 @@ public class RollupRule implements IRollupRule {
         for (Object o : commands) {
             Map<String, String> c = JSMap.toMap(engine, o);
             String name = c.get("command");
-            String target = StringUtils.defaultString(c.get("target"));
-            String value = StringUtils.defaultString(c.get("value"));
+            String target = Objects.toString(c.get("target"), "");
+            String value = Objects.toString(c.get("value"), "");
             ICommand command = factory.newCommand(++index, name, target, value);
             commandList.add(command);
         }

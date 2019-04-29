@@ -1,7 +1,8 @@
 package jp.vmi.selenium.selenese.inject;
 
+import java.util.Objects;
+
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public class ExecuteTestCaseInterceptor extends AbstractExecuteTestCaseIntercept
             clr.info("Start: " + testCase);
         }
         if (testCase instanceof TestCase) {
-            String baseURL = StringUtils.defaultString(context.getOverridingBaseURL(), ((TestCase) testCase).getBaseURL());
+            String baseURL = Objects.toString(context.getOverridingBaseURL(), ((TestCase) testCase).getBaseURL());
             log.info("baseURL: {}", baseURL);
             clr.info("baseURL: " + baseURL);
         }

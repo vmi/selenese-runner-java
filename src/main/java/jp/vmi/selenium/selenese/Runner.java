@@ -12,6 +12,7 @@ import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -414,7 +415,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setScreenshotDir(String screenshotDir) throws IllegalArgumentException {
         mkdirsForScreenshot(screenshotDir, "screenshot");
         this.screenshotDir = screenshotDir;
-        log.info("Screenshot directory: {}", StringUtils.defaultString(screenshotDir, "-"));
+        log.info("Screenshot directory: {}", Objects.toString(screenshotDir, "-"));
     }
 
     /**
@@ -426,7 +427,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setScreenshotAllDir(String screenshotAllDir) throws IllegalArgumentException {
         mkdirsForScreenshot(screenshotAllDir, "screenshot-all");
         this.screenshotAllDir = screenshotAllDir;
-        log.info("Screenshot for all commands directory: {}", StringUtils.defaultString(screenshotAllDir, "-"));
+        log.info("Screenshot for all commands directory: {}", Objects.toString(screenshotAllDir, "-"));
     }
 
     /**
@@ -437,7 +438,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     public void setScreenshotOnFailDir(String screenshotOnFailDir) {
         mkdirsForScreenshot(screenshotOnFailDir, "screenshot-on-fail");
         this.screenshotOnFailDir = screenshotOnFailDir;
-        log.info("Screenshot on fail directory: {}", StringUtils.defaultString(screenshotOnFailDir, "-"));
+        log.info("Screenshot on fail directory: {}", Objects.toString(screenshotOnFailDir, "-"));
     }
 
     @Override
