@@ -11,13 +11,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.SubCommandMapProvider;
 import jp.vmi.selenium.selenese.subcommand.ISubCommand;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Factory of selenese command.
@@ -28,7 +27,7 @@ public class CommandFactory implements ICommandFactory {
 
     private static void addConstructor(Class<? extends ICommand> cmdClass, String... aliases) {
         try {
-            String name = StringUtils.uncapitalize(cmdClass.getSimpleName());
+            String name = LangUtils.uncapitalize(cmdClass.getSimpleName());
             Constructor<? extends ICommand> constructor;
             constructor = cmdClass.getDeclaredConstructor(int.class/*index*/, String.class/*name*/, String[].class/*args*/);
             constructorMap.put(name, constructor);

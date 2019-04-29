@@ -1,8 +1,7 @@
 package jp.vmi.selenium.selenese.subcommand;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.command.ArgumentType;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Base implementation of sub-command.
@@ -24,7 +23,7 @@ public abstract class AbstractSubCommand<T> implements ISubCommand<T> {
 
     @Override
     public String getName() {
-        return StringUtils.uncapitalize(getClass().getSimpleName());
+        return LangUtils.uncapitalize(getClass().getSimpleName());
     }
 
     @Override

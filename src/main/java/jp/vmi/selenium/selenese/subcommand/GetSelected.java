@@ -3,11 +3,11 @@ package jp.vmi.selenium.selenese.subcommand;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 
@@ -23,8 +23,8 @@ public class GetSelected extends AbstractSubCommand<Object> {
         LABEL, VALUE, INDEX, ID;
 
         private String getSubCommandName(boolean isMultiple) {
-            String prefix = StringUtils.uncapitalize(GetSelected.class.getSimpleName());
-            String suffix = StringUtils.capitalize(name().toLowerCase());
+            String prefix = LangUtils.uncapitalize(GetSelected.class.getSimpleName());
+            String suffix = LangUtils.capitalize(name().toLowerCase());
             String plural;
             if (isMultiple) {
                 switch (this) {
