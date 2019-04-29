@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
@@ -840,7 +839,7 @@ public class DefaultConfig implements IConfig {
                 Matcher m = NOTE_RE.matcher(line);
                 if (m.matches()) {
                     String mark = m.group(1);
-                    padding = StringUtils.repeat(' ', mark.length());
+                    padding = Strings.repeat(" ", mark.length());
                     String desc = WordUtils.wrap(m.group(2), width - mark.length(), "\n", false).replace("\n", System.lineSeparator() + padding);
                     pw.print(mark);
                     pw.print(desc);

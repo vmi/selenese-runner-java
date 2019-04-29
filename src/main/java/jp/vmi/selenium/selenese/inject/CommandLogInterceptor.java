@@ -3,9 +3,10 @@ package jp.vmi.selenium.selenese.inject;
 import java.util.List;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 import jp.vmi.junit.result.JUnitResultHolder;
 import jp.vmi.selenium.selenese.Context;
@@ -62,7 +63,7 @@ public class CommandLogInterceptor extends AbstractDoCommandInterceptor {
     protected Result invoke(MethodInvocation invocation, Context context, ICommand command, String[] curArgs) throws Throwable {
         CommandSequence commandSequence = context.getCommandListIterator().getCommandSequence();
         LogRecorder clr = context.getCurrentTestCase().getLogRecorder();
-        String indent = StringUtils.repeat("  ", commandSequence.getLevel() - 1);
+        String indent = Strings.repeat("  ", commandSequence.getLevel() - 1);
         String cmdStr = command.toString();
         int retries = context.getRetries();
         int maxRetries = context.getMaxRetries();

@@ -89,6 +89,6 @@ public class PathUtils {
         to = new File(normalize(to)).toURI().toASCIIString();
         int prefixLen = StringUtils.getCommonPrefix(from, to).length();
         int level = StringUtils.countMatches(from.substring(prefixLen), "/");
-        return StringUtils.repeat("../", level) + to.substring(prefixLen);
+        return Strings.repeat("../", level) + to.substring(prefixLen);
     }
 }
