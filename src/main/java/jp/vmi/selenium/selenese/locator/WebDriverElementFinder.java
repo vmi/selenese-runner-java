@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 /**
@@ -162,7 +163,7 @@ public class WebDriverElementFinder {
         } catch (RuntimeException e) {
             if (SeleniumUtils.isElementNotFound(e)) {
                 if (plocs == currentFrameLocators) {
-                    log.warn("The selected frame has disapeared: {}", StringUtils.join(plocs, '/'));
+                    log.warn("The selected frame has disapeared: {}", LangUtils.join("/", plocs));
                     log.warn("Reset selected frame.");
                 }
                 driver.switchTo().defaultContent();

@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 import jp.vmi.selenium.selenese.config.IConfig;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Options for WebDriver.
@@ -468,7 +469,7 @@ public class DriverOptions {
         if (!capsMap.isEmpty()) {
             eachCapabilities(capsMap, (key, value) -> {
                 if (value instanceof Object[])
-                    value = StringUtils.join((Object[]) value, ", ");
+                    value = LangUtils.join(", ", Arrays.stream((Object[]) value));
                 result.append("  ").append(key).append('=').append(value).append("\n");
             });
             result.append(']');

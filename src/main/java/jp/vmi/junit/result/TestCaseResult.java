@@ -10,8 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.lang3.StringUtils;
-
+import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.LogRecorder.LogMessage;
 
 import static jp.vmi.junit.result.ObjectFactory.*;
@@ -104,7 +103,7 @@ public class TestCaseResult extends TestResult<ITestCase> {
     @XmlElement(name = "system-out")
     public String getSystemOut() {
         List<LogMessage> msgs = testTarget.getLogRecorder().getMessages();
-        return (msgs.size() != 0) ? StringUtils.join(msgs, NL) : null;
+        return msgs.isEmpty() ? null : LangUtils.join(NL, msgs);
     }
 
     /**
@@ -115,6 +114,6 @@ public class TestCaseResult extends TestResult<ITestCase> {
     @XmlElement(name = "system-err")
     public String getSystemErr() {
         List<LogMessage> msgs = testTarget.getLogRecorder().getErrorMessages();
-        return (msgs.size() != 0) ? StringUtils.join(msgs, NL) : null;
+        return msgs.isEmpty() ? null : LangUtils.join(NL, msgs);
     }
 }

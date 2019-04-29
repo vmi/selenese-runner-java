@@ -7,11 +7,11 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NotFoundException;
@@ -203,11 +203,11 @@ public class SeleniumUtils {
         if (result == null)
             return "";
         else if (result instanceof Object[])
-            return StringUtils.join((Object[]) result, ',');
+            return LangUtils.join(",", Arrays.stream((Object[]) result));
         else if (result instanceof Iterable)
-            return StringUtils.join((Iterable<?>) result, ',');
+            return LangUtils.join(",", ((Iterable<?>) result).iterator());
         else if (result instanceof Iterator)
-            return StringUtils.join((Iterator<?>) result, ',');
+            return LangUtils.join(",", (Iterator<?>) result);
         else if (result instanceof Double)
             return doubleToString((Double) result);
         else

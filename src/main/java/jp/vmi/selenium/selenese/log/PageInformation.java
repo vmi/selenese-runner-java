@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -82,7 +81,7 @@ public class PageInformation {
                     break;
                 msgs.add(ste.toString().trim());
             }
-            return StringUtils.join(msgs, " / at ");
+            return String.join(" / at ", msgs);
         }
     }
 
