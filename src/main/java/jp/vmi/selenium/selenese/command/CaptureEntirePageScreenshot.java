@@ -1,12 +1,11 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.ScreenshotHandler;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -32,7 +31,7 @@ public class CaptureEntirePageScreenshot extends AbstractCommand {
         if (!(context instanceof ScreenshotHandler))
             return new Success("captureEntirePageScreenshot is not supported.");
         String filename = curArgs[ARG_FILENAME];
-        if (StringUtils.isBlank(filename))
+        if (LangUtils.isBlank(filename))
             return new Warning("captureEntirePageScreenshot is ignored: empty filename.");
         ScreenshotHandler handler = (ScreenshotHandler) context;
         if (handler.isIgnoredScreenshotCommand())

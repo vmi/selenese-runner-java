@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 
@@ -73,7 +73,7 @@ public final class TestUtils {
     public static List<Object[]> getWebDriverFactories() {
         String[] drivers;
         String prop = System.getProperty("test.drivers");
-        if (StringUtils.isBlank(prop)) {
+        if (LangUtils.isBlank(prop)) {
             drivers = new String[] {
                 HTMLUNIT,
                 FIREFOX,

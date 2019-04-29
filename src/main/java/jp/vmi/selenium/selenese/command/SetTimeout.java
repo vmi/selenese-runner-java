@@ -1,10 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -28,7 +27,7 @@ public class SetTimeout extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String timeout = curArgs[ARG_TIMEOUT];
-        if (StringUtils.isBlank(timeout))
+        if (LangUtils.isBlank(timeout))
             return new Warning("the argument of setTimeout is ignored: empty.");
         try {
             context.setTimeout(Integer.parseInt(timeout));

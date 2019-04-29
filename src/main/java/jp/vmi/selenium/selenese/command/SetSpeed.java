@@ -1,10 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -28,7 +27,7 @@ public class SetSpeed extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String speed = curArgs[ARG_SPEED];
-        if (StringUtils.isBlank(speed))
+        if (LangUtils.isBlank(speed))
             return new Warning("the argument of setSpeed is ignored: empty.");
         try {
             context.setSpeed(Long.parseLong(speed));

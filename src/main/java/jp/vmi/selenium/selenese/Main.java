@@ -8,7 +8,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,7 @@ import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Result.Level;
 import jp.vmi.selenium.selenese.utils.CommandDumper;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
@@ -71,7 +71,7 @@ public class Main {
 
     private void help(String... msgs) {
         String progName = System.getenv("PROG_NAME");
-        if (StringUtils.isBlank(progName))
+        if (LangUtils.isBlank(progName))
             progName = "java -jar selenese-runner.jar";
         new DefaultConfig().showHelp(new PrintWriter(System.out), PROG_TITLE, getVersion(), progName, msgs);
         noExit = false;

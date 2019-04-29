@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Manager of {@link WebDriver} instances.
@@ -111,10 +112,10 @@ public class WebDriverManager implements WebDriverPreparator {
 
     private static String getDriverName(WebDriver driver) {
         String name = driver.getClass().getSimpleName();
-        if (StringUtils.isNotBlank(name))
-            return name;
-        else
+        if (LangUtils.isBlank(name))
             return driver.getClass().getName();
+        else
+            return name;
     }
 
     /**
@@ -170,7 +171,7 @@ public class WebDriverManager implements WebDriverPreparator {
      */
     @SuppressWarnings("deprecation")
     public WebDriverFactory lookupWebDriverFactory(String factoryName) {
-        if (StringUtils.isBlank(factoryName))
+        if (LangUtils.isBlank(factoryName))
             factoryName = FIREFOX;
         switch (factoryName.toLowerCase()) {
         case FIREFOX:

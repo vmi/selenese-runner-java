@@ -1,11 +1,10 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -24,7 +23,7 @@ public class Pause extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String pauseMSec = curArgs[ARG_PAUSE_MSEC];
-        if (StringUtils.isBlank(pauseMSec))
+        if (LangUtils.isBlank(pauseMSec))
             return new Warning("pause is ignored: empty time.");
         try {
             Thread.sleep(Long.parseLong(pauseMSec));
