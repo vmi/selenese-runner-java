@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.HasCapabilities;
@@ -56,6 +55,7 @@ import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.selenese.log.PageInformation;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.subcommand.SubCommandMap;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.MouseUtils;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.webdriver.WebDriverPreparator;
@@ -444,7 +444,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public String getCurrentBaseURL() {
-        return StringUtils.defaultIfBlank(overridingBaseURL, currentTestCase.getBaseURL());
+        return LangUtils.isBlank(overridingBaseURL) ? currentTestCase.getBaseURL() : overridingBaseURL;
     }
 
     /**

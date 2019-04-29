@@ -1,8 +1,7 @@
 package jp.vmi.selenium.selenese.log;
 
 import java.util.Date;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.Objects;
 
 import jp.vmi.selenium.selenese.utils.DateTimeUtils;
 
@@ -32,7 +31,7 @@ public class CookieValue {
         if (other == null)
             return false;
         return key.equals(other.key)
-            && StringUtils.equals(value, other.value)
+            && Objects.equals(value, other.value)
             && ((expiry == null) == (other.expiry == null));
     }
 

@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Strings;
 
@@ -87,8 +86,10 @@ public class PathUtils {
     public static String relativize(String from, String to) {
         from = new File(normalize(from)).toURI().toASCIIString();
         to = new File(normalize(to)).toURI().toASCIIString();
-        int prefixLen = StringUtils.getCommonPrefix(from, to).length();
-        int level = StringUtils.countMatches(from.substring(prefixLen), "/");
-        return Strings.repeat("../", level) + to.substring(prefixLen);
+        int prefixLen = Strings.commonPrefix(from, to).length();
+        String fromSuffix = from.substring(prefixLen);
+        String toSuffix = to.substring(prefixLen);
+        int level = (int) fromSuffix.chars().filter(ch -> ch == '/').count();
+        return Strings.repeat("../", level) + toSuffix;
     }
 }
