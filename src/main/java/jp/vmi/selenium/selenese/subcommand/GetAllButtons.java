@@ -25,8 +25,9 @@
 
 package jp.vmi.selenium.selenese.subcommand;
 
+import com.google.common.base.Strings;
+
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Re-implementation of GetAllButtons.
@@ -60,7 +61,7 @@ public class GetAllButtons extends AbstractSubCommand<String[]> {
                     return true;
                 }
             })
-            .map(elem -> LangUtils.nullToEmpty(elem.getAttribute("id")))
+            .map(elem -> Strings.nullToEmpty(elem.getAttribute("id")))
             .toArray(String[]::new);
     }
 }

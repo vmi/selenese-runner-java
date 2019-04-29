@@ -25,8 +25,9 @@
 
 package jp.vmi.selenium.selenese.subcommand;
 
+import com.google.common.base.Strings;
+
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Re-implementation of GetAllButtons.
@@ -43,7 +44,7 @@ public class GetAllLinks extends AbstractSubCommand<String[]> {
     @Override
     public String[] execute(Context context, String... args) {
         return context.findElements("css=a").stream()
-            .map(elem -> LangUtils.nullToEmpty(elem.getAttribute("id")))
+            .map(elem -> Strings.nullToEmpty(elem.getAttribute("id")))
             .toArray(String[]::new);
     }
 }

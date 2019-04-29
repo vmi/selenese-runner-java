@@ -25,8 +25,9 @@
 
 package jp.vmi.selenium.selenese.subcommand;
 
+import com.google.common.base.Strings;
+
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Re-implementation of GetAllFields.
@@ -47,7 +48,7 @@ public class GetAllFields extends AbstractSubCommand<String[]> {
                 String type = elem.getAttribute("type");
                 return type == null || type.isEmpty() || "text".equalsIgnoreCase(type);
             })
-            .map(elem -> LangUtils.nullToEmpty(elem.getAttribute("id")))
+            .map(elem -> Strings.nullToEmpty(elem.getAttribute("id")))
             .toArray(String[]::new);
     }
 }
