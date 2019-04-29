@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
@@ -180,9 +179,13 @@ public class WebDriverElementFinder {
     }
 
     private boolean isParentFrameUnsupported(RuntimeException e) {
-        return (e instanceof UnsupportedCommandException)
-            || (e instanceof WebDriverException
-                && StringUtils.contains(e.getMessage(), "switchToParentFrame"));
+        if (e instanceof UnsupportedCommandException)
+            return true;
+        if (e instanceof WebDriverException) {
+            String msg = e.getMessage();
+            return msg != null ? msg.contains("switchToParentFrame") : false;
+        }
+        return false;
     }
 
     private void popFrame(WebDriver driver, Locator ploc, List<Locator> selectedFrameLocators) {

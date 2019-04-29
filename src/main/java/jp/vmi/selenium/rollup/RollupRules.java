@@ -14,9 +14,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Set or rollup rules.
@@ -33,7 +32,7 @@ public class RollupRules {
         }
 
         public boolean matches(String name) {
-            return StringUtils.containsIgnoreCase(name, engineName);
+            return LangUtils.containsIgnoreCase(name, engineName);
         }
     }
 

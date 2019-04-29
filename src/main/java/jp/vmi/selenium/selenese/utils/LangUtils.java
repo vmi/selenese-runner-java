@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.utils;
 
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Collectors;
@@ -28,6 +29,19 @@ public class LangUtils {
      */
     public static boolean isBlank(String s) {
         return s == null || s.isEmpty() || s.trim().isEmpty();
+    }
+
+    /**
+     * Checks if s contains ss without case sensitivity.
+     *
+     * @param s a string.
+     * @param ss a substring.
+     * @return true if s contains ss without case sensitivity.
+     */
+    public static boolean containsIgnoreCase(String s, String ss) {
+        if (s == null || ss == null)
+            return false;
+        return s.toLowerCase(Locale.ROOT).contains(ss.toLowerCase(Locale.ROOT));
     }
 
     /**

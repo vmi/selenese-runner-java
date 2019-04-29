@@ -3,8 +3,6 @@ package jp.vmi.selenium.runner.converter;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.runner.model.side.SideFile;
 import jp.vmi.selenium.runner.model.side.SideSuite;
@@ -15,6 +13,7 @@ import jp.vmi.selenium.selenese.TestCase;
 import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.utils.EscapeUtils;
+import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils.SeleniumPattern;
 
 /**
@@ -49,7 +48,7 @@ public final class Converters {
             addMessage(messages, srcCmd, INFO, "remove \"" + AND_WAIT + "\" suffix");
         }
         // screenshot command is not supported.
-        if (StringUtils.containsIgnoreCase(name, "screenshot")) {
+        if (LangUtils.containsIgnoreCase(name, "screenshot")) {
             StringBuilder echo = new StringBuilder("NotSupported: ").append(name).append('(');
             name = "echo";
             switch (arguments.length) {
