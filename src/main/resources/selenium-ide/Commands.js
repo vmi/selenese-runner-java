@@ -613,6 +613,15 @@ export const Commands = [
     },
   ],
   [
+    'storeJson',
+    {
+      name: 'store json',
+      description: ``,
+      target: ArgTypes.json,
+      value: ArgTypes.variableName,
+    },
+  ],
+  [
     'storeText',
     {
       name: 'store text',
@@ -676,6 +685,15 @@ export const Commands = [
       description: `Create a loop that executes the proceeding commands n number of times.`,
       target: ArgTypes.times,
       value: ArgTypes.loopLimit,
+    },
+  ],
+  [
+    'forEach',
+    {
+      name: 'for each',
+      description: `Create a loop that executes the proceeding commands for each item in a given collection.`,
+      target: ArgTypes.arrayVariableName,
+      value: ArgTypes.iteratorVariableName,
     },
   ],
   [
