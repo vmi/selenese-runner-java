@@ -32,6 +32,10 @@ public enum ArgTypes {
     ATTRIBUTE_LOCATOR("attributeLocator", "attribute locator",
         "An element locator followed by an @ sign and then the name of the attribute, e.g. \"foo@bar\"."),
 
+    /** array variable name */
+    ARRAY_VARIABLE_NAME("arrayVariableName", "array variable name",
+        "The name of a variable containing a JavaScript array."),
+
     /** conditional expression */
     CONDITIONAL_EXPRESSION("conditionalExpression", "conditional expression",
         "JavaScript expression that returns a boolean result for use in control flow commands."),
@@ -56,6 +60,14 @@ public enum ArgTypes {
     HANDLE("handle", "window handle",
         "A handle representing a specific page (tab, or window)."),
 
+    /** iterator variable name */
+    ITERATOR_VARIABLE_NAME("iteratorVariableName", "iterator variable name",
+        "The name of the variable used when iterating over a collection in a looping control flow command (e.g., for each)."),
+
+    /** json */
+    JSON("json", "json",
+        "A string representation of a JavaScript object."),
+
     /** key sequence */
     KEY_SEQUENCE("keySequence", "key sequence",
         "A sequence of keys to type, can be used to send key strokes (e.g. ${KEY_ENTER})."),
@@ -74,7 +86,7 @@ public enum ArgTypes {
 
     /** loop limit */
     LOOP_LIMIT("loopLimit", "loop limit",
-        "Maximum number of times a looping control flow command can execute to protect against infinite loops."),
+        "An optional argument that specifies the maximum number of times a looping control flow command can execute. This protects against infinite loops. The defaults value is set to 1000."),
 
     /** message */
     MESSAGE("message", "message",
@@ -126,7 +138,7 @@ public enum ArgTypes {
 
     /** variable name */
     VARIABLE_NAME("variableName", "variable name",
-        "The name of a variable (without brackets). Used to either store an expression's result in or reference for a check (e.g., with 'assert' or 'verify')."),
+        "The name of a variable without brackets."),
 
     /** wait time */
     WAIT_TIME("waitTime", "wait time",
