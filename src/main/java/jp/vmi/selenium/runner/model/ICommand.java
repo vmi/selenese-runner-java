@@ -13,6 +13,13 @@ public interface ICommand {
     String getId();
 
     /**
+     * Get comment.
+     *
+     * @return comment.
+     */
+    String getComment();
+
+    /**
      * Get command name.
      *
      * @return command name.
@@ -34,9 +41,37 @@ public interface ICommand {
     String getValue();
 
     /**
-     * Get comment.
+     * Check breakpoint at this command.
      *
-     * @return comment.
+     * @return true if breakpoint.
      */
-    String getComment();
+    boolean isBreakpoint();
+
+    /**
+     * Check this command opens window.
+     *
+     * @return true if open window.
+     */
+    boolean isOpensWindow();
+
+    /**
+     * Get window handle name for opening window.
+     *
+     * @return window handle name.
+     */
+    String getWindowHandleName();
+
+    /**
+     * Get window timeoue.
+     *
+     * @return timeout (ms).
+     */
+    long getWindowTimeout();
+
+    /**
+     * ???
+     *
+     * @return ???
+     */
+    boolean isOpensWindowRead();
 }
