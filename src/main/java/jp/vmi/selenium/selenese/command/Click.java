@@ -1,8 +1,13 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.openqa.selenium.ElementNotInteractableException;
+import java.util.Set;
 
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.WebDriver;
+
+import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 
@@ -16,6 +21,8 @@ public class Click extends AbstractCommand {
 
     private static final int ARG_LOCATOR = 0;
 
+    private static final long RETRY_INTERVAL = 100; // ms
+
     Click(int index, String name, String... args) {
         super(index, name, args, LOCATOR);
     }
@@ -24,14 +31,43 @@ public class Click extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         return ClickHandler.handleClick(context, locator, element -> {
+            SideCommand sideCommand = getSideCommand();
+            WebDriver driver;
+            Set<String> prevWinHandles;
+            if (sideCommand != null && sideCommand.isOpensWindow()) {
+                driver = context.getWrappedDriver();
+                prevWinHandles = driver.getWindowHandles();
+            } else {
+                driver = null;
+                prevWinHandles = null;
+            }
+            Result result;
             try {
                 element.click();
-                return SUCCESS;
+                result = SUCCESS;
             } catch (ElementNotInteractableException e) {
                 context.executeScript("arguments[0].click()", element);
-                return new Success("Success (the element is not visible)");
-
+                result = new Success("Success (the element is not visible)");
             }
+            if (prevWinHandles != null) {
+                long windowTimeout = sideCommand.getWindowTimeout() * 1000L * 1000L; // ns
+                long start = System.nanoTime();
+                loop: do {
+                    Set<String> curWinHandles = driver.getWindowHandles();
+                    for (String h : curWinHandles) {
+                        if (!prevWinHandles.contains(h)) {
+                            context.getVarsMap().put(sideCommand.getWindowHandleName(), h);
+                            break loop;
+                        }
+                    }
+                    try {
+                        Thread.sleep(RETRY_INTERVAL);
+                    } catch (InterruptedException e) {
+                        throw new SeleneseRunnerRuntimeException(e);
+                    }
+                } while (System.nanoTime() - start <= windowTimeout);
+            }
+            return result;
         });
     }
 }
