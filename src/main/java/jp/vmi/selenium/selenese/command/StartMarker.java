@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Collections;
 import java.util.List;
 
+import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
@@ -97,5 +98,10 @@ public class StartMarker implements ICommand {
     @Override
     public List<Screenshot> getScreenshots() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public void setSideCommand(SideCommand sideCommand) {
+        command.setSideCommand(sideCommand);
     }
 }

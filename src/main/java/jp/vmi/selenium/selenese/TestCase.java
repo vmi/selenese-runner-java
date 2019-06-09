@@ -2,16 +2,17 @@ package jp.vmi.selenium.selenese;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.function.Function;
 
 import org.apache.commons.io.FilenameUtils;
 
 import jp.vmi.html.result.IHtmlResultTestCase;
 import jp.vmi.junit.result.ITestCase;
-import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.BlockEnd;
+import jp.vmi.selenium.selenese.command.BlockStart;
+import jp.vmi.selenium.selenese.command.CommandList;
 import jp.vmi.selenium.selenese.command.ICommand;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
-import jp.vmi.selenium.selenese.command.BlockStart;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.inject.ExecuteTestCase;
 import jp.vmi.selenium.selenese.result.CommandResultList;
@@ -185,14 +186,23 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     /**
      * Add command to command list.
      *
+     * @param cmdGenFunc command generator function.
+     */
+    public final void addCommand(Function<Integer, ICommand> cmdGenFunc) {
+        int index = commandList.size() + 1;
+        ICommand command = cmdGenFunc.apply(index);
+        addCommand(command);
+    }
+
+    /**
+     * Add command to command list.
+     *
      * @param commandFactory command factory.
      * @param name command name.
      * @param args command arguments.
      */
-    public void addCommand(ICommandFactory commandFactory, String name, String... args) {
-        int i = commandList.size() + 1;
-        ICommand command = commandFactory.newCommand(i, name, args);
-        addCommand(command);
+    public final void addCommand(ICommandFactory commandFactory, String name, String... args) {
+        addCommand(index -> commandFactory.newCommand(index, name, args));
     }
 
     @ExecuteTestCase

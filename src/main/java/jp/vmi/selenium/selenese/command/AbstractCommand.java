@@ -9,6 +9,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
 import jp.vmi.selenium.runner.model.ICommandSignature;
+import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.runner.model.side.SideCommandMetadata;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
@@ -36,6 +37,7 @@ public abstract class AbstractCommand implements ICommand {
     private Result result = UNEXECUTED;
     private BlockStart blockStart = BlockStart.NO_BLOCK_START;
     private List<Screenshot> screenshots = null;
+    private SideCommand sideCommand = null;
 
     /**
      * Constructor.
@@ -245,6 +247,15 @@ public abstract class AbstractCommand implements ICommand {
         if (screenshots == null)
             return Collections.emptyList();
         return screenshots;
+    }
+
+    @Override
+    public void setSideCommand(SideCommand sideCommand) {
+        this.sideCommand = sideCommand;
+    }
+
+    SideCommand getSideCommand() {
+        return sideCommand;
     }
 
     static String toString(int index, String name, String[] args) {
