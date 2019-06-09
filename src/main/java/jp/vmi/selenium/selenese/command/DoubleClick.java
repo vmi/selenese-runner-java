@@ -1,7 +1,5 @@
 package jp.vmi.selenium.selenese.command;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import jp.vmi.selenium.selenese.Context;
@@ -24,12 +22,9 @@ public class DoubleClick extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
-        WebDriver driver = context.getWrappedDriver();
-        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
-        int timeout = context.getTimeout(); /* ms */
-        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
-        context.getJSLibrary().replaceAlertMethod(driver, element);
-        new Actions(driver).doubleClick(element).perform();
-        return SUCCESS;
+        return ClickHandler.handleClick(context, locator, element -> {
+            new Actions(context.getWrappedDriver()).doubleClick(element).perform();
+            return SUCCESS;
+        });
     }
 }

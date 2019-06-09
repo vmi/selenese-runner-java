@@ -1,8 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
@@ -25,17 +23,15 @@ public class Click extends AbstractCommand {
     @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
-        WebDriver driver = context.getWrappedDriver();
-        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
-        int timeout = context.getTimeout(); /* ms */
-        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
-        context.getJSLibrary().replaceAlertMethod(driver, element);
-        try {
-            element.click();
-            return SUCCESS;
-        } catch (ElementNotInteractableException e) {
-            context.executeScript("arguments[0].click()", element);
-            return new Success("Success (the element is not visible)");
-        }
+        return ClickHandler.handleClick(context, locator, element -> {
+            try {
+                element.click();
+                return SUCCESS;
+            } catch (ElementNotInteractableException e) {
+                context.executeScript("arguments[0].click()", element);
+                return new Success("Success (the element is not visible)");
+
+            }
+        });
     }
 }
