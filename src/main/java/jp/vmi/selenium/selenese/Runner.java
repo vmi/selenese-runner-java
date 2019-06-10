@@ -15,11 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
@@ -351,6 +354,32 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         return initialWindowHandle;
     }
 
+    private static final Pattern MAJOR_VERSION_RE = Pattern.compile("(\\d+).*");
+
+    private boolean calcW3cAction(WebDriver driver) {
+        if (!(driver instanceof RemoteWebDriver))
+            return false;
+        Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
+        if (caps == null)
+            return false;
+        String browserName = caps.getBrowserName();
+        if (browserName == null)
+            return false;
+        String version = caps.getVersion();
+        if (version == null)
+            return false;
+        Matcher matcher = MAJOR_VERSION_RE.matcher(version);
+        if (!matcher.matches())
+            return false;
+        int majorVersion = Integer.parseInt(matcher.group(1));
+        switch (browserName) {
+        case "chrome":
+            return majorVersion >= 75;
+        default:
+            return false;
+        }
+    }
+
     /**
      * Set WebDriver.
      *
@@ -358,6 +387,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setDriver(WebDriver driver) {
         this.driver = driver;
+        this.isW3cAction = calcW3cAction(driver);
         this.initialWindowHandle = driver.getWindowHandle();
         setDriverTimeout();
     }
