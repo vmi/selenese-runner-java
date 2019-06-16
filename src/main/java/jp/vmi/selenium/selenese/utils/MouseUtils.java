@@ -1,9 +1,15 @@
 package jp.vmi.selenium.selenese.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,16 +63,35 @@ public final class MouseUtils {
         }
     }
 
+    private static final Pattern MAJOR_VERSION_RE = Pattern.compile("(\\d+).*");
+
     /**
      * Is Action command W3C compatible?
      *
-     * @param browserName browser name.
+     * @param driver WebDriver.
      * @return true if Action command is W3C compatible.
      */
-    public static boolean isW3cAction(String browserName) {
+    public static boolean isW3cAction(WebDriver driver) {
+        if (!(driver instanceof RemoteWebDriver))
+            return false;
+        Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
+        if (caps == null)
+            return false;
+        String browserName = caps.getBrowserName();
+        if (browserName == null)
+            return false;
+        String version = caps.getVersion();
+        if (version == null)
+            return false;
+        Matcher matcher = MAJOR_VERSION_RE.matcher(version);
+        if (!matcher.matches())
+            return false;
+        int majorVersion = Integer.parseInt(matcher.group(1));
         switch (browserName) {
         case WebDriverManager.FIREFOX:
             return true;
+        case WebDriverManager.CHROME:
+            return majorVersion >= 75;
         default:
             return false;
         }
