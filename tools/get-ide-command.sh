@@ -2,7 +2,9 @@
 
 set -eu
 
-base_url="https://raw.githubusercontent.com/SeleniumHQ/selenium-ide/master/packages/selenium-ide-extension/src/neo/models/Command"
+version="v3.8.1"
+
+base_url="https://raw.githubusercontent.com/SeleniumHQ/selenium-ide/$version/packages/selenium-ide/src/neo/models/Command"
 
 cd $(dirname "$0")/../src/main/resources/selenium-ide
 for f in ArgTypes.js Commands.js; do

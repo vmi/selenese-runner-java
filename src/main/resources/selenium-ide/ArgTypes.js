@@ -12,6 +12,10 @@ export const ArgTypes = {
     description: `An element locator followed by an @ sign and then the name of 
     the attribute, e.g. "foo@bar".`,
   },
+  arrayVariableName: {
+    name: 'array variable name',
+    description: 'The name of a variable containing a JavaScript array.',
+  },
   conditionalExpression: {
     name: 'conditional expression',
     description: `JavaScript expression that returns a boolean result for use 
@@ -39,6 +43,14 @@ export const ArgTypes = {
     name: 'window handle',
     description: `A handle representing a specific page (tab, or window).`,
   },
+  iteratorVariableName: {
+    name: 'iterator variable name',
+    description: `The name of the variable used when iterating over a collection in a looping control flow command (e.g., for each).`,
+  },
+  json: {
+    name: 'json',
+    description: `A string representation of a JavaScript object.`,
+  },
   keySequence: {
     name: 'key sequence',
     description:
@@ -60,11 +72,11 @@ export const ArgTypes = {
   },
   loopLimit: {
     name: 'loop limit',
-    description: `Maximum number of times a looping control flow command can execute to protect against infinite loops.`,
+    description: `An optional argument that specifies the maximum number of times a looping control flow command can execute. This protects against infinite loops. The defaults value is set to 1000.`,
   },
   message: {
     name: 'message',
-    value: 'The message to print.',
+    description: 'The message to print.',
   },
   optionLocator: {
     name: 'option',
@@ -116,9 +128,7 @@ export const ArgTypes = {
   },
   variableName: {
     name: 'variable name',
-    description: `The name of a variable (without brackets). Used to either store 
-    an expression's result in or reference for a check (e.g., with 'assert' or 
-    'verify').`,
+    description: `The name of a variable without brackets.`,
   },
   waitTime: {
     name: 'wait time',

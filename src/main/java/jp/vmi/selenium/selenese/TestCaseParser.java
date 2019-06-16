@@ -22,9 +22,7 @@ public final class TestCaseParser {
         TestCase testCase = Binder.newTestCase(sourceType, iter.getFilename(), iter.getName(), iter.getBaseURL());
         try {
             for (CommandEntry entry : iter) {
-                if (entry.comment != null && !entry.comment.isEmpty())
-                    testCase.addCommand(commandFactory, "comment", entry.comment);
-                testCase.addCommand(commandFactory, entry.name, entry.args);
+                entry.addToTestCase(testCase, commandFactory);
             }
         } catch (RuntimeException e) {
             return Binder.newErrorTestCase(iter.getFilename(), new InvalidSeleneseException(e, iter.getFilename(), iter.getName()));

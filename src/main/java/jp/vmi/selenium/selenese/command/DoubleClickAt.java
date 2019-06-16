@@ -1,8 +1,6 @@
 package jp.vmi.selenium.selenese.command;
 
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Result;
@@ -36,12 +34,9 @@ public class DoubleClickAt extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         Point coord = coordToPoint(curArgs[ARG_COORD]);
-        WebDriver driver = context.getWrappedDriver();
-        boolean isRetryable = !context.getCurrentTestCase().getSourceType().isSelenese();
-        int timeout = context.getTimeout(); /* ms */
-        WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
-        context.getJSLibrary().replaceAlertMethod(driver, element);
-        MouseUtils.moveTo(context, element, coord).doubleClick().perform();
-        return SUCCESS;
+        return ClickHandler.handleClick(context, locator, element -> {
+            MouseUtils.moveTo(context, element, coord).doubleClick().perform();
+            return SUCCESS;
+        });
     }
 }

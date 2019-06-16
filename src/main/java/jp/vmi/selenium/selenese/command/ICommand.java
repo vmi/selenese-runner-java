@@ -3,6 +3,7 @@ package jp.vmi.selenium.selenese.command;
 import java.util.Arrays;
 import java.util.List;
 
+import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.selenese.ArgumentInfo;
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.SourceType;
@@ -147,4 +148,11 @@ public interface ICommand extends ArgumentInfo {
      * @return list of image path of sreenshot.
      */
     List<Screenshot> getScreenshots();
+
+    /**
+     * Set side command.
+     *
+     * @param sideCommand SIDE command.
+     */
+    void setSideCommand(SideCommand sideCommand);
 }

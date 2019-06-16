@@ -42,6 +42,6 @@ public class SideCommandIterator extends AbstractTestElementIterator<CommandEntr
     @Override
     public CommandEntry next() {
         SideCommand command = iter.next();
-        return new CommandEntry(command.getId(), command.getComment(), command.getCommand(), command.getTarget(), command.getValue());
+        return CommandEntry.newInstance(command);
     }
 }

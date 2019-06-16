@@ -378,7 +378,8 @@ public class WebDriverElementFinder {
     public WebElement findElementWithTimeout(WebDriver driver, Locator ploc, boolean isRetryable, int timeout) {
         if (timeout < MIN_TIMEOUT)
             timeout = MIN_TIMEOUT;
-        long limit = System.nanoTime() /* ns */ + timeout /* ms */ * 1000L * 1000L;
+        long nanoTimeout = timeout * 1000L * 1000L; // ns
+        long start = System.nanoTime();
         while (true) {
             try {
                 List<WebElement> elements = findElements(driver, ploc);
@@ -387,7 +388,7 @@ public class WebDriverElementFinder {
             } catch (NoSuchElementException e) {
                 // no operation.
             }
-            if (!isRetryable || System.nanoTime() > limit)
+            if (!isRetryable || System.nanoTime() - start > nanoTimeout)
                 throw new ElementFinderNoSuchElementException(ploc);
             try {
                 Thread.sleep(RETRY_INTERVAL);
