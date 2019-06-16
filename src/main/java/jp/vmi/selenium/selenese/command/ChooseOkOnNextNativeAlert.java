@@ -15,6 +15,11 @@ public class ChooseOkOnNextNativeAlert extends AbstractCommand {
     }
 
     @Override
+    public boolean isNativeAlertHandler() {
+        return true;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         context.getNextNativeAlertActionListener().setAccept(true);
         return SUCCESS;

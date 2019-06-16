@@ -15,6 +15,11 @@ public class ChooseCancelOnNextNativeAlert extends AbstractCommand {
     }
 
     @Override
+    public boolean isNativeAlertHandler() {
+        return true;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         context.getNextNativeAlertActionListener().setAccept(false);
         return SUCCESS;

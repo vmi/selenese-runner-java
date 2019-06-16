@@ -82,6 +82,15 @@ public interface ICommand extends ArgumentInfo {
     boolean mayUpdateScreen();
 
     /**
+     * Is the command native alert handler?
+     *
+     * @return true if the command is native alert handler.
+     */
+    default boolean isNativeAlertHandler() {
+        return false;
+    }
+
+    /**
      * Execute the command.
      * <p>
      * Note: set the command result to testCase in this method.

@@ -47,6 +47,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
 
     private final StopWatch stopWatch = new StopWatch();
     private LogRecorder logRecorder = null;
+    private boolean hasNativeAlertHandler = false;
 
     /**
      * Initialize after constructed.
@@ -166,6 +167,15 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     }
 
     /**
+     * True if this test-case has native alert handler command.
+     *
+     * @return true if this test-case has native alert handler command.
+     */
+    public boolean hasNativeAlertHandler() {
+        return hasNativeAlertHandler;
+    }
+
+    /**
      * Add command to command list.
      *
      * @param command command.
@@ -181,6 +191,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
             currentBlockStart = (BlockStart) command;
         }
         commandList.add(command);
+        hasNativeAlertHandler |= command.isNativeAlertHandler();
     }
 
     /**

@@ -30,18 +30,16 @@ public class PageInformation {
     }
 
     private PageInformation(Context context) {
+        if (context.getCurrentTestCase().hasNativeAlertHandler()) {
+            message = "No page information: This test-case has native alert handler.";
+            origin = "";
+            return;
+        }
         String message;
         String origin;
         WebDriver driver = context.getWrappedDriver();
         EnumSet<LogFilter> logFilter = context.getLogFilter();
         try {
-            // ChromeDriver may return the unavailable window handle.
-            // When getCurrentUrl() is called in this state, ChromeDriver hangs up.
-            // When switchTo().window(handle) is called, ChromeDriver throws an exception.
-            // Avoid a hang-up using this.
-            // Other WebDriver throws NoSuchWindowException when getWindowHandle() is called.
-            String handle = driver.getWindowHandle();
-            driver.switchTo().window(handle);
             String url = logFilter.contains(LogFilter.URL) ? driver.getCurrentUrl() : null;
             String title = logFilter.contains(LogFilter.TITLE) ? driver.getTitle() : null;
             message = formatUrlAndTitle(url, title);
