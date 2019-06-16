@@ -10,7 +10,7 @@ import jp.vmi.selenium.runner.model.ICommand;
  * "command" element of side format.
  *
  * <p>
- * See: {@link https://github.com/SeleniumHQ/selenium-ide/blob/v3.8.1/packages/selenium-ide/src/neo/models/Command/index.js}
+ * See: https://github.com/SeleniumHQ/selenium-ide/blob/v3.8.1/packages/selenium-ide/src/neo/models/Command/index.js
  * </p>
  */
 @SuppressWarnings("javadoc")
