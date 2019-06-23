@@ -77,7 +77,7 @@ public abstract class CommandEntry extends TestElementEntry {
         @Override
         public void addToTestCase(TestCase testCase, ICommandFactory commandFactory) {
             String comment = sideCommand.getComment();
-            if (comment != null)
+            if (comment != null && !comment.isEmpty())
                 testCase.addCommand(index -> commandFactory.newCommand(index, "comment", comment));
             testCase.addCommand(index -> {
                 ICommand command = commandFactory.newCommand(
