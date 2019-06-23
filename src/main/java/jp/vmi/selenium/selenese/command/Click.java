@@ -7,9 +7,9 @@ import org.openqa.selenium.WebDriver;
 
 import jp.vmi.selenium.runner.model.side.SideCommand;
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
+import jp.vmi.selenium.selenese.utils.Wait;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -60,11 +60,7 @@ public class Click extends AbstractCommand {
                             break loop;
                         }
                     }
-                    try {
-                        Thread.sleep(RETRY_INTERVAL);
-                    } catch (InterruptedException e) {
-                        throw new SeleneseRunnerRuntimeException(e);
-                    }
+                    Wait.sleep(RETRY_INTERVAL);
                 } while (System.nanoTime() - start <= windowTimeout);
             }
             return result;

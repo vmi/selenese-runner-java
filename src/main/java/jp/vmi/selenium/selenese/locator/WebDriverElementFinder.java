@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
 import jp.vmi.selenium.selenese.utils.LangUtils;
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
+import jp.vmi.selenium.selenese.utils.Wait;
 
 /**
  * WebDriver Element Locator.
@@ -390,11 +391,7 @@ public class WebDriverElementFinder {
             }
             if (!isRetryable || System.nanoTime() - start > nanoTimeout)
                 throw new ElementFinderNoSuchElementException(ploc);
-            try {
-                Thread.sleep(RETRY_INTERVAL);
-            } catch (InterruptedException e) {
-                throw new SeleneseRunnerRuntimeException(e);
-            }
+            Wait.sleep(RETRY_INTERVAL);
         }
     }
 
@@ -417,6 +414,7 @@ public class WebDriverElementFinder {
      *
      * @param driver WebDriver.
      * @param ploc parsed locator to frame/iframe.
+     * @throws NoSuchFrameException If the frame cannot be found
      */
     public void selectFrame(WebDriver driver, Locator ploc) {
         if (ploc.isTypeRelative()) {
@@ -437,11 +435,7 @@ public class WebDriverElementFinder {
         } else if (ploc.isTypeIndex()) {
             switchToFrame(driver, currentFrameLocators);
             int index = ploc.getIndex();
-            try {
-                driver.switchTo().frame(index);
-            } catch (NoSuchFrameException e) {
-                throw new SeleneseRunnerRuntimeException(e);
-            }
+            driver.switchTo().frame(index);
             ploc.frameIndexList.add(index);
             currentFrameLocators.add(ploc);
         } else {
