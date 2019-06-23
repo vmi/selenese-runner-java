@@ -5,7 +5,6 @@ import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.utils.Wait;
-import jp.vmi.selenium.selenese.utils.Wait.StopCondition;
 import jp.vmi.selenium.selenese.utils.WindowSelector;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
@@ -33,16 +32,13 @@ public class WaitForPopUp extends AbstractCommand {
             timeout = Long.valueOf(argTimeout);
         long startTime = System.currentTimeMillis();
         final String[] selectedHandle = new String[1];
-        boolean result = Wait.defaultInterval.wait(startTime, timeout, new StopCondition() {
-            @Override
-            public boolean isSatisfied() {
-                String handle = WindowSelector.getInstance().selectPopUp(context, windowID);
-                if (handle == null)
-                    return false;
-                WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
-                selectedHandle[0] = handle;
-                return true;
-            }
+        boolean result = Wait.defaultInterval.wait(startTime, timeout, () -> {
+            String handle = WindowSelector.getInstance().selectPopUp(context, windowID);
+            if (handle == null)
+                return false;
+            WindowSelector.waitAfterSelectingWindowIfNeed(context); // workaround.
+            selectedHandle[0] = handle;
+            return true;
         });
         if (!result)
             return new Error("Specified pop up window not found: " + windowID);

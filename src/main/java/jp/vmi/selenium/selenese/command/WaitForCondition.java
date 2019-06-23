@@ -4,7 +4,6 @@ import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.Wait;
-import jp.vmi.selenium.selenese.utils.Wait.StopCondition;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
@@ -31,19 +30,16 @@ public class WaitForCondition extends AbstractCommand {
         final String script = curArgs[ARG_SCRIPT];
         long timeout = Long.valueOf(curArgs[ARG_TIMEOUT]);
         long startTime = System.currentTimeMillis();
-        boolean waitResult = Wait.defaultInterval.wait(startTime, timeout, new StopCondition() {
-            @Override
-            public boolean isSatisfied() {
-                Object result = context.getEval().eval(context, script);
-                if (result == null)
-                    return false;
-                else if (result instanceof String)
-                    return !((String) result).isEmpty();
-                else if (result instanceof Boolean)
-                    return (Boolean) result;
-                else
-                    return true;
-            }
+        boolean waitResult = Wait.defaultInterval.wait(startTime, timeout, () -> {
+            Object result = context.getEval().eval(context, script);
+            if (result == null)
+                return false;
+            else if (result instanceof String)
+                return !((String) result).isEmpty();
+            else if (result instanceof Boolean)
+                return (Boolean) result;
+            else
+                return true;
         });
         if (waitResult)
             return SUCCESS;

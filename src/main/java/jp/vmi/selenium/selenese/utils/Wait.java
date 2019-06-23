@@ -15,6 +15,7 @@ public class Wait {
     /**
      * Wait-stop condition.
      */
+    @FunctionalInterface
     public static interface StopCondition {
 
         /**
