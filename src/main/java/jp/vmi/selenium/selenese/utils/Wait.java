@@ -1,5 +1,7 @@
 package jp.vmi.selenium.selenese.utils;
 
+import jp.vmi.selenium.selenese.SeleneseRunnerRuntimeException;
+
 /**
  * Re-implement "com.thoughtworks.selenium.Wait".
  */
@@ -30,13 +32,13 @@ public class Wait {
      * Sleep without checked exception.
      *
      * @param millis the length of time to sleep in milliseconds.
-     * @throws RuntimeException wrap InterruptedException.
+     * @throws SeleneseRunnerRuntimeException wrap InterruptedException.
      */
-    public static void sleep(long millis) throws RuntimeException {
+    public static void sleep(long millis) throws SeleneseRunnerRuntimeException {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new SeleneseRunnerRuntimeException(e);
         }
     }
 
