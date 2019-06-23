@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.24.1
+
+* In `selectFrame` command, retry until timeout if specified frame is not found.
+* Fix to suppress the output of empty comments in SIDE file.
+
 ### 3.24.0
 
 * In `click` family commands, change to retry when the found element disappears. (#302)
