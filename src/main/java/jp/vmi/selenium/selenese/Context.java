@@ -117,6 +117,24 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
     VarsMap getVarsMap();
 
     /**
+     * Get test-case map.
+     *
+     * @return test-case map.
+     */
+    default TestCaseMap getTestCaseMap() {
+        return TestCaseMap.EMPTY;
+    }
+
+    /**
+     * Set test-case map.
+     *
+     * @param testCaseMap test-case map.
+     */
+    default void setTestCaseMap(TestCaseMap testCaseMap) {
+        // no operation.
+    }
+
+    /**
      * Get flow control state.
      *
      * @param command flow control command.

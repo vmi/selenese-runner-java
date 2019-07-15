@@ -47,6 +47,11 @@ public abstract class ErrorSource implements Selenese {
         return FilenameUtils.getBaseName(filename);
     }
 
+    @Override
+    public String getId() {
+        return getName();
+    }
+
     /**
      * Get filename.
      *

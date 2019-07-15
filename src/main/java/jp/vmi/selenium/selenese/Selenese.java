@@ -24,6 +24,13 @@ public interface Selenese extends ITestTarget {
     Type getType();
 
     /**
+     * Get id.
+     *
+     * @return id.
+     */
+    String getId();
+
+    /**
      * Execute script.
      * @param parent parent selenese instance or null.
      * @param context Selenese Runner context.

@@ -2,10 +2,15 @@ package jp.vmi.selenium.selenese;
 
 import java.util.List;
 
+import jp.vmi.selenium.selenese.inject.ExecuteTestSuite;
+import jp.vmi.selenium.selenese.result.Result;
+
 /**
  * test-project object for execution.
  */
 public class TestProject extends TestSuite {
+
+    private TestCaseMap testCaseMap = TestCaseMap.EMPTY;
 
     @Override
     public TestProject initialize(String filename, String name) {
@@ -31,6 +36,36 @@ public class TestProject extends TestSuite {
         if (first instanceof TestSuite)
             ((TestSuite) first).setParent(null);
         return first;
+    }
+
+    /**
+     * Set test-case map.
+     *
+     * @param testCaseMap test-case map.
+     */
+    public void setTestCaseMap(TestCaseMap testCaseMap) {
+        this.testCaseMap = testCaseMap;
+    }
+
+    /**
+     * Get test-case map.
+     *
+     * @return test-case map.
+     */
+    public TestCaseMap getTestCaseMap() {
+        return testCaseMap;
+    }
+
+    @ExecuteTestSuite
+    @Override
+    public Result execute(Selenese parent, Context context) {
+        TestCaseMap prevTestCaseMap = context.getTestCaseMap();
+        context.setTestCaseMap(testCaseMap);
+        try {
+            return super.execute(parent, context);
+        } finally {
+            context.setTestCaseMap(prevTestCaseMap);
+        }
     }
 
     @Override

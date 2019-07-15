@@ -20,7 +20,7 @@ import static org.apache.xerces.impl.Constants.*;
 /**
  * Selenese iterator factory.
  */
-public final class SeleneseIteratorFactory {
+public class SeleneseIteratorFactory {
 
     private static final String TEST_CASE_PROFILE = "http://selenium-ide.openqa.org/profiles/test-case";
     private static final String DEFAULT_BASE_URL = "about:blank";
@@ -29,12 +29,12 @@ public final class SeleneseIteratorFactory {
      * Create test iterator of Selenese format.
      *
      * @param filename selenese script file.
-     * @return TestCase or TestSuite.
+     * @return SeleneseIteratorFactory.
      * @throws InvalidSeleneseException Invalid selenese exception.
      */
-    public static TestElementIterator<?> newIterator(String filename) throws InvalidSeleneseException {
+    public static SeleneseIteratorFactory newInstance(String filename) throws InvalidSeleneseException {
         try (InputStream is = new FileInputStream(filename)) {
-            return newIterator(filename, is);
+            return newInstance(filename, is);
         } catch (IOException e) {
             throw new InvalidSeleneseException(e, filename, ParserUtils.getNameFromFilename(filename));
         }
@@ -45,10 +45,10 @@ public final class SeleneseIteratorFactory {
      *
      * @param filename selenese script file. (Don't use to open a file. It is used as a label and is used to generate filenames based on it)
      * @param is input stream of script file. (test-case or test-suite)
-     * @return TestCase or TestSuite.
+     * @return SeleneseIteratorFactory.
      * @throws InvalidSeleneseException Invalid selenese exception.
      */
-    public static TestElementIterator<?> newIterator(String filename, InputStream is) throws InvalidSeleneseException {
+    public static SeleneseIteratorFactory newInstance(String filename, InputStream is) throws InvalidSeleneseException {
         try {
             DOMParser dp = new DOMParser();
             dp.setEntityResolver(null);
@@ -57,6 +57,43 @@ public final class SeleneseIteratorFactory {
             dp.setFeature("http://cyberneko.org/html/features/scanner/cdata-sections", true);
             dp.parse(new InputSource(is));
             Document document = dp.getDocument();
+            return new SeleneseIteratorFactory(filename, document);
+        } catch (SAXException | IOException e) {
+            throw new InvalidSeleneseException(e, filename, null);
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                // no operation.
+            }
+        }
+    }
+
+    private final String filename;
+    private final Document document;
+
+    private SeleneseIteratorFactory(String filename, Document document) {
+        this.filename = filename;
+        this.document = document;
+    }
+
+    /**
+     * Get filename.
+     *
+     * @return filename.
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /**
+     * Create test iterator of Selenese format.
+     *
+     * @return TestCase or TestSuite.
+     * @throws InvalidSeleneseException Invalid selenese exception.
+     */
+    public TestElementIterator<?> newIterator() throws InvalidSeleneseException {
+        try {
             Node seleniumBase = XPathAPI.selectSingleNode(document, "/HTML/HEAD/LINK[@rel='selenium.base']/@href");
             if (seleniumBase != null) {
                 String baseURL = seleniumBase.getNodeValue();
@@ -70,14 +107,8 @@ public final class SeleneseIteratorFactory {
             if (suiteTable != null) {
                 return new SeleneseTestCaseIterator(filename, document);
             }
-        } catch (TransformerException | SAXException | IOException e) {
+        } catch (TransformerException e) {
             throw new InvalidSeleneseException(e, filename, null);
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                // no operation.
-            }
         }
         throw new InvalidSeleneseException("Not selenese script. Missing neither 'selenium.base' link nor table with 'suiteTable' id", filename, null);
     }

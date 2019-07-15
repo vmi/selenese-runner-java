@@ -67,7 +67,7 @@ public class SeleneseTestCaseIterator extends AbstractTestElementIterator<TestCa
                 filename = PathUtils.concat(parentDir, filename);
             else
                 filename = PathUtils.normalize(filename);
-            TestElementIterator<?> iter = SeleneseIteratorFactory.newIterator(filename);
+            TestElementIterator<?> iter = SeleneseIteratorFactory.newInstance(filename).newIterator();
             if (!(iter instanceof CommandIterator))
                 throw new InvalidSeleneseException(filename + " is not test-case file.", filename, caseEntry.name);
             return (CommandIterator) iter;

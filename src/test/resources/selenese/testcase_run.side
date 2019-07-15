@@ -1,0 +1,53 @@
+{
+  "id": "a07d4888-1dc1-4441-b966-5cbb24a0c406",
+  "version": "2.0",
+  "name": "testcase_run",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "f059bcca-09ce-4f2e-af5d-c140b9b6a67a",
+    "name": "main",
+    "commands": [{
+      "id": "3d282038-cc1a-434c-b110-72be65f649b2",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d3c724bb-89b0-4c33-8272-689180b6329d",
+      "comment": "",
+      "command": "store",
+      "target": "test1",
+      "targets": [],
+      "value": "arg1"
+    }, {
+      "id": "4254206e-e986-4220-9698-ef3c3716577b",
+      "comment": "",
+      "command": "run",
+      "target": "sub1",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "be165801-3090-4563-b7cd-8a0bffd60556",
+    "name": "sub1",
+    "commands": [{
+      "id": "a5ee63f7-dcc9-4f15-8536-22d71d97276d",
+      "comment": "",
+      "command": "echo",
+      "target": "arg1=${arg1}",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "6045fffa-44cf-4a6c-83ad-f2ed3fbb95bf",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["f059bcca-09ce-4f2e-af5d-c140b9b6a67a"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

@@ -31,6 +31,7 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
     private String filename = null;
     private String baseName = null;
     private String name = null;
+    private String id = null;
 
     private String parentDir = null;
     private String webDriverName = null;
@@ -101,6 +102,20 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
     @Override
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Set test-suite id.
+     *
+     * @param id test-suite id.
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

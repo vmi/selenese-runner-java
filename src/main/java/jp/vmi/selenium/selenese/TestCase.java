@@ -37,6 +37,7 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     private String filename = null;
     private String baseName = null;
     private String name = null;
+    private String id = null;
 
     private String baseURL = null;
 
@@ -108,6 +109,20 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Set test-case id.
+     *
+     * @param id test-case id.
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

@@ -126,4 +126,10 @@ public class DriverIndependentTest extends TestCaseTestBase {
         execute("issue163");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void cmdRun() {
+        execute("testcase_run.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
 }

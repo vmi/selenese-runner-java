@@ -100,6 +100,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private TestCase currentTestCase = null;
     private final Deque<CommandListIterator> commandListIteratorStack = new ArrayDeque<>();
     private VarsMap varsMap;
+    private TestCaseMap testCaseMap;
     private final Map<ICommand, FlowControlState> flowControlMap = new IdentityHashMap<>();
     private final CollectionMap collectionMap = new CollectionMap();
     private RollupRules rollupRules = null; // lazy initialization
@@ -157,6 +158,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         this.subCommandMap = new SubCommandMap();
         this.commandFactory = new CommandFactory((SubCommandMapProvider) this);
         this.varsMap = new VarsMap();
+        this.testCaseMap = TestCaseMap.EMPTY;
         this.styleBackups = new ArrayDeque<>();
     }
 
@@ -698,6 +700,16 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setVarsMap(VarsMap varsMap) {
         this.varsMap = varsMap;
+    }
+
+    @Override
+    public TestCaseMap getTestCaseMap() {
+        return testCaseMap;
+    }
+
+    @Override
+    public void setTestCaseMap(TestCaseMap testCaseMap) {
+        this.testCaseMap = testCaseMap;
     }
 
     @Override

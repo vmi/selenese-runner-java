@@ -1,6 +1,5 @@
 package jp.vmi.selenium.selenese.parser;
 
-import java.io.InputStream;
 import java.util.NoSuchElementException;
 
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
@@ -53,15 +52,13 @@ public class SeleneseTestSuiteIterator extends AbstractTestElementIterator<TestS
     /**
      * Constructor.
      *
-     * @param filename filename of Selense. (label)
-     * @param is input stream of script file. (test-case or test-suite)
+     * @param iter TestCase or TestSuite.
      * @throws InvalidSeleneseException invalid selenese exception.
      */
-    public SeleneseTestSuiteIterator(String filename, InputStream is) throws InvalidSeleneseException {
-        super(filename);
-        setName(ParserUtils.getNameFromFilename(filename));
-        setId(filename);
-        TestElementIterator<?> iter = SeleneseIteratorFactory.newIterator(filename, is);
+    SeleneseTestSuiteIterator(TestElementIterator<?> iter) throws InvalidSeleneseException {
+        super(iter.getFilename());
+        setName(ParserUtils.getNameFromFilename(iter.getFilename()));
+        setId(iter.getFilename());
         if (iter instanceof SeleneseTestCaseIterator)
             iterFactory = suiteEntry -> (SeleneseTestCaseIterator) iter;
         else // if SeleneseCommandIterator

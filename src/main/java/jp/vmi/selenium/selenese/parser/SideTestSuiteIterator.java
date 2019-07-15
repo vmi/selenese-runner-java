@@ -1,9 +1,7 @@
 package jp.vmi.selenium.selenese.parser;
 
-import java.io.InputStream;
 import java.util.Iterator;
 
-import jp.vmi.selenium.runner.model.side.SideFile;
 import jp.vmi.selenium.runner.model.side.SideProject;
 import jp.vmi.selenium.runner.model.side.SideSuite;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
@@ -23,9 +21,9 @@ public class SideTestSuiteIterator extends AbstractTestElementIterator<TestSuite
      * @param is input stream of *.side file.
      * @throws InvalidSeleneseException invalid selenese exception.
      */
-    public SideTestSuiteIterator(String filename, InputStream is) throws InvalidSeleneseException {
-        super(filename);
-        this.side = SideFile.parse(filename, is);
+    SideTestSuiteIterator(SideProject side) {
+        super(side.getFilename());
+        this.side = side;
         setName(this.side.getName());
         setId(this.side.getId());
         this.iter = side.getSuites().iterator();

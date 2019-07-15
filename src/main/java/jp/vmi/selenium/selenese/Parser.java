@@ -7,9 +7,9 @@ import java.io.InputStream;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.parser.ParserUtils;
-import jp.vmi.selenium.selenese.parser.SeleneseTestSuiteIterator;
-import jp.vmi.selenium.selenese.parser.SideTestSuiteIterator;
-import jp.vmi.selenium.selenese.parser.TestSuiteIterator;
+import jp.vmi.selenium.selenese.parser.SeleneseTestProjectReader;
+import jp.vmi.selenium.selenese.parser.SideTestProjectReader;
+import jp.vmi.selenium.selenese.parser.TestProjectReader;
 
 /**
  * Abstract class of selenese parser.
@@ -27,16 +27,17 @@ public abstract class Parser {
     public static Selenese parse(String filename, InputStream is, ICommandFactory commandFactory) {
         boolean isSide = filename.toLowerCase().endsWith(".side");
         try {
-            TestSuiteIterator iter;
+            TestProjectReader projectReader;
             SourceType sourceType;
             if (isSide) {
                 sourceType = SourceType.SIDE;
-                iter = new SideTestSuiteIterator(filename, is);
+                projectReader = SideTestProjectReader.newInstance(filename, is);
             } else {
                 sourceType = SourceType.SELENESE;
-                iter = new SeleneseTestSuiteIterator(filename, is);
+                projectReader = SeleneseTestProjectReader.newInstance(filename, is);
             }
-            return TestProjectParser.parse(sourceType, iter, commandFactory);
+            projectReader.setupTestCaseMap(sourceType, commandFactory);
+            return TestProjectParser.parse(sourceType, projectReader, commandFactory);
         } catch (InvalidSeleneseException e) {
             return isSide ? Binder.newErrorTestProject(filename, e) : Binder.newErrorTestSuite(filename, e);
         }
