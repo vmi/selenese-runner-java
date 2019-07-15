@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.25.0
 
 * Fix interactive mode on windows. (PR #306 by @koichirok)
+* Update dependency versions.
 
 ### 3.24.1
 

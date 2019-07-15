@@ -245,7 +245,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
                 Map<?, ?> initialCoord = (Map<?, ?>) je.executeScript(getScrollCoord);
 
-                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.BOTH_DIRECTIONS, screenshotScrollTimeout)
+                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.WHOLE_PAGE, screenshotScrollTimeout)
                     .withName(FilenameUtils.removeExtension(tmp.getName()))
                     .save(dir.getPath());
 
