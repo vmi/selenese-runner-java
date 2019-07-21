@@ -37,7 +37,7 @@
   [OK] end (0/0)
   [OK] executeScript (2/2)
   [OK] executeAsyncScript (2/2)
-  [--] forEach (0/2)
+  [OK] forEach (2/2)
   [OK] if (1/1)
   [OK] mouseDown (1/1)
   [OK] mouseDownAt (2/2)

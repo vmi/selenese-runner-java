@@ -513,6 +513,94 @@
       "targets": [],
       "value": "0/0"
     }]
+  }, {
+    "id": "1b6a7346-5ddc-4b79-ba31-e62e1332c197",
+    "name": "ForEachEnd",
+    "commands": [{
+      "id": "48bb9b7a-bdc3-4248-9b7d-1ea92ddba3e5",
+      "comment": "",
+      "command": "open",
+      "target": "/indicate.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cea8d685-8758-410d-985d-fd28d8845d0b",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return ['a', 'b', 'c']",
+      "targets": [],
+      "value": "array1"
+    }, {
+      "id": "c153d995-f3e3-4bdc-b9c6-184a8b4ba770",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return [1, 2, 3]",
+      "targets": [],
+      "value": "array2"
+    }, {
+      "id": "367fe29e-602a-4c96-ac13-1c975207034e",
+      "comment": "",
+      "command": "executeScript",
+      "target": "document.getElementById(\"name\").textContent = \"forEach element\"",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "538cf78a-00dc-44b3-8082-a512493afe9d",
+      "comment": "",
+      "command": "forEach",
+      "target": "array1",
+      "targets": [],
+      "value": "elem1"
+    }, {
+      "id": "29450511-727c-4328-ba24-b28c65652d3d",
+      "comment": "",
+      "command": "echo",
+      "target": "${elem1}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b0048900-81be-4459-92ef-913c28064944",
+      "comment": "",
+      "command": "forEach",
+      "target": "array2",
+      "targets": [],
+      "value": "elem2"
+    }, {
+      "id": "9a44b421-cc3a-441e-a2f3-c115d76b3678",
+      "comment": "",
+      "command": "executeScript",
+      "target": "document.getElementById(\"value\").textContent = ${elem1} + ${elem2}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "464e5cb5-3f22-4dec-9c1b-c992ca1523ff",
+      "comment": "",
+      "command": "echo",
+      "target": "${elem1}${elem2}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f0614061-1002-4e88-8f9f-0eb4447dd44f",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7c74d868-0539-4789-8699-37e9daff9c80",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "912f2049-447b-4d48-84b0-53743cdbf57e",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=value",
+      "targets": [],
+      "value": "c3"
+    }]
   }],
   "suites": [{
     "id": "4b553101-df2e-4078-a379-5b7d2cfa9077",
@@ -520,7 +608,7 @@
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["f1676730-3df0-4fd0-a05c-e44b50dcf443", "edafe50d-e58b-4ce4-998d-85c198c52907", "3eb9b706-7c59-4212-aea7-0bd88e3190c3", "5dfddada-33b9-4c64-bdb3-8c47a22abc78", "4281d043-50ba-4f0e-8ffe-e80881d6d9ef"]
+    "tests": ["f1676730-3df0-4fd0-a05c-e44b50dcf443", "edafe50d-e58b-4ce4-998d-85c198c52907", "3eb9b706-7c59-4212-aea7-0bd88e3190c3", "5dfddada-33b9-4c64-bdb3-8c47a22abc78", "4281d043-50ba-4f0e-8ffe-e80881d6d9ef", "1b6a7346-5ddc-4b79-ba31-e62e1332c197"]
   }],
   "urls": ["http://localhost/"],
   "plugins": []
