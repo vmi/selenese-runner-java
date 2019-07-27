@@ -13,6 +13,7 @@ Selenese Runner Java Relase Note
 	* `storeJson`
 * Improve variable substitution processing. (#304)
 * Improve proxy support. (#303)
+* Fix a corner case bug related to timeouts.
 * Update dependency versions.
 
 ### 3.24.1

@@ -1,7 +1,9 @@
 package jp.vmi.selenium.selenese.command;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.MaxTimeActiveTimer;
 import jp.vmi.selenium.selenese.result.Failure;
+import jp.vmi.selenium.selenese.result.MaxTimeExceeded;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.selenese.utils.LangUtils;
@@ -31,7 +33,10 @@ public class Pause extends AbstractCommand {
         } catch (NumberFormatException e) {
             return new Warning("pause is ignored: invalid time: " + pauseMSec);
         } catch (InterruptedException e) {
-            return new Failure(e);
+            if (MaxTimeActiveTimer.isInterruptedByMaxTimeTimer(Thread.currentThread()))
+                return new MaxTimeExceeded(e);
+            else
+                return new Failure(e);
         }
     }
 }
