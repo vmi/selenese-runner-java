@@ -6,7 +6,8 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.Keys;
 
-import jp.vmi.selenium.selenese.utils.EscapeUtils;
+import com.google.gson.Gson;
+
 import jp.vmi.selenium.selenese.utils.SeleniumUtils;
 
 import static org.openqa.selenium.Keys.*;
@@ -98,17 +99,10 @@ public class VarsMap extends HashMap<String, Object> {
                 result.append(expr.substring(prevEnd, nextStart));
             String name = matcher.group("name");
             Object rawValue = get(name);
-            String value = SeleniumUtils.convertToString(rawValue);
-            if (isScript) {
-                if (rawValue == null)
-                    result.append("null");
-                else if (rawValue instanceof Number || rawValue instanceof Boolean)
-                    result.append(rawValue);
-                else
-                    result.append('"').append(EscapeUtils.escapeJSString(value)).append('"');
-            } else {
-                result.append(value);
-            }
+            if (isScript)
+                result.append(new Gson().toJson(rawValue));
+            else
+                result.append(SeleniumUtils.convertToString(rawValue));
             prevEnd = matcher.end();
         }
         if (prevEnd < expr.length())

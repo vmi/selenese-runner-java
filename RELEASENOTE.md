@@ -11,6 +11,7 @@ Selenese Runner Java Relase Note
         * If ARRAY VARIABLE is not an array, it is treated as an error. (Selenium IDE does not treat it as an error but its behavior is undefined)
         * Within other loops, it will become a new loop each time it is reached. (In Selenium IDE, it will remain in a state where the loop has been finished after the second time. Is it bug?)
 	* `storeJson`
+* Improve variable substitution processing. (#304)
 * Update dependency versions.
 
 ### 3.24.1
