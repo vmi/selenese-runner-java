@@ -6,7 +6,7 @@ Selenese Runner Java Relase Note
 * Fix interactive mode on windows. (PR #306 by @koichirok)
 * Add new commands of SIDE format:
 	* `run`
-	* `forEach`  
+	* `forEach` (#305)  
 	Note: In the following cases, the behavior differs from that of Selenium IDE:
         * If ARRAY VARIABLE is not an array, it is treated as an error. (Selenium IDE does not treat it as an error but its behavior is undefined)
         * Within other loops, it will become a new loop each time it is reached. (In Selenium IDE, it will remain in a state where the loop has been finished after the second time. Is it bug?)
