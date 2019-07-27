@@ -137,6 +137,7 @@ public class CommandFactory implements ICommandFactory {
         addConstructor(ExecuteAsyncScript.class);
         addConstructor(SetWindowSize.class);
         addConstructor(Run.class);
+        addConstructor(StoreJson.class);
 
         // commands for comment
         addConstructor(Comment.class);

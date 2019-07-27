@@ -60,7 +60,7 @@
   [OK] setWindowSize (1/1)
   [OK] store (2/2)
   [OK] storeAttribute (2/2)
-  [--] storeJson (0/2)
+  [OK] storeJson (2/2)
   [OK] storeText (2/2)
   [OK] storeTitle (1/1)
   [OK] storeValue (2/2)

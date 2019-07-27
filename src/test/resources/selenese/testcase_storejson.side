@@ -1,0 +1,63 @@
+{
+  "id": "5cfa18b8-6274-436a-9f44-6cb1ee6e9f3c",
+  "version": "2.0",
+  "name": "testcase_storejson",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "ff63b5c9-219a-4de5-8db5-72552460e650",
+    "name": "Untitled",
+    "commands": [{
+      "id": "7b4efa87-b29b-4972-9635-c60e52b321b6",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5973a566-af8a-4a60-b925-8c669677e9df",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return [1, 2, 3]",
+      "targets": [],
+      "value": "array"
+    }, {
+      "id": "dc9a192d-749e-4ada-973c-d066dca94872",
+      "comment": "",
+      "command": "storeJson",
+      "target": "[1, 2, 3]",
+      "targets": [],
+      "value": "array"
+    }, {
+      "id": "aed09ff1-adac-4dde-ae38-6c7f597cdb7b",
+      "comment": "",
+      "command": "forEach",
+      "target": "array",
+      "targets": [],
+      "value": "elem"
+    }, {
+      "id": "3c6f52f0-ac1e-4cce-85f1-1aab5b3b0ed0",
+      "comment": "",
+      "command": "echo",
+      "target": "${elem}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e2cbacbf-9cde-4775-8d55-0abb97c80430",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "134bc816-f669-417f-bfc3-fcb3b54b2a1f",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["ff63b5c9-219a-4de5-8db5-72552460e650"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
