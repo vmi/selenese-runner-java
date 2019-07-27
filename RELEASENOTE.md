@@ -14,7 +14,7 @@ Selenese Runner Java Relase Note
 * Improve variable substitution processing. (#304)
 * Improve proxy support. (#303)
 	* Add new option `--proxy-type`.
-	* Add the following proxy types: `pac`, `autodetect`, and `system`.
+	* Add the following proxy types: `manual`, `pac`, `autodetect`, and `system`.
 * Fix a corner case bug related to timeouts.
 * Update dependency versions.
 
