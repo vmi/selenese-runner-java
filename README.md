@@ -49,7 +49,8 @@ Usage
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
      --chrome-experimental-options <file>    : path to json file specify experimental options for chrome (Chrome only *1)
      --chrome-extension <file>               : chrome extension file (multiple, Chrome only *1)
-     --proxy <proxy>                         : proxy host and port (HOST:PORT) (excepting IE)
+     --proxy-type <proxy-type>               : proxy type (manual (default if set --proxy) | pac | autodetect | system)
+     --proxy <proxy>                         : [manual] proxy host and port (HOST:PORT) (excepting IE) / [pac] PAC URL
      --proxy-user <user>                     : proxy username (HtmlUnit only *2)
      --proxy-password <password>             : proxy password (HtmlUnit only *2)
      --no-proxy <hosts>                      : no-proxy hosts

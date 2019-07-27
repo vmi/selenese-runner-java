@@ -44,6 +44,8 @@ public class DriverOptions {
         PROFILE,
         /** --profile-dir */
         PROFILE_DIR,
+        /** --proxy-type */
+        PROXY_TYPE,
         /** --proxy */
         PROXY,
         /** --proxy-user */

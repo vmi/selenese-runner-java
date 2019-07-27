@@ -106,7 +106,10 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + CHROME_EXTENSION, metaVar = "<file>", usage = "chrome extension file (multiple, Chrome only *1)")
     private String[] chromeExtension;
 
-    @Option(name = "--" + PROXY, metaVar = "<proxy>", usage = "proxy host and port (HOST:PORT) (excepting IE)")
+    @Option(name = "--" + PROXY_TYPE, metaVar = "<proxy-type>", usage = "proxy type (manual (default if set --proxy) | pac | autodetect | system)")
+    private String proxyType;
+
+    @Option(name = "--" + PROXY, metaVar = "<proxy>", usage = "[manual] proxy host and port (HOST:PORT) (excepting IE) / [pac] PAC URL")
     private String proxy;
 
     @Option(name = "--" + PROXY_USER, metaVar = "<user>", usage = "proxy username (HtmlUnit only *2)")
@@ -307,6 +310,11 @@ public class DefaultConfig implements IConfig {
 
     public void addChromeExtension(String chromeExtensionItem) {
         this.chromeExtension = ArrayUtils.add(this.chromeExtension, chromeExtensionItem);
+    }
+
+    @Override
+    public String getProxyType() {
+        return proxyType != null ? proxyType : (parentOptions != null ? parentOptions.getProxyType() : null);
     }
 
     @Override

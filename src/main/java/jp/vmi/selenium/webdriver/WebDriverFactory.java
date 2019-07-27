@@ -1,6 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
@@ -84,14 +85,36 @@ public abstract class WebDriverFactory {
      * @return Proxy or null.
      */
     public static Proxy newProxy(DriverOptions driverOptions) {
-        if (!driverOptions.has(PROXY))
+        if (!driverOptions.has(PROXY_TYPE) && !driverOptions.has(PROXY))
             return null;
+        String proxyTypeStr = driverOptions.get(PROXY_TYPE);
+        if (proxyTypeStr == null)
+            proxyTypeStr = "manual";
+        ProxyType proxyType;
+        try {
+            proxyType = ProxyType.valueOf(proxyTypeStr.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            log.warn("Unsupported proxy type: {}", proxyTypeStr);
+            return null;
+        }
         Proxy proxy = new Proxy();
-        proxy.setProxyType(ProxyType.MANUAL);
-        String ps = driverOptions.get(PROXY);
-        proxy.setHttpProxy(ps)
-            .setSslProxy(ps)
-            .setFtpProxy(ps);
+        proxy.setProxyType(proxyType);
+        String proxyStr = driverOptions.get(PROXY);
+        if (proxyStr != null) {
+            switch (proxyType) {
+            case MANUAL:
+                proxy.setHttpProxy(proxyStr)
+                    .setSslProxy(proxyStr)
+                    .setFtpProxy(proxyStr);
+                break;
+            case PAC:
+                proxy.setProxyAutoconfigUrl(proxyStr);
+                break;
+            default:
+                log.warn("--proxy is not supported if proxy type is {}.", proxyTypeStr);
+                break;
+            }
+        }
         if (driverOptions.has(NO_PROXY))
             proxy.setNoProxy(driverOptions.get(NO_PROXY));
         return proxy;

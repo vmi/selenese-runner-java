@@ -12,6 +12,7 @@ Selenese Runner Java Relase Note
         * Within other loops, it will become a new loop each time it is reached. (In Selenium IDE, it will remain in a state where the loop has been finished after the second time. Is it bug?)
 	* `storeJson`
 * Improve variable substitution processing. (#304)
+* Improve proxy support. (#303)
 * Update dependency versions.
 
 ### 3.24.1

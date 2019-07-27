@@ -24,6 +24,7 @@ public interface IConfig {
     public static final String PROFILE_DIR = "profile-dir";
     public static final String CHROME_EXTENSION = "chrome-extension";
     public static final String CHROME_EXPERIMENTAL_OPTIONS = "chrome-experimental-options";
+    public static final String PROXY_TYPE = "proxy-type";
     public static final String PROXY = "proxy";
     public static final String PROXY_USER = "proxy-user";
     public static final String PROXY_PASSWORD = "proxy-password";
@@ -103,6 +104,8 @@ public interface IConfig {
     String getChromeExperimentalOptions();
 
     String[] getChromeExtension();
+
+    String getProxyType();
 
     String getProxy();
 

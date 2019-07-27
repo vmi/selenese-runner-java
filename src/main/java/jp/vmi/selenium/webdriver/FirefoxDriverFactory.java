@@ -26,6 +26,12 @@ public class FirefoxDriverFactory extends WebDriverFactory {
 
     private static final Logger log = LoggerFactory.getLogger(FirefoxDriverFactory.class);
 
+    // proxy type
+    // https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Mozilla_networking_preferences#Proxy
+    private static final int MANUAL = 1;
+    private static final int PAC = 2;
+    private static final int AUTODETECT = 4; // == WPAD?
+
     @Override
     public String getBrowserName() {
         return BROWSER_NAME;
@@ -80,7 +86,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
         if (driverOptions.has(CLI_ARGS))
             log.warn("Ignore --cli-args with RemoteWebDriver.");
         FirefoxProfile profile = getFirefoxProfile(driverOptions);
-        if (driverOptions.has(PROXY)) {
+        if (driverOptions.has(PROXY_TYPE) || driverOptions.has(PROXY)) {
             if (profile == null)
                 profile = new FirefoxProfile();
             setProxyConfiguration(profile, driverOptions);
@@ -133,21 +139,53 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     }
 
     private static void setProxyConfiguration(FirefoxProfile profile, DriverOptions driverOptions) {
+        String proxyTypeStr = driverOptions.get(PROXY_TYPE);
+        if (proxyTypeStr == null)
+            proxyTypeStr = "manual";
+        int proxyType;
+        switch (proxyTypeStr) {
+        case "manual":
+            proxyType = MANUAL;
+            break;
+        case "pac":
+            proxyType = PAC;
+            break;
+        case "autodetect":
+            proxyType = AUTODETECT;
+            break;
+        default:
+            log.warn("Unsupported proxy type: {}", proxyTypeStr);
+            return;
+        }
         String proxy = driverOptions.get(PROXY);
-        String[] ps = proxy.split(":", 2);
-        String host = ps[0];
-        int port = ps.length == 2 ? Integer.parseInt(ps[1]) : 80;
         String noProxy = driverOptions.has(NO_PROXY) ? driverOptions.get(NO_PROXY) : " ";
         // see https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Mozilla_networking_preferences#Proxy
-        profile.setPreference("network.proxy.type", 1); // 1 = MANUAL
-        profile.setPreference("network.proxy.http", host);
-        profile.setPreference("network.proxy.http_port", port);
-        profile.setPreference("network.proxy.ssl", host);
-        profile.setPreference("network.proxy.ssl_port", port);
-        profile.setPreference("network.proxy.ftp", host);
-        profile.setPreference("network.proxy.ftp_port", port);
-        profile.setPreference("network.proxy.socks", host);
-        profile.setPreference("network.proxy.socks_port", port);
+        profile.setPreference("network.proxy.type", proxyType);
+        if (proxy != null) {
+            switch (proxyType) {
+            case MANUAL:
+                String[] ps = proxy.split(":", 2);
+                String host = ps[0];
+                int port = ps.length == 2 ? Integer.parseInt(ps[1]) : 80;
+                profile.setPreference("network.proxy.http", host);
+                profile.setPreference("network.proxy.http_port", port);
+                profile.setPreference("network.proxy.ssl", host);
+                profile.setPreference("network.proxy.ssl_port", port);
+                profile.setPreference("network.proxy.ftp", host);
+                profile.setPreference("network.proxy.ftp_port", port);
+                profile.setPreference("network.proxy.socks", host);
+                profile.setPreference("network.proxy.socks_port", port);
+                break;
+
+            case PAC:
+                profile.setPreference("network.proxy.autoconfig_url", proxy);
+                break;
+
+            default:
+                log.warn("--proxy is not supported if proxy type is {}.", proxyTypeStr);
+                break;
+            }
+        }
         profile.setPreference("network.proxy.no_proxies_on", noProxy);
     }
 }
