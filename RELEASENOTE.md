@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.25.0
+
+* Fix interactive mode on windows. (PR #306 by @koichirok)
+
 ### 3.24.1
 
 * In `selectFrame` command, retry until timeout if specified frame is not found.
