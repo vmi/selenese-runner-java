@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +24,7 @@ public class CommandList implements Iterable<ICommand> {
 
     private final Map<Object, Integer> indexCache = new HashMap<>();
     private final List<ICommand> commandList = new ArrayList<>();
+    private static final Scanner systemInReader = new Scanner(System.in);
 
     /**
      * Returns {@code true} if this list contains no elements.
@@ -104,7 +106,7 @@ public class CommandList implements Iterable<ICommand> {
         try {
             if (context.isInteractive()) {
                 System.out.println(">>> Press ENTER to continue <<<");
-                System.in.read();
+                systemInReader.nextLine();
             }
             return command.execute(context, curArgs);
         } catch (SeleneseCommandErrorException e) {
