@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.26.0
+
+* Add support for commented out commands. (#307)
+
 ### 3.25.0
 
 * Fix interactive mode on windows. (PR #306 by @koichirok)

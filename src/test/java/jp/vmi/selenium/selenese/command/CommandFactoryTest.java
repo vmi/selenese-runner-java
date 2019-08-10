@@ -8,6 +8,9 @@ import jp.vmi.selenium.testutils.TestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+
 /**
  * Test for {@link CommandFactory}.
  */
@@ -66,5 +69,17 @@ public class CommandFactoryTest extends TestBase {
     public void type() throws IllegalArgumentException {
         CommandFactory factory = runner.getCommandFactory();
         factory.newCommand(1, "type", "aaa", "");
+    }
+
+    /**
+     * Test of commented out command.
+     *
+     * @throws IllegalArgumentException exception.
+     */
+    @Test
+    public void commentedOut() throws IllegalArgumentException {
+        CommandFactory factory = runner.getCommandFactory();
+        ICommand cmd = factory.newCommand(1, "//open", "http://localhost/", "");
+        assertThat(cmd, is(instanceOf(Echo.class)));
     }
 }

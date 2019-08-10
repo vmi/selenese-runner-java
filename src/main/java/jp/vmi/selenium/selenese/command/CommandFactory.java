@@ -210,6 +210,8 @@ public class CommandFactory implements ICommandFactory {
     public ICommand newCommand(int index, String name, String... args) {
         if (name == null || name.isEmpty())
             name = "nop";
+        else if (name.startsWith("//")) // the command is commented out.
+            return new Echo(index, name, args);
 
         // user defined command.
         for (ICommandFactory factory : commandFactories) {
