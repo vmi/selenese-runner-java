@@ -50,7 +50,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <htmlunit-core-js.version>2.35.0</htmlunit-core-js.version>
     <neko-htmlunit.version>2.35.0</neko-htmlunit.version>
     <htmlunit-driver.version>2.35.1</htmlunit-driver.version>
-    <slf4j.version>1.7.26</slf4j.version>
+    <slf4j.version>1.7.28</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -643,7 +643,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.assertthat</groupId>
       <artifactId>selenium-shutterbug</artifactId>
-      <version>0.9.2</version>
+      <version>0.9.3</version>
       <exclusions>
         <exclusion>
           <groupId>org.seleniumhq.selenium</groupId>

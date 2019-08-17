@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.26.0
 
 * Add support for commented out commands. (#307)
+* Update dependency versions.
 
 ### 3.25.0
 
