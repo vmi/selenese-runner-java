@@ -321,6 +321,10 @@ public class DefaultConfig implements IConfig {
         return proxyType != null ? proxyType : (parentOptions != null ? parentOptions.getProxyType() : null);
     }
 
+    public void setProxyType(String proxyType) {
+        this.proxyType = proxyType;
+    }
+
     @Override
     public String getProxy() {
         return proxy != null ? proxy : (parentOptions != null ? parentOptions.getProxy() : null);
