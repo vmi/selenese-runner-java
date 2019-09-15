@@ -7,6 +7,7 @@ driver {
 headless {
     usage = "use headless mode if driver is supported (currently, Chrome and Firefox)"
     type = "Boolean"
+    driverOption = true
 }
 
 
@@ -14,74 +15,88 @@ profile {
     aliases = "-p"
     metaVar = "<name>"
     usage = "profile name (Firefox only *1)"
+    driverOption = true
 }
 
 profile_dir {
     aliases = "-P"
     metaVar = "<dir>"
     usage = "profile directory (Firefox only *1)"
+    driverOption = true
 }
 
 chrome_experimental_options {
     metaVar = "<file>"
     usage = "path to json file specify experimental options for chrome (Chrome only *1)"
+    driverOption = true
 }
 
 chrome_extension {
     metaVar = "<file>"
     usage = "chrome extension file (multiple, Chrome only *1)"
     type = "String[]"
+    driverOption = true
 }
 
 proxy_type {
     metaVar = "<proxy-type>"
     usage = "proxy type (manual (default if set --proxy) | pac | autodetect | system)"
+    driverOption = true
 }
 
 proxy {
     metaVar = "<proxy>"
     usage = "[manual] proxy host and port (HOST:PORT) (excepting IE) / [pac] PAC URL"
+    driverOption = true
 }
 
 proxy_user {
     metaVar = "<user>"
     usage = "proxy username (HtmlUnit only *2)"
+    driverOption = true
 }
 
 proxy_password {
     metaVar = "<password>"
     usage = "proxy password (HtmlUnit only *2)"
+    driverOption = true
 }
 
 no_proxy {
     metaVar = "<hosts>"
     usage = "no-proxy hosts"
+    driverOption = true
 }
 
 cli_args {
     metaVar = "<arg>"
     usage = "add command line arguments at starting up driver (multiple)"
     type = "String[]"
+    driverOption = true
 }
 
 remote_url {
     metaVar = "<url>"
     usage = "Remote test runner URL (Remote only)"
+    driverOption = true
 }
 
 remote_platform {
     metaVar = "<platform>"
     usage = "Desired remote platform (Remote only)"
+    driverOption = true
 }
 
 remote_browser {
     metaVar = "<browser>"
     usage = "Desired remote browser (Remote only)"
+    driverOption = true
 }
 
 remote_version {
     metaVar = "<browser-version>"
     usage = "Desired remote browser version (Remote only)"
+    driverOption = true
 }
 
 highlight {
@@ -132,31 +147,37 @@ baseurl {
 firefox {
     metaVar = "<path>"
     usage = "path to 'firefox' binary. (implies '--driver firefox')"
+    driverOption = true
 }
 
 geckodriver {
     metaVar = "<path>"
     usage = "path to 'geckodriver' binary. (implies '--driver firefox')"
+    driverOption = true
 }
 
 chromedriver {
     metaVar = "<path>"
     usage = "path to 'chromedriver' binary. (implies '--driver chrome')"
+    driverOption = true
 }
 
 iedriver {
     metaVar = "<path>"
     usage = "path to 'IEDriverServer' binary. (implies '--driver ie')"
+    driverOption = true
 }
 
 edgedriver {
     metaVar = "<path>"
     usage = "path to Edge 'WebDriver' binary. (implies '--driver edge')"
+    driverOption = true
 }
 
 phantomjs {
     metaVar = "<path>"
     usage = "path to 'phantomjs' binary. (implies '--driver phantomjs')"
+    driverOption = true
 }
 
 xml_result {
@@ -188,15 +209,18 @@ set_speed {
 height {
     metaVar = "<height>"
     usage = "set initial height. (excluding mobile)"
+    driverOption = true
 }
 
 width {
     metaVar = "<width>"
     usage = "set initial width. (excluding mobile)"
+    driverOption = true
 }
 
 alerts_policy {
     usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)"
+    driverOption = "UnexpectedAlertBehaviour"
 }
 
 define {
@@ -204,6 +228,7 @@ define {
     metaVar = "<key>[:<type>][+]=<value>"
     usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)"
     type = "String[]"
+    driverOption = true
 }
 
 var {

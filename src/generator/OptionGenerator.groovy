@@ -6,12 +6,13 @@ import java.nio.file.Paths
 // Target files:
 // - src/main/java/jp/vmi/selenium/selenese/config/IConfig.java
 // - src/main/java/jp/vmi/selenium/selenese/config/DefaultConfig.java
+// - src/main/java/jp/vmi/selenium/webdriver/DriverOptions.java
 
 @SourceURI
 URI sourceUri
 
 genDir = Paths.get(sourceUri).parent
-baseDir = genDir.resolveSibling("main/java/jp/vmi/selenium/selenese")
+baseDir = genDir.resolveSibling("main/java/jp/vmi/selenium")
 config = new ConfigSlurper().parse(genDir.resolve('config.groovy').toUri().toURL())
 
 def toUpperCamelCase(s) {
@@ -22,30 +23,55 @@ def toLowerCamelCase(s) {
   s.replaceAll(/(_)([a-z])/) { m -> m[2].toUpperCase() }
 }
 
-def updateOptions(iConfig, dConfig) {
+def replaceBody(path, closure) {
+  def body = path.getText()
+  body = closure(body)
+  path.write(body, "UTF-8")
+}
+
+def updateOptions(iConfig, dConfig, dOpts) {
   def oNames = "\n"
   def getters = ""
   def fields = ""
   def accessors = ""
+  def enumItems = "\n"
   config.forEach { oName, odef ->
     def cName = oName.toUpperCase()
     def uName = toUpperCamelCase(oName)
     def lName = toLowerCamelCase(oName)
+    def optStr = oName.replace('_', '-')
     def option = "name = \"--\" + ${cName}"
     def fType = "String"
     odef.forEach { name, value ->
-      if (name == "type") {
-        fType = value
-      } else {
-        option += ","
-        if (name == "usage") {
-          if (option.length() + value.length() + 10 > 180)
-            option += "\n       "
-          value = value.replaceAll(/"/, "\\\\\"").replaceAll(/%(\w+)%/) {
-            "\" + ${it[1]} + \""
+      switch (name) {
+	case "type":
+          fType = value
+	  break
+
+	case "driverOption":
+	  if (value instanceof Boolean && !value) {
+	    break
+	  }
+	  enumItems += "        /** --${optStr} */\n        ${cName}"
+	  def t = (value instanceof String) ? value : fType
+	  if (t != "String") {
+	    enumItems += "(${t}.class)"
+	  }
+	  enumItems += ",\n"
+	  break
+
+	default:
+          option += ","
+          if (name == "usage") {
+            if (option.length() + value.length() + 10 > 180) {
+              option += "\n       "
+	    }
+            value = value.replaceAll(/"/, "\\\\\"").replaceAll(/%(\w+)%/) {
+              "\" + ${it[1]} + \""
+            }
           }
-        }
-        option += " ${name} = \"${value}\""
+          option += " ${name} = \"${value}\""
+	  break
       }
     }
     def mType = fType
@@ -57,7 +83,7 @@ def updateOptions(iConfig, dConfig) {
       dValue = "false"
     }
     oNames += """\
-    public static final String ${cName} = "${oName.replace('_', '-')}";
+    public static final String ${cName} = "${optStr}";
 """
     getters += """
     ${mType} ${mgPrefix}${uName}();
@@ -84,22 +110,23 @@ def updateOptions(iConfig, dConfig) {
     }
   }
 
-  def iBody = iConfig.getText()
-  def newIBody = iBody.replaceFirst(/(?s)(?<=\/\/ ### BEGIN OPTION NAMES[^\n]*\n).*(?=\n[^\n]*\/\/ ### END OPTION NAMES)/) { oNames }
-  newIBody = newIBody.replaceFirst(/(?s)(?<=\/\/ ### BEGIN GETTERS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END GETTERS)/) { getters }
-
-  iConfig.write(newIBody, "UTF-8")
-
-  def dBody = dConfig.getText()
-  def newDBody = dBody.replaceFirst(/(?s)(?<=\/\/ ### BEGIN FIELDS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END FIELDS)/) { fields }
-  newDBody = newDBody.replaceFirst(/(?s)(?<=\/\/ ### BEGIN GETTERS & SETTERS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END GETTERS & SETTERS)/) { accessors }
-
-  dConfig.write(newDBody, "UTF-8")
+  replaceBody(iConfig) { body ->
+    body.replaceFirst(/(?s)(?<=\/\/ ### BEGIN OPTION NAMES[^\n]*\n).*(?=\n[^\n]*\/\/ ### END OPTION NAMES)/) { oNames }
+      .replaceFirst(/(?s)(?<=\/\/ ### BEGIN GETTERS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END GETTERS)/) { getters }
+  }
+  replaceBody(dConfig) { body ->
+    body.replaceFirst(/(?s)(?<=\/\/ ### BEGIN FIELDS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END FIELDS)/) { fields }
+      .replaceFirst(/(?s)(?<=\/\/ ### BEGIN GETTERS & SETTERS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END GETTERS & SETTERS)/) { accessors }
+  }
+  replaceBody(dOpts) { body ->
+    body.replaceFirst(/(?s)(?<=\/\/ ### BEGIN ENUM ITEMS[^\n]*\n).*(?=\n[^\n]*\/\/ ### END ENUM ITEMS)/) { enumItems }
+  }
 }
 
 updateOptions(
-  baseDir.resolve("config/IConfig.java"),
-  baseDir.resolve("config/DefaultConfig.java")
+  baseDir.resolve("selenese/config/IConfig.java"),
+  baseDir.resolve("selenese/config/DefaultConfig.java"),
+  baseDir.resolve("webdriver/DriverOptions.java")
 )
 
 // Local Variables:
