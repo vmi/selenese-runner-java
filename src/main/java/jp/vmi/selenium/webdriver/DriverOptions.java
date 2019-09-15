@@ -43,10 +43,16 @@ public class DriverOptions {
 
         // ### BEGIN ENUM ITEMS GENERATED FROM config.groovy
 
+        /** --headless */
+        HEADLESS(Boolean.class),
         /** --profile */
         PROFILE,
         /** --profile-dir */
         PROFILE_DIR,
+        /** --chrome-experimental-options */
+        CHROME_EXPERIMENTAL_OPTIONS,
+        /** --chrome-extension */
+        CHROME_EXTENSION(String[].class),
         /** --proxy-type */
         PROXY_TYPE,
         /** --proxy */
@@ -57,6 +63,16 @@ public class DriverOptions {
         PROXY_PASSWORD,
         /** --no-proxy */
         NO_PROXY,
+        /** --cli-args */
+        CLI_ARGS(String[].class),
+        /** --remote-url */
+        REMOTE_URL,
+        /** --remote-platform */
+        REMOTE_PLATFORM,
+        /** --remote-browser */
+        REMOTE_BROWSER,
+        /** --remote-version */
+        REMOTE_VERSION,
         /** --firefox */
         FIREFOX,
         /** --geckodriver */
@@ -69,30 +85,14 @@ public class DriverOptions {
         EDGEDRIVER,
         /** --phantomjs */
         PHANTOMJS,
-        /** --remote-platform */
-        REMOTE_PLATFORM,
-        /** --remote-browser */
-        REMOTE_BROWSER,
-        /** --remote-version */
-        REMOTE_VERSION,
-        /** --remote-url */
-        REMOTE_URL,
+        /** --height */
+        HEIGHT,
         /** --width */
         WIDTH,
         /** --alerts-policy */
         ALERTS_POLICY(UnexpectedAlertBehaviour.class),
-        /** --height */
-        HEIGHT,
         /** --define */
         DEFINE(String[].class),
-        /** --cli-args */
-        CLI_ARGS(String[].class),
-        /** --chrome-extension */
-        CHROME_EXTENSION(String[].class),
-        /** --chrome-experimental-options */
-        CHROME_EXPERIMENTAL_OPTIONS,
-        /** --headless */
-        HEADLESS(Boolean.class),
 
         // ### END ENUM ITEMS GENERATED FROM config.groovy
         ;
