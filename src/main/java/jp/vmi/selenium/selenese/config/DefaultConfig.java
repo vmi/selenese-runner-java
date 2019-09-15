@@ -189,8 +189,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + TIMEOUT, aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
     private String timeout;
 
-    @Option(name = "--" + MAX_RETRIES, metaVar = "<maxRetries>",
-        usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
+    @Option(name = "--" + MAX_RETRIES, metaVar = "<maxRetries>", usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
     private String maxRetries;
 
     @Option(name = "--" + SET_SPEED, metaVar = "<speed>", usage = "same as executing setSpeed(ms) command first.")
@@ -209,8 +208,7 @@ public class DefaultConfig implements IConfig {
         usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
 
-    @Option(name = "--" + VAR, aliases = "-V", metaVar = "<var-name>=<json-value>",
-        usage = "set JSON value to variable with a specified name. (multiple)")
+    @Option(name = "--" + VAR, aliases = "-V", metaVar = "<var-name>=<json-value>", usage = "set JSON value to variable with a specified name. (multiple)")
     private String[] var;
 
     @Option(name = "--" + ROLLUP, metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
