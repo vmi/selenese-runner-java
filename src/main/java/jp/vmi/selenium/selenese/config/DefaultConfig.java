@@ -189,7 +189,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + TIMEOUT, aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
     private String timeout;
 
-    @Option(name = "--" + MAXRETRIES, metaVar = "<maxRetries>",
+    @Option(name = "--" + MAX_RETRIES, metaVar = "<maxRetries>",
         usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
     private String maxRetries;
 
@@ -202,7 +202,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + WIDTH, metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
-    @Option(name = "--alerts-policy", usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
+    @Option(name = "--" + ALERTS_POLICY, usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
     private String alertsPolicy;
 
     @Option(name = "--" + DEFINE, aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
