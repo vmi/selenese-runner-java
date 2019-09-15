@@ -40,6 +40,9 @@ public class DriverOptions {
      * WebDriver option.
      */
     public enum DriverOption {
+
+        // ### BEGIN ENUM ITEMS GENERATED FROM config.groovy
+
         /** --profile */
         PROFILE,
         /** --profile-dir */
@@ -90,7 +93,8 @@ public class DriverOptions {
         CHROME_EXPERIMENTAL_OPTIONS,
         /** --headless */
         HEADLESS(Boolean.class),
-        // end of options.
+
+        // ### END ENUM ITEMS GENERATED FROM config.groovy
         ;
 
         private final Class<?> valueType;
