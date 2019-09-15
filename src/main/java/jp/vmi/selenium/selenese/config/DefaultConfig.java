@@ -452,7 +452,7 @@ public class DefaultConfig implements IConfig {
         return screenshotScrollTimeout != null ? screenshotScrollTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
     }
 
-    public void setScreenshotTimeout(String screenshotScrollTimeout) {
+    public void setScreenshotScrollTimeout(String screenshotScrollTimeout) {
         this.screenshotScrollTimeout = screenshotScrollTimeout;
     }
 
