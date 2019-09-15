@@ -39,6 +39,7 @@ public interface IConfig {
     public static final String SCREENSHOT_DIR = "screenshot-dir";
     public static final String SCREENSHOT_ALL = "screenshot-all";
     public static final String SCREENSHOT_ON_FAIL = "screenshot-on-fail";
+    public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String IGNORE_SCREENSHOT_COMMAND = "ignore-screenshot-command";
     public static final String BASEURL = "baseurl";
     public static final String FIREFOX = "firefox";
@@ -64,7 +65,6 @@ public interface IConfig {
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
-    public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String HELP = "help";
 
     // ### END OPTION NAMES GENERATED FROM config.groovy
@@ -139,6 +139,8 @@ public interface IConfig {
 
     String getScreenshotOnFail();
 
+    String getScreenshotScrollTimeout();
+
     boolean isIgnoreScreenshotCommand();
 
     String getBaseurl();
@@ -178,8 +180,6 @@ public interface IConfig {
     String[] getLogFilter();
 
     String getCommandFactory();
-
-    String getScreenshotScrollTimeout();
 
     boolean isNoExit();
 

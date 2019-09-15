@@ -153,6 +153,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + SCREENSHOT_ON_FAIL, metaVar = "<dir>", usage = "take screenshot on fail commands to specified directory.")
     private String screenshotOnFail;
 
+    @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
+    private String screenshotTimeout;
+
     @Option(name = "--" + IGNORE_SCREENSHOT_COMMAND, usage = "ignore captureEntirePageScreenshot command.")
     private Boolean ignoreScreenshotCommand;
 
@@ -231,9 +234,6 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--" + MAX_TIME, metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
-
-    @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
-    private String screenshotTimeout;
 
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
@@ -450,6 +450,15 @@ public class DefaultConfig implements IConfig {
     }
 
     @Override
+    public String getScreenshotScrollTimeout() {
+        return screenshotTimeout != null ? screenshotTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
+    }
+
+    public void setScreenshotTimeout(String timeout) {
+        this.screenshotTimeout = timeout;
+    }
+
+    @Override
     public boolean isIgnoreScreenshotCommand() {
         return ignoreScreenshotCommand != null ? ignoreScreenshotCommand : (parentOptions != null ? parentOptions.isIgnoreScreenshotCommand() : false);
     }
@@ -625,6 +634,10 @@ public class DefaultConfig implements IConfig {
         return cookieFilter != null ? cookieFilter : (parentOptions != null ? parentOptions.getCookieFilter() : null);
     }
 
+    public void setCookieFilter(String cookieFilter) {
+        this.cookieFilter = cookieFilter;
+    }
+
     @Override
     public String[] getLogFilter() {
         return logFilter != null ? logFilter : (parentOptions != null ? parentOptions.getLogFilter() : null);
@@ -634,10 +647,6 @@ public class DefaultConfig implements IConfig {
         this.logFilter = ArrayUtils.add(this.logFilter, logFilter);
     }
 
-    public void setCookieFilter(String cookieFilter) {
-        this.cookieFilter = cookieFilter;
-    }
-
     @Override
     public String getCommandFactory() {
         return commandFactory != null ? commandFactory : (parentOptions != null ? parentOptions.getCommandFactory() : null);
@@ -645,15 +654,6 @@ public class DefaultConfig implements IConfig {
 
     public void setCommandFactory(String commandFactory) {
         this.commandFactory = commandFactory;
-    }
-
-    @Override
-    public String getScreenshotScrollTimeout() {
-        return screenshotTimeout != null ? screenshotTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
-    }
-
-    public void setScreenshotTimeout(String timeout) {
-        this.screenshotTimeout = timeout;
     }
 
     @Override
