@@ -16,8 +16,8 @@ package jp.vmi.selenium.selenese.config;
 @SuppressWarnings("javadoc")
 public interface IConfig {
 
-    // List of option name.
-    // public static final String CONFIG = "config";
+    // ### BEGIN OPTION NAMES GENERATED FROM config.groovy
+
     public static final String DRIVER = "driver";
     public static final String HEADLESS = "headless";
     public static final String PROFILE = "profile";
@@ -67,6 +67,8 @@ public interface IConfig {
     public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String HELP = "help";
 
+    // ### END OPTION NAMES GENERATED FROM config.groovy
+
     /**
      * Get command line arguments without parsed options.
      *
@@ -92,6 +94,8 @@ public interface IConfig {
      * @return option value.
      */
     <T> T get(String opt, T defaultValue);
+
+    // ### BEGIN GETTERS GENERATED FROM config.groovy
 
     String getDriver();
 
@@ -188,4 +192,6 @@ public interface IConfig {
     String getAlertsPolicy();
 
     String getMaxRetries();
+
+    // ### END GETTERS GENERATED FROM config.groovy
 }

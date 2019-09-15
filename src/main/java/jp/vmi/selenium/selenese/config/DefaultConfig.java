@@ -87,6 +87,8 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--config", aliases = "-c", metaVar = "<file>", usage = "load option information from file.")
     private String config;
 
+    // ### BEGIN FIELDS GENERATED FROM config.groovy
+
     @Option(name = "--" + DRIVER, aliases = "-d", metaVar = "<driver>",
         usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
     private String driver;
@@ -236,6 +238,8 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
+    // ### END FIELDS GENERATED FROM config.groovy
+
     @Argument
     private String[] args = LangUtils.EMPTY_STRING_ARRAY;
 
@@ -257,6 +261,8 @@ public class DefaultConfig implements IConfig {
         if (args.length > 0)
             parseCommandLine(args);
     }
+
+    // ### BEGIN GETTERS & SETTERS GENERATED FROM config.groovy
 
     @Override
     public String getDriver() {
@@ -685,6 +691,8 @@ public class DefaultConfig implements IConfig {
     public void setHelp(boolean help) {
         this.help = help;
     }
+
+    // ### END GETTERS & SETTERS GENERATED FROM config.groovy
 
     @Override
     public String[] getArgs() {
