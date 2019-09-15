@@ -154,7 +154,7 @@ public class DefaultConfig implements IConfig {
     private String screenshotOnFail;
 
     @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
-    private String screenshotTimeout;
+    private String screenshotScrollTimeout;
 
     @Option(name = "--" + IGNORE_SCREENSHOT_COMMAND, usage = "ignore captureEntirePageScreenshot command.")
     private Boolean ignoreScreenshotCommand;
@@ -449,11 +449,11 @@ public class DefaultConfig implements IConfig {
 
     @Override
     public String getScreenshotScrollTimeout() {
-        return screenshotTimeout != null ? screenshotTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
+        return screenshotScrollTimeout != null ? screenshotScrollTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
     }
 
-    public void setScreenshotTimeout(String timeout) {
-        this.screenshotTimeout = timeout;
+    public void setScreenshotTimeout(String screenshotScrollTimeout) {
+        this.screenshotScrollTimeout = screenshotScrollTimeout;
     }
 
     @Override
@@ -614,8 +614,8 @@ public class DefaultConfig implements IConfig {
         return var != null ? var : (parentOptions != null ? parentOptions.getVar() : null);
     }
 
-    public void addVar(String expr) {
-        this.var = ArrayUtils.add(this.var, expr);
+    public void addVar(String varItem) {
+        this.var = ArrayUtils.add(this.var, varItem);
     }
 
     @Override
@@ -641,8 +641,8 @@ public class DefaultConfig implements IConfig {
         return logFilter != null ? logFilter : (parentOptions != null ? parentOptions.getLogFilter() : null);
     }
 
-    public void addLogFilter(String logFilter) {
-        this.logFilter = ArrayUtils.add(this.logFilter, logFilter);
+    public void addLogFilter(String logFilterItem) {
+        this.logFilter = ArrayUtils.add(this.logFilter, logFilterItem);
     }
 
     @Override
