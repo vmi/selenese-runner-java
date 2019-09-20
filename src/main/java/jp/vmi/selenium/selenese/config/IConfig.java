@@ -4,7 +4,16 @@ package jp.vmi.selenium.selenese.config;
  * Configuration information.
  *
  * <p>
- * If you want to add new option, you need edit the following classes:
+ * To add a new option, complete the following steps:
+ * </p>
+ * <ol>
+ * <li>Edit {@code src/generator/config.groovy}.
+ * <li>Run {@code src/generator/OptionGenerator.groovy}.
+ * <li>Add your option handler.
+ * </ol>
+ *
+ * <p>
+ * The following classes are updated:
  * </p>
  * <ul>
  * <li>{@link jp.vmi.selenium.selenese.config.DefaultConfig}</li>
@@ -16,7 +25,7 @@ package jp.vmi.selenium.selenese.config;
 @SuppressWarnings("javadoc")
 public interface IConfig {
 
-    // ### BEGIN OPTION NAMES GENERATED FROM config.groovy
+    // ### BEGIN OPTION NAMES GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     public static final String DRIVER = "driver";
     public static final String HEADLESS = "headless";
@@ -67,7 +76,7 @@ public interface IConfig {
     public static final String MAX_TIME = "max-time";
     public static final String HELP = "help";
 
-    // ### END OPTION NAMES GENERATED FROM config.groovy
+    // ### END OPTION NAMES GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     /**
      * Get command line arguments without parsed options.

@@ -29,6 +29,9 @@ import static jp.vmi.selenium.selenese.result.Result.Level.*;
 
 /**
  * Configuration information.
+ * <p>
+ * If you want to add new options, read the {@link IConfig} documentation.
+ * </p>
  */
 @SuppressWarnings("javadoc")
 public class DefaultConfig implements IConfig {
@@ -87,7 +90,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--config", aliases = "-c", metaVar = "<file>", usage = "load option information from file.")
     private String config;
 
-    // ### BEGIN FIELDS GENERATED FROM config.groovy
+    // ### BEGIN FIELDS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Option(name = "--" + DRIVER, aliases = "-d", metaVar = "<driver>",
         usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
@@ -236,7 +239,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
-    // ### END FIELDS GENERATED FROM config.groovy
+    // ### END FIELDS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Argument
     private String[] args = LangUtils.EMPTY_STRING_ARRAY;
@@ -260,7 +263,7 @@ public class DefaultConfig implements IConfig {
             parseCommandLine(args);
     }
 
-    // ### BEGIN GETTERS & SETTERS GENERATED FROM config.groovy
+    // ### BEGIN GETTERS & SETTERS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Override
     public String getDriver() {
@@ -694,7 +697,7 @@ public class DefaultConfig implements IConfig {
         this.help = help;
     }
 
-    // ### END GETTERS & SETTERS GENERATED FROM config.groovy
+    // ### END GETTERS & SETTERS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Override
     public String[] getArgs() {

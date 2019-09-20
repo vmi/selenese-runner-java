@@ -31,6 +31,10 @@ import jp.vmi.selenium.selenese.utils.LangUtils;
 
 /**
  * Options for WebDriver.
+ *
+ * <p>
+ * If you want to add new options, read the {@link IConfig} documentation.
+ * </p>
  */
 public class DriverOptions {
 
@@ -41,7 +45,7 @@ public class DriverOptions {
      */
     public enum DriverOption {
 
-        // ### BEGIN ENUM ITEMS GENERATED FROM config.groovy
+        // ### BEGIN ENUM ITEMS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
         /** --headless */
         HEADLESS(Boolean.class),
@@ -94,7 +98,7 @@ public class DriverOptions {
         /** --define */
         DEFINE(String[].class),
 
-        // ### END ENUM ITEMS GENERATED FROM config.groovy
+        // ### END ENUM ITEMS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
         ;
 
         private final Class<?> valueType;
