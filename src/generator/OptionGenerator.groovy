@@ -27,6 +27,7 @@ def replaceBody(path, closure) {
   def body = path.getText()
   body = closure(body)
   path.write(body, "UTF-8")
+  println("* Updated: ${path}")
 }
 
 def updateOptions(iConfig, dConfig, dOpts) {
