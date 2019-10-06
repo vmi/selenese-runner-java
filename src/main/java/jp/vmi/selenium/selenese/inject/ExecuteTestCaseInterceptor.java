@@ -33,47 +33,57 @@ public class ExecuteTestCaseInterceptor extends AbstractExecuteTestCaseIntercept
             jUnitResult = null;
         }
         StopWatch sw = testCase.getStopWatch();
-        LogRecorder clr;
-        if (parent instanceof TestCase)
+        boolean hasParent = parent instanceof TestCase;
+        LogRecorder clr = testCase.getLogRecorder();
+        LogRecorder plr = null;
+        if (hasParent) {
+            plr = clr;
             clr = ((TestCase) parent).getLogRecorder();
-        else
+            testCase.setLogRecorder(clr);
+        } else if (clr == null) {
             clr = new LogRecorder(context.getPrintStream());
-        testCase.setLogRecorder(clr);
-        sw.start();
-        if (!testCase.isError()) {
-            log.info("Start: {}", testCase);
-            clr.info("Start: " + testCase);
-        }
-        if (testCase instanceof TestCase) {
-            String baseURL = Objects.toString(context.getOverridingBaseURL(), ((TestCase) testCase).getBaseURL());
-            log.info("baseURL: {}", baseURL);
-            clr.info("baseURL: " + baseURL);
+            testCase.setLogRecorder(clr);
         }
         try {
-            Result result = (Result) invocation.proceed();
-            if (jUnitResult != null) {
-                if (result.isSuccess())
-                    jUnitResult.setSuccess(testCase);
-                else
-                    jUnitResult.setFailure(testCase, result.getMessage(), null);
-            }
-            return result;
-        } catch (Throwable t) {
-            String msg = t.getMessage();
-            log.error(msg);
-            clr.error(msg);
-            if (jUnitResult != null)
-                jUnitResult.setError(testCase, msg, t.toString());
-            throw t;
-        } finally {
-            sw.end();
+            sw.start();
             if (!testCase.isError()) {
-                String msg = "End(" + sw.getDurationString() + "): " + testCase;
-                log.info(msg);
-                clr.info(msg);
+                log.info("Start: {}", testCase);
+                clr.info("Start: " + testCase);
             }
-            if (jUnitResult != null)
-                jUnitResult.endTestCase(testCase);
+            if (testCase instanceof TestCase) {
+                String baseURL = Objects.toString(context.getOverridingBaseURL(), ((TestCase) testCase).getBaseURL());
+                log.info("baseURL: {}", baseURL);
+                clr.info("baseURL: " + baseURL);
+            }
+            try {
+                Result result = (Result) invocation.proceed();
+                if (jUnitResult != null) {
+                    if (result.isSuccess())
+                        jUnitResult.setSuccess(testCase);
+                    else
+                        jUnitResult.setFailure(testCase, result.getMessage(), null);
+                }
+                return result;
+            } catch (Throwable t) {
+                String msg = t.getMessage();
+                log.error(msg);
+                clr.error(msg);
+                if (jUnitResult != null)
+                    jUnitResult.setError(testCase, msg, t.toString());
+                throw t;
+            } finally {
+                sw.end();
+                if (!testCase.isError()) {
+                    String msg = "End(" + sw.getDurationString() + "): " + testCase;
+                    log.info(msg);
+                    clr.info(msg);
+                }
+                if (jUnitResult != null)
+                    jUnitResult.endTestCase(testCase);
+            }
+        } finally {
+            if (hasParent)
+                testCase.setLogRecorder(plr);
         }
     }
 }
