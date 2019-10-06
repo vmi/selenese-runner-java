@@ -4,7 +4,16 @@ package jp.vmi.selenium.selenese.config;
  * Configuration information.
  *
  * <p>
- * If you want to add new option, you need edit the following classes:
+ * To add a new option, complete the following steps:
+ * </p>
+ * <ol>
+ * <li>Edit {@code src/generator/config.groovy}.
+ * <li>Run {@code src/generator/OptionGenerator.groovy}.
+ * <li>Add your option handler.
+ * </ol>
+ *
+ * <p>
+ * The following classes are updated:
  * </p>
  * <ul>
  * <li>{@link jp.vmi.selenium.selenese.config.DefaultConfig}</li>
@@ -16,14 +25,14 @@ package jp.vmi.selenium.selenese.config;
 @SuppressWarnings("javadoc")
 public interface IConfig {
 
-    // List of option name.
-    // public static final String CONFIG = "config";
+    // ### BEGIN OPTION NAMES GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
+
     public static final String DRIVER = "driver";
     public static final String HEADLESS = "headless";
     public static final String PROFILE = "profile";
     public static final String PROFILE_DIR = "profile-dir";
-    public static final String CHROME_EXTENSION = "chrome-extension";
     public static final String CHROME_EXPERIMENTAL_OPTIONS = "chrome-experimental-options";
+    public static final String CHROME_EXTENSION = "chrome-extension";
     public static final String PROXY_TYPE = "proxy-type";
     public static final String PROXY = "proxy";
     public static final String PROXY_USER = "proxy-user";
@@ -39,6 +48,7 @@ public interface IConfig {
     public static final String SCREENSHOT_DIR = "screenshot-dir";
     public static final String SCREENSHOT_ALL = "screenshot-all";
     public static final String SCREENSHOT_ON_FAIL = "screenshot-on-fail";
+    public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String IGNORE_SCREENSHOT_COMMAND = "ignore-screenshot-command";
     public static final String BASEURL = "baseurl";
     public static final String FIREFOX = "firefox";
@@ -50,7 +60,7 @@ public interface IConfig {
     public static final String XML_RESULT = "xml-result";
     public static final String HTML_RESULT = "html-result";
     public static final String TIMEOUT = "timeout";
-    public static final String MAXRETRIES = "max-retries";
+    public static final String MAX_RETRIES = "max-retries";
     public static final String SET_SPEED = "set-speed";
     public static final String HEIGHT = "height";
     public static final String WIDTH = "width";
@@ -64,8 +74,9 @@ public interface IConfig {
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
-    public static final String SCREENSHOT_SCROLL_TIMEOUT = "screenshot-scroll-timeout";
     public static final String HELP = "help";
+
+    // ### END OPTION NAMES GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     /**
      * Get command line arguments without parsed options.
@@ -92,6 +103,8 @@ public interface IConfig {
      * @return option value.
      */
     <T> T get(String opt, T defaultValue);
+
+    // ### BEGIN GETTERS GENERATED FROM config.groovy
 
     String getDriver();
 
@@ -135,6 +148,8 @@ public interface IConfig {
 
     String getScreenshotOnFail();
 
+    String getScreenshotScrollTimeout();
+
     boolean isIgnoreScreenshotCommand();
 
     String getBaseurl();
@@ -157,11 +172,15 @@ public interface IConfig {
 
     String getTimeout();
 
+    String getMaxRetries();
+
     String getSetSpeed();
 
     String getHeight();
 
     String getWidth();
+
+    String getAlertsPolicy();
 
     String[] getDefine();
 
@@ -175,8 +194,6 @@ public interface IConfig {
 
     String getCommandFactory();
 
-    String getScreenshotScrollTimeout();
-
     boolean isNoExit();
 
     boolean isStrictExitCode();
@@ -185,7 +202,5 @@ public interface IConfig {
 
     boolean isHelp();
 
-    String getAlertsPolicy();
-
-    String getMaxRetries();
+    // ### END GETTERS GENERATED FROM config.groovy
 }

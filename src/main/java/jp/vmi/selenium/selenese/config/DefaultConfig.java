@@ -29,6 +29,9 @@ import static jp.vmi.selenium.selenese.result.Result.Level.*;
 
 /**
  * Configuration information.
+ * <p>
+ * If you want to add new options, read the {@link IConfig} documentation.
+ * </p>
  */
 @SuppressWarnings("javadoc")
 public class DefaultConfig implements IConfig {
@@ -86,6 +89,8 @@ public class DefaultConfig implements IConfig {
 
     @Option(name = "--config", aliases = "-c", metaVar = "<file>", usage = "load option information from file.")
     private String config;
+
+    // ### BEGIN FIELDS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Option(name = "--" + DRIVER, aliases = "-d", metaVar = "<driver>",
         usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory")
@@ -151,6 +156,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + SCREENSHOT_ON_FAIL, metaVar = "<dir>", usage = "take screenshot on fail commands to specified directory.")
     private String screenshotOnFail;
 
+    @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
+    private String screenshotScrollTimeout;
+
     @Option(name = "--" + IGNORE_SCREENSHOT_COMMAND, usage = "ignore captureEntirePageScreenshot command.")
     private Boolean ignoreScreenshotCommand;
 
@@ -184,8 +192,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + TIMEOUT, aliases = "-t", metaVar = "<timeout>", usage = "set timeout (ms) for waiting. (default: " + DEFAULT_TIMEOUT_MILLISEC_N + " ms)")
     private String timeout;
 
-    @Option(name = "--" + MAXRETRIES, metaVar = "<maxRetries>",
-        usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
+    @Option(name = "--" + MAX_RETRIES, metaVar = "<maxRetries>", usage = "set maximum number of retries for a given step. (default: " + DEFAULT_MAX_RETRIES + ")")
     private String maxRetries;
 
     @Option(name = "--" + SET_SPEED, metaVar = "<speed>", usage = "same as executing setSpeed(ms) command first.")
@@ -197,15 +204,14 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + WIDTH, metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
-    @Option(name = "--alerts-policy", usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
+    @Option(name = "--" + ALERTS_POLICY, usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
     private String alertsPolicy;
 
     @Option(name = "--" + DEFINE, aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",
         usage = "define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)")
     private String[] define;
 
-    @Option(name = "--" + VAR, aliases = "-V", metaVar = "<var-name>=<json-value>",
-        usage = "set JSON value to variable with a specified name. (multiple)")
+    @Option(name = "--" + VAR, aliases = "-V", metaVar = "<var-name>=<json-value>", usage = "set JSON value to variable with a specified name. (multiple)")
     private String[] var;
 
     @Option(name = "--" + ROLLUP, metaVar = "<file>", usage = "define rollup rule by JavaScript. (multiple)")
@@ -230,11 +236,10 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + MAX_TIME, metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
 
-    @Option(name = "--" + SCREENSHOT_SCROLL_TIMEOUT, metaVar = "<timeout>", usage = "set scroll timeout (ms) for taking screenshot. (default: 100)")
-    private String screenshotTimeout;
-
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
+
+    // ### END FIELDS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Argument
     private String[] args = LangUtils.EMPTY_STRING_ARRAY;
@@ -257,6 +262,8 @@ public class DefaultConfig implements IConfig {
         if (args.length > 0)
             parseCommandLine(args);
     }
+
+    // ### BEGIN GETTERS & SETTERS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Override
     public String getDriver() {
@@ -315,6 +322,10 @@ public class DefaultConfig implements IConfig {
     @Override
     public String getProxyType() {
         return proxyType != null ? proxyType : (parentOptions != null ? parentOptions.getProxyType() : null);
+    }
+
+    public void setProxyType(String proxyType) {
+        this.proxyType = proxyType;
     }
 
     @Override
@@ -441,6 +452,15 @@ public class DefaultConfig implements IConfig {
 
     public void setScreenshotOnFail(String screenshotOnFail) {
         this.screenshotOnFail = screenshotOnFail;
+    }
+
+    @Override
+    public String getScreenshotScrollTimeout() {
+        return screenshotScrollTimeout != null ? screenshotScrollTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
+    }
+
+    public void setScreenshotScrollTimeout(String screenshotScrollTimeout) {
+        this.screenshotScrollTimeout = screenshotScrollTimeout;
     }
 
     @Override
@@ -601,8 +621,8 @@ public class DefaultConfig implements IConfig {
         return var != null ? var : (parentOptions != null ? parentOptions.getVar() : null);
     }
 
-    public void addVar(String expr) {
-        this.var = ArrayUtils.add(this.var, expr);
+    public void addVar(String varItem) {
+        this.var = ArrayUtils.add(this.var, varItem);
     }
 
     @Override
@@ -619,17 +639,17 @@ public class DefaultConfig implements IConfig {
         return cookieFilter != null ? cookieFilter : (parentOptions != null ? parentOptions.getCookieFilter() : null);
     }
 
+    public void setCookieFilter(String cookieFilter) {
+        this.cookieFilter = cookieFilter;
+    }
+
     @Override
     public String[] getLogFilter() {
         return logFilter != null ? logFilter : (parentOptions != null ? parentOptions.getLogFilter() : null);
     }
 
-    public void addLogFilter(String logFilter) {
-        this.logFilter = ArrayUtils.add(this.logFilter, logFilter);
-    }
-
-    public void setCookieFilter(String cookieFilter) {
-        this.cookieFilter = cookieFilter;
+    public void addLogFilter(String logFilterItem) {
+        this.logFilter = ArrayUtils.add(this.logFilter, logFilterItem);
     }
 
     @Override
@@ -639,15 +659,6 @@ public class DefaultConfig implements IConfig {
 
     public void setCommandFactory(String commandFactory) {
         this.commandFactory = commandFactory;
-    }
-
-    @Override
-    public String getScreenshotScrollTimeout() {
-        return screenshotTimeout != null ? screenshotTimeout : (parentOptions != null ? parentOptions.getScreenshotScrollTimeout() : null);
-    }
-
-    public void setScreenshotTimeout(String timeout) {
-        this.screenshotTimeout = timeout;
     }
 
     @Override
@@ -685,6 +696,8 @@ public class DefaultConfig implements IConfig {
     public void setHelp(boolean help) {
         this.help = help;
     }
+
+    // ### END GETTERS & SETTERS GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
 
     @Override
     public String[] getArgs() {
