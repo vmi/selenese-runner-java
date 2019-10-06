@@ -156,8 +156,6 @@ public class TestCase implements Selenese, ITestCase, IHtmlResultTestCase {
 
     @Override
     public void setLogRecorder(LogRecorder logRecorder) {
-        if (this.logRecorder != null)
-            throw new SeleneseRunnerRuntimeException("The log recorder of " + this + " is already set.");
         this.logRecorder = logRecorder;
     }
 
