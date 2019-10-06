@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.27.0
+
+* Fix an error `The log recorder of *** is already set.`. (#308)
+
 ### 3.26.0
 
 * Add support for commented out commands. (#307)
