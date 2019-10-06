@@ -27,6 +27,20 @@
       "target": "sub1",
       "targets": [],
       "value": ""
+    }, {
+      "id": "5dbc0c68-4fe8-45de-9552-84cd0eacc875",
+      "comment": "",
+      "command": "store",
+      "target": "test2",
+      "targets": [],
+      "value": "arg1"
+    }, {
+      "id": "d514369d-7389-4742-b594-08bca1bcd945",
+      "comment": "",
+      "command": "run",
+      "target": "sub1",
+      "targets": [],
+      "value": ""
     }]
   }, {
     "id": "be165801-3090-4563-b7cd-8a0bffd60556",
