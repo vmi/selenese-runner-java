@@ -435,7 +435,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testNativeAlert() {
-        assumeNot(PHANTOMJS);
+        assumeNot(PHANTOMJS, FIREFOX);
         execute("testcase_native_alert");
         assertThat(result, is(instanceOf(Success.class)));
     }
