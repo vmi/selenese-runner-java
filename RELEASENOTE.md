@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.27.1
+
+* Make `Runner#setupMaxTimeTimer()` public. (#309)
+
 ### 3.27.0
 
 * Fix an error `The log recorder of *** is already set.`. (#308)
