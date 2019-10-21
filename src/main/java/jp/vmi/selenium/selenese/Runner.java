@@ -943,11 +943,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         }
     }
 
-    /**
-     * Setup MaxTimeActiveTimer.
-     * @param maxTime the maxTime in milliseconds.
-     */
-    void setupMaxTimeTimer(long maxTime) {
+    @Override
+    public void setupMaxTimeTimer(long maxTime) {
         this.maxTimeTimer = new MaxTimeActiveTimer(maxTime);
     }
 }

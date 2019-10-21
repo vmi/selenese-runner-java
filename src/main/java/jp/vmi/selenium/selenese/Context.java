@@ -420,4 +420,11 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
      */
     default void setMaxRetries(int maxRetries) {
     }
+
+    /**
+     * Setup MaxTimeActiveTimer.
+     * @param maxTime the maxTime in milliseconds.
+     */
+    default void setupMaxTimeTimer(long maxTime) {
+    }
 }
