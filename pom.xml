@@ -521,7 +521,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.0.56.Final</version>
+        <version>4.1.42.Final</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
