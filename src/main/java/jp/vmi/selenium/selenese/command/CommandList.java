@@ -1,6 +1,7 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
+import jp.vmi.selenium.selenese.Runner;
 import jp.vmi.selenium.selenese.SeleneseCommandErrorException;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.result.CommandResult;
@@ -104,10 +106,6 @@ public class CommandList implements Iterable<ICommand> {
     @DoCommand
     protected Result doCommand(Context context, ICommand command, String... curArgs) {
         try {
-            if (context.isInteractive()) {
-                System.out.println(">>> Press ENTER to continue <<<");
-                systemInReader.nextLine();
-            }
             return command.execute(context, curArgs);
         } catch (SeleneseCommandErrorException e) {
             return e.getError();
@@ -154,6 +152,45 @@ public class CommandList implements Iterable<ICommand> {
                 Result result = null;
                 context.resetRetries();
                 while (true) {
+                    if(command.getName().equals("comment")) {
+                        if (command.getArguments().length > 0) {
+                            if (command.getArguments()[0].equals("breakpoint")) {
+                                ((Runner)context).setInteractive(true);
+                            }
+                        }
+                    }
+                    if (context.isInteractive()) {
+                        while (true) {
+                            System.out.println(">>>>>Interactive mode<<<<<");
+                            System.out.println("Current command: " + command.getName() + " " + Arrays.toString(command.getArguments()));
+                            System.out.println("Input <space> or <return> to run. Input c to exit interactive mode. Input < to previous command. Input > to next command.");
+                            String userInputKey = systemInReader.nextLine();
+
+                            if (userInputKey.equals(" ") || userInputKey.equals("")) {
+                                break;
+                            }
+                            if (userInputKey.equals("c")) {
+                                ((Runner)context).setInteractive(false);
+                                break;
+                            }   
+                            if (userInputKey.equals("<")) {
+                                commandListIterator.jumpTo(command);
+                                if (commandListIterator.hasPrevious()) {
+                                    command = commandListIterator.previous();
+                                    commandListIterator.next();
+                                    curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
+                                }
+                                continue;
+                            } 
+                            if (userInputKey.equals(">")) {
+                                if (commandListIterator.hasNext()) {
+                                    command = commandListIterator.next();
+                                    curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
+                                }
+                                continue;
+                            }                              
+                        }
+                    }                    
                     result = doCommand(context, command, curArgs);
                     if (result.isSuccess() || context.hasReachedMaxRetries())
                         break;
