@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.28.0
+
+* Improve interactive mode and support breakpoints. (PR #310 by @shenlian8)
+
 ### 3.27.1
 
 * Make `Runner#setupMaxTimeTimer()` public. (#309)
