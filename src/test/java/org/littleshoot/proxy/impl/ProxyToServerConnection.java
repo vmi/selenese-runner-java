@@ -27,9 +27,9 @@ import org.littleshoot.proxy.UnknownTransportProtocolException;
 import com.google.common.net.HostAndPort;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ChannelFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFactory;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -39,7 +39,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMessage;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpObjectAggregator;
@@ -49,6 +48,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -221,8 +221,8 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
     protected ConnectionState readHTTPInitial(HttpResponse httpResponse) {
         LOG.debug("Received raw response: {}", httpResponse);
 
-        if (httpResponse.getDecoderResult().isFailure()) {
-            LOG.debug("Could not parse response from server. Decoder result: {}", httpResponse.getDecoderResult().toString());
+        if (httpResponse.decoderResult().isFailure()) {
+            LOG.debug("Could not parse response from server. Decoder result: {}", httpResponse.decoderResult().toString());
 
             // create a "substitute" Bad Gateway response from the server, since we couldn't understand what the actual
             // response from the server was. set the keep-alive on the substitute response to false so the proxy closes
@@ -230,7 +230,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
             FullHttpResponse substituteResponse = ProxyUtils.createFullHttpResponse(HttpVersion.HTTP_1_1,
                 HttpResponseStatus.BAD_GATEWAY,
                 "Unable to parse response from server");
-            HttpHeaders.setKeepAlive(substituteResponse, false);
+            HttpUtil.setKeepAlive(substituteResponse, false);
             httpResponse = substituteResponse;
         }
 
@@ -692,7 +692,7 @@ public class ProxyToServerConnection extends ProxyConnection<HttpResponse> {
             boolean connectOk = false;
             if (msg instanceof HttpResponse) {
                 HttpResponse httpResponse = (HttpResponse) msg;
-                int statusCode = httpResponse.getStatus().code();
+                int statusCode = httpResponse.status().code();
                 if (statusCode >= 200 && statusCode <= 299) {
                     connectOk = true;
                 }

@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import org.littleshoot.proxy.ChainedProxyAdapter;
 import org.littleshoot.proxy.ChainedProxyManager;
 
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -70,7 +69,7 @@ public class ParentProxyHandler {
     }
 
     private boolean matchesNoParentProxy(HttpRequest httpRequest) {
-        return noParentProxy != null && noParentProxy.matcher(httpRequest.getUri()).find();
+        return noParentProxy != null && noParentProxy.matcher(httpRequest.uri()).find();
     }
 
     /**
@@ -104,7 +103,7 @@ public class ParentProxyHandler {
         return Optional.of((httpFilters, httpObject) -> {
             if (httpObject instanceof HttpRequest && !matchesNoParentProxy((HttpRequest) httpObject)) {
                 HttpRequest request = (HttpRequest) httpObject;
-                HttpHeaders.addHeader(request, "Proxy-Authorization", proxyAuth);
+                request.headers().add("Proxy-Authorization", proxyAuth);
             }
             return null;
         });

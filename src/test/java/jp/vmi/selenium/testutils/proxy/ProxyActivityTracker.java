@@ -32,12 +32,12 @@ public class ProxyActivityTracker extends ActivityTrackerAdapter {
 
     @Override
     public void requestReceivedFromClient(FlowContext flowContext, HttpRequest httpRequest) {
-        log.info("[C->P] {} {} {}", httpRequest.getMethod(), httpRequest.getUri(), httpRequest.getProtocolVersion());
+        log.info("[C->P] {} {} {}", httpRequest.method(), httpRequest.uri(), httpRequest.protocolVersion());
     }
 
     @Override
     public void requestSentToServer(FullFlowContext flowContext, HttpRequest httpRequest) {
-        log.info("[P->S] {} {} {}", httpRequest.getMethod(), httpRequest.getUri(), httpRequest.getProtocolVersion());
+        log.info("[P->S] {} {} {}", httpRequest.method(), httpRequest.uri(), httpRequest.protocolVersion());
     }
 
     private String getAdditionalInfo(HttpResponse httpResponse) {
@@ -59,12 +59,12 @@ public class ProxyActivityTracker extends ActivityTrackerAdapter {
 
     @Override
     public void responseReceivedFromServer(FullFlowContext flowContext, HttpResponse httpResponse) {
-        log.info("[P<-S] {}{}", httpResponse.getStatus(), getAdditionalInfo(httpResponse));
+        log.info("[P<-S] {}{}", httpResponse.status(), getAdditionalInfo(httpResponse));
     }
 
     @Override
     public void responseSentToClient(FlowContext flowContext, HttpResponse httpResponse) {
-        log.info("[C<-P] {}{}", httpResponse.getStatus(), getAdditionalInfo(httpResponse));
+        log.info("[C<-P] {}{}", httpResponse.status(), getAdditionalInfo(httpResponse));
     }
 
     @Override
