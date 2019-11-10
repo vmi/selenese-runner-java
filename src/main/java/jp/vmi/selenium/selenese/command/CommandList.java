@@ -1,17 +1,15 @@
 package jp.vmi.selenium.selenese.command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.vmi.selenium.selenese.Context;
-import jp.vmi.selenium.selenese.Runner;
+import jp.vmi.selenium.selenese.InteractiveModeHandler;
 import jp.vmi.selenium.selenese.SeleneseCommandErrorException;
 import jp.vmi.selenium.selenese.inject.DoCommand;
 import jp.vmi.selenium.selenese.result.CommandResult;
@@ -26,7 +24,6 @@ public class CommandList implements Iterable<ICommand> {
 
     private final Map<Object, Integer> indexCache = new HashMap<>();
     private final List<ICommand> commandList = new ArrayList<>();
-    private static final Scanner systemInReader = new Scanner(System.in);
 
     /**
      * Returns {@code true} if this list contains no elements.
@@ -140,58 +137,21 @@ public class CommandList implements Iterable<ICommand> {
         CommandListIterator commandListIterator = iterator(parentIterator);
         context.pushCommandListIterator(commandListIterator);
         CommandSequence sequence = commandListIterator.getCommandSequence();
+        InteractiveModeHandler interactiveModeHandler = context.getInteractiveModeHandler();
         boolean isContinued = true;
         try {
             while (isContinued && commandListIterator.hasNext()) {
-                ICommand command = commandListIterator.next();
-                sequence.increment(command);
-                List<Screenshot> ss = command.getScreenshots();
+                CurrentCommand curCmd = new CurrentCommand(context, commandListIterator.next());
+                sequence.increment(curCmd.command);
+                List<Screenshot> ss = curCmd.command.getScreenshots();
                 int prevSSIndex = (ss == null) ? 0 : ss.size();
-                String[] curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
-                evalCurArgs(context, curArgs);
+                evalCurArgs(context, curCmd.curArgs);
                 Result result = null;
                 context.resetRetries();
                 while (true) {
-                    if(command.getName().equals("comment")) {
-                        if (command.getArguments().length > 0) {
-                            if (command.getArguments()[0].equals("breakpoint")) {
-                                ((Runner)context).setInteractive(true);
-                            }
-                        }
-                    }
-                    if (context.isInteractive()) {
-                        while (true) {
-                            System.out.println(">>>>>Interactive mode<<<<<");
-                            System.out.println("Current command: " + command.getName() + " " + Arrays.toString(command.getArguments()));
-                            System.out.println("Input <space> or <return> to run. Input c to exit interactive mode. Input < to previous command. Input > to next command.");
-                            String userInputKey = systemInReader.nextLine();
-
-                            if (userInputKey.equals(" ") || userInputKey.equals("")) {
-                                break;
-                            }
-                            if (userInputKey.equals("c")) {
-                                ((Runner)context).setInteractive(false);
-                                break;
-                            }   
-                            if (userInputKey.equals("<")) {
-                                commandListIterator.jumpTo(command);
-                                if (commandListIterator.hasPrevious()) {
-                                    command = commandListIterator.previous();
-                                    commandListIterator.next();
-                                    curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
-                                }
-                                continue;
-                            } 
-                            if (userInputKey.equals(">")) {
-                                if (commandListIterator.hasNext()) {
-                                    command = commandListIterator.next();
-                                    curArgs = command.getVariableResolvedArguments(context.getCurrentTestCase().getSourceType(), context.getVarsMap());
-                                }
-                                continue;
-                            }                              
-                        }
-                    }                    
-                    result = doCommand(context, command, curArgs);
+                    interactiveModeHandler.enableIfBreakpointReached(curCmd);
+                    curCmd = interactiveModeHandler.handle(context, commandListIterator, curCmd);
+                    result = doCommand(context, curCmd.command, curCmd.curArgs);
                     if (result.isSuccess() || context.hasReachedMaxRetries())
                         break;
                     context.incrementRetries();
@@ -201,13 +161,13 @@ public class CommandList implements Iterable<ICommand> {
                     isContinued = false;
                 else
                     context.waitSpeed();
-                ss = command.getScreenshots();
+                ss = curCmd.command.getScreenshots();
                 List<Screenshot> newSS;
                 if (ss == null || prevSSIndex == ss.size())
                     newSS = null;
                 else
                     newSS = new ArrayList<>(ss.subList(prevSSIndex, ss.size()));
-                CommandResult cresult = new CommandResult(sequence.toString(), command, newSS, result, cresultList.getEndTime(), System.currentTimeMillis());
+                CommandResult cresult = new CommandResult(sequence.toString(), curCmd.command, newSS, result, cresultList.getEndTime(), System.currentTimeMillis());
                 cresultList.add(cresult);
 
             }

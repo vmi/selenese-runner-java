@@ -84,8 +84,8 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private String screenshotOnFailDir = null;
     private boolean isIgnoredScreenshotCommand = false;
     private boolean isHighlight = false;
-    private boolean isInteractive = false;
     private boolean isReplaceAlertMethod = true;
+    private InteractiveModeHandler interactiveModeHandler = new SimpleInteractiveModeHandler();
     private Boolean isW3cAction = null;
     private int timeout = 30 * 1000; /* ms */
     private int retries = 0;
@@ -499,7 +499,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     @Override
     public boolean isInteractive() {
-        return isInteractive;
+        return interactiveModeHandler.isEnabled();
     }
 
     @Override
@@ -564,10 +564,13 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      * Set interactive.
      *
      * @param isInteractive true if Runner executes test step-by-step upon user key stroke.
+     *
+     * @deprecated use {@link InteractiveModeHandler#setEnabled(boolean)} with {@link #getInteractiveModeHandler()} instead.
      */
+    @Deprecated
     public void setInteractive(boolean isInteractive) {
-        this.isInteractive = isInteractive;
-        log.info("Interactive mode: {}", isInteractive ? "enabled" : "disabled");
+        interactiveModeHandler.setEnabled(isInteractive);
+        log.info("Interactive mode: {}", interactiveModeHandler.isEnabled() ? "enabled" : "disabled");
     }
 
     private void setDriverTimeout() {
@@ -960,5 +963,19 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
      */
     public void setReplaceAlertMethod(boolean replaceAlertMethod) {
         this.isReplaceAlertMethod = replaceAlertMethod;
+    }
+
+    @Override
+    public InteractiveModeHandler getInteractiveModeHandler() {
+        return interactiveModeHandler;
+    }
+
+    /**
+     * Set interactive mode handler.
+     *
+     * @param interactiveModeHandler interactive mode handler.
+     */
+    public void setInteractiveMode(InteractiveModeHandler interactiveModeHandler) {
+        this.interactiveModeHandler = interactiveModeHandler;
     }
 }

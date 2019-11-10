@@ -155,7 +155,7 @@ public class Main {
         if (config.isHighlight())
             runner.setHighlight(true);
         if (config.isInteractive())
-            runner.setInteractive(true);
+            runner.getInteractiveModeHandler().setEnabled(true);
         if (config.getScreenshotDir() != null)
             runner.setScreenshotDir(config.getScreenshotDir());
         if (config.getScreenshotAll() != null)
