@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import jp.vmi.selenium.selenese.command.CommandListIterator;
+import jp.vmi.selenium.selenese.command.Comment;
 import jp.vmi.selenium.selenese.command.CurrentCommand;
+import jp.vmi.selenium.selenese.command.Debugger;
 
 /**
  * Simple interactive mode handler.
@@ -27,12 +29,11 @@ public class SimpleInteractiveModeHandler implements InteractiveModeHandler {
 
     @Override
     public void enableIfBreakpointReached(CurrentCommand curCmd) {
-        if (curCmd.command.getName().equals("comment")) {
-            if (curCmd.command.getArguments().length > 0) {
-                if (curCmd.command.getArguments()[0].equals("breakpoint"))
-                    setEnabled(true);
-            }
-        }
+        if (curCmd.command instanceof Debugger
+            || (curCmd.command instanceof Comment
+                && curCmd.curArgs.length > 0
+                && curCmd.curArgs[0].trim().equals("breakpoint")))
+            setEnabled(true);
     }
 
     @Override
