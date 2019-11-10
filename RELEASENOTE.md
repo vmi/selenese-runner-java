@@ -4,6 +4,8 @@ Selenese Runner Java Relase Note
 ### 3.28.0
 
 * Improve interactive mode and support breakpoints. (PR #310 by @shenlian8)
+* Update dependency versions.
+* Refine `pom.xml`.
 
 ### 3.27.1
 
