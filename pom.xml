@@ -467,6 +467,14 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-opera-driver</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -649,10 +657,6 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <exclusion>
           <groupId>log4j</groupId>
           <artifactId>log4j</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
