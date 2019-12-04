@@ -25,7 +25,8 @@ final class ClickHandler {
         while (true) {
             WebElement element = context.getElementFinder().findElementWithTimeout(driver, locator, isRetryable, timeout);
             try {
-                context.getJSLibrary().replaceAlertMethod(driver, element);
+                if (context.isReplaceAlertMethod())
+                    context.getJSLibrary().replaceAlertMethod(driver, element);
                 return found.apply(element);
             } catch (StaleElementReferenceException e) {
                 continue;

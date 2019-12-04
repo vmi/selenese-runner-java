@@ -236,6 +236,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + MAX_TIME, metaVar = "<max-time>", usage = "Maximum time in seconds that you allow the entire operation to take.")
     private String maxTime;
 
+    @Option(name = "--" + NO_REPLACE_ALERT_METHOD, usage = "disable replacement of alert methods")
+    private Boolean noReplaceAlertMethod;
+
     @Option(name = "--" + HELP, aliases = "-h", usage = "show this message.")
     private Boolean help;
 
@@ -686,6 +689,15 @@ public class DefaultConfig implements IConfig {
 
     public void setMaxTime(String maxTime) {
         this.maxTime = maxTime;
+    }
+
+    @Override
+    public boolean isNoReplaceAlertMethod() {
+        return noReplaceAlertMethod != null ? noReplaceAlertMethod : (parentOptions != null ? parentOptions.isNoReplaceAlertMethod() : false);
+    }
+
+    public void setNoReplaceAlertMethod(boolean noReplaceAlertMethod) {
+        this.noReplaceAlertMethod = noReplaceAlertMethod;
     }
 
     @Override

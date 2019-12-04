@@ -85,6 +85,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     private boolean isIgnoredScreenshotCommand = false;
     private boolean isHighlight = false;
     private boolean isInteractive = false;
+    private boolean isReplaceAlertMethod = true;
     private Boolean isW3cAction = null;
     private int timeout = 30 * 1000; /* ms */
     private int retries = 0;
@@ -946,5 +947,18 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     @Override
     public void setupMaxTimeTimer(long maxTime) {
         this.maxTimeTimer = new MaxTimeActiveTimer(maxTime);
+    }
+
+    @Override
+    public boolean isReplaceAlertMethod() {
+        return this.isReplaceAlertMethod;
+    }
+
+    /**
+     * Set whether to repalce alert methods.
+     * @param replaceAlertMethod replace alert methods or not.
+     */
+    public void setReplaceAlertMethod(boolean replaceAlertMethod) {
+        this.isReplaceAlertMethod = replaceAlertMethod;
     }
 }

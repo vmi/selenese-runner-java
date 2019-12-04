@@ -26,7 +26,8 @@ public class ContextMenu extends AbstractCommand {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();
         WebElement element = context.getElementFinder().findElement(driver, locator);
-        context.getJSLibrary().replaceAlertMethod(driver, element);
+        if (context.isReplaceAlertMethod())
+            context.getJSLibrary().replaceAlertMethod(driver, element);
         new Actions(driver).moveToElement(element).contextClick().perform();
         return SUCCESS;
     }

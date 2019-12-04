@@ -37,7 +37,8 @@ public class SelectElement {
         WebDriver driver = context.getWrappedDriver();
         finder = context.getElementFinder();
         select = finder.findElement(driver, selectLocator);
-        context.getJSLibrary().replaceAlertMethod(driver, select);
+        if (context.isReplaceAlertMethod())
+            context.getJSLibrary().replaceAlertMethod(driver, select);
         selectUI = new Select(select);
         isMultiple = selectUI.isMultiple();
     }
