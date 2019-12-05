@@ -53,7 +53,8 @@ public class DefaultConfigTest {
         "--" + ALERTS_POLICY + "=dismiss",
         "--" + COOKIE_FILTER + "=^OPT_SID",
         "--" + COMMAND_FACTORY + "=opt.full.qualify.class.Name",
-        "--" + LOG_FILTER + "=-cookie"
+        "--" + LOG_FILTER + "=-cookie",
+        "--" + NO_REPLACE_ALERT_METHOD
     };
 
     @Test
@@ -97,6 +98,7 @@ public class DefaultConfigTest {
         assertThat(config.get(COMMAND_FACTORY), is(nullValue()));
         assertThat(config.get(LOG_FILTER), is(nullValue()));
         assertThat(config.getArgs(), is(emptyArray()));
+        assertThat(config.get(NO_REPLACE_ALERT_METHOD), is(false));
     }
 
     @Test
@@ -140,6 +142,7 @@ public class DefaultConfigTest {
         assertThat((String) config.get(COOKIE_FILTER), is("^SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("full.qualify.class.Name"));
         assertThat(config.getLogFilter(), equalTo(new String[] { "-pageinfo", "+title", "+url" }));
+        assertThat(config.isNoReplaceAlertMethod(), is(true));
     }
 
     @Test
@@ -184,5 +187,6 @@ public class DefaultConfigTest {
         assertThat((String) config.get(COOKIE_FILTER), is("^OPT_SID"));
         assertThat((String) config.get(COMMAND_FACTORY), is("opt.full.qualify.class.Name"));
         assertThat(config.getLogFilter(), equalTo(new String[] { "-cookie" }));
+        assertThat(config.isNoReplaceAlertMethod(), is(true));
     }
 }
