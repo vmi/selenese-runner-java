@@ -1,6 +1,7 @@
 package jp.vmi.selenium.testutils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -110,7 +111,10 @@ public class WebServer {
      */
     public WebServer(int port, String htdocs) {
         this.port = port;
-        this.htdocs = htdocs != null ? htdocs : WebServer.class.getResource("/htdocs").getFile();
+        if (htdocs == null)
+            htdocs = WebServer.class.getResource("/htdocs").getFile();
+        // convert to correct local path (required for windows)
+        this.htdocs = new File(htdocs).getPath();
     }
 
     private static class HttpErrorException extends Exception {
