@@ -74,6 +74,7 @@ public interface IConfig {
     public static final String NO_EXIT = "no-exit";
     public static final String STRICT_EXIT_CODE = "strict-exit-code";
     public static final String MAX_TIME = "max-time";
+    public static final String NO_REPLACE_ALERT_METHOD = "no-replace-alert-method";
     public static final String HELP = "help";
 
     // ### END OPTION NAMES GENERATED FROM config.groovy (*** DO NOT EDIT DIRECTLY ***)
@@ -199,6 +200,8 @@ public interface IConfig {
     boolean isStrictExitCode();
 
     String getMaxTime();
+
+    boolean isNoReplaceAlertMethod();
 
     boolean isHelp();
 

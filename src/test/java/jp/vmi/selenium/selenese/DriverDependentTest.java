@@ -489,4 +489,15 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
         execute("testcase_ie");
         assertThat(result, is(instanceOf(Success.class)));
     }
+
+    @Test
+    public void testNoReplaceAlertMethod() {
+        assumeNot(PHANTOMJS);
+        runner.setReplaceAlertMethod(false);
+
+        execute("testcase_no_replace_alert_method");
+        assertThat(result, is(instanceOf(Success.class)));
+
+        runner.setReplaceAlertMethod(true);
+    }
 }

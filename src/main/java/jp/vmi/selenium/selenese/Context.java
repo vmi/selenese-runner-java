@@ -427,4 +427,12 @@ public interface Context extends WrapsDriver, SubCommandMapProvider {
      */
     default void setupMaxTimeTimer(long maxTime) {
     }
+
+    /**
+     * Return whether to replace alert methods.
+     * @return <code>true</code> to replace alert method, <code>false</code> otherwise.
+     */
+    default boolean isReplaceAlertMethod() {
+        return true;
+    }
 }

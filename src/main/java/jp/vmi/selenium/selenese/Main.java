@@ -233,6 +233,8 @@ public class Main {
         if (sstimeout < 0)
             throw new IllegalArgumentException("Invalid screenshot scroll timeout value. (" + config.getScreenshotScrollTimeout() + ")");
         runner.setScreenshotScrollTimeout(sstimeout);
+        if (config.isNoReplaceAlertMethod())
+            runner.setReplaceAlertMethod(false);
         runner.setPrintStream(System.out);
     }
 

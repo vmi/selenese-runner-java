@@ -275,6 +275,11 @@ max_time {
     usage = "Maximum time in seconds that you allow the entire operation to take."
 }
 
+no_replace_alert_method {
+    usage = "disable replacement of alert methods"
+    type = "Boolean"
+}
+
 help {
     aliases = "-h"
     usage = "show this message."
