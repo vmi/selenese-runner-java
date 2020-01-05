@@ -187,7 +187,12 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
     public Result getResult() {
         return result;
     }
-    
+
+    /**
+     * Set selenese result.
+     *
+     * @param result result of test suite.
+     */
     public void setResult(Result result) {
         this.result = result;
     }
