@@ -4,8 +4,12 @@ Selenese Runner Java Relase Note
 ### 3.28.0
 
 * Improve interactive mode and support breakpoints. (PR #310 by @shenlian8)
+    * Refine interactive mode handling.
 * Update dependency versions.
 * Refine `pom.xml`.
+    * Exclude unused dependencies. (PR #313 by @cesarsotovalero)
+* Add setter method for Result to TestSuite. (PR #312 by @shenlian8)
+* Add new option `--no-replace-alert-method` to disable replacement of alert funcions. (PR #314 by @koichirok)
 
 ### 3.27.1
 
