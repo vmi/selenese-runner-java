@@ -8,8 +8,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import jp.vmi.selenium.testutils.WebServer;
 
 import static jp.vmi.selenium.testutils.TestUtils.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class DriverOptionsTest {

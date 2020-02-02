@@ -14,8 +14,8 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.testutils.TestBase;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * User defined command factoryName test.

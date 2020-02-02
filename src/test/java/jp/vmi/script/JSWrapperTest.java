@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 
 @SuppressWarnings("javadoc")
 public class JSWrapperTest {

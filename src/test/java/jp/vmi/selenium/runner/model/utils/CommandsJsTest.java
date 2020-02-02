@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class CommandsJsTest {

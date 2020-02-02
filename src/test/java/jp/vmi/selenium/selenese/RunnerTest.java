@@ -21,8 +21,8 @@ import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static jp.vmi.selenium.selenese.result.Success.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class RunnerTest extends TestBase {
@@ -61,7 +61,7 @@ public class RunnerTest extends TestBase {
         Runner runner = new Runner();
         runner.setDriver(driver);
         Result result = runner.run("nosuchfile.html");
-        assertTrue(result.isFailed());
+        assertThat(result.isFailed(), is(true));
     }
 
     @Test

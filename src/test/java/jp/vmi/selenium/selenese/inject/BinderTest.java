@@ -23,8 +23,8 @@ import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
 
 /**
  * Test and example of registering custom interceptors.

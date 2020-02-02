@@ -29,7 +29,7 @@ import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * test for {@link LinkHandler}.

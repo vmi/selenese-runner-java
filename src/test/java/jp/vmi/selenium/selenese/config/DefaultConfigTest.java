@@ -7,8 +7,8 @@ import static jp.vmi.selenium.selenese.config.IConfig.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class DefaultConfigTest {

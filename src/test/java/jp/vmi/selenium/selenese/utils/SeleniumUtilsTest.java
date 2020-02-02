@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static jp.vmi.selenium.selenese.utils.SeleniumUtils.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.*;
 
 @SuppressWarnings("javadoc")
 public class SeleniumUtilsTest {

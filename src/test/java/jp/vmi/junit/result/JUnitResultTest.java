@@ -31,8 +31,8 @@ import jp.vmi.selenium.selenese.utils.StopWatch;
 import static java.lang.Boolean.*;
 import static javax.xml.xpath.XPathConstants.*;
 import static jp.vmi.junit.result.JUnitResultTest.RegexMatcher.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * Test of {@link JUnitResult}.

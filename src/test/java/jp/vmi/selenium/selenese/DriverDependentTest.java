@@ -20,8 +20,8 @@ import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.testutils.DriverDependentTestCaseTestBase;
 
 import static jp.vmi.selenium.webdriver.WebDriverManager.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
 /**

@@ -11,8 +11,8 @@ import org.junit.Test;
 import difflib.DiffUtils;
 import difflib.Patch;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class PhantomJSDriverServiceVersionTest {

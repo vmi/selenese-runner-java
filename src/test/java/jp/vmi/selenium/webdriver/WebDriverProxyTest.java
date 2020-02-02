@@ -18,8 +18,8 @@ import jp.vmi.selenium.testutils.TestUtils;
 import jp.vmi.selenium.testutils.WebProxyResource;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assume.*;
 
 /**

@@ -5,8 +5,8 @@ import org.junit.Test;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.DriverDependentTestCaseTestBase;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class WindowSelectorTest extends DriverDependentTestCaseTestBase {

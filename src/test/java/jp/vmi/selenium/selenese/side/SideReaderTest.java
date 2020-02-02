@@ -13,8 +13,8 @@ import jp.vmi.selenium.runner.model.side.SideTest;
 import jp.vmi.selenium.selenese.InvalidSeleneseException;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class SideReaderTest {

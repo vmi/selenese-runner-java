@@ -3,9 +3,7 @@ package jp.vmi.selenium.selenese;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -13,8 +11,8 @@ import jp.vmi.selenium.selenese.config.IConfig;
 import jp.vmi.selenium.selenese.log.LogFilter;
 import jp.vmi.selenium.webdriver.DriverOptions;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SuppressWarnings("javadoc")
 public class MainTest {
@@ -67,9 +65,6 @@ public class MainTest {
         assertThat(value5.get("C"), is(3.0));
     }
 
-    @Rule
-    public ExpectedException ee = ExpectedException.none();
-
     @Test
     public void testLogFilterOption() {
         Main main = new Main();
@@ -101,12 +96,13 @@ public class MainTest {
         assertThat(runner.getLogFilter().contains(LogFilter.TITLE), is(false));
         assertThat(runner.getLogFilter().contains(LogFilter.URL), is(true));
 
-        runner = new Runner();
-        config = new DefaultConfig(
-            "-d", "htmlunit",
-            "--log-filter", "foo");
-        ee.expect(IllegalArgumentException.class);
-        ee.expectMessage("Invalid value for --log-filter: foo");
-        main.setupRunner(runner, config);
+        IllegalArgumentException e = org.junit.Assert.assertThrows(IllegalArgumentException.class, () -> {
+            Runner runner2 = new Runner();
+            IConfig config2 = new DefaultConfig(
+                "-d", "htmlunit",
+                "--log-filter", "foo");
+            main.setupRunner(runner2, config2);
+        });
+        assertThat(e.getMessage(), is("Invalid value for --log-filter: foo"));
     }
 }

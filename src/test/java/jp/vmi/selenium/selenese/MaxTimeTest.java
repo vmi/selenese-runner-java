@@ -10,8 +10,8 @@ import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * Driver independent test.
