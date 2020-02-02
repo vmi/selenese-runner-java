@@ -30,6 +30,11 @@ public class SelectFrame extends AbstractCommand {
     }
 
     @Override
+    public boolean mayUpdateScreen() {
+        return false;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String locator = curArgs[ARG_LOCATOR];
         WebDriver driver = context.getWrappedDriver();

@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.29.0
+
+* Don't take screenshots with assert* and `selectFrame` commands. (#315, #316)
+
 ### 3.28.0
 
 * Improve interactive mode and support breakpoints. (PR #310 by @shenlian8)

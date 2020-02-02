@@ -70,6 +70,11 @@ public class Assertion extends AbstractCommand {
         this.isInverse = isInverse;
     }
 
+    @Override
+    public boolean mayUpdateScreen() {
+        return false;
+    }
+
     private int getTimeout(Context context, String[] args) {
         if (type != Type.WAIT_FOR || args.length < 2)
             return context.getTimeout();
