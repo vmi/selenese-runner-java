@@ -37,6 +37,7 @@ public class WebDriverElementFinder {
 
     private static final int MIN_TIMEOUT = 3000; // ms
     private static final long RETRY_INTERVAL = 100; // ms
+    private static final int MAX_FRAME_DEPTH = 16;
 
     private static final Logger log = LoggerFactory.getLogger(WebDriverElementFinder.class);
 
@@ -211,6 +212,10 @@ public class WebDriverElementFinder {
         List<WebElement> result = handler.handle(driver, ploc.arg);
         if (!result.isEmpty())
             return result;
+        if (ploc.frameIndexList.size() >= MAX_FRAME_DEPTH) {
+            log.warn("Nested (i)frame depth exceeded limit: " + MAX_FRAME_DEPTH);
+            return null;
+        }
         int iframeCount = driver.findElements(By.tagName("iframe")).size();
         for (int index = 0; index < iframeCount; index++) {
             pushFrame(driver, ploc, index);
