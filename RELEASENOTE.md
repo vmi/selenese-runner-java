@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.29.0
 
 * Don't take screenshots with assert* and `selectFrame` commands. (#315, #316)
+* Update dependency versions.
 
 ### 3.28.0
 
