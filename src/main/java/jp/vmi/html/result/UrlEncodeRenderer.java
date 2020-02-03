@@ -1,12 +1,13 @@
 package jp.vmi.html.result;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * URL encode renderer for JMTE.
@@ -39,7 +40,7 @@ public class UrlEncodeRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale) {
+    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
         StringBuilder result = new StringBuilder();
         String s = o.toString();
         Matcher matcher = RE.matcher(s);

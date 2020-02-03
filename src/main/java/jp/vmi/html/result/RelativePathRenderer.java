@@ -1,11 +1,11 @@
 package jp.vmi.html.result;
 
-import java.util.Locale;
-
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
-
 import jp.vmi.selenium.selenese.utils.PathUtils;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Index renderer for JMTE.
@@ -37,9 +37,8 @@ public class RelativePathRenderer implements NamedRenderer {
     public Class<?>[] getSupportedClasses() {
         return new Class[] { Object.class };
     }
-
     @Override
-    public String render(Object o, String format, Locale locale) {
+    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
         // NB: Relativize has URI escaped the path
         return PathUtils.relativize(htmlResult.getDir(), o.toString());
     }

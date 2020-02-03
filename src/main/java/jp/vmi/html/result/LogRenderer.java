@@ -1,16 +1,15 @@
 package jp.vmi.html.result;
 
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.text.StringEscapeUtils;
-
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
-
 import jp.vmi.selenium.selenese.utils.EscapeUtils;
 import jp.vmi.selenium.selenese.utils.PathUtils;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * HTML escape renderer for JMTE.
@@ -51,7 +50,7 @@ public class LogRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale) {
+    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
         StringBuilder result = new StringBuilder();
         String s = o.toString();
         Matcher matcher = RE.matcher(s);
