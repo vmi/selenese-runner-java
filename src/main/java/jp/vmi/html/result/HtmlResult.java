@@ -191,6 +191,7 @@ public class HtmlResult {
         model.put("sysInfo", SystemInformation.getInstance());
         model.put("testSuite", testSuite);
         model.put("seleneseList", seleneseList);
+        model.put("testCaseList", testSuite.getTestCaseList());
         model.put("numTestTotal", summary.numTestTotal);
         model.put("numTestPasses", summary.numTestPasses);
         model.put("numTestFailures", summary.numTestFailures);

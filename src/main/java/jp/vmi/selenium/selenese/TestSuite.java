@@ -1,12 +1,5 @@
 package jp.vmi.selenium.selenese;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jp.vmi.html.result.IHtmlResultTestSuite;
 import jp.vmi.junit.result.ITestSuite;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
@@ -16,8 +9,15 @@ import jp.vmi.selenium.selenese.result.Error;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.selenese.utils.StopWatch;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static jp.vmi.selenium.selenese.result.Unexecuted.UNEXECUTED;
 
 /**
  * test-suite object for execution.
@@ -171,6 +171,18 @@ public class TestSuite implements Selenese, ITreedFileGenerator, ITestSuite, IHt
      */
     public List<Selenese> getSeleneseList() {
         return seleneseList;
+    }
+
+    /**
+     * Get Testcases included in TestSuite.
+     *
+     * @return Testcases list.
+     */
+    public List<TestCase> getTestCaseList() {
+        return seleneseList.stream()
+                           .filter(selenese -> selenese instanceof TestCase)
+                           .map(selenese -> (TestCase) selenese)
+                           .collect(Collectors.toList());
     }
 
     /**
