@@ -77,6 +77,7 @@ public class HtmlResultTest extends TestBase {
         s2.addSelenese(c2);
         s1.addSelenese(c1);
         s1.addSelenese(s2);
+        s1.addSelenese(c2);
         runner.execute(s1);
         runner.finish();
     }
