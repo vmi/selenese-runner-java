@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.30.0
+
+* Upgrade jmte version to 5.0.0. (#317 by @BSchneppe)
+    * And to 6.0.0.
+* Update dependency versions.
+
 ### 3.29.0
 
 * Don't take screenshots with assert* and `selectFrame` commands. (#315, #316)
