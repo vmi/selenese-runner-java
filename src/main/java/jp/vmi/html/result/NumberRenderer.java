@@ -1,10 +1,11 @@
 package jp.vmi.html.result;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import com.floreysoft.jmte.NamedRenderer;
 import com.floreysoft.jmte.RenderFormatInfo;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Number with separator renderer for JMTE.
@@ -27,7 +28,7 @@ public class NumberRenderer implements NamedRenderer {
     }
 
     @Override
-    public String render(Object o, String format, Locale locale) {
+    public String render(Object o, String format, Locale locale, Map<String, Object> model) {
         long value = ((Number) o).longValue();
         return NumberFormat.getInstance(locale).format(value);
     }

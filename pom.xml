@@ -619,7 +619,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.floreysoft</groupId>
       <artifactId>jmte</artifactId>
-      <version>3.2.0</version>
+      <version>5.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

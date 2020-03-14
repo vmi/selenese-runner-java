@@ -319,28 +319,27 @@ ${end}
       </div>
     </div>
 
-${foreach seleneseList selenese}
-  ${if selenese.type="TEST_CASE"}
+${foreach testCaseList testCase}
     <br>
-    <div class="tabs" id="tab${index_selenese}">
+    <div class="tabs" id="tab${index_testCase}">
       <ul>
         <li>
-          <input name="tab${index_selenese}" id="tab${index_selenese}_source" type="radio" checked>
-          <label for="tab${index_selenese}_source" class="tab_source" onclick="selectTab(this)"><a name="testCase${index_selenese}">Source</a></label>
+          <input name="tab${index_testCase}" id="tab${index_testCase}_source" type="radio" checked>
+          <label for="tab${index_testCase}_source" class="tab_source" onclick="selectTab(this)"><a name="testCase${index_testCase}">Source</a></label>
           <div class="contents">
-            <table class="info"><tr><th>Source:</th><td>${selenese.filename;h}</td></tr></table>
+            <table class="info"><tr><th>Source:</th><td>${testCase.filename;h}</td></tr></table>
             <table cellpadding="1" cellspacing="1" border="1">
               <thead>
-                <tr class="title status_${selenese.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
+                <tr class="title status_${testCase.result}"><td class="indexh">#</td><td rowspan="1" colspan="3">${testCase.name;h}</td><td>&Delta;t(ms)</td><td>Screenshot</td></tr>
               </thead>
               <tbody>
-    ${foreach selenese.commandList command}
+    ${foreach testCase.commandList command}
                 <tr class="cmd_status_${command.result}">
                   <td class="index">${command.index;i}</td>
       ${foreach command.source item}
                   <td>${item;h}</td>
       ${end}
-                  <td class="number">${@commandResults results selenese command}${foreach results result , }${result.duration;n}${end}</td>
+                  <td class="number">${@commandResults results testCase command}${foreach results result , }${result.duration;n}${end}</td>
                   <td>${foreach command.screenshots screenshot , }<a href="${screenshot.path;relpath}">${index_screenshot}:${screenshot.label;h}</a>${end}</td>
                 </tr>
     ${end}
@@ -349,20 +348,20 @@ ${foreach seleneseList selenese}
           </div><!-- contents -->
         </li><!-- no white spaces between LI tags.
      --><li>
-          <input name="tab${index_selenese}" id="tab${index_selenese}_sequence" type="radio">
-          <label for="tab${index_selenese}_sequence" class="tab_sequence" onclick="selectTab(this)">Sequence</label>
+          <input name="tab${index_testCase}" id="tab${index_testCase}_sequence" type="radio">
+          <label for="tab${index_testCase}_sequence" class="tab_sequence" onclick="selectTab(this)">Sequence</label>
           <div class="contents">
             <table class="info">
-              <tr><th>Start Time:</th><td>${selenese.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
-              <tr><th>End Time:</th><td>${selenese.stopWatch.endTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
-              <tr><th>Duration:</th><td>${selenese.stopWatch.duration;n} ms</td></tr>
+              <tr><th>Start Time:</th><td>${testCase.stopWatch.startTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
+              <tr><th>End Time:</th><td>${testCase.stopWatch.endTime;t(yyyy-MM-dd HH:mm:ss.SSS ZZ)}</td></tr>
+              <tr><th>Duration:</th><td>${testCase.stopWatch.duration;n} ms</td></tr>
             </table>
             <table cellpadding="1" cellspacing="1" border="1">
               <thead>
-                <tr class="title status_${selenese.result}"><td>Time</td><td>&Delta;t(ms)</td><td>Seq.</td><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Result</td><td>Screenshot</td></tr>
+                <tr class="title status_${testCase.result}"><td>Time</td><td>&Delta;t(ms)</td><td>Seq.</td><td class="indexh">#</td><td rowspan="1" colspan="3">${selenese.name;h}</td><td>Result</td><td>Screenshot</td></tr>
               </thead>
               <tbody>
-    ${foreach selenese.resultList result}
+    ${foreach testCase.resultList result}
                 <tr class="cmd_status_${result.result}">
                   <td>${result.startTime;t(HH:mm:ss.SSS)}</td>
                   <td class="number">${result.duration;n}</td>
@@ -380,10 +379,10 @@ ${foreach seleneseList selenese}
           </div><!-- contents -->
         </li><!-- no white spaces between LI tags.
      --><li>
-          <input name="tab${index_selenese}" id="tab${index_selenese}_log" type="radio">
-          <label for="tab${index_selenese}_log" class="tab_log" onclick="selectTab(this)">Log</label>
+          <input name="tab${index_testCase}" id="tab${index_testCase}_log" type="radio">
+          <label for="tab${index_testCase}_log" class="tab_log" onclick="selectTab(this)">Log</label>
           <div class="contents">
-            <pre>${foreach selenese.logRecorder.messages msg}${msg;log}
+            <pre>${foreach testCase.logRecorder.messages msg}${msg;log}
 ${end}</pre>
           </div>
         </li>
@@ -391,6 +390,5 @@ ${end}</pre>
     </div><!-- tabs -->
     <p>[<a href="#">Top</a>]</p>
   ${end}
-${end}
   </body>
 </html>

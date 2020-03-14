@@ -1,23 +1,9 @@
 package jp.vmi.html.result;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.floreysoft.jmte.AnnotationProcessor;
 import com.floreysoft.jmte.Engine;
 import com.floreysoft.jmte.TemplateContext;
 import com.floreysoft.jmte.token.AnnotationToken;
-
 import jp.vmi.html.result.TestSuiteTree.Node;
 import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestCase;
@@ -27,6 +13,18 @@ import jp.vmi.selenium.selenese.result.CommandResult;
 import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * HTML result generator.
@@ -98,7 +96,7 @@ public class HtmlResult {
 
     private Engine getEngine() {
         if (engine == null) {
-            engine = Engine.createCompilingEngine();
+            engine = Engine.createEngine();
             engine.registerNamedRenderer(new HtmlEscapeRenderer());
             engine.registerNamedRenderer(new LogRenderer(this));
             engine.registerNamedRenderer(new IndexRenderer());
@@ -193,6 +191,7 @@ public class HtmlResult {
         model.put("sysInfo", SystemInformation.getInstance());
         model.put("testSuite", testSuite);
         model.put("seleneseList", seleneseList);
+        model.put("testCaseList", testSuite.getTestCaseList());
         model.put("numTestTotal", summary.numTestTotal);
         model.put("numTestPasses", summary.numTestPasses);
         model.put("numTestFailures", summary.numTestFailures);
