@@ -37,7 +37,7 @@
     </rule>
     <rule groupId="org.glassfish.jaxb" artifactId="jaxb-runtime">
       <ignoreVersions>
-        <ignoreVersion type="regex">\d+(\.\d+)+-b[\d.]+</ignoreVersion>
+        <ignoreVersion type="regex">\d+(\.\d+)+-[bM][\d.]+</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="junit" artifactId="junit">

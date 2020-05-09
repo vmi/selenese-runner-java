@@ -1,6 +1,10 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.31.0
+
+* Update dependency versions.
+
 ### 3.30.0
 
 * Upgrade jmte version to 5.0.0. (#317 by @BSchneppe)
@@ -9,7 +13,7 @@ Selenese Runner Java Relase Note
 
 ### 3.29.0
 
-* Don't take screenshots with assert* and `selectFrame` commands. (#315, #316)
+* Don't take screenshots with assert\* and `selectFrame` commands. (#315, #316)
 * Add nested frame depth limit. (max depth is 16) (#311)
 * Update dependency versions.
 
@@ -206,7 +210,7 @@ Selenese Runner Java Relase Note
 ### 3.7.0
 
 * Skip comment nodes when extracting text. (#245, PR #246 by @mcclellanmj)
-* Fix to ignore invisible text with ***Text commands. (#247)
+* Fix to ignore invisible text with \*\*\*Text commands. (#247)
 
 ### 3.6.0
 
@@ -463,7 +467,7 @@ Selenese Runner Java Relase Note
 
 ### 2.0.2
 
-* Manage leading and trailing whitespaces in link_handler in both "exact" and "glob" features. (PR #166 by @AndreaColoru)
+* Manage leading and trailing whitespaces in link\_handler in both "exact" and "glob" features. (PR #166 by @AndreaColoru)
 
 ### 2.0.1
 
