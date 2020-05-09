@@ -3,6 +3,7 @@ Selenese Runner Java Relase Note
 
 ### 3.31.0
 
+* Fix missing `debugger` command addition.
 * Update dependency versions.
 
 ### 3.30.0
