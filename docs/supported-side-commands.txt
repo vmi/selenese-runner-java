@@ -1,5 +1,5 @@
 * Supported status of Selenium IDE commands:
-  [IC] addSelection (2/1)
+  [OK] addSelection (2/2)
   [OK] answerOnNextPrompt (1/1)
   [OK] assert (2/2)
   [OK] assertAlert (1/1)
@@ -62,7 +62,7 @@
   [OK] storeAttribute (2/2)
   [OK] storeJson (2/2)
   [OK] storeText (2/2)
-  [OK] storeTitle (1/1)
+  [IC] storeTitle (1/2)
   [OK] storeValue (2/2)
   [OK] storeWindowHandle (1/1)
   [OK] storeXpathCount (2/2)
@@ -90,6 +90,7 @@
   [OK] waitForElementNotVisible (2/2)
   [OK] waitForElementPresent (2/2)
   [OK] waitForElementVisible (2/2)
+  [IC] waitForText (3/2)
   [--] webdriverAnswerOnVisiblePrompt (0/1)
   [--] webdriverChooseCancelOnVisibleConfirmation (0/0)
   [--] webdriverChooseCancelOnVisiblePrompt (0/0)
