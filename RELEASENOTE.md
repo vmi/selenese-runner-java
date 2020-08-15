@@ -4,7 +4,10 @@ Selenese Runner Java Relase Note
 ### 3.31.0
 
 * Fix missing `debugger` command addition.
+* Remove the code we no longer need because the screenshot feature has been replaced by Selenium Shutterbug. (#321)
 * Update dependency versions.
+    * Follow API changes in Selenium Shutterbug 1.0.
+    * Fix test error due to changes in geckodriver 0.27.0.
 
 ### 3.30.0
 
