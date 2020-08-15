@@ -226,13 +226,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         file = file.getAbsoluteFile();
-        try {
-            // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
-            driver.switchTo().defaultContent();
-        } catch (Exception e) {
-            // some times switching to default context throws exceptions like:
-            // Method threw 'org.openqa.selenium.UnhandledAlertException' exception.
-        }
         File tmp;
         try {
             File dir = file.getParentFile();
