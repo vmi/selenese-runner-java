@@ -72,7 +72,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private static final DateTimeFormatter FILE_DATE_TIME = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS");
 
-    private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(new NullOutputStream());
+    private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM);
 
     private PrintStream ps;
     private WebDriver driver = null;
