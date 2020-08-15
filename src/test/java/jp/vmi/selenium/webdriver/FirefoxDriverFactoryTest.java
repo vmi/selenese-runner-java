@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.TemporaryFolder;
-import org.openqa.selenium.SessionNotCreatedException;
+import org.openqa.selenium.InvalidArgumentException;
 
 import static org.openqa.selenium.firefox.FirefoxDriver.SystemProperty.*;
 
@@ -52,14 +52,14 @@ public class FirefoxDriverFactoryTest {
      * Test of not finding Firefox binary.
      *
      * @throws IOException exception.
-     * @throws IllegalArgumentException exception.
+     * @throws InvalidArgumentException exception.
      */
-    @Test(expected = IllegalStateException.class)
-    public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, IllegalArgumentException {
+    @Test(expected = InvalidArgumentException.class)
+    public void firefoxNotFoundIn_webdriver_firefox_bin() throws IOException, InvalidArgumentException {
         try {
             new FirefoxDriverFactory().newInstance(new DriverOptions());
-        } catch (SessionNotCreatedException e) {
-            throw new IllegalStateException(e);
+        } catch (IllegalStateException e) {
+            throw new InvalidArgumentException(e.getMessage(), e);
         }
     }
 }

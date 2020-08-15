@@ -31,8 +31,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.assertthat.selenium_shutterbug.core.Capture;
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
-import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 import com.google.common.base.Strings;
 
 import jp.vmi.html.result.HtmlResult;
@@ -72,7 +72,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
     private static final DateTimeFormatter FILE_DATE_TIME = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS");
 
-    private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(new NullOutputStream());
+    private static PrintStream DEFAULT_PRINT_STREAM = new PrintStream(NullOutputStream.NULL_OUTPUT_STREAM);
 
     private PrintStream ps;
     private WebDriver driver = null;
@@ -226,13 +226,6 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
         if (tss == null)
             throw new UnsupportedOperationException("webdriver does not support capturing screenshot.");
         file = file.getAbsoluteFile();
-        try {
-            // cf. http://prospire-developers.blogspot.jp/2013/12/selenium-webdriver-tips.html (Japanese)
-            driver.switchTo().defaultContent();
-        } catch (Exception e) {
-            // some times switching to default context throws exceptions like:
-            // Method threw 'org.openqa.selenium.UnhandledAlertException' exception.
-        }
         File tmp;
         try {
             File dir = file.getParentFile();
@@ -248,7 +241,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
                 Map<?, ?> initialCoord = (Map<?, ?>) je.executeScript(getScrollCoord);
 
-                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.WHOLE_PAGE, screenshotScrollTimeout)
+                Shutterbug.shootPage((WebDriver) tss, Capture.FULL_SCROLL, screenshotScrollTimeout)
                     .withName(FilenameUtils.removeExtension(tmp.getName()))
                     .save(dir.getPath());
 
