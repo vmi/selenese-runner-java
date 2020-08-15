@@ -31,8 +31,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.assertthat.selenium_shutterbug.core.Capture;
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
-import com.assertthat.selenium_shutterbug.utils.web.ScrollStrategy;
 import com.google.common.base.Strings;
 
 import jp.vmi.html.result.HtmlResult;
@@ -248,7 +248,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
 
                 Map<?, ?> initialCoord = (Map<?, ?>) je.executeScript(getScrollCoord);
 
-                Shutterbug.shootPage((WebDriver) tss, ScrollStrategy.WHOLE_PAGE, screenshotScrollTimeout)
+                Shutterbug.shootPage((WebDriver) tss, Capture.FULL_SCROLL, screenshotScrollTimeout)
                     .withName(FilenameUtils.removeExtension(tmp.getName()))
                     .save(dir.getPath());
 
