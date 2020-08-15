@@ -6,7 +6,7 @@ cache:
     - $HOME/.m2
 install:
   - gd_url=https://github.com/mozilla/geckodriver/releases/download
-  - gd_ver=v0.21.0
+  - gd_ver=v0.27.0
   - ( mkdir -pv bin; cd bin ; curl -L "${gd_url}/${gd_ver}/geckodriver-${gd_ver}-linux64.tar.gz" | gunzip | tar xf - ; chmod +x geckodriver )
   - mvn -B -V dependency:resolve
 before_script:
