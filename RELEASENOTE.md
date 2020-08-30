@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.32.0
+
+* Update jQuery for test code.
+* Update dependency versions.
+
 ### 3.31.0
 
 * Fix missing `debugger` command addition.
