@@ -629,7 +629,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13</version>
+      <version>4.13.1</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
