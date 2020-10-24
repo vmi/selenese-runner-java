@@ -152,7 +152,7 @@ public class CommandList implements Iterable<ICommand> {
                     interactiveModeHandler.enableIfBreakpointReached(curCmd);
                     curCmd = interactiveModeHandler.handle(context, commandListIterator, curCmd);
                     result = doCommand(context, curCmd.command, curCmd.curArgs);
-                    if (result.isSuccess() || context.hasReachedMaxRetries())
+                    if (result.isSuccess() || curCmd.command.isComposite() || context.hasReachedMaxRetries())
                         break;
                     context.incrementRetries();
                     context.waitSpeed();

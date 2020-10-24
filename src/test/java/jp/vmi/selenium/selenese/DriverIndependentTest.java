@@ -9,11 +9,13 @@ import org.junit.Test;
 import jp.vmi.selenium.selenese.command.CommandFactory;
 import jp.vmi.selenium.selenese.inject.Binder;
 import jp.vmi.selenium.selenese.result.Error;
+import jp.vmi.selenium.selenese.result.Failure;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.testutils.TestCaseTestBase;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.WebDriverManager;
 
+import static jp.vmi.selenium.selenese.config.IConfig.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -131,5 +133,12 @@ public class DriverIndependentTest extends TestCaseTestBase {
     public void cmdRun() {
         execute("testcase_run.side");
         assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void cmdRunErrorWithRetry() {
+        execute("testcase_run_error.side", MAX_RETRIES, 3);
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), is("Failure: Assertion failed (Result: [test] / Expected: [not found])"));
     }
 }

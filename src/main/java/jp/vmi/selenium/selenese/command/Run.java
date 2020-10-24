@@ -22,6 +22,11 @@ public class Run extends AbstractCommand {
     }
 
     @Override
+    public boolean isComposite() {
+        return true;
+    }
+
+    @Override
     protected Result executeImpl(Context context, String... curArgs) {
         String testCaseName = curArgs[ARG_TEST_CASE_NAME];
         TestCase testCase = context.getTestCaseMap().get(testCaseName);
