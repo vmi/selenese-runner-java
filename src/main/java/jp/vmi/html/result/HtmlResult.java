@@ -1,9 +1,24 @@
 package jp.vmi.html.result;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.floreysoft.jmte.AnnotationProcessor;
 import com.floreysoft.jmte.Engine;
 import com.floreysoft.jmte.TemplateContext;
 import com.floreysoft.jmte.token.AnnotationToken;
+
 import jp.vmi.html.result.TestSuiteTree.Node;
 import jp.vmi.selenium.selenese.Selenese;
 import jp.vmi.selenium.selenese.TestCase;
@@ -13,18 +28,6 @@ import jp.vmi.selenium.selenese.result.CommandResult;
 import jp.vmi.selenium.selenese.result.CommandResultList;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.utils.SystemInformation;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * HTML result generator.
@@ -45,10 +48,15 @@ public class HtmlResult {
         public String eval(AnnotationToken token, TemplateContext context) {
             String[] args = token.getArguments().split("\\s+");
             TestCase testCase = (TestCase) context.model.get(args[1]);
-            CommandResultList cresultList = testCase.getResultList();
-            ICommand command = (ICommand) context.model.get(args[2]);
-            List<CommandResult> results = cresultList.getResults(command);
-            context.model.put(args[0], results);
+            if (testCase != null) {
+                CommandResultList cresultList = testCase.getResultList();
+                ICommand command = (ICommand) context.model.get(args[2]);
+                List<CommandResult> results = cresultList.getResults(command);
+                context.model.put(args[0], results);
+            } else {
+                log.debug("\"testCase\" is unexpectedly null. It may be a JMTE bug.");
+                context.model.put(args[0], Collections.emptyList());
+            }
             return null;
         }
     }
@@ -107,6 +115,8 @@ public class HtmlResult {
             engine.registerRenderer(Result.class, new ResultRenderer());
             engine.registerRenderer(Node.class, new NodeRenderer(engine, getTemplate("index-node.html")));
             engine.registerAnnotationProcessor(new AnnoCommandResults());
+            // for debugging jmte template.
+            engine.registerAnnotationProcessor(new JmteDebug());
         }
         return engine;
     }
