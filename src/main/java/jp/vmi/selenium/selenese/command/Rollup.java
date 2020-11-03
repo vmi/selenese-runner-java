@@ -42,6 +42,11 @@ public class Rollup extends AbstractCommand {
         super(index, name, args, VALUE, VALUE);
     }
 
+    @Override
+    public boolean isComposite() {
+        return true;
+    }
+
     private Map<String, String> parseKwArgs(String kwArgs) {
         Map<String, String> map = new HashMap<>();
         Matcher matcher = RE_KW_ARGS.matcher(kwArgs.trim());

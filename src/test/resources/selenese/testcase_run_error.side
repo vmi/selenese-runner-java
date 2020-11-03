@@ -1,0 +1,117 @@
+{
+  "id": "e96efee8-0b3d-4f88-b5be-713e7074d224",
+  "version": "2.0",
+  "name": "testcase_run_error",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "8fa150c8-87b3-4e47-b063-cc298b4381c5",
+    "name": "01_run_caller",
+    "commands": [{
+      "id": "414235fc-42c8-4c70-9e55-5dc297c24b28",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "137094c2-53c1-4499-bd15-9814148ff564",
+      "comment": "",
+      "command": "run",
+      "target": "02_run_callee01",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c9578ebe-1e8d-47cf-a4aa-5702e9aa9a37",
+      "comment": "",
+      "command": "run",
+      "target": "03_run_callee02",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "13d941bd-8bed-41de-aa13-95bf4bfe6112",
+    "name": "02_run_callee01",
+    "commands": [{
+      "id": "e4e9636b-4716-4554-80bd-56145bbc5c14",
+      "comment": "",
+      "command": "open",
+      "target": "/form.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "db30e4e5-6b92-4345-8f08-210ab87e58e8",
+      "comment": "",
+      "command": "click",
+      "target": "id=text",
+      "targets": [
+        ["id=text", "id"],
+        ["name=text", "name"],
+        ["css=#text", "css:finder"],
+        ["xpath=//input[@id='text']", "xpath:attributes"],
+        ["xpath=//form[@id='form']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "39f70033-9c2f-4367-9482-cee2f512d5ef",
+      "comment": "",
+      "command": "type",
+      "target": "id=text",
+      "targets": [
+        ["id=text", "id"],
+        ["name=text", "name"],
+        ["css=#text", "css:finder"],
+        ["xpath=//input[@id='text']", "xpath:attributes"],
+        ["xpath=//form[@id='form']/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test"
+    }, {
+      "id": "5b842697-d28d-420c-b787-aaa8bc3d05aa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.simple:nth-child(2)",
+      "targets": [
+        ["css=.simple:nth-child(2)", "css:finder"],
+        ["xpath=//input[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='form']/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a5854a99-2773-4b2d-adb4-b1302224df22",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=text",
+      "targets": [
+        ["id=text", "id"],
+        ["css=#text", "css:finder"],
+        ["xpath=//span[@id='text']", "xpath:attributes"],
+        ["xpath=//li/span", "xpath:position"],
+        ["xpath=//span[contains(.,'test')]", "xpath:innerText"]
+      ],
+      "value": "not found"
+    }]
+  }, {
+    "id": "d08ec2e2-6e2a-455e-b547-aadc3bd722e3",
+    "name": "03_run_callee02",
+    "commands": [{
+      "id": "8dd8533b-2442-45c4-99c7-3e70397e699a",
+      "comment": "",
+      "command": "echo",
+      "target": "Done.",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "65d59c07-edd9-47e5-abc9-dbf49e22435a",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["8fa150c8-87b3-4e47-b063-cc298b4381c5"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

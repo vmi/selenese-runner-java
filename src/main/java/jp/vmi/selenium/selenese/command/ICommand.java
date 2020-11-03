@@ -91,6 +91,15 @@ public interface ICommand extends ArgumentInfo {
     }
 
     /**
+     * Is the command a composite of other commands?
+     *
+     * @return true if the command is a composite of other commands.
+     */
+    default boolean isComposite() {
+        return false;
+    }
+
+    /**
      * Execute the command.
      * <p>
      * Note: set the command result to testCase in this method.

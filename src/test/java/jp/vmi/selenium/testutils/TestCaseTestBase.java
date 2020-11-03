@@ -20,6 +20,8 @@ import jp.vmi.selenium.selenese.TestSuite;
 import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Unexecuted;
 
+import static jp.vmi.selenium.selenese.config.IConfig.*;
+
 @SuppressWarnings("javadoc")
 public abstract class TestCaseTestBase extends TestBase {
 
@@ -64,7 +66,23 @@ public abstract class TestCaseTestBase extends TestBase {
         runner.setScreenshotOnFailDir(screenshotOnFailDir.getRoot().getPath());
     }
 
-    protected void execute(String scriptName) {
+    protected void setOptions(Object... options) {
+        runner.setMaxRetries(0);
+        for (int i = 0; i < options.length; i++) {
+            switch ((String) options[i]) {
+            case MAX_RETRIES:
+                Integer maxRetries = (Integer) options[++i];
+                runner.setMaxRetries(maxRetries);
+                break;
+            default:
+                break;
+            }
+        }
+
+    }
+
+    protected void execute(String scriptName, Object... options) {
+        setOptions(options);
         result = Unexecuted.UNEXECUTED;
         xmlResult = null;
         try {
