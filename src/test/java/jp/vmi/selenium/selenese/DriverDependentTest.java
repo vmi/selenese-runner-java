@@ -291,6 +291,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue179() {
+        assumeNot(PHANTOMJS);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
     }
