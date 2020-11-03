@@ -245,22 +245,17 @@ function triggerKeyEvent(element, eventType, keyCode, controlKeyDown, altKeyDown
   }
   var doc = element.ownerDocument;
   var view = doc.defaultView;
-  if (window.KeyEvent) { // Firefox only?
-    evt = doc.createEvent('KeyEvents');
-    evt.initKeyEvent(eventType, true, true, view, controlKeyDown, altKeyDown, shiftKeyDown, metaKeyDown, keyCode, keyCode);
-  } else {
-    evt = document.createEvent('Events');
-    evt.initEvent(eventType, true, true);
-    evt.view = window;
-    evt.shiftKey = shiftKeyDown;
-    evt.metaKey = metaKeyDown;
-    evt.altKey = altKeyDown;
-    evt.ctrlKey = controlKeyDown;
-    evt.keyCode = keyCode;
-    evt.which = keyCode;
-    evt.charCode = (eventType === "keypress") ? keyCode : 0;
-    console.log(keyCode + "/" + evt.keyCode);
-  }
+  evt = document.createEvent('Events');
+  evt.initEvent(eventType, true, true);
+  evt.view = window;
+  evt.shiftKey = shiftKeyDown;
+  evt.metaKey = metaKeyDown;
+  evt.altKey = altKeyDown;
+  evt.ctrlKey = controlKeyDown;
+  evt.keyCode = keyCode;
+  evt.which = keyCode;
+  evt.charCode = (eventType === "keypress") ? keyCode : 0;
+  console.log(keyCode + "/" + evt.keyCode);
   element.dispatchEvent(evt);
 }
 

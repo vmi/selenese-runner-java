@@ -31,6 +31,12 @@
 	<td>id=login</td>
 	<td></td>
 </tr>
+<!-- Wait for the "ready" handler to complete. -->
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
 <tr>
 	<td>waitForElementPresent</td>
 	<td>id=nav-item-1</td>
@@ -44,12 +50,6 @@
 <tr>
 	<td>waitForVisible</td>
 	<td>id=menu-item-1-link</td>
-	<td></td>
-</tr>
-<!-- Why do I have to pause after "waitForVisible" on Firefox? -->
-<tr>
-	<td>pause</td>
-	<td>500</td>
 	<td></td>
 </tr>
 <tr>

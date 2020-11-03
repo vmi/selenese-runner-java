@@ -14,6 +14,7 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
     public static final String BROWSER_NAME = "htmlunit";
 
     private static final String HTML_UNIT_DRIVER = "org.openqa.selenium.htmlunit.HtmlUnitDriver";
+    private static final String HTML_UNIT_CONSOLE = "jp.vmi.selenium.webdriver.HtmlUnitConsole";
 
     /**
      * Constructor.
@@ -35,6 +36,7 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
         try {
             WebDriver driver = (WebDriver) Class.forName(HTML_UNIT_DRIVER).getConstructor(Capabilities.class).newInstance(caps);
             // HtmlUnitDriver driver = new HtmlUnitDriver(caps);
+            Class.forName(HTML_UNIT_CONSOLE).getMethod("setHtmlUnitConsole", WebDriver.class).invoke(null, driver);
             setInitialWindowSize(driver, driverOptions);
             return driver;
         } catch (RuntimeException e) {
