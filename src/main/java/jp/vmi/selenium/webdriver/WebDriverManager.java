@@ -266,7 +266,7 @@ public class WebDriverManager implements WebDriverPreparator {
             builder = new Builder(factory, driverOptions);
         } else {
             if (isDriverReusable()) {
-                log.info("Existing driver found.");
+                log.info("Existing driver found: {}", getDriverName(driver));
                 return driver;
             } else {
                 log.info("Restart driver.");
