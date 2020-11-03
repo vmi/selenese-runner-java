@@ -3,6 +3,10 @@ Selenese Runner Java Relase Note
 
 ### 3.32.0
 
+* Change not to retry the composite command if an error occurs. (#320)
+* Remove the workaround for KeyEvent in old Firefox.
+* Add the workaround for a JMTE bug.
+* Fix unittest errors.
 * Update jQuery for test code.
 * Update dependency versions.
 
