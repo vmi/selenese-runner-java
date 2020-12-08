@@ -98,11 +98,15 @@ public class VarsMap extends HashMap<String, Object> {
             if (prevEnd < nextStart)
                 result.append(expr.substring(prevEnd, nextStart));
             String name = matcher.group("name");
-            Object rawValue = get(name);
-            if (isScript)
-                result.append(new Gson().toJson(rawValue));
-            else
-                result.append(SeleniumUtils.convertToString(rawValue));
+            if (containsKey(name)) {
+                Object rawValue = get(name);
+                if (isScript)
+                    result.append(new Gson().toJson(rawValue));
+                else
+                    result.append(SeleniumUtils.convertToString(rawValue));
+            } else {
+                result.append(matcher.group());
+            }
             prevEnd = matcher.end();
         }
         if (prevEnd < expr.length())

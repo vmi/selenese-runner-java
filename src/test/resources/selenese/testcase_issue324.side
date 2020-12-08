@@ -1,0 +1,56 @@
+{
+  "id": "e55b5d28-ec31-4401-8d2a-5b7829f36d82",
+  "version": "2.0",
+  "name": "test",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "834b529f-c7fc-4d43-bbdf-0cfabe285c75",
+    "name": "issue324",
+    "commands": [{
+      "id": "839bb8c7-14da-49dd-9554-e593be46fd3e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "392e5b60-ed91-445b-9827-001d5695fece",
+      "comment": "",
+      "command": "store",
+      "target": "hello",
+      "targets": [],
+      "value": "var_side01"
+    }, {
+      "id": "2cdd69da-89eb-4c45-9265-3f4497c8d632",
+      "comment": "",
+      "command": "executeScript",
+      "target": "const var_js = ${var_side01}; return `${var_js} world`;",
+      "targets": [],
+      "value": "var_side02"
+    }, {
+      "id": "7c5e78e4-f6fd-4a21-8e0b-c8a29633abeb",
+      "comment": "",
+      "command": "echo",
+      "target": "var_side01=${var_side01}, var_side02=${var_side02}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "846d5221-9f82-48f3-8b65-5711614b163f",
+      "comment": "",
+      "command": "assert",
+      "target": "var_side02",
+      "targets": [],
+      "value": "hello world"
+    }]
+  }],
+  "suites": [{
+    "id": "e7b7100f-dcc5-4d14-a6cc-7987a9d6f804",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["834b529f-c7fc-4d43-bbdf-0cfabe285c75"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

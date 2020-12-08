@@ -501,4 +501,12 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
         runner.setReplaceAlertMethod(true);
     }
+
+    @Test
+    public void issue324() {
+        assumeNot(PHANTOMJS, HTMLUNIT, IE);
+        execute("testcase_issue324.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
 }
