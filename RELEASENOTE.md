@@ -4,6 +4,7 @@ Selenese Runner Java Relase Note
 ### 3.33.0
 
 * Fix not to replace undefined variables. (#324)
+* Update dependency versions.
 
 ### 3.32.0
 
