@@ -12,6 +12,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import jp.vmi.selenium.webdriver.DriverOptions;
+import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assume.*;
@@ -41,6 +42,8 @@ public abstract class DriverDependentTestCaseTestBase extends TestCaseTestBase {
     @Override
     protected void initDriver() {
         DriverOptions driverOptions = new DriverOptions();
+        if (TestUtils.isHeadlessMode)
+            driverOptions.set(DriverOption.HEADLESS, true);
         setWebDriverFactory(currentFactoryName, driverOptions);
         try {
             driver = manager.get();

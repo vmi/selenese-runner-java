@@ -18,6 +18,7 @@ import jp.vmi.selenium.selenese.result.Result;
 import jp.vmi.selenium.selenese.result.Success;
 import jp.vmi.selenium.selenese.result.Warning;
 import jp.vmi.selenium.testutils.DriverDependentTestCaseTestBase;
+import jp.vmi.selenium.testutils.TestUtils;
 
 import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -272,6 +273,8 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     @Test
     public void issue99() {
         assumeNot(HTMLUNIT);
+        if (TestUtils.isHeadlessMode)
+            assumeNot(CHROME);
         execute("issue99");
         assertThat(result, is(instanceOf(Success.class)));
     }
