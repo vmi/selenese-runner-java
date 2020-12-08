@@ -237,9 +237,9 @@ public class MouseEventHandler implements ISubCommand<Void> {
                 Map<String, Object> init = new HashMap<>();
                 init.put("clientX", coord.x);
                 init.put("clientY", coord.y);
-                eval(driver, FIRE_MOUSE_EVENT, eventType.eventName, init);
+                eval(driver, FIRE_MOUSE_EVENT, element, eventType.eventName, init);
             } else {
-                eval(driver, FIRE_MOUSE_EVENT, eventType.eventName);
+                eval(driver, FIRE_MOUSE_EVENT, element, eventType.eventName);
             }
         }
         return null;
