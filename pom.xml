@@ -46,7 +46,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <target.version>1.8</target.version>
     <skipTests>true</skipTests>
     <selenium.version>3.141.59</selenium.version>
-    <htmlunit.version>2.45.0</htmlunit.version>
+    <htmlunit.version>2.49.0</htmlunit.version>
     <htmlunit-core-js.version>${htmlunit.version}</htmlunit-core-js.version>
     <neko-htmlunit.version>${htmlunit.version}</neko-htmlunit.version>
     <htmlunit-driver.version>${htmlunit.version}</htmlunit-driver.version>
@@ -393,7 +393,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
-            <version>3.7.2</version>
+            <version>3.8.0</version>
           </dependency>
           <dependency>
             <groupId>org.apache.ant</groupId>
@@ -537,7 +537,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.1.55.Final</version>
+        <version>4.1.63.Final</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -569,7 +569,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.11</version>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -609,7 +609,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>5.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -629,7 +629,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>4.13.2</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -669,7 +669,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.assertthat</groupId>
       <artifactId>selenium-shutterbug</artifactId>
-      <version>1.2</version>
+      <version>1.4</version>
       <exclusions>
         <exclusion>
           <groupId>org.seleniumhq.selenium</groupId>
