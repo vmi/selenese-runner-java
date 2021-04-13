@@ -9,8 +9,13 @@
     $(document).ready(function () {
         "use strict";
 
-        var enter = function () {
+        var entered = false;
+
+        var enter = function (event) {
             "use strict";
+            if (entered)
+                return;
+            entered = true;
             console.log("Entering nav item");
             $(this).has(".sub").length && (
                 $(".sub").stop(!0, !0).hide(),
@@ -19,8 +24,11 @@
                 $(this).children(".sub").attr("aria-expanded", "true")
             )
 
-        }, leave = function () {
+        }, leave = function (event) {
             "use strict";
+            if (!event.relatedTarget && !event.toElement)
+                return;
+            entered = false;
             console.log("Leaving nav item");
             $(".sub").stop(!0, !0).hide(),
             $("#nav .wrap > ul > li").removeClass("hover"),
