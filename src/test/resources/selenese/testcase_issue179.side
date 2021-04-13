@@ -1,0 +1,91 @@
+{
+  "id": "eca43f2c-b332-4014-8fdb-fdb5fb252467",
+  "version": "2.0",
+  "name": "Issue #179",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "d1568256-6d96-402e-b367-5a9a5ba6fba5",
+    "name": "Issue #179",
+    "commands": [{
+      "id": "be1bbf4a-dfef-4bd9-9deb-6562bc27a90c",
+      "comment": "",
+      "command": "open",
+      "target": "/issue179.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "05039a44-185b-4d80-8b5c-dc6ad11014ce",
+      "comment": "",
+      "command": "type",
+      "target": "name=id",
+      "targets": [],
+      "value": "scott"
+    }, {
+      "id": "c2a3df2b-3776-43b1-b522-c16e317d2f3d",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [],
+      "value": "tiger"
+    }, {
+      "id": "6c664e0a-6176-4d86-99f7-1ce883912437",
+      "comment": "",
+      "command": "click",
+      "target": "id=login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4c07b663-06ab-4b44-b418-cf5692241587",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "id=nav-item-1",
+      "targets": [],
+      "value": "10000"
+    }, {
+      "id": "01e9d8ee-f4e3-43d0-8149-07a2616136fc",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=nav-item-1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "52a914b2-1358-4314-bd87-8bface334ab1",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=menu-item-1-link",
+      "targets": [],
+      "value": "10000"
+    }, {
+      "id": "b49e4ae7-99ca-4f41-b0f5-1f8c4f4414f0",
+      "comment": "",
+      "command": "click",
+      "target": "id=menu-item-1-link",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0478aa6e-5208-4e6f-b8e9-366bf9702001",
+      "comment": "",
+      "command": "type",
+      "target": "name=q",
+      "targets": [],
+      "value": "selenium"
+    }, {
+      "id": "e24c57dd-4c85-4790-96f9-ab3a6250a456",
+      "comment": "",
+      "command": "click",
+      "target": "css=input[type=\"submit\"]",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "3c6410c4-642a-4dbc-b151-0ac3a3df9870",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["d1568256-6d96-402e-b367-5a9a5ba6fba5"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
