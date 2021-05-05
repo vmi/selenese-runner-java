@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -81,12 +83,22 @@ public class CommandsJs {
             }
         }
 
+        private static final Pattern OPTIONAL_VALUE = Pattern.compile(
+            "(?<indent>\\s*)value:\\s*\\{\\s*isOptional:\\s*true,\\s*\\.{3}(?<value>.*?)\\s*\\},\\s*");
+
         private static State processCommands(Parser parser, String line) {
             if (line.matches("\\]\\s*")) {
                 parser.commands.removeTrailingComma().add("]");
                 return TOP_LEVEL;
             } else if (line.matches("\\s*[\\]\\}].*")) {
                 parser.commands.removeTrailingComma();
+            }
+            Matcher matcher = OPTIONAL_VALUE.matcher(line);
+            if (matcher.matches()) {
+                String indent = matcher.group("indent");
+                String value = matcher.group("value");
+                line = indent + "value: " + value + ",\n"
+                    + indent + "valueIsOptional: true,";
             }
             parser.commands.add(line);
             return COMMANDS;

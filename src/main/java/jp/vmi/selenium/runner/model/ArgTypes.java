@@ -122,7 +122,7 @@ public enum ArgTypes {
 
     /** text */
     TEXT("text", "text",
-        "The text to verify."),
+        "The text to use."),
 
     /** times */
     TIMES("times", "times",
@@ -134,7 +134,7 @@ public enum ArgTypes {
 
     /** value */
     VALUE("value", "value",
-        "The value to type."),
+        "The value to input."),
 
     /** variable name */
     VARIABLE_NAME("variableName", "variable name",
