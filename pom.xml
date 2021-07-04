@@ -46,11 +46,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <target.version>1.8</target.version>
     <skipTests>true</skipTests>
     <selenium.version>3.141.59</selenium.version>
-    <htmlunit.version>2.49.0</htmlunit.version>
+    <htmlunit.version>2.51.0</htmlunit.version>
     <htmlunit-core-js.version>${htmlunit.version}</htmlunit-core-js.version>
     <neko-htmlunit.version>${htmlunit.version}</neko-htmlunit.version>
     <htmlunit-driver.version>${htmlunit.version}</htmlunit-driver.version>
-    <slf4j.version>1.7.30</slf4j.version>
+    <slf4j.version>1.7.31</slf4j.version>
     <maven.version.rules>file://${basedir}/version-rules.xml</maven.version.rules>
     <shade.java.srcdir>src/shade/java</shade.java.srcdir>
     <shade.java.destdir>target/shade-classes</shade.java.destdir>
@@ -398,7 +398,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant-commons-net</artifactId>
-            <version>1.10.9</version>
+            <version>1.10.10</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -537,7 +537,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.1.63.Final</version>
+        <version>4.1.65.Final</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -579,7 +579,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.8.0</version>
+      <version>2.10.0</version>
     </dependency>
     <dependency>
       <groupId>args4j</groupId>
@@ -624,7 +624,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.8.6</version>
+      <version>2.8.7</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -669,7 +669,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>com.assertthat</groupId>
       <artifactId>selenium-shutterbug</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
       <exclusions>
         <exclusion>
           <groupId>org.seleniumhq.selenium</groupId>
@@ -686,7 +686,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>2.3.3</version>
+      <version>2.3.4</version>
     </dependency>
   </dependencies>
   <reporting>

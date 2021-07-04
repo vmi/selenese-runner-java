@@ -8,6 +8,7 @@ Selenese Runner Java Relase Note
     * `choose cancel on next prompt`
     * `choose ok on next confirmation`
     * `choose cancel on next confirmation`
+* Update dependency versions.
 
 ### 3.33.0
 
