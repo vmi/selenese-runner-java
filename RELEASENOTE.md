@@ -1,6 +1,14 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.34.0
+
+* Fix the following commands not working propperly. (#327)
+    * `answer on next prompt`
+    * `choose cancel on next prompt`
+    * `choose ok on next confirmation`
+    * `choose cancel on next confirmation`
+
 ### 3.33.0
 
 * Fix not to replace undefined variables. (#324)
