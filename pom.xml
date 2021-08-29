@@ -466,7 +466,25 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
   </build>
   <dependencyManagement>
     <dependencies>
-      
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>${selenium.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-opera-driver</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-remote-driver</artifactId>
@@ -669,7 +687,11 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
       <artifactId>jakarta.xml.bind-api</artifactId>
       <version>2.3.3</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>2.3.4</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>
