@@ -9,7 +9,7 @@
   <name>selenese-runner-java</name>
   <url>https://github.com/vmi/selenese-runner-java</url>
   <description>This is selenese script interpreter implemented by Java.
-It supports test-case and test-suite which are Selenium IDE's native format.</description>
+  It supports test-case and test-suite which are Selenium IDE's native format.</description>
 
   <licenses>
     <license>
@@ -265,10 +265,10 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version>
-        <configuration>
-        	<parallel>classes</parallel>
-        	<useUnlimitedThreads>true</useUnlimitedThreads>
-        </configuration>
+          <configuration>
+            <parallel>classes</parallel>
+            <useUnlimitedThreads>true</useUnlimitedThreads>
+          </configuration>
 
         </plugin>
         <plugin>
@@ -279,7 +279,7 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-	  <!-- Note: raise unknown error on Eclipse if use 3.1.2 -->
+          <!-- Note: raise unknown error on Eclipse if use 3.1.2 -->
           <version>3.0.2</version>
         </plugin>
         <plugin>
@@ -414,9 +414,9 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <configuration>
           <source>${source.version}</source>
           <target>${target.version}</target>
-	  <compilerArgs>
+          <compilerArgs>
             <arg>-Xlint:deprecation</arg>
-	  </compilerArgs>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -457,8 +457,8 @@ It supports test-case and test-suite which are Selenium IDE's native format.</de
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>${skipTests}</skipTests>
-        	<parallel>classes</parallel>
-        	<useUnlimitedThreads>true</useUnlimitedThreads>
+          <parallel>classes</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
 
         </configuration>
       </plugin>
