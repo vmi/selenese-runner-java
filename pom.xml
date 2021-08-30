@@ -664,6 +664,10 @@
           <groupId>org.seleniumhq.selenium</groupId>
           <artifactId>selenium-java</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <!-- for Java9 or later -->
