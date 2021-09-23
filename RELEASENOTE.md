@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 3.35.0
+
+* Improve Maven build performance. (PR #329 by @ChenZhangg)
+* Update dependency versions.
+* Update Maven plugin versions.
+
 ### 3.34.0
 
 * Fix the following commands not working propperly. (#327)
