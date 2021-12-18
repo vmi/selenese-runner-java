@@ -104,8 +104,7 @@ public abstract class WebDriverFactory {
             switch (proxyType) {
             case MANUAL:
                 proxy.setHttpProxy(proxyStr)
-                    .setSslProxy(proxyStr)
-                    .setFtpProxy(proxyStr);
+                    .setSslProxy(proxyStr);
                 break;
             case PAC:
                 proxy.setProxyAutoconfigUrl(proxyStr);

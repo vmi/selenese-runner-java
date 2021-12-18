@@ -163,8 +163,6 @@ public class FirefoxDriverFactory extends WebDriverFactory {
                 profile.setPreference("network.proxy.http_port", port);
                 profile.setPreference("network.proxy.ssl", host);
                 profile.setPreference("network.proxy.ssl_port", port);
-                profile.setPreference("network.proxy.ftp", host);
-                profile.setPreference("network.proxy.ftp_port", port);
                 profile.setPreference("network.proxy.socks", host);
                 profile.setPreference("network.proxy.socks_port", port);
                 break;
