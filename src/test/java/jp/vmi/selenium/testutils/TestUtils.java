@@ -81,7 +81,6 @@ public final class TestUtils {
                 HTMLUNIT,
                 FIREFOX,
                 CHROME,
-                PHANTOMJS,
                 IE,
                 // SAFARI, // FIXME: On Selenium 2.46.0, SafariDriver does not work.
             };

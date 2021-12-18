@@ -131,8 +131,6 @@ public class Main {
                 driverName = WebDriverManager.IE;
             else if (driverOptions.has(DriverOption.EDGEDRIVER))
                 driverName = WebDriverManager.EDGE;
-            else if (driverOptions.has(DriverOption.PHANTOMJS))
-                driverName = WebDriverManager.PHANTOMJS;
         }
         WebDriverManager manager = WebDriverManager.newInstance();
         manager.setWebDriverFactory(driverName);

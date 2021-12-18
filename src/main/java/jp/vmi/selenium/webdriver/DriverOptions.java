@@ -87,8 +87,6 @@ public class DriverOptions {
         IEDRIVER,
         /** --edgedriver */
         EDGEDRIVER,
-        /** --phantomjs */
-        PHANTOMJS,
         /** --height */
         HEIGHT,
         /** --width */

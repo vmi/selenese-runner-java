@@ -32,8 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.InvalidCookieDomainException;
-import org.openqa.selenium.UnableToSetCookieException;
 
 import jp.vmi.selenium.selenese.Context;
 import jp.vmi.selenium.selenese.result.Error;
@@ -41,7 +39,6 @@ import jp.vmi.selenium.selenese.result.Result;
 
 import static jp.vmi.selenium.selenese.command.ArgumentType.*;
 import static jp.vmi.selenium.selenese.result.Success.*;
-import static jp.vmi.selenium.webdriver.WebDriverManager.*;
 
 /**
  * Re-implementation of CreateCookie.
@@ -95,14 +92,7 @@ public class CreateCookie extends AbstractCommand {
         }
 
         Cookie cookie = new Cookie(name, value, path, maxAge);
-        try {
-            context.getWrappedDriver().manage().addCookie(cookie);
-        } catch (InvalidCookieDomainException | UnableToSetCookieException e) {
-            // This is workaround for PhanomJS bug.
-            // TODO remove it when fix the bug.
-            if (!context.isBrowser(PHANTOMJS))
-                throw e;
-        }
+        context.getWrappedDriver().manage().addCookie(cookie);
 
         return SUCCESS;
     }

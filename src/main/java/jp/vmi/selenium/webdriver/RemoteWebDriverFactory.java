@@ -3,6 +3,7 @@ package jp.vmi.selenium.webdriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -30,7 +31,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = DesiredCapabilities.htmlUnit();
+        DesiredCapabilities caps = new DesiredCapabilities(getBrowserName(), "", Platform.ANY);
         setupProxy(caps, driverOptions);
         caps.merge(driverOptions.getCapabilities());
         if (driverOptions.has(REMOTE_BROWSER)) {
@@ -49,7 +50,7 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
         }
         if (driverOptions.has(REMOTE_VERSION)) {
             String version = driverOptions.get(REMOTE_VERSION);
-            caps.setCapability(CapabilityType.VERSION, version);
+            caps.setCapability(CapabilityType.BROWSER_VERSION, version);
             log.info("Remote version: {}", version);
         }
         URL url;
