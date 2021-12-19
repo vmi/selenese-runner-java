@@ -19,6 +19,12 @@ https://github.com/vmi/selenese-runner-java/releases
 Release Note
 ------------
 
+### 4.0.0
+
+* Catch up Selenium 4.1.0 and update dependency versions.
+* **Remove PhantomJS driver support.**
+* Update Maven plugin versions.
+
 Please check [RELEASENOTE.md](RELEASENOTE.md).
 
 Features
