@@ -424,6 +424,13 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     }
 
     @Test
+    public void test330() {
+        execute("testcase_issue330.side");
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), containsString("Element id=status_ng not found"));
+    }
+
+    @Test
     public void testHiddenText() {
         execute("testcase_hidden_text");
         assertThat(result, is(instanceOf(Success.class)));

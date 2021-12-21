@@ -24,6 +24,7 @@ Release Note
 * Catch up Selenium 4.1.0 and update dependency versions.
 * **Remove PhantomJS driver support.**
 * Update Maven plugin versions.
+* Change to treat unsuccessful `waitFor*` command result as "Failure" in SIDE file. (#330)
 
 Please check [RELEASENOTE.md](RELEASENOTE.md).
 

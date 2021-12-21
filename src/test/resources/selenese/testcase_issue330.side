@@ -1,0 +1,72 @@
+{
+  "id": "7dd84da9-e8c7-4a22-9df9-cfd4efb61bdc",
+  "version": "2.0",
+  "name": "issue330",
+  "url": "http://localhost/",
+  "tests": [{
+    "id": "42d8a7e3-7877-44f9-ba1a-c813d25ed8fb",
+    "name": "issue330",
+    "commands": [{
+      "id": "8ad74f9a-95a5-4f72-ae39-40a63890dff9",
+      "comment": "",
+      "command": "open",
+      "target": "/locator.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8b6f2911-8548-4e5e-8d87-b1865d580e26",
+      "comment": "",
+      "command": "click",
+      "target": "id=ok",
+      "targets": [
+        ["css=li:nth-child(2) > label", "css:finder"],
+        ["xpath=//li[2]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'NG')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8d2703d6-ddce-4517-9f66-c70be8f2abc2",
+      "comment": "",
+      "command": "click",
+      "target": "id=send",
+      "targets": [
+        ["id=send", "id"],
+        ["css=#send", "css:finder"],
+        ["xpath=//button[@id='send']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Send')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "90c2e66b-58d3-4cc3-9dde-4f341102d056",
+      "comment": "",
+      "command": "waitForText",
+      "target": "id=status_ng",
+      "targets": [
+        ["id=status_ng", "id"],
+        ["css=#status_ng", "css:finder"],
+        ["xpath=//span[@id='status_ng']", "xpath:attributes"],
+        ["xpath=//span[@id='status']/span", "xpath:idRelative"],
+        ["xpath=//span/span", "xpath:position"]
+      ],
+      "value": "NG"
+    }, {
+      "id": "69a48d5a-3fa0-40b6-b01a-c5ad6b21b60b",
+      "comment": "",
+      "command": "echo",
+      "target": "Finished",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "d2f4336f-6426-4153-8542-c267af26cb4f",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["42d8a7e3-7877-44f9-ba1a-c813d25ed8fb"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}

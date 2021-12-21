@@ -142,7 +142,11 @@ public class Assertion extends AbstractCommand {
         case VERIFY:
             return found ? new Warning(message) : new Failure(message);
         default: // == WAIT_FOR
-            return new Warning(String.format("Timed out after %dms (%s)", timeout, message));
+            String m = String.format("Timed out after %dms (%s)", timeout, message);
+            if (getSideCommand() != null)
+                return new Failure(m);
+            else
+                return new Warning(m);
         }
     }
 
