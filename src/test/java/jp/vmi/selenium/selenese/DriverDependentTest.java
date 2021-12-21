@@ -420,7 +420,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     public void test282() {
         execute("testcase_issue282");
         assertThat(result, is(instanceOf(Failure.class)));
-        assertThat(result.getMessage(), containsString("Cannot locate element with text: 40"));
+        assertThat(result.getMessage(), containsString("Cannot locate option with text: 40"));
     }
 
     @Test
