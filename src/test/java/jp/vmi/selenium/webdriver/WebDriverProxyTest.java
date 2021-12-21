@@ -74,9 +74,6 @@ public class WebDriverProxyTest extends TestBase {
         int actualCount = wpr.getCount();
         log.info("Title: [{}] / Count: {} ({})", actualTitle, actualCount, currentFactoryName);
         assertThat(actualTitle, is("Index for Unit Test"));
-        assumeThat("proxy option does not work on PhantomJS 1.9.2 for Mac OS X",
-            driver.getClass().getSimpleName() + "/" + actualCount,
-            is(not("PhantomJSDriver/0")));
         assertThat(actualCount, greaterThanOrEqualTo(1));
     }
 }
