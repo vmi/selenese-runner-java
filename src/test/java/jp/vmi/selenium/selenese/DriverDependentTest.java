@@ -294,7 +294,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue179() {
-        assumeNot(PHANTOMJS);
         execute("testcase_issue179");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -421,7 +420,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     public void test282() {
         execute("testcase_issue282");
         assertThat(result, is(instanceOf(Failure.class)));
-        assertThat(result.getMessage(), containsString("Cannot locate element with text: 40"));
+        assertThat(result.getMessage(), containsString("Cannot locate option with text: 40"));
     }
 
     @Test
@@ -432,14 +431,14 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testContextMenu() {
-        assumeNot(HTMLUNIT, PHANTOMJS);
+        assumeNot(HTMLUNIT);
         execute("contextMenu");
         assertThat(result, is(instanceOf(Success.class)));
     }
 
     @Test
     public void testNativeAlert() {
-        assumeNot(PHANTOMJS, FIREFOX);
+        assumeNot(FIREFOX);
         execute("testcase_native_alert");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -482,7 +481,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testSideSetWindowSize() {
-        assumeNot(PHANTOMJS);
         execute("testcase_setwindowsize.side");
         assertThat(result, is(instanceOf(Success.class)));
     }
@@ -496,7 +494,6 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void testNoReplaceAlertMethod() {
-        assumeNot(PHANTOMJS);
         runner.setReplaceAlertMethod(false);
 
         execute("testcase_no_replace_alert_method");
@@ -507,7 +504,7 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
 
     @Test
     public void issue324() {
-        assumeNot(PHANTOMJS, HTMLUNIT, IE);
+        assumeNot(HTMLUNIT, IE);
         execute("testcase_issue324.side");
         assertThat(result, is(instanceOf(Success.class)));
     }

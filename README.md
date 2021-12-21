@@ -19,6 +19,12 @@ https://github.com/vmi/selenese-runner-java/releases
 Release Note
 ------------
 
+### 4.0.0
+
+* Catch up Selenium 4.1.0 and update dependency versions.
+* **Remove PhantomJS driver support.**
+* Update Maven plugin versions.
+
 Please check [RELEASENOTE.md](RELEASENOTE.md).
 
 Features
@@ -43,7 +49,7 @@ Usage
     java -jar selenese-runner.jar <option> ... <test-case|test-suite> ...
     
      --config (-c) <file>                    : load option information from file.
-     --driver (-d) <driver>                  : firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory
+     --driver (-d) <driver>                  : firefox (default) | chrome | ie | edge | safari | htmlunit | remote | appium | FQCN-of-WebDriverFactory
      --headless                              : use headless mode if driver is supported (currently, Chrome and Firefox)
      --profile (-p) <name>                   : profile name (Firefox only *1)
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
@@ -64,6 +70,7 @@ Usage
      --screenshot-dir (-s) <dir>             : override captureEntirePageScreenshot directory.
      --screenshot-all (-S) <dir>             : take screenshot at all commands to specified directory.
      --screenshot-on-fail <dir>              : take screenshot on fail commands to specified directory.
+     --screenshot-scroll-timeout <timeout>   : set scroll timeout (ms) for taking screenshot. (default: 100)
      --ignore-screenshot-command             : ignore captureEntirePageScreenshot command.
      --baseurl (-b) <baseURL>                : override base URL set in selenese.
      --firefox <path>                        : path to 'firefox' binary. (implies '--driver firefox')
@@ -71,7 +78,6 @@ Usage
      --chromedriver <path>                   : path to 'chromedriver' binary. (implies '--driver chrome')
      --iedriver <path>                       : path to 'IEDriverServer' binary. (implies '--driver ie')
      --edgedriver <path>                     : path to Edge 'WebDriver' binary. (implies '--driver edge')
-     --phantomjs <path>                      : path to 'phantomjs' binary. (implies '--driver phantomjs')
      --xml-result <dir>                      : output XML JUnit results to specified directory.
      --html-result <dir>                     : output HTML results to specified directory.
      --timeout (-t) <timeout>                : set timeout (ms) for waiting. (default: 30000 ms)
@@ -89,7 +95,7 @@ Usage
      --no-exit                               : don't call System.exit at end.
      --strict-exit-code                      : return strict exit code, reflected by selenese command results at end. (See Note *4)
      --max-time <max-time>                   : Maximum time in seconds that you allow the entire operation to take.
-     --screenshot-scroll-timeout <timeout>   : set scroll timeout (ms) for taking screenshot. (default: 100)
+     --no-replace-alert-method               : disable replacement of alert methods
      --help (-h)                             : show this message.
     
     [Note]

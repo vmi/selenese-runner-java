@@ -1,7 +1,6 @@
 package jp.vmi.selenium.webdriver;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -80,7 +79,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     public static void setDriverSpecificCapabilitiesForRemoteWebDriver(DesiredCapabilities caps, DriverOptions driverOptions) {
         String firefoxBin = getFirefoxBinary(driverOptions);
         if (firefoxBin != null) {
-            caps.setCapability(FirefoxDriver.BINARY, firefoxBin);
+            caps.setCapability(FirefoxDriver.Capability.BINARY, firefoxBin);
             log.info("Firefox binary: {}", firefoxBin);
         }
         if (driverOptions.has(CLI_ARGS))
@@ -92,14 +91,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             setProxyConfiguration(profile, driverOptions);
         }
         if (profile != null) {
-            String json;
-            try {
-                json = profile.toJson();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            caps.setCapability(FirefoxDriver.PROFILE, json);
-            log.info("Convert Firefox profile to JSON: {} bytes", json.length());
+            caps.setCapability(FirefoxDriver.Capability.PROFILE, profile);
         }
     }
 
@@ -171,8 +163,6 @@ public class FirefoxDriverFactory extends WebDriverFactory {
                 profile.setPreference("network.proxy.http_port", port);
                 profile.setPreference("network.proxy.ssl", host);
                 profile.setPreference("network.proxy.ssl_port", port);
-                profile.setPreference("network.proxy.ftp", host);
-                profile.setPreference("network.proxy.ftp_port", port);
                 profile.setPreference("network.proxy.socks", host);
                 profile.setPreference("network.proxy.socks_port", port);
                 break;

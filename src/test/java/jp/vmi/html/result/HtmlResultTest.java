@@ -49,7 +49,7 @@ public class HtmlResultTest extends TestBase {
         new File(root, "img").mkdir();
         Runner runner = new Runner();
         WebDriverManager wdm = WebDriverManager.newInstance();
-        wdm.setWebDriverFactory(WebDriverManager.PHANTOMJS);
+        wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         WebDriver driver = null;
         try {
             driver = wdm.get();

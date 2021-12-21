@@ -13,5 +13,5 @@ before_script:
   - export PATH="$PATH:$HOME/bin"
   - echo "$PATH"
 script:
-  - mvn -B -DskipTests=false -Dmaven.javadoc.skip=true -Dtest.drivers=htmlunit,phantomjs test
+  - mvn -B -DskipTests=false -Dmaven.javadoc.skip=true -Dtest.drivers=htmlunit test
 sudo: required

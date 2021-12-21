@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
@@ -14,7 +15,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -567,7 +567,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     }
 
     private void setDriverTimeout() {
-        driver.manage().timeouts().pageLoadTimeout(timeout, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(timeout));
     }
 
     @Override

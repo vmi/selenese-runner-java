@@ -27,7 +27,7 @@ public class DefaultConfigTest {
         "--" + CLI_ARGS + "=opt-arg3",
         "--" + REMOTE_URL + "=http://example.com:4444/opt",
         "--" + REMOTE_PLATFORM + "=opt-linux",
-        "--" + REMOTE_BROWSER + "=opt-phantomjs",
+        "--" + REMOTE_BROWSER + "=opt-firefox",
         "--" + REMOTE_VERSION + "=1.2.3-opt",
         "--" + SCREENSHOT_DIR + "=/opt/path/to/screenshot/directory",
         "--" + SCREENSHOT_ALL + "=/opt/path/to/screenshot/directory/all",
@@ -39,7 +39,6 @@ public class DefaultConfigTest {
         "--" + CHROMEDRIVER + "=/opt/path/to/chromedriver",
         "--" + IEDRIVER + "=/opt/path/to/iedriver",
         "--" + EDGEDRIVER + "=/opt/path/to/edgedriver",
-        "--" + PHANTOMJS + "=/opt/path/to/phantomjs",
         "--" + XML_RESULT + "=/opt/path/to/xml/result",
         "--" + HTML_RESULT + "=/opt/path/to/html/result",
         "--" + TIMEOUT + "=600",
@@ -84,7 +83,6 @@ public class DefaultConfigTest {
         assertThat(config.get(CHROMEDRIVER), is(nullValue()));
         assertThat(config.get(IEDRIVER), is(nullValue()));
         assertThat(config.get(EDGEDRIVER), is(nullValue()));
-        assertThat(config.get(PHANTOMJS), is(nullValue()));
         assertThat(config.get(XML_RESULT), is(nullValue()));
         assertThat(config.get(HTML_RESULT), is(nullValue()));
         assertThat(config.get(TIMEOUT), is(nullValue()));
@@ -116,7 +114,7 @@ public class DefaultConfigTest {
         assertThat(config.getCliArgs(), equalTo(new String[] { "arg1", "arg2", "arg3" }));
         assertThat((String) config.get(REMOTE_URL), is("http://example.com:4444/"));
         assertThat((String) config.get(REMOTE_PLATFORM), is("linux"));
-        assertThat((String) config.get(REMOTE_BROWSER), is("phantomjs"));
+        assertThat((String) config.get(REMOTE_BROWSER), is("firefox"));
         assertThat((String) config.get(REMOTE_VERSION), is("1.2.3"));
         assertThat(config.isHighlight(), is(true));
         assertThat((String) config.get(SCREENSHOT_DIR), is("/path/to/screenshot/directory"));
@@ -129,7 +127,6 @@ public class DefaultConfigTest {
         assertThat((String) config.get(CHROMEDRIVER), is("/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/path/to/iedriver"));
         assertThat((String) config.get(EDGEDRIVER), is("/path/to/edgedriver"));
-        assertThat((String) config.get(PHANTOMJS), is("/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/path/to/html/result"));
         assertThat((String) config.get(TIMEOUT), is("300"));
@@ -161,7 +158,7 @@ public class DefaultConfigTest {
         assertThat(config.getCliArgs(), equalTo(new String[] { "opt-arg1", "opt-arg2", "opt-arg3" }));
         assertThat((String) config.get(REMOTE_URL), is("http://example.com:4444/opt"));
         assertThat((String) config.get(REMOTE_PLATFORM), is("opt-linux"));
-        assertThat((String) config.get(REMOTE_BROWSER), is("opt-phantomjs"));
+        assertThat((String) config.get(REMOTE_BROWSER), is("opt-firefox"));
         assertThat((String) config.get(REMOTE_VERSION), is("1.2.3-opt"));
         assertThat(config.isHighlight(), is(true));
         assertThat((String) config.get(SCREENSHOT_DIR), is("/opt/path/to/screenshot/directory"));
@@ -174,7 +171,6 @@ public class DefaultConfigTest {
         assertThat((String) config.get(CHROMEDRIVER), is("/opt/path/to/chromedriver"));
         assertThat((String) config.get(IEDRIVER), is("/opt/path/to/iedriver"));
         assertThat((String) config.get(EDGEDRIVER), is("/opt/path/to/edgedriver"));
-        assertThat((String) config.get(PHANTOMJS), is("/opt/path/to/phantomjs"));
         assertThat((String) config.get(XML_RESULT), is("/opt/path/to/xml/result"));
         assertThat((String) config.get(HTML_RESULT), is("/opt/path/to/html/result"));
         assertThat((String) config.get(TIMEOUT), is("600"));

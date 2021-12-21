@@ -54,7 +54,7 @@ public class AppiumWebDriverFactory extends WebDriverFactory {
         if (driverOptions.has(REMOTE_PLATFORM))
             caps.setCapability("device", driverOptions.get(REMOTE_PLATFORM));
         if (driverOptions.has(REMOTE_VERSION))
-            caps.setCapability(CapabilityType.VERSION, driverOptions.get(REMOTE_VERSION));
+            caps.setCapability(CapabilityType.BROWSER_VERSION, driverOptions.get(REMOTE_VERSION));
         URL url;
         if (driverOptions.has(REMOTE_URL)) {
             try {

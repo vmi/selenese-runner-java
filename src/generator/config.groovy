@@ -1,7 +1,7 @@
 driver {
     aliases = "-d"
     metaVar = "<driver>"
-    usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | phantomjs | remote | appium | FQCN-of-WebDriverFactory"
+    usage = "firefox (default) | chrome | ie | edge | safari | htmlunit | remote | appium | FQCN-of-WebDriverFactory"
 }
 
 headless {
@@ -171,12 +171,6 @@ iedriver {
 edgedriver {
     metaVar = "<path>"
     usage = "path to Edge 'WebDriver' binary. (implies '--driver edge')"
-    driverOption = true
-}
-
-phantomjs {
-    metaVar = "<path>"
-    usage = "path to 'phantomjs' binary. (implies '--driver phantomjs')"
     driverOption = true
 }
 

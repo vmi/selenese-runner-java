@@ -80,7 +80,7 @@ public final class MouseUtils {
         String browserName = caps.getBrowserName();
         if (browserName == null)
             return false;
-        String version = caps.getVersion();
+        String version = caps.getBrowserVersion();
         if (version == null)
             return false;
         Matcher matcher = MAJOR_VERSION_RE.matcher(version);
