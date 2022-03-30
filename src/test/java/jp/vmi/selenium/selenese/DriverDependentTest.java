@@ -451,6 +451,37 @@ public class DriverDependentTest extends DriverDependentTestCaseTestBase {
     }
 
     @Test
+    public void testExecuteAsyncScriptSuccess() {
+        assumeNot(IE);
+        execute("testcase_execute_async_script_success.side");
+        assertThat(result, is(instanceOf(Success.class)));
+    }
+
+    @Test
+    public void testExecuteAsyncScriptReject() {
+        assumeNot(IE);
+        execute("testcase_execute_async_script_reject.side");
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), containsString("NG"));
+    }
+
+    @Test
+    public void testExecuteAsyncScriptRejectPage() {
+        assumeNot(IE);
+        execute("testcase_execute_async_script_reject_page.side");
+        assertThat(result, is(instanceOf(Failure.class)));
+        assertThat(result.getMessage(), containsString("NG from page"));
+    }
+
+    @Test
+    public void testExecuteAsyncScriptNotAPromise() {
+        assumeNot(IE);
+        execute("testcase_execute_async_script_not_a_promise.side");
+        assertThat(result, is(instanceOf(Error.class)));
+        assertThat(result.getMessage(), containsString("Expected async operation, instead received: not Promise"));
+    }
+
+    @Test
     public void testSide() {
         execute("testsuite_simple.side");
         assertThat(result, is(instanceOf(Success.class)));

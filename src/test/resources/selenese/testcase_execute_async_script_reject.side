@@ -1,0 +1,35 @@
+{
+  "id": "73bfe695-bbf9-4da8-863c-e83d4306b381",
+  "version": "2.0",
+  "name": "testcase_execute_async_script_reject",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "0fcc357c-c8d6-4f11-8e8d-98119bf59d04",
+    "name": "01reject",
+    "commands": [{
+      "id": "67abc760-6aec-4584-8d1a-53ea9130aec1",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ff135346-483f-4b44-afb4-ded6c4824f9b",
+      "comment": "",
+      "command": "executeAsyncScript",
+      "target": "return Promise.reject(\"NG\")",
+      "targets": [],
+      "value": "value"
+    }]
+  }],
+  "suites": [{
+    "id": "0a569033-8369-4741-965d-01cd83dd6bfc",
+    "name": "testcase_execute_async_script_reject",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["0fcc357c-c8d6-4f11-8e8d-98119bf59d04"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
