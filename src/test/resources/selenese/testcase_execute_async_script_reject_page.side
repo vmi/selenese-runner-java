@@ -1,0 +1,42 @@
+{
+  "id": "73bfe695-bbf9-4da8-863c-e83d4306b381",
+  "version": "2.0",
+  "name": "testcase_execute_async_script_reject_page",
+  "url": "http://localhost",
+  "tests": [{
+    "id": "229124e3-8b0b-42bc-bb5d-101dbb4c08b5",
+    "name": "01promise_from_page_script",
+    "commands": [{
+      "id": "8ddfbeca-1bf3-4cba-a1a9-a000e83457d6",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7e7b58ca-4b03-4341-b0ac-f73629475fb9",
+      "comment": "Open execute async test page.",
+      "command": "clickAt",
+      "target": "//a[contains(text(),'Execute Async Script')]",
+      "targets": [],
+      "value": "44,8"
+    }, {
+      "id": "34c30b48-a00a-4a86-a1bc-e97cb08ec2f8",
+      "comment": "",
+      "command": "executeAsyncScript",
+      "target": "return window.createRejectedPromise()",
+      "targets": [],
+      "value": "value"
+    }]
+  }],
+  "suites": [{
+    "id": "0a569033-8369-4741-965d-01cd83dd6bfc",
+    "name": "testcase_execute_async_script_reject_page",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["229124e3-8b0b-42bc-bb5d-101dbb4c08b5"]
+  }],
+  "urls": ["http://localhost/"],
+  "plugins": []
+}
