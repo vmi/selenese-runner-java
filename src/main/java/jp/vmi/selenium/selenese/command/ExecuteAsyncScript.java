@@ -32,7 +32,7 @@ public class ExecuteAsyncScript extends AbstractCommand {
     protected Result executeImpl(Context context, String... curArgs) {
         String script = "(function(callback) {"
             + "  var promise = (function() {" + curArgs[ARG_SCRIPT] + "})();"
-            + "  if (Promise.resolve(promise) === promise) {"
+            + "  if (!!promise && typeof promise.then === 'function') {"
             + "    promise.then(res => callback({ isPromise: true, isResolved: true,  value: res }),"
             + "                 rej => callback({ isPromise: true, isResolved: false, value: rej }));"
             + "  } else {"
