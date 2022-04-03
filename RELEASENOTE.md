@@ -1,6 +1,12 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 4.1.0
+
+* Fix ExecuteAsyncScript not working with Firefox. (#332, PR #333 by @blutorange)
+* Catch up Selenium 4.3.0 and update dependency versions.
+    * Fix several problems associated with the update.
+
 ### 4.0.0
 
 * Catch up Selenium 4.1.0 and update dependency versions.
