@@ -40,6 +40,10 @@ public class ExecuteAsyncScript extends AbstractCommand {
             + "  }"
             + "})(arguments[0])";
         Map<String, Object> result = context.executeAsyncScript(script);
+        if (result == null) {
+            // I observed a case where a null value was returned, but I don't know what caused it.
+            return new Error("Unexpected null result");
+        }
         boolean isPromise = (Boolean) result.get("isPromise");
         boolean isResolved = (Boolean) result.get("isResolved");
         Object value = result.get("value");
