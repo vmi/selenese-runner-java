@@ -32,12 +32,12 @@
     </rule>
     <rule groupId="jakarta.xml.bind" artifactId="jakarta.xml.bind-api">
       <ignoreVersions>
-        <ignoreVersion type="regex">\d+(\.\d+)+-b[\d.]+|.*-RC\d+|3\..+</ignoreVersion>
+        <ignoreVersion type="regex">[3-9]\..+|\d\d.+|\d+(\.\d+)+-b[\d.]+|.*-RC\d+|3\..+</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="org.glassfish.jaxb" artifactId="jaxb-runtime">
       <ignoreVersions>
-        <ignoreVersion type="regex">\d+(\.\d+)+-[bM][\d.]+|3\..+</ignoreVersion>
+        <ignoreVersion type="regex">[3-9]\..+|\d\d.+|\d+(\.\d+)+-[bM][\d.]+|3\..+</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="junit" artifactId="junit">
