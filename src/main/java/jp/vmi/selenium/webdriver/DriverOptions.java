@@ -211,7 +211,7 @@ public class DriverOptions {
         case CHROME_EXTENSION:
             return !chromeExtensions.isEmpty();
         case ALERTS_POLICY:
-            return caps.getCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR) != null;
+            return caps.getCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR) != null;
         default:
             return map.containsKey(opt);
         }
@@ -241,11 +241,10 @@ public class DriverOptions {
         if (value == null || value instanceof UnexpectedAlertBehaviour)
             return (UnexpectedAlertBehaviour) value;
         if (value instanceof String) {
-            try {
-                return Enum.valueOf(UnexpectedAlertBehaviour.class, ((String) value).toUpperCase());
-            } catch (IllegalArgumentException e) {
-                // fall through.
-            }
+            String canon = ((String) value).trim().replaceAll("[\\-_\t ]+", " ");
+            UnexpectedAlertBehaviour uab = UnexpectedAlertBehaviour.fromString(canon);
+            if (uab != null)
+                return uab;
         }
         throw new IllegalArgumentException(String.format(
             "The value of %s is \"%s\". It must be one of the following: accept, dismiss, accept_and_notify, dismiss_and_notify, ignore",
@@ -292,7 +291,7 @@ public class DriverOptions {
             break;
         case ALERTS_POLICY:
             UnexpectedAlertBehaviour uab = parseUnexpectedAlertBehaviour(value);
-            caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, uab);
+            caps.setCapability(CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR, uab);
             return this;
         default:
             if (value == null)
@@ -305,8 +304,10 @@ public class DriverOptions {
             opt, opt.valueType.getSimpleName(), value.getClass().getSimpleName(), value));
     }
 
+    @SuppressWarnings("deprecation")
     private static Object getTypedValue(String name, String type, String value, Consumer<String> errorHandler) {
         switch (name) {
+        case CapabilityType.UNHANDLED_PROMPT_BEHAVIOUR:
         case CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR:
             return parseUnexpectedAlertBehaviour(value);
         default:

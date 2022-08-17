@@ -20,7 +20,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -61,7 +60,6 @@ import jp.vmi.selenium.selenese.utils.PathUtils;
 import jp.vmi.selenium.webdriver.WebDriverPreparator;
 
 import static jp.vmi.selenium.selenese.result.Unexecuted.*;
-import static org.openqa.selenium.remote.CapabilityType.*;
 
 /**
  * Provide Java API to run Selenese script.
@@ -205,7 +203,7 @@ public class Runner implements Context, ScreenshotHandler, HighlightHandler, JUn
     protected TakesScreenshot getTakesScreenshot() {
         if (driver instanceof TakesScreenshot) {
             return (TakesScreenshot) driver;
-        } else if (driver instanceof RemoteWebDriver && ((HasCapabilities) driver).getCapabilities().is(TAKES_SCREENSHOT)) {
+        } else if (driver instanceof RemoteWebDriver) {
             return (TakesScreenshot) new Augmenter().augment(driver);
         } else {
             return null;

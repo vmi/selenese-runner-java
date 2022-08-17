@@ -213,7 +213,7 @@ width {
 }
 
 alerts_policy {
-    usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)"
+    usage = "The default behaviour for unexpected alerts (accept/dismiss/accept_and_notify/dismiss_and_notify/ignore)"
     driverOption = "UnexpectedAlertBehaviour"
 }
 

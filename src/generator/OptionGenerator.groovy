@@ -15,6 +15,8 @@ genDir = Paths.get(sourceUri).parent
 baseDir = genDir.resolveSibling("main/java/jp/vmi/selenium")
 config = new ConfigSlurper().parse(genDir.resolve('config.groovy').toUri().toURL())
 
+INDENT = "        "
+
 def toUpperCamelCase(s) {
   s.replaceAll(/(^|_)([a-z])/) { m -> m[2].toUpperCase() }
 }
@@ -43,8 +45,15 @@ def updateOptions(iConfig, dConfig, dOpts) {
     def optStr = oName.replace('_', '-')
     def option = "name = \"--\" + ${cName}"
     def fType = "String"
+    def deprecated = false
     odef.forEach { name, value ->
       switch (name) {
+        case "deprecated":
+	  if (value instanceof Boolean && value) {
+	    deprecated = true
+	  }
+          break
+
 	case "type":
           fType = value
 	  break
@@ -53,7 +62,11 @@ def updateOptions(iConfig, dConfig, dOpts) {
 	  if (value instanceof Boolean && !value) {
 	    break
 	  }
-	  enumItems += "        /** --${optStr} */\n        ${cName}"
+	  enumItems += "${INDENT}/** --${optStr} */\n"
+          if (deprecated) {
+            enumItems += "${INDENT}@Deprecated\n"
+          }
+          enumItems += "${INDENT}${cName}"
 	  def t = (value instanceof String) ? value : fType
 	  if (t != "String") {
 	    enumItems += "(${t}.class)"
@@ -70,6 +83,9 @@ def updateOptions(iConfig, dConfig, dOpts) {
             value = value.replaceAll(/"/, "\\\\\"").replaceAll(/%(\w+)%/) {
               "\" + ${it[1]} + \""
             }
+            if (deprecated) {
+              value = "[deprecated] " + value
+            }
           }
           option += " ${name} = \"${value}\""
 	  break
@@ -83,19 +99,38 @@ def updateOptions(iConfig, dConfig, dOpts) {
       mgPrefix = "is"
       dValue = "false"
     }
+    if (deprecated) {
+      oNames += "    @Deprecated\n"
+    }
     oNames += """\
     public static final String ${cName} = "${optStr}";
 """
+    if (deprecated) {
+      getters += "\n    @Deprecated"
+    }
     getters += """
     ${mType} ${mgPrefix}${uName}();
 """
+    if (deprecated) {
+      fields += "\n    @Deprecated\n    @SuppressWarnings(\"deprecation\")"
+    }
     fields += "\n    @Option(${option})\n    private ${fType} ${lName};\n"
-    accessors += """
+    if (deprecated)  {
+      accessors += """
+    @Override
+    @Deprecated
+    public ${mType} ${mgPrefix}${uName}() {
+        return ${dValue};
+    }
+"""
+    } else {
+      accessors += """
     @Override
     public ${mType} ${mgPrefix}${uName}() {
         return ${lName} != null ? ${lName} : (parentOptions != null ? parentOptions.${mgPrefix}${uName}() : ${dValue});
     }
 """
+    }
     if (fType == "String[]") {
       accessors += """
     public void add${uName}(String ${lName}Item) {
@@ -103,11 +138,20 @@ def updateOptions(iConfig, dConfig, dOpts) {
     }
 """
     } else {
-      accessors += """
+      if (deprecated) {
+        accessors += """
+    @Deprecated
+    public void set${uName}(${mType} ${lName}) {
+        log.warn("--${optStr} is deprecated.");
+    }
+"""
+      } else {
+        accessors += """
     public void set${uName}(${mType} ${lName}) {
         this.${lName} = ${lName};
     }
 """
+      }
     }
   }
 

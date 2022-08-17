@@ -200,7 +200,7 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + WIDTH, metaVar = "<width>", usage = "set initial width. (excluding mobile)")
     private String width;
 
-    @Option(name = "--" + ALERTS_POLICY, usage = "The default behaviour for unexpected alerts (accept/ignore/dismiss)")
+    @Option(name = "--" + ALERTS_POLICY, usage = "The default behaviour for unexpected alerts (accept/dismiss/accept_and_notify/dismiss_and_notify/ignore)")
     private String alertsPolicy;
 
     @Option(name = "--" + DEFINE, aliases = "-D", metaVar = "<key>[:<type>][+]=<value>",

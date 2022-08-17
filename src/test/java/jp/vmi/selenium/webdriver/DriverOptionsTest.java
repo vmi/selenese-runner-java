@@ -1,7 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
 import org.junit.Test;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -48,21 +48,19 @@ public class DriverOptionsTest {
         WebDriverManager wdm = WebDriverManager.newInstance();
         wdm.setWebDriverFactory(WebDriverManager.HTMLUNIT);
         DriverOptions driverOptions = new DriverOptions();
-        driverOptions.addDefinitions("javascriptEnabled:bool=false");
+        driverOptions.addDefinitions("acceptInsecureCerts:bool=true");
         wdm.setDriverOptions(driverOptions);
         WebDriver driver = wdm.get();
         WebServer ws = new WebServer();
         ws.start();
-        Exception actual = null;
+        DesiredCapabilities caps = null;
         try {
             driver.get(ws.getBaseURL());
-            ((JavascriptExecutor) driver).executeScript("true");
-        } catch (Exception e) {
-            actual = e;
+            HasCapabilities hasCaps = (HasCapabilities) driver;
+            caps = (DesiredCapabilities) hasCaps.getCapabilities();
         } finally {
             ws.stop();
         }
-        assertThat(actual, is(instanceOf(UnsupportedOperationException.class)));
-        assertThat(actual.getMessage(), equalTo("Javascript is not enabled for this HtmlUnitDriver instance"));
+        assertThat(caps.acceptInsecureCerts(), is(true));
     }
 }

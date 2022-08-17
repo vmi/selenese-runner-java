@@ -1,5 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
+import java.lang.reflect.Field;
+
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Platform;
@@ -34,10 +36,12 @@ public class HtmlUnitDriverFactory extends WebDriverFactory {
     public WebDriver newInstance(DriverOptions driverOptions) {
         DesiredCapabilities caps = new DesiredCapabilities(Browser.HTMLUNIT.browserName(), "", Platform.ANY);
         setupProxy(caps, driverOptions);
-        caps.setJavascriptEnabled(true);
         caps.merge(driverOptions.getCapabilities());
         try {
             Class<?> htmlUnitDriverClass = Class.forName(HTML_UNIT_DRIVER);
+            Field javascriptEnabledField = htmlUnitDriverClass.getDeclaredField("JAVASCRIPT_ENABLED");
+            String javascriptEnabled = (String) javascriptEnabledField.get(null);
+            caps.setCapability(javascriptEnabled, true);
             WebDriver driver = (WebDriver) htmlUnitDriverClass.getConstructor(Capabilities.class).newInstance(caps);
             //HtmlUnitDriver driver = new HtmlUnitDriver(caps);
             Class.forName(HTML_UNIT_CONSOLE).getMethod("setHtmlUnitConsole", WebDriver.class).invoke(null, driver);
