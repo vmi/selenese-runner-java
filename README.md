@@ -19,12 +19,10 @@ https://github.com/vmi/selenese-runner-java/releases
 Release Note
 ------------
 
-### 4.0.0
+### 4.2.0
 
-* Catch up Selenium 4.1.0 and update dependency versions.
-* **Remove PhantomJS driver support.**
-* Update Maven plugin versions.
-* Change to treat unsuccessful `waitFor*` command result as "Failure" in SIDE file. (#330)
+* Catch up Selenium 4.4.0 and update dependency versions.
+    * Fix several problems associated with the update.
 
 Please check [RELEASENOTE.md](RELEASENOTE.md).
 
@@ -86,7 +84,7 @@ Usage
      --set-speed <speed>                     : same as executing setSpeed(ms) command first.
      --height <height>                       : set initial height. (excluding mobile)
      --width <width>                         : set initial width. (excluding mobile)
-     --alerts-policy VAL                     : The default behaviour for unexpected alerts (accept/ignore/dismiss)
+     --alerts-policy VAL                     : The default behaviour for unexpected alerts (accept/dismiss/accept_and_notify/dismiss_and_notify/ignore)
      --define (-D) <key>[:<type>][+]=<value> : define parameters for capabilities. <type> is a value type: str (default), int or bool (multiple)
      --var (-V) <var-name>=<json-value>      : set JSON value to variable with a specified name. (multiple)
      --rollup <file>                         : define rollup rule by JavaScript. (multiple)
