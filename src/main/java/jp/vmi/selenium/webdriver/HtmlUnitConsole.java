@@ -1,6 +1,7 @@
 package jp.vmi.selenium.webdriver;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -29,15 +30,15 @@ public class HtmlUnitConsole implements com.gargoylesoftware.htmlunit.WebConsole
      */
     public static void setHtmlUnitConsole(WebDriver driver) {
         try {
-            Field f = driver.getClass().getDeclaredField("webClient");
-            f.setAccessible(true);
-            WebClient webClient = (WebClient) f.get(driver);
+            Method m = driver.getClass().getDeclaredMethod("getWebClient");
+            m.setAccessible(true);
+            WebClient webClient = (WebClient) m.invoke(driver);
             WebConsole webConsole = webClient.getWebConsole();
             com.gargoylesoftware.htmlunit.WebConsole.Logger logger = webConsole.getLogger();
             if (logger != null && logger instanceof HtmlUnitConsole)
                 return;
             webConsole.setLogger(INSTANCE);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
             log.warn("Cannot set htmlunit console.", e);
             return;
         }
