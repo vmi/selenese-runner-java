@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.xml.transform.TransformerException;
 
-import org.apache.xpath.XPathAPI;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
