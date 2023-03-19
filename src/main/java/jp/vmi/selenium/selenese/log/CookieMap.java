@@ -9,7 +9,6 @@ import org.openqa.selenium.Cookie;
 /**
  * Map of Cookies.
  */
-@SuppressWarnings("serial")
 public class CookieMap extends TreeMap<CookieKey, CookieValue> {
 
     /**

@@ -41,8 +41,9 @@ public class ChromeDriverFactory extends WebDriverFactory {
      */
     public static ChromeOptions newChromeOptions(DriverOptions driverOptions) {
         ChromeOptions options = new ChromeOptions();
-        if (driverOptions.has(HEADLESS))
-            options.setHeadless(driverOptions.getBoolean(HEADLESS));
+        options.addArguments("--remote-allow-origins=*"); // FIXME
+        if (driverOptions.has(HEADLESS) && driverOptions.getBoolean(HEADLESS))
+            options.addArguments("--headless=new");
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);

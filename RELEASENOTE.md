@@ -1,6 +1,11 @@
 Selenese Runner Java Relase Note
 ================================
 
+### 4.3.0
+
+* Catch up Selenium 4.8.1 and update dependency versions.
+    * Fix several problems associated with the update.
+
 ### 4.2.0
 
 * Catch up Selenium 4.4.0 and update dependency versions.
