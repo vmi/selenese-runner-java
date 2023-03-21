@@ -6,9 +6,13 @@ cd "$(dirname "$0")/.."
 
 # set classpath separator
 if [ "$OSTYPE" != "cygwin" ]; then
+  ps="/"
   sep=":"
+  pwd="$PWD"
 else
+  ps='\'
   sep=";"
+  pwd="$(cygpath -aw .)"
 fi
 
 # find MD5 sum command.
@@ -26,6 +30,7 @@ if [ -z "$md5sum" ]; then
 fi
 
 # generate classpath from pom.xml.
+mkdir -p tmp
 cp_conf="tmp/cp.conf"
 pom_xml_md5="tmp/pom.xml.md5"
 $md5sum pom.xml > "$pom_xml_md5.new"
@@ -37,4 +42,4 @@ else
   mvn -Dmdep.outputFile="$cp_conf" dependency:build-classpath
   mv "$pom_xml_md5.new" "$pom_xml_md5"
 fi
-echo "$PWD/target/classes${sep}$PWD/target/test-classes${sep}$(< "$cp_conf")"
+echo "${pwd}${ps}target${ps}classes${sep}${pwd}${ps}target${ps}test-classes${sep}$(< "$cp_conf")"

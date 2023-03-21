@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 

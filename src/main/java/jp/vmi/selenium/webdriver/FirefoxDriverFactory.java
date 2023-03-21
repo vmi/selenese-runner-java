@@ -44,8 +44,8 @@ public class FirefoxDriverFactory extends WebDriverFactory {
      */
     public static FirefoxOptions newFirefoxOptions(DriverOptions driverOptions) {
         FirefoxOptions options = new FirefoxOptions();
-        if (driverOptions.has(HEADLESS))
-            options.setHeadless(driverOptions.getBoolean(HEADLESS));
+        if (driverOptions.has(HEADLESS) && driverOptions.getBoolean(HEADLESS))
+            options.addArguments("--headless");
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);
@@ -79,7 +79,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
     public static void setDriverSpecificCapabilitiesForRemoteWebDriver(DesiredCapabilities caps, DriverOptions driverOptions) {
         String firefoxBin = getFirefoxBinary(driverOptions);
         if (firefoxBin != null) {
-            caps.setCapability(FirefoxDriver.Capability.BINARY, firefoxBin);
+            caps.setCapability(FirefoxDriver.SystemProperty.BROWSER_BINARY, firefoxBin);
             log.info("Firefox binary: {}", firefoxBin);
         }
         if (driverOptions.has(CLI_ARGS))
@@ -91,7 +91,7 @@ public class FirefoxDriverFactory extends WebDriverFactory {
             setProxyConfiguration(profile, driverOptions);
         }
         if (profile != null) {
-            caps.setCapability(FirefoxDriver.Capability.PROFILE, profile);
+            caps.setCapability(FirefoxDriver.SystemProperty.BROWSER_PROFILE, profile);
         }
     }
 

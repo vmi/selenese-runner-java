@@ -40,6 +40,11 @@
         <ignoreVersion type="regex">[3-9]\..+|\d\d.+|\d+(\.\d+)+-[bM][\d.]+|3\..+</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="ch.qos.logback" artifactId="logback-classic">
+      <ignoreVersions>
+        <ignoreVersion type="regex">1\.([4-9]|[0-9][0-9]).*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
     <rule groupId="junit" artifactId="junit">
       <ignoreVersions>
         <ignoreVersion type="regex">.*-rc-\d+</ignoreVersion>

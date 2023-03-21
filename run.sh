@@ -27,8 +27,15 @@ do_script() {
   local file="$1"; shift
   set -x
   case "$OSTYPE" in
-    linux*|cygwin*)
+    linux*)
       script -c "$*" "$file"
+      ;;
+    cygwin*)
+      cmd=""
+      for a in "$@"; do
+        cmd="$cmd '$a'"
+      done
+      script -c "${cmd# }" "$file"
       ;;
     darwin*|*bsd*)
       script "$file" "$@"
