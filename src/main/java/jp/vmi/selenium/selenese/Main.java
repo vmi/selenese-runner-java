@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -126,33 +126,26 @@ public class Main {
             ExecutorService executor = Executors.newFixedThreadPool(filenames.length);
             CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
             for (String fileName : filenames) {
-                completionService.submit(new Callable<ResultObject>() {
-                    @Override
-                    public ResultObject call() {
-                        Runner runner = new Runner();
-                        Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
-                        runner.setCommandLineArgs(args);
-                        setupRunner(runner, config, fileName);
-                        Result result = runner.run(fileName);
-                        runner.finish();
-                        ResultObject resultObject = new ResultObject();
-                        resultObject.setResult(result);
-                        resultObject.setSelenese(selenese);
-                        return resultObject;
-                    }
+                completionService.submit(() -> {
+                    Runner runner = new Runner();
+                    Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
+                    runner.setCommandLineArgs(args);
+                    setupRunner(runner, config, fileName);
+                    Result result = runner.run(fileName);
+                    runner.finish();
+                    ResultObject resultObject = new ResultObject();
+                    resultObject.setResult(result);
+                    resultObject.setSelenese(selenese);
+                    return resultObject;
                 });
             }
-            int received = 0;
-            boolean errors = false;
-
-            while (received < filenames.length && !errors) {
-                Future<ResultObject> resultFuture = completionService.take(); //blocks if none available
+            for (int received = 0; received < filenames.length; received++) {
                 try {
+                    Future<ResultObject> resultFuture = completionService.take(); // blocks if none available
                     ResultObject resultObject = resultFuture.get();
-                    received++;
                     totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (InterruptedException | ExecutionException e) {
+                    log.error("During parallel execution", e);
                 }
             }
             exitLevel = totalResult.getLevel();
