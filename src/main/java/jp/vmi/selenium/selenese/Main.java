@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import jp.vmi.html.result.HtmlResult;
 import jp.vmi.selenium.runner.converter.Converter;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -38,9 +36,9 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 import static jp.vmi.selenium.selenese.config.DefaultConfig.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Provide command line interface.
@@ -90,18 +88,22 @@ public class Main {
     /**
      * New object to hold result and selenese
      */
-    private class ResultObject{
+    private class ResultObject {
         Result result;
         Selenese selenese;
+
         public Result getResult() {
             return result;
         }
+
         public void setResult(Result result) {
             this.result = result;
         }
+
         public Selenese getSelenese() {
             return selenese;
         }
+
         public void setSelenese(Selenese selenese) {
             this.selenese = selenese;
         }
@@ -125,6 +127,7 @@ public class Main {
             CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
             for (String fileName : filenames) {
                 completionService.submit(new Callable<ResultObject>() {
+                    @Override
                     public ResultObject call() {
                         Runner runner = new Runner();
                         Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
