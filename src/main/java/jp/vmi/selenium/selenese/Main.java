@@ -5,6 +5,13 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import jp.vmi.html.result.HtmlResult;
 import jp.vmi.selenium.runner.converter.Converter;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -30,6 +38,7 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 import static jp.vmi.selenium.selenese.config.DefaultConfig.*;
 
@@ -79,6 +88,26 @@ public class Main {
     }
 
     /**
+     * New object to hold result and selenese
+     */
+    private class ResultObject{
+        Result result;
+        Selenese selenese;
+        public Result getResult() {
+            return result;
+        }
+        public void setResult(Result result) {
+            this.result = result;
+        }
+        public Selenese getSelenese() {
+            return selenese;
+        }
+        public void setSelenese(Selenese selenese) {
+            this.selenese = selenese;
+        }
+    }
+
+    /**
      * Start Selenese Runner.
      *
      * @param args command line arguments.
@@ -91,11 +120,38 @@ public class Main {
             if (filenames.length == 0)
                 help();
             log.info("Start: " + PROG_TITLE + " {}", getVersion());
-            Runner runner = new Runner();
-            runner.setCommandLineArgs(args);
-            setupRunner(runner, config, filenames);
-            Result totalResult = runner.run(filenames);
-            runner.finish();
+            Result totalResult = UNEXECUTED;
+            ExecutorService executor = Executors.newFixedThreadPool(filenames.length);
+            CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
+            for (String fileName : filenames) {
+                completionService.submit(new Callable<ResultObject>() {
+                    public ResultObject call() {
+                        Runner runner = new Runner();
+                        Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
+                        runner.setCommandLineArgs(args);
+                        setupRunner(runner, config, fileName);
+                        Result result = runner.run(fileName);
+                        runner.finish();
+                        ResultObject resultObject = new ResultObject();
+                        resultObject.setResult(result);
+                        resultObject.setSelenese(selenese);
+                        return resultObject;
+                    }
+                });
+            }
+            int received = 0;
+            boolean errors = false;
+
+            while (received < filenames.length && !errors) {
+                Future<ResultObject> resultFuture = completionService.take(); //blocks if none available
+                try {
+                    ResultObject resultObject = resultFuture.get();
+                    received++;
+                    totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             exitLevel = totalResult.getLevel();
         } catch (IllegalArgumentException e) {
             help("Error: " + e.getMessage());
