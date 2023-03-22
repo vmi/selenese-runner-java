@@ -31,6 +31,7 @@ while (<>) {
 }
 while (<>) {
   s/\s+\z//s;
+  s/;(selenese-runner\.jar)/:\1/;
   last if (/\[INFO\]\s+Exit\s+code:/);
   print "    $_\n";
 }
