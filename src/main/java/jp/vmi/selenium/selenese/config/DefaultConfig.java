@@ -98,6 +98,9 @@ public class DefaultConfig implements IConfig {
     @Option(name = "--" + HEADLESS, usage = "use headless mode if driver is supported (currently, Chrome and Firefox)")
     private Boolean headless;
 
+    @Option(name = "--" + PARALLEL, metaVar = "<threads>", usage = "run multiple test files in parallel (if set <threads> to \"max\", all files are executed in parallel at once)")
+    private String parallel;
+
     @Option(name = "--" + PROFILE, aliases = "-p", metaVar = "<name>", usage = "profile name (Firefox only *1)")
     private String profile;
 
@@ -280,6 +283,15 @@ public class DefaultConfig implements IConfig {
 
     public void setHeadless(boolean headless) {
         this.headless = headless;
+    }
+
+    @Override
+    public String getParallel() {
+        return parallel != null ? parallel : (parentOptions != null ? parentOptions.getParallel() : null);
+    }
+
+    public void setParallel(String parallel) {
+        this.parallel = parallel;
     }
 
     @Override

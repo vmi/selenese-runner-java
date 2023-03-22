@@ -10,6 +10,10 @@ headless {
     driverOption = true
 }
 
+parallel {
+    metaVar = "<threads>"
+    usage = "run multiple test files in parallel (if set <threads> to \"max\", all files are executed in parallel at once)"
+}
 
 profile {
     aliases = "-p"

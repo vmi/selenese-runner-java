@@ -122,30 +122,48 @@ public class Main {
             if (filenames.length == 0)
                 help();
             log.info("Start: " + PROG_TITLE + " {}", getVersion());
-            Result totalResult = UNEXECUTED;
-            ExecutorService executor = Executors.newFixedThreadPool(filenames.length);
-            CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
-            for (String fileName : filenames) {
-                completionService.submit(() -> {
-                    Runner runner = new Runner();
-                    Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
-                    runner.setCommandLineArgs(args);
-                    setupRunner(runner, config, fileName);
-                    Result result = runner.run(fileName);
-                    runner.finish();
-                    ResultObject resultObject = new ResultObject();
-                    resultObject.setResult(result);
-                    resultObject.setSelenese(selenese);
-                    return resultObject;
-                });
-            }
-            for (int received = 0; received < filenames.length; received++) {
-                try {
-                    Future<ResultObject> resultFuture = completionService.take(); // blocks if none available
-                    ResultObject resultObject = resultFuture.get();
-                    totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
-                } catch (InterruptedException | ExecutionException e) {
-                    log.error("During parallel execution", e);
+            Result totalResult;
+            String parallel = config.getParallel();
+            if (parallel == null) {
+                Runner runner = new Runner();
+                runner.setCommandLineArgs(args);
+                setupRunner(runner, config, filenames);
+                totalResult = runner.run(filenames);
+                runner.finish();
+            } else {
+                int threads;
+                if ("max".equalsIgnoreCase(parallel)) {
+                    threads = filenames.length;
+                } else {
+                    threads = NumberUtils.toInt(parallel);
+                    if (threads == 0)
+                        help("Error: Illegal argument of --parallel: " + parallel);
+                }
+                totalResult = UNEXECUTED;
+                ExecutorService executor = Executors.newFixedThreadPool(threads);
+                CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
+                for (String fileName : filenames) {
+                    completionService.submit(() -> {
+                        Runner runner = new Runner();
+                        Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
+                        runner.setCommandLineArgs(args);
+                        setupRunner(runner, config, fileName);
+                        Result result = runner.run(fileName);
+                        runner.finish();
+                        ResultObject resultObject = new ResultObject();
+                        resultObject.setResult(result);
+                        resultObject.setSelenese(selenese);
+                        return resultObject;
+                    });
+                }
+                for (int received = 0; received < filenames.length; received++) {
+                    try {
+                        Future<ResultObject> resultFuture = completionService.take(); // blocks if none available
+                        ResultObject resultObject = resultFuture.get();
+                        totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
+                    } catch (InterruptedException | ExecutionException e) {
+                        log.error("During parallel execution", e);
+                    }
                 }
             }
             exitLevel = totalResult.getLevel();
