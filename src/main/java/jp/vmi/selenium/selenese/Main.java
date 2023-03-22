@@ -5,9 +5,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import jp.vmi.html.result.HtmlResult;
 import jp.vmi.selenium.runner.converter.Converter;
 import jp.vmi.selenium.selenese.command.ICommandFactory;
 import jp.vmi.selenium.selenese.config.DefaultConfig;
@@ -38,9 +36,9 @@ import jp.vmi.selenium.selenese.utils.LoggerUtils;
 import jp.vmi.selenium.webdriver.DriverOptions;
 import jp.vmi.selenium.webdriver.DriverOptions.DriverOption;
 import jp.vmi.selenium.webdriver.WebDriverManager;
-import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 import static jp.vmi.selenium.selenese.config.DefaultConfig.*;
+import static jp.vmi.selenium.selenese.result.Unexecuted.*;
 
 /**
  * Provide command line interface.
@@ -90,18 +88,22 @@ public class Main {
     /**
      * New object to hold result and selenese
      */
-    private class ResultObject{
+    private class ResultObject {
         Result result;
         Selenese selenese;
+
         public Result getResult() {
             return result;
         }
+
         public void setResult(Result result) {
             this.result = result;
         }
+
         public Selenese getSelenese() {
             return selenese;
         }
+
         public void setSelenese(Selenese selenese) {
             this.selenese = selenese;
         }
@@ -120,12 +122,28 @@ public class Main {
             if (filenames.length == 0)
                 help();
             log.info("Start: " + PROG_TITLE + " {}", getVersion());
-            Result totalResult = UNEXECUTED;
-            ExecutorService executor = Executors.newFixedThreadPool(filenames.length);
-            CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
-            for (String fileName : filenames) {
-                completionService.submit(new Callable<ResultObject>() {
-                    public ResultObject call() {
+            Result totalResult;
+            String parallel = config.getParallel();
+            if (parallel == null) {
+                Runner runner = new Runner();
+                runner.setCommandLineArgs(args);
+                setupRunner(runner, config, filenames);
+                totalResult = runner.run(filenames);
+                runner.finish();
+            } else {
+                int threads;
+                if ("max".equalsIgnoreCase(parallel)) {
+                    threads = filenames.length;
+                } else {
+                    threads = NumberUtils.toInt(parallel);
+                    if (threads == 0)
+                        help("Error: Illegal argument of --parallel: " + parallel);
+                }
+                totalResult = UNEXECUTED;
+                ExecutorService executor = Executors.newFixedThreadPool(threads);
+                CompletionService<ResultObject> completionService = new ExecutorCompletionService<ResultObject>(executor);
+                for (String fileName : filenames) {
+                    completionService.submit(() -> {
                         Runner runner = new Runner();
                         Selenese selenese = Parser.parse(fileName, runner.getCommandFactory());
                         runner.setCommandLineArgs(args);
@@ -136,20 +154,16 @@ public class Main {
                         resultObject.setResult(result);
                         resultObject.setSelenese(selenese);
                         return resultObject;
+                    });
+                }
+                for (int received = 0; received < filenames.length; received++) {
+                    try {
+                        Future<ResultObject> resultFuture = completionService.take(); // blocks if none available
+                        ResultObject resultObject = resultFuture.get();
+                        totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
+                    } catch (InterruptedException | ExecutionException e) {
+                        log.error("During parallel execution", e);
                     }
-                });
-            }
-            int received = 0;
-            boolean errors = false;
-
-            while (received < filenames.length && !errors) {
-                Future<ResultObject> resultFuture = completionService.take(); //blocks if none available
-                try {
-                    ResultObject resultObject = resultFuture.get();
-                    received++;
-                    totalResult = totalResult.updateWithChildResult(resultObject.getSelenese(), resultObject.getResult());
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
             exitLevel = totalResult.getLevel();

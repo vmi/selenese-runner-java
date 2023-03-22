@@ -29,6 +29,7 @@ public interface IConfig {
 
     public static final String DRIVER = "driver";
     public static final String HEADLESS = "headless";
+    public static final String PARALLEL = "parallel";
     public static final String PROFILE = "profile";
     public static final String PROFILE_DIR = "profile-dir";
     public static final String CHROME_EXPERIMENTAL_OPTIONS = "chrome-experimental-options";
@@ -109,6 +110,8 @@ public interface IConfig {
     String getDriver();
 
     boolean isHeadless();
+
+    String getParallel();
 
     String getProfile();
 

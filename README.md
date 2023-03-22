@@ -19,10 +19,13 @@ https://github.com/vmi/selenese-runner-java/releases
 Release Note
 ------------
 
-### 4.2.0
+### 4.3.0
 
-* Catch up Selenium 4.4.0 and update dependency versions.
+* Catch up Selenium 4.8.1 and update dependency versions.
     * Fix several problems associated with the update.
+* Remove dependency on `xalan` for security reason. (#337)
+* Run multiple test files in parallel. (PR #340)
+    * Add new option `--parallel` to parallel execution.
 
 Please check [RELEASENOTE.md](RELEASENOTE.md).
 
@@ -50,6 +53,7 @@ Usage
      --config (-c) <file>                    : load option information from file.
      --driver (-d) <driver>                  : firefox (default) | chrome | ie | edge | safari | htmlunit | remote | appium | FQCN-of-WebDriverFactory
      --headless                              : use headless mode if driver is supported (currently, Chrome and Firefox)
+     --parallel <threads>                    : run multiple test files in parallel (if set <threads> to "max", all files are executed in parallel at once)
      --profile (-p) <name>                   : profile name (Firefox only *1)
      --profile-dir (-P) <dir>                : profile directory (Firefox only *1)
      --chrome-experimental-options <file>    : path to json file specify experimental options for chrome (Chrome only *1)
