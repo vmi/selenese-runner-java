@@ -31,6 +31,7 @@ public class EdgeDriverFactory extends WebDriverFactory {
      */
     public static EdgeOptions newEdgeOptions(DriverOptions driverOptions) {
         EdgeOptions options = new EdgeOptions();
+        options.addArguments("--remote-allow-origins=*"); // FIXME
         Proxy proxy = newProxy(driverOptions);
         if (proxy != null)
             options.setProxy(proxy);
