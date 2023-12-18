@@ -31,7 +31,8 @@ public class RemoteWebDriverFactory extends WebDriverFactory {
 
     @Override
     public WebDriver newInstance(DriverOptions driverOptions) {
-        DesiredCapabilities caps = new DesiredCapabilities(getBrowserName(), "", Platform.ANY);
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setBrowserName(getBrowserName());
         setupProxy(caps, driverOptions);
         caps.merge(driverOptions.getCapabilities());
         if (driverOptions.has(REMOTE_BROWSER)) {
